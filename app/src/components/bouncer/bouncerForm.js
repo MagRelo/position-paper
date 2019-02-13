@@ -5,6 +5,10 @@ import Select from 'react-select';
 import store from 'state/store';
 import { bounceTransaction } from 'state/sockets';
 
+// const bounceTransaction = () => {
+//   return true;
+// };
+
 const FormDisplay = ({ label, value }) => {
   return (
     <div

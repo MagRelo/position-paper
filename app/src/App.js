@@ -12,8 +12,6 @@ import Bouncer from 'components/bouncer';
 import Auto from 'components/autoPage';
 
 class App extends Component {
-  state = { accounts: null };
-
   render() {
     return (
       <div>

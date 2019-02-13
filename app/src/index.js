@@ -17,7 +17,7 @@ import store from 'state/store';
 // serviceWorker.unregister();
 
 loadWeb3();
-initSockets();
+// initSockets();
 
 ReactDOM.render(
   <Provider store={store}>

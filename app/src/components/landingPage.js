@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import Loader from 'components/loader';
-import AutoForm from 'components/autoForm';
+// import Loader from 'components/loader';
+// import AutoForm from 'components/autoForm';
 
 class LandingPage extends Component {
   state = { accounts: null };
@@ -10,77 +10,153 @@ class LandingPage extends Component {
   render() {
     return (
       <div>
-        <h1>Servesa Truffle Box</h1>
-        <p>Hybrid web-app setup</p>
+        <h1>kurata</h1>
 
-        <h2>Demo Pages</h2>
+        <p>Stakeholders</p>
+
         <ul>
           <li>
-            <a href="/auto">Auto Form</a>: generate forms based on contract ABI
+            Teams: Reveal preferences by playing curation tournaments for fun
+            and profit
           </li>
+          <li>Auditors: Independently assess each team's past performance</li>
           <li>
-            <a href="/bounce">Meta-transactions</a>: submit transactions on
-            behalf of your users.
+            Sponsors: Get on-demand access to unique, high-quality experts
           </li>
         </ul>
 
-        <h2>Client features </h2>
-        <div>
+        <h2>Teams</h2>
+        <p>Form groups to monetize your collective intelligence.</p>
+        <p>Monetize:</p>
+        <ul>
+          <li>
+            Play tournaments at regular intervals and sell subscriptions to the
+            feed of the results (email, json, rss)
+          </li>
+          <li>Play on-demand games funded by a sponsor</li>
+        </ul>
+
+        <h2>Auditors</h2>
+        <p>Play a schelling game to encourage consensus</p>
+
+        <h2>Sponsors</h2>
+        <p>
+          Get trustworthy, actionable insights from a variety of incentivised
+          sources
+        </p>
+
+        <p>
+          Obtaining high-quality information can be done in two ways: sourcing
+          specific, knowlegable experts or combining the result of many games to
+          obtain averages (or a combination of the two).
+        </p>
+        <ul>
+          <li>
+            <h3>Source Specific Experts</h3>
+            <p>
+              Find and vet specific groups. Subscribe for regular updates or
+              submit custom requests.
+            </p>
+          </li>
+          <li>
+            <h3>Aggregated Results</h3>
+            <p>
+              Submit requests to a large number of groups simultaneously.
+              Aggregate their results to produce more accurate data and use the
+              overall results to create additinal incentives for groups to
+              produce high-quailty information.
+            </p>
+          </li>
+        </ul>
+
+        <p>
+          Create a <b>prompt</b> and a <b>set of options</b> that will be
+          submitted to the players. Curator produces either a{' '}
+          <b>weighted basket</b> or an <b>ordered list</b>.
+        </p>
+
+        <div className="row row-2">
           <div>
-            <h3>Redux stores</h3>
-            <pre>{JSON.stringify(this.props.web3, null, 2)}</pre>
-            <pre>{JSON.stringify(this.props.contracts, null, 2)}</pre>
-            <pre>{JSON.stringify(this.props.account, null, 2)}</pre>
+            <h3>Example: Weighted Basket</h3>
+            <pre>
+              <p>Prompt: Build a portfolio of these assets</p>
+              <ul>
+                <li>BTC</li>
+                <li>ETH</li>
+                <li>XMR</li>
+                <li>LTC</li>
+              </ul>
+              <br />
+              <p>Result:</p>
+              <br />
+              <table className="pure-table">
+                <thead>
+                  <tr>
+                    <th>Asset</th>
+                    <th>Allocation</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>BTC</td>
+                    <td>91%</td>
+                  </tr>
+                  <tr>
+                    <td>ETH</td>
+                    <td>7%</td>
+                  </tr>
+                  <tr>
+                    <td>LTC</td>
+                    <td>2%</td>
+                  </tr>
+                  <tr>
+                    <td>XMR</td>
+                    <td>0%</td>
+                  </tr>
+                </tbody>
+              </table>
+            </pre>
           </div>
-
           <div>
-            <h3>Loader component</h3>
-            <div>
-              <div>
-                <p>Require web3 and contracts:</p>
-                <pre>{`<Loader skipAccounts={true}>
-  <p style={{ textAlign: 'center' }}>(Wrapped content...)</p>
-</Loader>`}</pre>
-
-                <Loader skipAccounts={true}>
-                  <p style={{ textAlign: 'center' }}>(Wrapped content...)</p>
-                </Loader>
-              </div>
-              <div>
-                <p>Require web3, contracts, and account: </p>
-
-                <pre>{`<Loader>
-  <p style={{ textAlign: 'center' }}>(Wrapped content...)</p>
-</Loader>`}</pre>
-                <Loader>
-                  <p style={{ textAlign: 'center' }}>(Wrapped content...)</p>
-                </Loader>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <h3>AutoForm component</h3>
-            <p>Auto-generate forms for contract functions</p>
-
-            <div>
-              <div>
-                <pre>
-                  {'<AutoForm contract="simpleStorage" method="set" />'}
-                </pre>
-                <Loader>
-                  <AutoForm contract="simpleStorage" method="saveSender" />
-                </Loader>
-              </div>
-              <div>
-                <pre>
-                  {'<AutoForm contract="bouncerProxy" method="forward" />'}
-                </pre>
-                <Loader>
-                  <AutoForm contract="bouncerProxy" method="forward" />
-                </Loader>
-              </div>
-            </div>
+            <h3>Example: Ordered List</h3>
+            <pre>
+              <p>Prompt: In what order will these happen?</p>
+              <ul>
+                <li>ETH deploys Contantinople</li>
+                <li>BCH collapse</li>
+                <li>ZCash ZK-Snark deployed</li>
+                <li>June 1st 2019</li>
+              </ul>
+              <br />
+              <p>Result:</p>
+              <br />
+              <table className="pure-table">
+                <thead>
+                  <tr>
+                    <th>Order</th>
+                    <th>Item</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>ETH deploys Contantinople</td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>ZCash ZK-Snark deployed</td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>June 1st 2019</td>
+                  </tr>
+                  <tr>
+                    <td>4</td>
+                    <td>BCH collapse</td>
+                  </tr>
+                </tbody>
+              </table>
+            </pre>
           </div>
         </div>
       </div>
@@ -89,30 +165,7 @@ class LandingPage extends Component {
 }
 
 const mapStateToProps = state => {
-  return {
-    web3: {
-      web3Ready: state.web3.web3Ready,
-      instance: typeof state.web3.instance,
-      networkReady: state.web3.networkReady,
-      network: state.web3.network,
-      networkID: state.web3.networkID
-    },
-
-    account: {
-      accountsReady: state.account.accountsReady,
-      selectedAccount: state.account.selectedAccount,
-      balance: state.account.balance,
-      accounts: state.account.accounts
-    },
-
-    contracts: {
-      contractsReady: state.contracts.contractsReady,
-      simpleStorage: typeof state.contracts.simpleStorage,
-      bouncerProxy: typeof state.contracts.bouncerProxy
-    },
-
-    showTip: state.web3.showTip
-  };
+  return {};
 };
 
 const mapDispatchToProps = dispatch => {
