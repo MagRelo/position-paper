@@ -1,15 +1,19 @@
 const Portfolio = artifacts.require('./Portfolio.sol');
+const SimpleStorage = artifacts.require('./SimpleStorage.sol');
 
 const { soliditySha3 } = require('web3-utils');
 
+let PortfolioInstance;
+let SimpleStorageInstance;
+
 contract('Portfolio', accounts => {
-  let [platform, adminAccount, memberOne, memberTwo] = accounts;
+  let [platform, adminAccount, memberOne, memberTwo, rando] = accounts;
   const adminName = 'Admin';
 
   // deploy contract
-  let PortfolioInstance;
   beforeEach('setup', async () => {
     PortfolioInstance = await Portfolio.new(platform, adminAccount, adminName);
+    SimpleStorageInstance = await SimpleStorage.deployed();
   });
 
   describe('Membership', () => {
@@ -42,6 +46,53 @@ contract('Portfolio', accounts => {
       }
 
       assert.equal(true, false, 'Should have errored');
+    });
+
+    it('Admin can remove a member', async () => {
+      // add
+      await PortfolioInstance.memberRegister('Member 1', memberOne, {
+        from: adminAccount
+      });
+
+      // test add
+      let memberStruct = await PortfolioInstance.memberMap(memberOne);
+      assert.equal(memberStruct[0], 'Member 1', 'Member 1 name incorrect');
+      assert.equal(memberStruct[1], memberOne, 'Member 1 not member');
+
+      // remove
+      await PortfolioInstance.memberUnregister(memberOne, {
+        from: adminAccount
+      });
+
+      // test remove
+      memberStruct = await PortfolioInstance.memberMap(memberOne);
+      assert.equal(
+        memberStruct.valid,
+        false,
+        'Member 1 still an active member'
+      );
+    });
+
+    it('Rando *cant* remove a member', async () => {
+      // add
+      await PortfolioInstance.memberRegister('Member 1', memberOne, {
+        from: adminAccount
+      });
+
+      // test add
+      const memberStruct = await PortfolioInstance.memberMap(memberOne);
+      assert.equal(memberStruct[0], 'Member 1', 'Member 1 name incorrect');
+      assert.equal(memberStruct[1], memberOne, 'Member 1 not member');
+
+      try {
+        // remove
+        await PortfolioInstance.memberUnregister(memberOne, {
+          from: rando
+        });
+      } catch (error) {
+        return assert.ok(true);
+      }
+      assert.equal(true, false, 'Platform executed trade');
     });
   });
 
@@ -106,10 +157,151 @@ contract('Portfolio', accounts => {
     });
   });
 
-  // ---------
+  describe('Trades', () => {
+    it('Members can execute trades', async () => {
+      // register member
+      await PortfolioInstance.memberRegister('Member 1', memberOne, {
+        from: adminAccount
+      });
+
+      // build txn data
+      const simpleStorageAddress = SimpleStorageInstance.address;
+      const targetContractValue = 0;
+      const txnData = buildTxnData();
+
+      // get signing account nonce
+      const nonce = await PortfolioInstance.tradeNonce();
+
+      // hash
+      const parts = [
+        PortfolioInstance.address,
+        memberOne,
+        simpleStorageAddress,
+        web3.utils.toTwosComplement(targetContractValue),
+        txnData,
+        web3.utils.toTwosComplement(nonce)
+      ];
+      // console.log('parts', parts);
+      const message = soliditySha3(...parts);
+
+      // sign message
+      let signature = await web3.eth.sign(message, memberOne);
+
+      // executeTrade(bytes memory sig, address signer, address destination, uint value, bytes memory data)
+      await PortfolioInstance.executeTrade(
+        signature,
+        memberOne,
+        simpleStorageAddress,
+        targetContractValue,
+        txnData,
+        {
+          from: memberOne
+        }
+      );
+
+      // check simplesignature
+      const currentValue = await SimpleStorageInstance.value.call({
+        from: platform
+      });
+      assert.equal(currentValue, 100, 'Value not updated');
+      const lastUpdatedBy = await SimpleStorageInstance.lastUpdatedBy.call({
+        from: platform
+      });
+
+      assert.equal(
+        lastUpdatedBy,
+        PortfolioInstance.address,
+        'Not updated by Portfolio'
+      );
+    });
+
+    it('Platform *cant* execute trades', async () => {
+      // build txn data
+      const simpleStorageAddress = SimpleStorageInstance.address;
+      const targetContractValue = 0;
+      const txnData = buildTxnData();
+
+      // get signing account nonce
+      const nonce = await PortfolioInstance.tradeNonce();
+
+      // hash
+      const parts = [
+        PortfolioInstance.address,
+        platform,
+        simpleStorageAddress,
+        web3.utils.toTwosComplement(targetContractValue),
+        txnData,
+        web3.utils.toTwosComplement(nonce)
+      ];
+      // console.log('parts', parts);
+      const message = soliditySha3(...parts);
+
+      // sign message
+      let signature = await web3.eth.sign(message, platform);
+
+      try {
+        // executeTrade(bytes memory sig, address signer, address destination, uint value, bytes memory data)
+        await PortfolioInstance.executeTrade(
+          signature,
+          platform,
+          simpleStorageAddress,
+          targetContractValue,
+          txnData,
+          {
+            from: platform
+          }
+        );
+      } catch (error) {
+        return assert.ok(true);
+      }
+      assert.equal(true, false, 'Platform executed trade');
+    });
+
+    it('Randos *cant* execute trades', async () => {
+      // build txn data
+      const simpleStorageAddress = SimpleStorageInstance.address;
+      const targetContractValue = 0;
+      const txnData = buildTxnData();
+
+      // get signing account nonce
+      const nonce = await PortfolioInstance.tradeNonce();
+
+      // hash
+      const parts = [
+        PortfolioInstance.address,
+        rando,
+        simpleStorageAddress,
+        web3.utils.toTwosComplement(targetContractValue),
+        txnData,
+        web3.utils.toTwosComplement(nonce)
+      ];
+      // console.log('parts', parts);
+      const message = soliditySha3(...parts);
+
+      // sign message
+      let signature = await web3.eth.sign(message, rando);
+
+      try {
+        // executeTrade(bytes memory sig, address signer, address destination, uint value, bytes memory data)
+        await PortfolioInstance.executeTrade(
+          signature,
+          rando,
+          simpleStorageAddress,
+          targetContractValue,
+          txnData,
+          {
+            from: rando
+          }
+        );
+      } catch (error) {
+        return assert.ok(true);
+      }
+      assert.equal(true, false, 'Rando executed trade');
+    });
+  });
 
   describe('Platform', () => {
-    it('Platform can inflate total shares', async () => {
+    it('Platform can increase total shares', async () => {
       const totalShares_start = await PortfolioInstance.totalShares({
         from: platform
       });
@@ -132,7 +324,7 @@ contract('Portfolio', accounts => {
       );
     });
 
-    it('Randos *cant* inflate total shares', async () => {
+    it('Randos *cant* increase total shares', async () => {
       try {
         // increase
         await PortfolioInstance.increaseTotalShares(shareIncrease, {
@@ -162,7 +354,7 @@ contract('Portfolio', accounts => {
       );
     });
 
-    it('Randos *cant* inflate member shares', async () => {
+    it('Randos *cant* increase member shares', async () => {
       try {
         await PortfolioInstance.increaseMemberShares(
           memberOne,
@@ -178,66 +370,17 @@ contract('Portfolio', accounts => {
       assert.equal(true, false, 'Rando changed share count');
     });
   });
-
-  describe('Trades', () => {
-    xit('Admin can execute trades', async () => {
-      // try {
-      //   await PortfolioInstance.increaseMemberShares(
-      //     memberOne,
-      //     web3.utils.toWei('1'),
-      //     {
-      //       from: adminAccount
-      //     }
-      //   );
-      // } catch (error) {
-      //   return assert.ok(true);
-      // }
-      // assert.equal(true, false, 'Rando changed share count');
-    });
-
-    xit('Members *cant* execute trades', async () => {
-      // try {
-      //   await PortfolioInstance.increaseMemberShares(
-      //     memberOne,
-      //     web3.utils.toWei('1'),
-      //     {
-      //       from: adminAccount
-      //     }
-      //   );
-      // } catch (error) {
-      //   return assert.ok(true);
-      // }
-      // assert.equal(true, false, 'Rando changed share count');
-    });
-
-    xit('Platform *cant* execute trades', async () => {
-      // try {
-      //   await PortfolioInstance.increaseMemberShares(
-      //     memberOne,
-      //     web3.utils.toWei('1'),
-      //     {
-      //       from: adminAccount
-      //     }
-      //   );
-      // } catch (error) {
-      //   return assert.ok(true);
-      // }
-      // assert.equal(true, false, 'Rando changed share count');
-    });
-
-    xit('Randos *cant* execute trades', async () => {
-      // try {
-      //   await PortfolioInstance.increaseMemberShares(
-      //     memberOne,
-      //     web3.utils.toWei('1'),
-      //     {
-      //       from: adminAccount
-      //     }
-      //   );
-      // } catch (error) {
-      //   return assert.ok(true);
-      // }
-      // assert.equal(true, false, 'Rando changed share count');
-    });
-  });
 });
+
+function buildTxnData() {
+  // build txn data
+  const simpleStorageABI = SimpleStorageInstance.abi;
+  const simpleStorageAddress = SimpleStorageInstance.address;
+  var destContractInstance = new web3.eth.Contract(
+    simpleStorageABI,
+    simpleStorageAddress
+  );
+  return destContractInstance.methods.saveSender(100).encodeABI();
+}
+
+function signature() {}

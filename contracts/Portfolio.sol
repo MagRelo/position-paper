@@ -159,7 +159,7 @@ contract Portfolio {
   // -------
 
   // from Austin Griffith's bouncer proxy
-  uint tradeNonce;
+  uint256 public tradeNonce;
   event TradeExecuted (address destination, uint value, bytes data);
   
   function executeTrade(bytes memory sig, address signer, address destination, uint value, bytes memory data) public {
@@ -170,8 +170,8 @@ contract Portfolio {
     //increment the hash so this tx can't run again
     tradeNonce++;
 
-    // only admin...  
-    require(signerIsAdmin(_hash,sig),"BouncerProxy::forward Signer is not whitelisted");
+    // only members...  
+    require(signerIsMember(_hash,sig),"BouncerProxy::forward Signer is not whitelisted");
 
 
     //execute the transaction with all the given parameters
@@ -189,7 +189,7 @@ contract Portfolio {
     }
   }
 
-  function signerIsAdmin(bytes32 _hash, bytes  memory _signature) internal view returns (bool){
+  function signerIsMember(bytes32 _hash, bytes  memory _signature) internal view returns (bool){
     bytes32 r;
     bytes32 s;
     uint8 v;
@@ -216,9 +216,9 @@ contract Portfolio {
     } else {
       // solium-disable-next-line arg-overflow
       return 
-        ecrecover(keccak256(
+        memberMap[ecrecover(keccak256(
         abi.encodePacked("\x19Ethereum Signed Message:\n32", _hash)
-      ), v, r, s) == adminMember;
+      ), v, r, s)].valid;
     }
   }
   
