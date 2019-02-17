@@ -2,7 +2,7 @@ import store from 'state/store';
 import Web3 from 'web3';
 
 // load ABIs
-import BouncerProxy from 'contracts/BouncerProxy';
+import Portfolio from 'contracts/Portfolio';
 import SimpleStorage from 'contracts/SimpleStorage';
 
 export async function loadWeb3() {
@@ -132,13 +132,13 @@ async function loadContracts() {
 
     // check that we're on a network that this contract has been deployed to
     const isDeployedOnNetwork =
-      !!BouncerProxy.networks[networkID] && !!SimpleStorage.networks[networkID];
+      !!Portfolio.networks[networkID] && !!SimpleStorage.networks[networkID];
 
     if (isDeployedOnNetwork) {
-      // BouncerProxy
-      const BouncerProxyContract = await new web3.eth.Contract(
-        BouncerProxy.abi,
-        BouncerProxy.networks[networkID].address
+      // Portfolio
+      const PortfolioContract = await new web3.eth.Contract(
+        Portfolio.abi,
+        Portfolio.networks[networkID].address
       );
 
       // SimpleStorage
@@ -152,9 +152,12 @@ async function loadContracts() {
       store.dispatch({
         type: 'CONTRACTS_INITIALIZED',
         payload: {
-          bouncerProxy: BouncerProxyContract,
+          portfolio: PortfolioContract,
           simpleStorage: SimpleStorageContract,
-          contractList: [{ value: 'simpleStorage', label: 'simpleStorage' }],
+          contractList: [
+            { value: 'simpleStorage', label: 'simpleStorage' },
+            { value: 'portfolio', label: 'Portfolio' }
+          ],
           contractsReady: true
         }
       });

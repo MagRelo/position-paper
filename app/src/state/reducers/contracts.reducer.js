@@ -7,12 +7,7 @@ const initialState = {
 
 const AccountReducer = (state = initialState, action) => {
   if (action.type === 'CONTRACTS_INITIALIZED') {
-    return Object.assign({}, state, {
-      bouncerProxy: action.payload.bouncerProxy,
-      simpleStorage: action.payload.simpleStorage,
-      contractsReady: action.payload.contractsReady,
-      contractList: action.payload.contractList
-    });
+    return Object.assign({}, state, action.payload);
   }
 
   return state;

@@ -35,11 +35,11 @@ contract('Portfolio', accounts => {
       assert.equal(memberStruct[1], memberOne, 'Member 1 not member');
     });
 
-    it('Non-admin *cant* add a member', async () => {
+    it('Randos *cant* add a member', async () => {
       try {
         // add
         await PortfolioInstance.memberRegister('Member Test', memberTwo, {
-          from: memberOne
+          from: rando
         });
       } catch (error) {
         return assert.ok(true);
@@ -73,7 +73,7 @@ contract('Portfolio', accounts => {
       );
     });
 
-    it('Rando *cant* remove a member', async () => {
+    it('Randos *cant* remove a member', async () => {
       // add
       await PortfolioInstance.memberRegister('Member 1', memberOne, {
         from: adminAccount
