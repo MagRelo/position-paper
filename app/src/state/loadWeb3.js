@@ -2,6 +2,7 @@ import store from 'state/store';
 import Web3 from 'web3';
 
 // load ABIs
+import PortfolioFactory from 'contracts/PortfolioFactory';
 import Portfolio from 'contracts/Portfolio';
 import SimpleStorage from 'contracts/SimpleStorage';
 
@@ -135,6 +136,12 @@ async function loadContracts() {
       !!Portfolio.networks[networkID] && !!SimpleStorage.networks[networkID];
 
     if (isDeployedOnNetwork) {
+      // PortfolioFactory
+      const PortfolioFactoryContract = await new web3.eth.Contract(
+        PortfolioFactory.abi,
+        PortfolioFactory.networks[networkID].address
+      );
+
       // Portfolio
       const PortfolioContract = await new web3.eth.Contract(
         Portfolio.abi,
@@ -152,11 +159,13 @@ async function loadContracts() {
       store.dispatch({
         type: 'CONTRACTS_INITIALIZED',
         payload: {
+          portfolioFactory: PortfolioFactoryContract,
           portfolio: PortfolioContract,
           simpleStorage: SimpleStorageContract,
           contractList: [
             { value: 'simpleStorage', label: 'simpleStorage' },
-            { value: 'portfolio', label: 'Portfolio' }
+            { value: 'portfolio', label: 'Portfolio' },
+            { value: 'portfolioFactory', label: 'PortfolioFactory' }
           ],
           contractsReady: true
         }
