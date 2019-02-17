@@ -11,23 +11,36 @@ class LandingPage extends Component {
     return (
       <div>
         <h1>karata</h1>
-        <p>Incentive-compatible investment club</p>
+        <p>Investment Clubs</p>
 
+        <h2>Roadmap</h2>
+
+        <h3>v0.1: basic infrastructure</h3>
         <ol>
-          <li>Create group and the fund contract</li>
-          <li>
-            Play curation tournaments to build your portfolio. When the game
-            closes the trades will auto-execute.
-          </li>
+          <li>Create a club and invite members</li>
+          <li>Add funds to your portfolio smart contract</li>
+          <li>Use our tools to research and discuss investments</li>
+          <li>Execute trades through decentralized exchanges</li>
           <li>Close the group at any time and distribute the proceeds</li>
         </ol>
 
-        <h2>Curation Tournament</h2>
+        <h3>v0.2: Gamify</h3>
+        <ol>
+          <li>
+            Allow platform to re-balance member shares based on activity
+            (attendance, # of proposals, etc)
+          </li>
+          <li>
+            Allow platform to re-balance member shares based on curation
+            tournament (popularity of proposals)
+          </li>
+          <li>
+            Allow platform to re-balance member shares based on performance
+            (outcome of proposals)
+          </li>
 
-        <ul>
-          <li>Value </li>
-          <li>Close</li>
-        </ul>
+          <li>Social integration</li>
+        </ol>
       </div>
     );
   }
