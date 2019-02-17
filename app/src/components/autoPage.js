@@ -31,23 +31,8 @@ class LandingPage extends Component {
   }
 
   methodSelect(option) {
-    const targetContract = store.getState().contracts[this.state.contract];
-
-    let methodSpec = null;
-    for (var key in targetContract._jsonInterface) {
-      if (
-        option.value === targetContract._jsonInterface[key].name &&
-        targetContract._jsonInterface[key].type === 'function'
-      ) {
-        methodSpec = targetContract._jsonInterface[key];
-      }
-    }
-
     this.setState({
-      method: option.value,
-      name: methodSpec.name,
-      inputs: methodSpec.inputs,
-      stateMutability: methodSpec.stateMutability
+      method: option.value
     });
   }
 

@@ -24,6 +24,18 @@ class AutoForm extends Component {
   };
 
   componentDidMount() {
+    this.updateMethod();
+  }
+
+  componentDidUpdate(prevState) {
+    if (prevState.method !== this.props.method) {
+      this.updateMethod();
+    }
+  }
+
+  updateMethod() {
+    this.resetForm();
+
     // get method spec
     const contract = store.getState().contracts[this.props.contract];
     let methodSpec = null;
@@ -35,6 +47,7 @@ class AutoForm extends Component {
         methodSpec = contract._jsonInterface[key];
       }
     }
+
     this.setState({
       name: methodSpec.name,
       inputs: methodSpec.inputs,
@@ -61,20 +74,32 @@ class AutoForm extends Component {
         params.push(this.state[input.name]);
       }
     });
-    console.log('params:', ...params);
     try {
-      const reciept = await contract.methods[this.props.method](...params).send(
-        {
-          from: selectedAccount
-        }
-      );
+      let reciept = null;
 
-      this.setState({
-        formSuccess: true,
-        formAlert: true,
-        formSubmitting: false,
-        formMessage: 'Success!'
-      });
+      if (this.state.stateMutability === 'view') {
+        reciept = await contract.methods[this.props.method](...params).call({
+          from: selectedAccount
+        });
+
+        this.setState({
+          formSuccess: true,
+          formAlert: true,
+          formSubmitting: false,
+          formMessage: reciept
+        });
+      } else {
+        reciept = await contract.methods[this.props.method](...params).send({
+          from: selectedAccount
+        });
+
+        this.setState({
+          formSuccess: true,
+          formAlert: true,
+          formSubmitting: false,
+          formMessage: 'Success!'
+        });
+      }
 
       return console.log(reciept);
     } catch (error) {
