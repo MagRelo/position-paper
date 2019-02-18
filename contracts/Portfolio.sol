@@ -11,9 +11,7 @@ contract Portfolio {
   
   // Member management
   uint public totalShares = 0;
-  address public adminMember;
   struct Member {
-    string name;
     address memberAddress;
     uint shares;
     uint256 index;
@@ -22,7 +20,6 @@ contract Portfolio {
   mapping (address => Member) public memberMap;
   Member[] public memberArray;      
   event RegisterMember(
-    string name,
     address memberAddress
       
   );
@@ -34,14 +31,13 @@ contract Portfolio {
   );
   
   
-  constructor(address _platform, address _adminMember, string memory _adminName) public {
+  constructor(address _platform, address _firstMember) public {
     
     platform = _platform;
-    adminMember = _adminMember;
 
     // add admin as member
-    memberMap[_adminMember] = Member(_adminName, _adminMember,0, memberArray.length, true);
-    memberArray.push(memberMap[_adminMember]);
+    memberMap[_firstMember] = Member(_firstMember,0, memberArray.length, true);
+    memberArray.push(memberMap[_firstMember]);
   }
 
 
@@ -54,34 +50,34 @@ contract Portfolio {
   // Member
   // -------
   
-  function memberRegister(string memory _name, address _memberAddress) public returns (bool registered){
+  function memberRegister(address _memberAddress) public returns (bool registered){
 
-    // only admin
-    require(msg.sender == adminMember);
+    // only member
+    require(memberMap[msg.sender].valid);
         
     // member does not exist
     require(!memberMap[_memberAddress].valid);
 
-    memberMap[_memberAddress] = Member(_name, _memberAddress,0, memberArray.length, true);
+    memberMap[_memberAddress] = Member(_memberAddress,0, memberArray.length, true);
     memberArray.push(memberMap[_memberAddress]);
 
-    emit RegisterMember(_name, _memberAddress);
+    emit RegisterMember(_memberAddress);
 
     return memberMap[_memberAddress].valid;
 }
 
-  function memberUnregister(address _memberAddress) public returns (bool registered){
+  function memberUnregister() public returns (bool registered){
 
-    // only admin
-    require(msg.sender == adminMember);
+    // valid member
+    require(memberMap[msg.sender].valid);
 
     // set valid to false
-    memberMap[_memberAddress].valid = false;
-    memberArray[memberMap[_memberAddress].index].valid = false;
+    memberMap[msg.sender].valid = false;
+    memberArray[memberMap[msg.sender].index].valid = false;
 
-    emit UnregisterMember(memberMap[_memberAddress].memberAddress);
+    emit UnregisterMember(memberMap[msg.sender].memberAddress);
     
-    return memberMap[_memberAddress].valid;
+    return memberMap[msg.sender].valid;
   }
 
   function memberDeposit() public payable returns (bool registered){
@@ -121,37 +117,34 @@ contract Portfolio {
     return memberMap[msg.sender].shares;
   }
 
+  // memberVotePremiums()
+
   
   // -------
   // Platform
   // -------
+  // function setParticipationPremiums(uint256[] memory premiums) public returns (bool success){
+  //   return true;
+  // }
+  // function setCurationPremiums(uint256[] memory premiums) public returns (bool success){
+  //   return true;
+  // }
+  // function setPerformancePremiums(uint256[] memory premiums) public returns (bool success){
+  //   return true;
+  // }
 
-  // Do this on tournament start...
-  function increaseTotalShares(uint _newShares) public returns (uint shareCount){
-
-    // platform only
-    require(msg.sender == platform);
-
-    // update total
-    totalShares += _newShares;
-
-    emit ShareUpdated(msg.sender, _newShares);
-    return totalShares;
-  }
-
-  // Do this on tournament end...
-  function increaseMemberShares(address _member, uint256 _newShares) public returns (uint shareCount){
-
-    // platform only
-    require(msg.sender == platform);
-
-    // update member
-    memberMap[_member].shares = _newShares;
-    memberArray[memberMap[_member].index].shares = _newShares;
-
-    emit ShareUpdated(_member, _newShares);
-    return memberMap[_member].shares;
-  }
+  // -------
+  // Members
+  // -------
+  // function implementParticipationPremiums(uint256[] memory premiums) public returns (bool success){
+  //   return true;
+  // }
+  // function implementCurationPremiums(uint256[] memory premiums) public returns (bool success){
+  //   return true;
+  // }
+  // function implementPerformancePremiums(uint256[] memory premiums) public returns (bool success){
+  //   return true;
+  // }
 
 
   // -------

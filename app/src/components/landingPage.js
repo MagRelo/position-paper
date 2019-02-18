@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
-// import Loader from 'components/loader';
-// import AutoForm from 'components/autoForm';
+import { Link } from 'react-router-dom';
 
 class LandingPage extends Component {
   state = { accounts: null };
@@ -10,36 +8,34 @@ class LandingPage extends Component {
   render() {
     return (
       <div>
-        <h1>karata</h1>
-        <p>Investment Clubs</p>
+        <h2>Get Started</h2>
+        <div className="row row-2">
+          <div>
+            <h3>Accept Invite</h3>
+            <p>Accept an invitation you have received</p>
+            <Link to="/invite" className="pure-button pure-button-primary">
+              Accept Invite
+            </Link>
+          </div>
+          <div>
+            <h3>Create a New Group</h3>
+            <p>Create a group and invite new members</p>
+            <Link to="/create" className="pure-button pure-button-primary">
+              Create Group
+            </Link>
+          </div>
+        </div>
 
-        <h2>Roadmap</h2>
-
-        <h3>v0.1: basic infrastructure</h3>
+        <h2>How does it work?</h2>
         <ol>
-          <li>Create a club and invite members</li>
-          <li>Add funds to your portfolio smart contract</li>
-          <li>Use our tools to research and discuss investments</li>
-          <li>Execute trades through decentralized exchanges</li>
-          <li>Close the group at any time and distribute the proceeds</li>
-        </ol>
-
-        <h3>v0.2: Gamify</h3>
-        <ol>
+          <li>Create a group and add members</li>
           <li>
-            Allow platform to re-balance member shares based on activity
-            (attendance, # of proposals, etc)
+            Each member can add funds to your group's custom portfolio contract
           </li>
-          <li>
-            Allow platform to re-balance member shares based on curation
-            tournament (popularity of proposals)
-          </li>
-          <li>
-            Allow platform to re-balance member shares based on performance
-            (outcome of proposals)
-          </li>
-
-          <li>Social integration</li>
+          <li>Research and discuss trades in private lobby with chat</li>
+          <li>Execute group trades through decentralized exchanges</li>
+          <li>Each member's share is secured by the portfolio contract</li>
+          <li>Cash out at any time</li>
         </ol>
       </div>
     );

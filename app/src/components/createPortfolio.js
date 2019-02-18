@@ -5,11 +5,14 @@ import store from 'state/store';
 
 import Select from 'react-select';
 
-class AutoForm extends Component {
+class CreatePortfolio extends Component {
   state = {
-    name: '',
-    inputs: [],
-    stateMutability: '',
+    groupName: '',
+    minInvestment: 0,
+
+    playerList: [],
+    newPlayer: '',
+
     formAlert: false,
     formError: false,
     formSuccess: false,
@@ -20,7 +23,7 @@ class AutoForm extends Component {
   async handleSubmit(event) {
     event.preventDefault();
 
-    const contract = store.getState().contracts[this.props.contract];
+    const contract = store.getState().contracts.portfolioFactory;
     const selectedAccount = store.getState().account.selectedAccount;
 
     // set loading state
@@ -28,9 +31,14 @@ class AutoForm extends Component {
       formSubmitting: true
     });
 
-    const params = [];
+    // get portfolio params
+    // platform
+    // admin (selectedAccount)
+    // Admin Name
 
+    const params = [];
     console.log('params:', ...params);
+
     try {
       const reciept = await contract.methods[this.props.method](...params).send(
         {
@@ -77,62 +85,132 @@ class AutoForm extends Component {
     this.setState({ [event.target.name]: event.target.value });
   }
 
+  addPlayer() {
+    const tempArray = this.state.playerList;
+    tempArray.push(this.state.newPlayer);
+
+    this.setState({
+      newPlayer: '',
+      playerList: tempArray
+    });
+  }
+  removePlayer(index) {
+    let tempArray = this.state.playerList;
+    tempArray.splice(index, 1);
+    this.setState({
+      playerWhitelist: tempArray
+    });
+  }
+
+  validPlayerAddress(address) {
+    // return ethereum_address.isAddress(address)
+    return true;
+  }
+
   render() {
     return (
-      <form
-        name="autoForm"
-        className="pure-form"
-        onSubmit={this.handleSubmit.bind(this)}
-      >
-        <legend>Create contract</legend>
+      <div>
+        <h2>Create a New Group</h2>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti
+          temporibus sunt soluta ea, nihil numquam consectetur, iusto expedita
+          pariatur tempora quam necessitatibus quia ab earum laboriosam,
+          adipisci in? Nesciunt, doloribus!
+        </p>
+        <form
+          name="autoForm"
+          className="pure-form"
+          onSubmit={this.handleSubmit.bind(this)}
+        >
+          <legend>Group Information</legend>
 
-        <fieldset>
-          <label htmlFor="">Allocator</label>
-          <Select />
-        </fieldset>
+          <fieldset>
+            <label htmlFor="groupName">Group Name </label>
+            <input className="pure-input-1" type="text" id="groupName" />
+          </fieldset>
 
-        <fieldset>
-          <label htmlFor="">Amount </label>
-          <input type="number" className="pure-input" />
-        </fieldset>
+          <fieldset>
+            <label htmlFor="minDeposit">Minimum Deposit </label>
+            <input className="pure-input-1-4" type="number" id="minDeposit" />
+          </fieldset>
 
-        <fieldset>
-          <p>Execution Type</p>
-          <label htmlFor="manual">
-            <input type="radio" id="manual" className="pure-input" />
-            Manual
-          </label>
+          <legend>Members</legend>
 
-          <label htmlFor="mixed">
-            <input type="radio" id="mixed" className="pure-input" />
-            Mixed
-          </label>
-          <label htmlFor="auto">
-            <input type="radio" id="auto" className="pure-input" />
-            Auto
-          </label>
-        </fieldset>
+          <p>
+            Add each members's address. Only listed members will be able to
+            deposit and participate. You can add and remove players at any time.
+          </p>
 
-        <button className="pure-button pure-button-primary">
-          {this.state.stateMutability === 'view' ? 'Call' : 'Send'}
-        </button>
+          <div style={{ padding: '1em', marginBottom: '1em' }}>
+            <ul style={{ padding: 0 }}>
+              {this.state.playerList.map((item, index) => {
+                return (
+                  <li
+                    style={{ listStyle: 'none', marginBottom: '0.5em' }}
+                    key={index}
+                  >
+                    <div className="game-panel white-bg">
+                      <button
+                        className="pure-button"
+                        style={{ float: 'right' }}
+                        type="button"
+                        onClick={this.removePlayer.bind(this, index)}
+                      >
+                        ✗
+                      </button>
+                      <div style={{ padding: '.5em 1em .5em 0' }}>{item}</div>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
 
-        {this.state.formSubmitting ? (
-          <span style={{ fontSize: 'smaller', marginLeft: '1em' }}>
-            Waiting for MetaMask...
-          </span>
-        ) : null}
+            <div>
+              <input
+                className="pure-input-1-2"
+                type="text"
+                name="newPlayer"
+                value={this.state.newPlayer}
+                onChange={this.handleFormChange.bind(this)}
+              />
 
-        {this.state.formAlert ? (
-          <div className={this.alertClass()}>
-            <p>{this.state.formMessage}</p>
-
-            <button className="pure-button" onClick={this.resetForm.bind(this)}>
-              Ok
-            </button>
+              <button
+                className="pure-button pure-button-primary"
+                style={{ marginLeft: '0.5em' }}
+                type="button"
+                disabled={!this.validPlayerAddress(this.state.newPlayer)}
+                onClick={this.addPlayer.bind(this)}
+              >
+                {' '}
+                Add Player
+              </button>
+            </div>
           </div>
-        ) : null}
-      </form>
+
+          <button className="pure-button pure-button-primary">
+            Create Group
+          </button>
+
+          {this.state.formSubmitting ? (
+            <span style={{ fontSize: 'smaller', marginLeft: '1em' }}>
+              Waiting for MetaMask...
+            </span>
+          ) : null}
+
+          {this.state.formAlert ? (
+            <div className={this.alertClass()}>
+              <p>{this.state.formMessage}</p>
+
+              <button
+                className="pure-button"
+                onClick={this.resetForm.bind(this)}
+              >
+                Ok
+              </button>
+            </div>
+          ) : null}
+        </form>
+      </div>
     );
   }
 }
@@ -150,4 +228,4 @@ const mapStateToProps = state => {
 export default connect(
   mapStateToProps,
   null
-)(AutoForm);
+)(CreatePortfolio);
