@@ -5,8 +5,8 @@ import Select from 'react-select';
 
 import store from 'state/store';
 
-import Loader from 'components/loader';
-import AutoForm from 'components/autoForm';
+import Loader from 'components/util/loader';
+import AutoForm from 'components/util/autoForm';
 
 class LandingPage extends Component {
   state = { accounts: null, contract: '', methodList: [], method: '' };

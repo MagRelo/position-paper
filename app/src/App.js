@@ -13,9 +13,7 @@ import About from 'components/about';
 import LandingPage from 'components/landingPage';
 import CreatePortfolio from 'components/createPortfolio';
 import AcceptInvite from 'components/acceptInvite';
-
-// dev
-import Auto from 'components/autoPage';
+import Auto from 'components/util/autoPage';
 
 class App extends Component {
   render() {
