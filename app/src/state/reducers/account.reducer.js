@@ -5,11 +5,18 @@ const initialState = {
   balance: 0
 };
 
+function normalizeAccount(input) {
+  if (typeof input === 'string') {
+    return input.toLocaleLowerCase();
+  }
+  return input;
+}
+
 const AccountReducer = (state = initialState, action) => {
   if (action.type === 'WEB3_INITIALIZED') {
     return Object.assign({}, state, {
       accounts: action.payload.accounts,
-      selectedAccount: action.payload.accounts[0],
+      selectedAccount: normalizeAccount(action.payload.accounts[0]),
       accountsReady: !!action.payload.accounts.length,
       balance: action.payload.balance
     });
@@ -17,7 +24,7 @@ const AccountReducer = (state = initialState, action) => {
 
   if (action.type === 'ACCOUNT_CHANGE') {
     return Object.assign({}, state, {
-      selectedAccount: action.payload.currentAccount
+      selectedAccount: normalizeAccount(action.payload.currentAccount)
     });
   }
 

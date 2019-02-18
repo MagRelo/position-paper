@@ -10,7 +10,7 @@ class CreatePortfolio extends Component {
     groupName: '',
     adminName: '',
     adminAddress: '',
-    minInvestment: 0,
+    minDeposit: 0,
     contractAddress: '',
     whitelistStatus: '',
     deposit: 0,

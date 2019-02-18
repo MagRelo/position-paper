@@ -1,15 +1,14 @@
 const PortfolioFactory = artifacts.require('./PortfolioFactory.sol');
 
 contract('SimpleStorage', accounts => {
-  let [platform, adminAccount, memberOne, memberTwo, rando] = accounts;
+  let [platform, memberOne, memberTwo, rando] = accounts;
 
   it('Deploy a portfolio', async () => {
     const PortfolioFactoryInstance = await PortfolioFactory.deployed();
 
     const receipt = await PortfolioFactoryInstance.createPortfolio(
       platform,
-      adminAccount,
-      'Admin',
+      memberOne,
       { from: accounts[0] }
     );
 

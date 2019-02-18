@@ -6,26 +6,22 @@ contract PortfolioFactory {
   event NewContract (
     address deployedAt,
     address platform,
-    address adminAddress,
-    string adminName
+    address firstMember
   );
 
   // create contract
   function createPortfolio(
     address platform,
-    address  adminAddress,
-    string memory adminName
+    address  firstMember
   ) public {
 
     Portfolio newPortfolio = new Portfolio(
       platform,
-      adminAddress,
-      adminName
+      firstMember
     );
     
     emit NewContract(address(newPortfolio), platform,
-      adminAddress,
-      adminName);
+      firstMember);
   }
 
 }

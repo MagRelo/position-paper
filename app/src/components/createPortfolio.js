@@ -1,17 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import ethereum_address from 'ethereum-address';
 
 import store from 'state/store';
 
-import Select from 'react-select';
-
 class CreatePortfolio extends Component {
   state = {
-    groupName: '',
-    minInvestment: 0,
+    exchangeRate: 0,
+    platformFee: 0.025,
 
-    playerList: [],
-    newPlayer: '',
+    groupName: '',
+    minDeposit: 1,
+    createDeposit: 1,
+
+    memberList: [],
+    newMember: '',
 
     formAlert: false,
     formError: false,
@@ -19,6 +22,27 @@ class CreatePortfolio extends Component {
     formSubmitting: false,
     formMessage: ''
   };
+
+  componentDidMount() {
+    fetch('https://api.coinmarketcap.com/v1/ticker/ethereum/?convert=USD')
+      .then(res => {
+        return res.json();
+      })
+      .then(data => {
+        this.setState({
+          exchangeRate: parseInt(data[0].price_usd, 10)
+        });
+      });
+
+    if (this.props.selectedAccount) {
+      this.addMember(this.props.selectedAccount);
+    }
+  }
+  componentDidUpdate(prevState) {
+    if (this.props.selectedAccount !== prevState.selectedAccount) {
+      this.addMember(this.props.selectedAccount);
+    }
+  }
 
   async handleSubmit(event) {
     event.preventDefault();
@@ -31,20 +55,14 @@ class CreatePortfolio extends Component {
       formSubmitting: true
     });
 
-    // get portfolio params
-    // platform
-    // admin (selectedAccount)
-    // Admin Name
-
-    const params = [];
-    console.log('params:', ...params);
+    const platformAddress = '0x66414e903305Ff1E9dD8266AEDb359A9773236FC';
 
     try {
-      const reciept = await contract.methods[this.props.method](...params).send(
-        {
+      const reciept = await contract.methods
+        .createPortfolio(platformAddress, selectedAccount)
+        .send({
           from: selectedAccount
-        }
-      );
+        });
 
       this.setState({
         formSuccess: true,
@@ -85,26 +103,42 @@ class CreatePortfolio extends Component {
     this.setState({ [event.target.name]: event.target.value });
   }
 
-  addPlayer() {
-    const tempArray = this.state.playerList;
-    tempArray.push(this.state.newPlayer);
+  addMember(member) {
+    const tempArray = this.state.memberList;
+    tempArray.push(member);
 
     this.setState({
-      newPlayer: '',
-      playerList: tempArray
+      newMember: '',
+      memberList: tempArray
     });
   }
-  removePlayer(index) {
-    let tempArray = this.state.playerList;
+  removeMember(index) {
+    let tempArray = this.state.memberList;
     tempArray.splice(index, 1);
     this.setState({
-      playerWhitelist: tempArray
+      memberWhitelist: tempArray
     });
   }
 
-  validPlayerAddress(address) {
-    // return ethereum_address.isAddress(address)
-    return true;
+  validMemberAddress(address) {
+    const found = this.state.memberList.find(item => {
+      return item === address;
+    });
+
+    return ethereum_address.isAddress(address) && !found;
+  }
+  round(value, places) {
+    places = places || 4;
+    return Number(Math.round(value + 'e' + places) + 'e-' + places);
+  }
+  formatEth(ether) {
+    return (
+      'Ξ' +
+      this.round(ether, 5) +
+      ' ETH ($' +
+      this.round(this.state.exchangeRate * ether) +
+      ')'
+    );
   }
 
   render() {
@@ -112,10 +146,8 @@ class CreatePortfolio extends Component {
       <div>
         <h2>Create a New Group</h2>
         <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti
-          temporibus sunt soluta ea, nihil numquam consectetur, iusto expedita
-          pariatur tempora quam necessitatibus quia ab earum laboriosam,
-          adipisci in? Nesciunt, doloribus!
+          Use the form below to set up your group (these settings can also be
+          changed later).
         </p>
         <form
           name="autoForm"
@@ -126,40 +158,60 @@ class CreatePortfolio extends Component {
 
           <fieldset>
             <label htmlFor="groupName">Group Name </label>
-            <input className="pure-input-1" type="text" id="groupName" />
+            <input
+              className="pure-input-1"
+              type="text"
+              id="groupName"
+              name="groupName"
+              onChange={this.handleFormChange.bind(this)}
+            />
+            <label htmlFor="minDeposit">Member Deposit</label>
+            <input
+              className="pure-input-1-4"
+              type="number"
+              id="minDeposit"
+              name="minDeposit"
+              value={this.state.minDeposit}
+              onChange={this.handleFormChange.bind(this)}
+            />
+            <span> Min: {this.formatEth(this.state.minDeposit)} </span>
           </fieldset>
 
-          <fieldset>
-            <label htmlFor="minDeposit">Minimum Deposit </label>
-            <input className="pure-input-1-4" type="number" id="minDeposit" />
-          </fieldset>
-
-          <legend>Members</legend>
+          <legend>Add Members</legend>
 
           <p>
             Add each members's address. Only listed members will be able to
-            deposit and participate. You can add and remove players at any time.
+            deposit and participate. It's ok if you don't have everyone's
+            address right now – you can add and remove members at any time.
           </p>
 
-          <div style={{ padding: '1em', marginBottom: '1em' }}>
+          <div
+            style={{
+              padding: '1em',
+              marginBottom: '1em'
+            }}
+          >
+            <div />
+
             <ul style={{ padding: 0 }}>
-              {this.state.playerList.map((item, index) => {
+              {this.state.memberList.map((item, index) => {
                 return (
                   <li
                     style={{ listStyle: 'none', marginBottom: '0.5em' }}
                     key={index}
                   >
-                    <div className="game-panel white-bg">
-                      <button
-                        className="pure-button"
-                        style={{ float: 'right' }}
-                        type="button"
-                        onClick={this.removePlayer.bind(this, index)}
-                      >
-                        ✗
-                      </button>
-                      <div style={{ padding: '.5em 1em .5em 0' }}>{item}</div>
-                    </div>
+                    <span style={{ minWidth: '50%', display: 'inline-block' }}>
+                      {item}
+                    </span>
+                    <button
+                      className="pure-button pure-button-primary"
+                      style={{ marginLeft: '0.5em' }}
+                      type="button"
+                      disabled={item === this.props.selectedAccount}
+                      onClick={this.removeMember.bind(this, index)}
+                    >
+                      ✗
+                    </button>
                   </li>
                 );
               })}
@@ -169,8 +221,8 @@ class CreatePortfolio extends Component {
               <input
                 className="pure-input-1-2"
                 type="text"
-                name="newPlayer"
-                value={this.state.newPlayer}
+                name="newMember"
+                value={this.state.newMember}
                 onChange={this.handleFormChange.bind(this)}
               />
 
@@ -178,14 +230,36 @@ class CreatePortfolio extends Component {
                 className="pure-button pure-button-primary"
                 style={{ marginLeft: '0.5em' }}
                 type="button"
-                disabled={!this.validPlayerAddress(this.state.newPlayer)}
-                onClick={this.addPlayer.bind(this)}
+                disabled={!this.validMemberAddress(this.state.newMember)}
+                onClick={this.addMember.bind(this, this.state.newMember)}
               >
-                {' '}
-                Add Player
+                Add Member
               </button>
             </div>
           </div>
+
+          <legend>Deposit & Create Group</legend>
+          <fieldset>
+            <p>Member Deposit: {this.formatEth(this.state.minDeposit)}</p>
+            <p>
+              You can deposit more than the minumum - your share will be
+              proportional to the how much you contribute.
+            </p>
+
+            <label htmlFor="createDeposit">Your Deposit </label>
+            <input
+              className="pure-input-1-4"
+              type="number"
+              name="createDeposit"
+              id="createDeposit"
+              value={this.state.createDeposit}
+              onChange={this.handleFormChange.bind(this)}
+            />
+            <p>
+              Platform Fee:{' '}
+              {this.formatEth(this.state.minDeposit * this.state.platformFee)}
+            </p>
+          </fieldset>
 
           <button className="pure-button pure-button-primary">
             Create Group
@@ -220,6 +294,7 @@ const mapStateToProps = state => {
     web3Ready: state.web3.web3Ready,
     networkReady: state.web3.networkReady,
     showTip: state.web3.showTip,
+    selectedAccount: state.account.selectedAccount,
     accountsReady: state.account.accountsReady,
     contractsReady: state.contracts.contractsReady
   };
