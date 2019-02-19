@@ -18,15 +18,22 @@ class Lobby extends Component {
     // init contract with updated address(?)
   }
 
+  sendMessage(message) {
+    console.log('send message:', message);
+  }
+
   render() {
     return (
       <div>
         <div className="lobby-grid">
           <h2>{this.state.contractAddress}</h2>
-          <Proposals proposals={['three', 'four']} />
-          <Discuss />
-          <Portfolio portfolio={['one', 'two']} />
-          <Members members={['one', 'two']} />
+          <Proposals proposals={['0.5 ETH => XMR', '1 ETH => EOS']} />
+          <Discuss
+            sendFunction={this.sendMessage.bind(this)}
+            messages={['m1', 'm2', 'm3']}
+          />
+          <Portfolio portfolio={['BTC', 'ETH', 'DAI']} />
+          <Members members={['Matt', 'Jim']} />
 
           <div className="lobby-footer">
             <p>Footer</p>

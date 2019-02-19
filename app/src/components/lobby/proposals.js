@@ -19,7 +19,7 @@ class ProposalsList extends Component {
         </div>
 
         <div className="info">
-          <p>four details</p>
+          <p>proposal details</p>
         </div>
       </div>
     );

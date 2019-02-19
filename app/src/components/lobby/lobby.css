@@ -1,7 +1,7 @@
 .lobby-grid {
   display: grid;
   height: 100%;
-  grid-gap: 1em;
+  /* grid-gap: 0.5em; */
 }
 
 .lobby-grid ul {
@@ -30,7 +30,7 @@
 
 /* Discuss */
 .discuss {
-  background: #F2F0DF;
+  background: #CACCB6;
 
   padding: 1em;
 
