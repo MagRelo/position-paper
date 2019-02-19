@@ -13,8 +13,9 @@ class Lobby extends Component {
   componentDidMount() {
     this.setState({ contractAddress: this.props.match.params.contractAddress });
 
-    // init socket connection
-    // => groupInfo, chat, members, proposals, portfolio
+    // init socket connection w/ contract address
+
+    // init contract with updated address(?)
   }
 
   render() {
@@ -22,10 +23,10 @@ class Lobby extends Component {
       <div>
         <div className="lobby-grid">
           <h2>{this.state.contractAddress}</h2>
-          <Proposals />
+          <Proposals proposals={['three', 'four']} />
           <Discuss />
-          <Portfolio portfolio={this.props.portfolio} />
-          <Members members={this.props.members} />
+          <Portfolio portfolio={['one', 'two']} />
+          <Members members={['one', 'two']} />
 
           <div className="lobby-footer">
             <p>Footer</p>
@@ -37,12 +38,7 @@ class Lobby extends Component {
 }
 
 const mapStateToProps = state => {
-  return {
-    portfolio: ['one', 'two'],
-    members: ['one', 'two'],
-    chat: [],
-    proposals: []
-  };
+  return {};
 };
 
 const mapDispatchToProps = dispatch => {

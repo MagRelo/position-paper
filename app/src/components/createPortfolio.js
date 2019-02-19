@@ -7,7 +7,7 @@ import store from 'state/store';
 class CreatePortfolio extends Component {
   state = {
     exchangeRate: 0,
-    platformFee: 0.025,
+    platformFee: 0.075,
 
     groupName: '',
     minDeposit: 1,
@@ -241,20 +241,6 @@ class CreatePortfolio extends Component {
           <legend>Deposit & Create Group</legend>
           <fieldset>
             <p>Member Deposit: {this.formatEth(this.state.minDeposit)}</p>
-            <p>
-              You can deposit more than the minumum - your share will be
-              proportional to the how much you contribute.
-            </p>
-
-            <label htmlFor="createDeposit">Your Deposit </label>
-            <input
-              className="pure-input-1-4"
-              type="number"
-              name="createDeposit"
-              id="createDeposit"
-              value={this.state.createDeposit}
-              onChange={this.handleFormChange.bind(this)}
-            />
             <p>
               Platform Fee:{' '}
               {this.formatEth(this.state.minDeposit * this.state.platformFee)}

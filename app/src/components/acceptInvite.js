@@ -24,12 +24,9 @@ class CreatePortfolio extends Component {
 
   componentDidMount() {
     // get account
-    const selectedAccount = store.getState().account.selectedAccount;
-
+    // const selectedAccount = store.getState().account.selectedAccount;
     // get contract address
-
     // load info from server(?)
-
     // check whitelist()
   }
 

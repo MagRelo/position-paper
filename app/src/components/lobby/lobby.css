@@ -4,6 +4,82 @@
   grid-gap: 1em;
 }
 
+.lobby-grid ul {
+  margin: 0;
+  padding: 0;
+}
+
+.lobby-grid li {
+  padding: 0.5em;
+  list-style: none;
+}
+
+
+.members {
+  background: #8E9E82;
+
+  padding: 1em;
+}
+
+.portfolio {
+
+  background: #CACCB6;
+  padding: 1em;
+}
+
+
+/* Discuss */
+.discuss {
+  background: #F2F0DF;
+
+  padding: 1em;
+
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+.discuss .list {
+  background: #ffffff;
+  border: solid #dddddd 1px;
+  padding: 1em;
+}
+
+.discuss .form {
+  padding: 0.5em;
+}
+
+
+
+/* Proposals */
+.proposals {
+  background: #A9C1D9;
+
+  padding: 1em;
+
+  display: grid;
+  grid-template-rows: auto 1fr;
+  grid-template-columns: 1fr 2fr;
+}
+
+.proposals .list {
+  grid-row: 2 / 3;
+  grid-column: 1 / 2;
+
+  background: #dddddd;
+}
+
+.proposals .list li:nth-child(2) {
+  background: white;
+}
+
+.proposals .info {
+  grid-row: 2 / 3;
+  grid-column: 2 / 3;
+  background: white;
+
+  padding: 1em;
+}
+
 @media screen and (min-width: 992px) {
   .lobby-grid {
     grid-template-columns: 2fr 4fr 2fr;
@@ -11,27 +87,23 @@
   }
 
   .portfolio {
-    background: pink;
     grid-row: 2 / 5;
     grid-column: 1 / 2;
   }
 
   .members {
-    background: lightblue;
     grid-row: 5 / 8;
     grid-column: 1 / 2;
   }
 
-  .discuss {
-    background: lightyellow;
-    grid-row: 2 / 8;
-    grid-column: 2 / 3;
+  .proposals {
+    grid-row: 2 / 5;
+    grid-column: 2 / 4;
   }
 
-  .proposals {
-    background: lightskyblue;
-    grid-row: 2 / 8;
-    grid-column: 3 / 4;
+  .discuss {
+    grid-row: 5 / 8;
+    grid-column: 2 / 4;
   }
 
   .lobby-footer {

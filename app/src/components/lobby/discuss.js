@@ -8,6 +8,15 @@ class Discuss extends Component {
     return (
       <div className="discuss">
         <h3>Discuss</h3>
+
+        <div className="list">messages</div>
+
+        <div className="pure-form">
+          <form action="">
+            <input type="text" className="pure-input" />
+            <button className="pure-button pure-button-primary">Send</button>
+          </form>
+        </div>
       </div>
     );
   }

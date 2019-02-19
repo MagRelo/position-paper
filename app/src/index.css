@@ -192,10 +192,10 @@ a.pure-button-primary:hover,
 
 /* forms */
 .pure-form {
-  padding: 1em;
-  margin: 0 1em;
-  border-radius: 1em;
-  border: 1px solid lightgray;
+  /* padding: 1em; */
+  /* margin: 0 1em; */
+  /* border-radius: 1em; */
+  /* border: 1px solid lightgray; */
 }
 
 form>p {

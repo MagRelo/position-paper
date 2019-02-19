@@ -27,10 +27,10 @@ class App extends Component {
           </div>
 
           <h1>
-            <Link to="/">Smarty</Link>
+            <Link to="/">Group</Link>
           </h1>
 
-          <h2>Curation Tournaments</h2>
+          <h2>investment groups</h2>
         </div>
 
         <Switch>
