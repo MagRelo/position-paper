@@ -13,34 +13,35 @@ import About from 'components/about';
 import LandingPage from 'components/landingPage';
 import CreatePortfolio from 'components/createPortfolio';
 import AcceptInvite from 'components/acceptInvite';
+import Lobby from 'components/lobby/lobby';
+
 import Auto from 'components/util/autoPage';
 
 class App extends Component {
   render() {
     return (
-      <div>
-        <div className="container">
-          <div className="header">
-            <div className="menu">
-              <Link to="/about">About</Link>
-            </div>
-
-            <h1>
-              <Link to="/">Smarty</Link>
-            </h1>
-
-            <h2>Curation Tournaments</h2>
+      <div className="container">
+        <div className="header">
+          <div className="menu">
+            <Link to="/about">About</Link>
           </div>
 
-          <Switch>
-            <Route path="/auto" component={Auto} />
-            <Route path="/create" component={CreatePortfolio} />
-            <Route path="/invite" component={AcceptInvite} />
-            <Route path="/about" component={About} />
+          <h1>
+            <Link to="/">Smarty</Link>
+          </h1>
 
-            <Route component={LandingPage} />
-          </Switch>
+          <h2>Curation Tournaments</h2>
         </div>
+
+        <Switch>
+          <Route path="/auto" component={Auto} />
+          <Route path="/create" component={CreatePortfolio} />
+          <Route path="/invite" component={AcceptInvite} />
+          <Route path="/about" component={About} />
+          <Route path="/group/:contractAddress" component={Lobby} />
+
+          <Route component={LandingPage} />
+        </Switch>
       </div>
     );
   }

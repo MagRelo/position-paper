@@ -19,6 +19,10 @@ h3 {
   float: right;
 }
 
+.menu a {
+  line-height: 54px;
+}
+
 .header a {
   text-decoration: none;
   color: #0067ba

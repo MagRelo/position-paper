@@ -1,6 +1,18 @@
+html,
+body,
+#root,
+.container {
+  min-height: 100vh;
+}
+
+.container {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  padding: 1em;
+}
+
 body {
   margin: 0;
-  padding: 1rem;
   font-family: "Open Sans", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
