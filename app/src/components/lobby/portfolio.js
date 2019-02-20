@@ -7,11 +7,13 @@ class PortfolioList extends Component {
     return (
       <div className="portfolio">
         <h3>Portfolio</h3>
-        <ul>
-          {this.props.portfolio.map(position => {
-            return <li key={position}>{position}</li>;
-          })}
-        </ul>
+        <div className="list">
+          <ul>
+            {this.props.portfolio.map(position => {
+              return <li key={position}>{position}</li>;
+            })}
+          </ul>
+        </div>
       </div>
     );
   }

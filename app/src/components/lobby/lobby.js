@@ -27,7 +27,7 @@ class Lobby extends Component {
       <div>
         <div className="lobby-grid">
           <h2>{this.state.contractAddress}</h2>
-          <Proposals proposals={['0.5 ETH => XMR', '1 ETH => EOS']} />
+          <Proposals />
           <Discuss
             sendFunction={this.sendMessage.bind(this)}
             messages={['adsf', 'asdfsdf']}
