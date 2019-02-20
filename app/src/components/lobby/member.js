@@ -7,15 +7,17 @@ class MembersList extends Component {
     return (
       <div className="members">
         <h3>Members</h3>
-        <ul>
-          {this.props.members.map(position => {
-            return (
-              <li style={{ listStyle: 'none' }} key={position}>
-                {position}
-              </li>
-            );
-          })}
-        </ul>
+        <div className="list">
+          <ul>
+            {this.props.members.map(position => {
+              return (
+                <li style={{ listStyle: 'none' }} key={position}>
+                  {position}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
       </div>
     );
   }

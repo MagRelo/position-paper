@@ -30,7 +30,7 @@ class Lobby extends Component {
           <Proposals proposals={['0.5 ETH => XMR', '1 ETH => EOS']} />
           <Discuss
             sendFunction={this.sendMessage.bind(this)}
-            messages={['m1', 'm2', 'm3']}
+            messages={['adsf', 'asdfsdf']}
           />
           <Portfolio portfolio={['BTC', 'ETH', 'DAI']} />
           <Members members={['Matt', 'Jim']} />

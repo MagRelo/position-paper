@@ -7,32 +7,30 @@ let PortfolioInstance;
 let SimpleStorageInstance;
 
 contract('Portfolio', accounts => {
-  let [platform, adminAccount, memberOne, memberTwo, rando] = accounts;
-  const adminName = 'Admin';
+  let [platform, foundingMember, memberOne, memberTwo, rando] = accounts;
+  const adminName = 'Founder';
 
   // deploy contract
   beforeEach('setup', async () => {
-    PortfolioInstance = await Portfolio.new(platform, adminAccount, adminName);
+    PortfolioInstance = await Portfolio.new(platform, foundingMember);
     SimpleStorageInstance = await SimpleStorage.deployed();
   });
 
   describe('Membership', () => {
-    it('Admin is a member', async () => {
-      const memberStruct = await PortfolioInstance.memberMap(adminAccount);
+    it('Founder is a member', async () => {
+      const memberStruct = await PortfolioInstance.memberMap(foundingMember);
 
-      assert.equal(memberStruct[0], adminName, 'Admin name incorrect');
-      assert.equal(memberStruct[1], adminAccount, 'Admin not member');
+      assert.equal(memberStruct[0], foundingMember, 'Founder not member');
     });
 
-    it('Admin can add a member', async () => {
+    it('Member can add a member', async () => {
       // add
-      await PortfolioInstance.memberRegister('Member 1', memberOne, {
-        from: adminAccount
+      await PortfolioInstance.memberRegister(memberOne, {
+        from: foundingMember
       });
 
       const memberStruct = await PortfolioInstance.memberMap(memberOne);
-      assert.equal(memberStruct[0], 'Member 1', 'Member 1 name incorrect');
-      assert.equal(memberStruct[1], memberOne, 'Member 1 not member');
+      assert.equal(memberStruct[0], memberOne, 'Member 1 not member');
     });
 
     it('Randos *cant* add a member', async () => {
@@ -48,59 +46,33 @@ contract('Portfolio', accounts => {
       assert.equal(true, false, 'Should have errored');
     });
 
-    it('Admin can remove a member', async () => {
-      // add
-      await PortfolioInstance.memberRegister('Member 1', memberOne, {
-        from: adminAccount
-      });
-
-      // test add
-      let memberStruct = await PortfolioInstance.memberMap(memberOne);
-      assert.equal(memberStruct[0], 'Member 1', 'Member 1 name incorrect');
-      assert.equal(memberStruct[1], memberOne, 'Member 1 not member');
-
-      // remove
-      await PortfolioInstance.memberUnregister(memberOne, {
-        from: adminAccount
-      });
-
-      // test remove
-      memberStruct = await PortfolioInstance.memberMap(memberOne);
-      assert.equal(
-        memberStruct.valid,
-        false,
-        'Member 1 still an active member'
-      );
-    });
-
     it('Randos *cant* remove a member', async () => {
       // add
-      await PortfolioInstance.memberRegister('Member 1', memberOne, {
-        from: adminAccount
+      await PortfolioInstance.memberRegister(memberOne, {
+        from: foundingMember
       });
 
       // test add
       const memberStruct = await PortfolioInstance.memberMap(memberOne);
-      assert.equal(memberStruct[0], 'Member 1', 'Member 1 name incorrect');
-      assert.equal(memberStruct[1], memberOne, 'Member 1 not member');
+      assert.equal(memberStruct[0], memberOne, 'Member 1 not member');
 
       try {
         // remove
-        await PortfolioInstance.memberUnregister(memberOne, {
+        await PortfolioInstance.memberUnregister({
           from: rando
         });
       } catch (error) {
         return assert.ok(true);
       }
-      assert.equal(true, false, 'Platform executed trade');
+      assert.equal(true, false, 'rando removed member');
     });
   });
 
   describe('Funds', () => {
     it('Member can deposit', async () => {
       // register member
-      await PortfolioInstance.memberRegister('Member 1', memberOne, {
-        from: adminAccount
+      await PortfolioInstance.memberRegister(memberOne, {
+        from: foundingMember
       });
 
       // member deposit
@@ -119,8 +91,8 @@ contract('Portfolio', accounts => {
 
     it('Member can withdraw', async () => {
       // register member
-      await PortfolioInstance.memberRegister('Member 1', memberOne, {
-        from: adminAccount
+      await PortfolioInstance.memberRegister(memberOne, {
+        from: foundingMember
       });
 
       // member deposit
@@ -160,8 +132,8 @@ contract('Portfolio', accounts => {
   describe('Trades', () => {
     it('Members can execute trades', async () => {
       // register member
-      await PortfolioInstance.memberRegister('Member 1', memberOne, {
-        from: adminAccount
+      await PortfolioInstance.memberRegister(memberOne, {
+        from: foundingMember
       });
 
       // build txn data
@@ -297,77 +269,6 @@ contract('Portfolio', accounts => {
         return assert.ok(true);
       }
       assert.equal(true, false, 'Rando executed trade');
-    });
-  });
-
-  describe('Platform', () => {
-    it('Platform can increase total shares', async () => {
-      const totalShares_start = await PortfolioInstance.totalShares({
-        from: platform
-      });
-      const shareIncrease = web3.utils.toWei('5');
-
-      // increase
-      await PortfolioInstance.increaseTotalShares(shareIncrease, {
-        from: platform
-      });
-
-      const totalShares_end = await PortfolioInstance.totalShares({
-        from: platform
-      });
-
-      assert.equal(
-        parseInt(web3.utils.fromWei(shareIncrease), 10) +
-          parseInt(web3.utils.fromWei(totalShares_start), 10),
-        parseInt(web3.utils.fromWei(totalShares_end), 10),
-        'Share total incorrect'
-      );
-    });
-
-    it('Randos *cant* increase total shares', async () => {
-      try {
-        // increase
-        await PortfolioInstance.increaseTotalShares(shareIncrease, {
-          from: adminAccount
-        });
-      } catch (error) {
-        return assert.ok(true);
-      }
-
-      assert.equal(true, false, 'Rando changed share count');
-    });
-
-    it('Platform can increase member share', async () => {
-      await PortfolioInstance.increaseMemberShares(
-        memberOne,
-        web3.utils.toWei('1'),
-        {
-          from: platform
-        }
-      );
-
-      const memberStruct = await PortfolioInstance.memberMap(memberOne);
-      assert.equal(
-        web3.utils.fromWei(memberStruct.shares),
-        1,
-        'Shares incorrect'
-      );
-    });
-
-    it('Randos *cant* increase member shares', async () => {
-      try {
-        await PortfolioInstance.increaseMemberShares(
-          memberOne,
-          web3.utils.toWei('1'),
-          {
-            from: adminAccount
-          }
-        );
-      } catch (error) {
-        return assert.ok(true);
-      }
-
-      assert.equal(true, false, 'Rando changed share count');
     });
   });
 });

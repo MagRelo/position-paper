@@ -83,7 +83,7 @@ export async function bounceTransaction(contract, method, params, amount) {
   return;
 }
 
-export async function initSockets() {
+export async function initSockets(contractAddress) {
   socket = io('/');
   socket.on('connect', () => {
     console.log('socket connected:', socket.id);

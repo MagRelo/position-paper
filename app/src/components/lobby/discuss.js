@@ -34,24 +34,23 @@ class Discuss extends Component {
           </ul>
         </div>
 
-        <div className="pure-form">
-          <form action="">
-            <input
-              type="text"
-              className="pure-input"
-              name="message"
-              id="message"
-              value={this.state.message}
-              onChange={this.handleFormChange.bind(this)}
-            />
-            <button
-              className="pure-button pure-button-primary"
-              onClick={this.sendMessage.bind(this)}
-            >
-              Send
-            </button>
-          </form>
-        </div>
+        <form action="" className="pure-form">
+          <input
+            type="text"
+            className="pure-input"
+            name="message"
+            id="message"
+            value={this.state.message}
+            onChange={this.handleFormChange.bind(this)}
+          />
+
+          <button
+            className="pure-button pure-button-primary"
+            onClick={this.sendMessage.bind(this)}
+          >
+            Send
+          </button>
+        </form>
       </div>
     );
   }
