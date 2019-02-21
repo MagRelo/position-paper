@@ -25,10 +25,11 @@ class Discuss extends Component {
 
         <div className="list">
           <ul>
-            {this.props.messages.map(position => {
+            {this.props.messages.map(message => {
               return (
-                <li className="list-item" key={position}>
-                  {position}
+                <li key={message.id}>
+                  <span className="message-user">{message.user}</span>
+                  <span className="message">{message.message}</span>
                 </li>
               );
             })}
@@ -59,7 +60,12 @@ class Discuss extends Component {
 }
 
 const mapStateToProps = state => {
-  return {};
+  return {
+    messages: [
+      { id: 0, user: 'matt', message: 'hello' },
+      { id: 1, user: 'bill', message: 'high there' }
+    ]
+  };
 };
 
 const mapDispatchToProps = dispatch => {

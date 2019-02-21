@@ -69,6 +69,11 @@ class ProposalsList extends Component {
           <button
             type="button"
             className="pure-button pure-button-primary"
+            disabled={
+              !this.state.newAsset ||
+              !this.state.currentAsset ||
+              !this.state.quantity
+            }
             onClick={this.submitProposal.bind(this)}
           >
             Add Proposal

@@ -33,7 +33,7 @@ class Lobby extends Component {
 
           <AddProposal />
 
-          <Discuss messages={['adsf', 'asdfsdf']} />
+          <Discuss />
 
           <Portfolio portfolio={['BTC', 'ETH', 'DAI']} />
 
