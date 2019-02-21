@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import { submitChat } from './sockets';
+
 class Discuss extends Component {
   state = { accounts: null, message: '' };
 
   sendMessage(event) {
     event.preventDefault();
-    this.props.sendFunction(this.state.message);
+
+    this.props.submitChat(this.state.message);
+
     return this.setState({ message: '' });
   }
 
@@ -59,7 +63,11 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return {};
+  return {
+    submitChat: message => {
+      return submitChat(message);
+    }
+  };
 };
 
 export default connect(

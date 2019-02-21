@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 
-import { submitProposal, submitVote } from './sockets';
+import { submitVote } from './sockets';
 import InfoPanel from './infoPanel';
 
 class ProposalsList extends Component {
@@ -29,29 +29,9 @@ class ProposalsList extends Component {
     });
   }
 
-  //  Proposal form
-  onSelectAsset(option) {
-    this.setState({
-      [option.value.formFeild]: option.value
-    });
-  }
-  submitProposal() {
-    console.log({
-      quantity: this.state.quantity.number,
-      currentAsset: this.state.currentAsset.name,
-      newAsset: this.state.newAsset.name
-    });
-
-    this.props.submitProposal(
-      this.state.quantity.number,
-      this.state.currentAsset.name,
-      this.state.newAsset.name
-    );
-  }
-
   // Vote form
   voteOnProposal(proposalId, inFavor) {
-    console.log('vote', proposalId, inFavor);
+    this.props.submitVote(proposalId, inFavor);
     // sign?
   }
 
@@ -146,8 +126,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    submitProposal: (quantity, from, to) => {
-      submitProposal(quantity, from, to);
+    submitVote: (id, inFavor) => {
+      submitVote(id, inFavor);
     }
   };
 };

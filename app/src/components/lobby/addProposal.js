@@ -24,11 +24,11 @@ class ProposalsList extends Component {
       newAsset: this.state.newAsset.name
     });
 
-    this.props.submitProposal(
-      this.state.quantity.number,
-      this.state.currentAsset.name,
-      this.state.newAsset.name
-    );
+    this.props.submitProposal({
+      quantity: this.state.quantity.number,
+      currentAsset: this.state.currentAsset.name,
+      newAsset: this.state.newAsset.name
+    });
   }
 
   render() {

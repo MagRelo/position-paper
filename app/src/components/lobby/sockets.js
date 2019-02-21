@@ -3,16 +3,18 @@ import store from 'state/store';
 
 let socket = null;
 
-export async function submitProposal() {
-  console.log('sockets: submit propsal');
+export async function submitProposal(proposalData) {
+  socket.emit('submit-proposal', proposalData);
 }
 
-export async function submitVote() {
+export async function submitVote(voteData) {
   console.log('sockets: submit vote');
+  socket.emit('submit-vote', voteData);
 }
 
-export async function submitChat() {
+export async function submitChat(message) {
   console.log('sockets: submit chat');
+  socket.emit('submit-chat', message);
 }
 
 export async function initSockets(contractAddress) {

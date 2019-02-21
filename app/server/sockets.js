@@ -15,15 +15,15 @@ module.exports = function startIo(server) {
 
     // events
     socket.on('submit-proposal', async data => {
-      console.log('server socket submitProposal');
+      console.log('server socket submitProposal', data);
     });
 
     socket.on('submit-vote', async data => {
-      console.log('server socket submitVote');
+      console.log('server socket submitVote', data);
     });
 
     socket.on('submit-chat', async data => {
-      console.log('server socket submitChat');
+      console.log('server socket submitChat', data);
     });
   });
 
