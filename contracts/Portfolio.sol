@@ -31,13 +31,17 @@ contract Portfolio {
   );
   
   
-  constructor(address _platform, address _firstMember) public {
+  constructor(address _platform, address[] memory _members) public {
+        
+    require(_members.length > 0);
     
-    platform = _platform;
+    // add members
+    for(uint8 i = 0; i < _members.length; i++){      
+      memberMap[_members[i]] = Member(_members[i], 0, memberArray.length, true);
+      memberArray.push(memberMap[_members[i]]);    
+    }
 
-    // add admin as member
-    memberMap[_firstMember] = Member(_firstMember,0, memberArray.length, true);
-    memberArray.push(memberMap[_firstMember]);
+    platform = _platform; // set platformAddress, not currently in use
   }
 
 

@@ -9,4 +9,9 @@ contract SimpleStorage {
     value = _value;  
   }
 
+  function saveSenderPayable(uint256  _data) public payable {
+    lastUpdatedBy = msg.sender;
+    value = _data;  
+  }
+
 }

@@ -7,12 +7,23 @@ let PortfolioInstance;
 let SimpleStorageInstance;
 
 contract('Portfolio', accounts => {
-  let [platform, foundingMember, memberOne, memberTwo, rando] = accounts;
-  const adminName = 'Founder';
+  let [
+    platform,
+    foundingMember,
+    memberOne,
+    memberTwo,
+    memberThree,
+    memberFour,
+    rando
+  ] = accounts;
 
   // deploy contract
   beforeEach('setup', async () => {
-    PortfolioInstance = await Portfolio.new(platform, foundingMember);
+    PortfolioInstance = await Portfolio.new(platform, [
+      foundingMember,
+      memberOne,
+      memberTwo
+    ]);
     SimpleStorageInstance = await SimpleStorage.deployed();
   });
 
@@ -25,12 +36,12 @@ contract('Portfolio', accounts => {
 
     it('Member can add a member', async () => {
       // add
-      await PortfolioInstance.memberRegister(memberOne, {
+      await PortfolioInstance.memberRegister(memberThree, {
         from: foundingMember
       });
 
-      const memberStruct = await PortfolioInstance.memberMap(memberOne);
-      assert.equal(memberStruct[0], memberOne, 'Member 1 not member');
+      const memberStruct = await PortfolioInstance.memberMap(memberThree);
+      assert.equal(memberStruct[0], memberThree, 'Member 3 not member');
     });
 
     it('Randos *cant* add a member', async () => {
@@ -48,13 +59,13 @@ contract('Portfolio', accounts => {
 
     it('Randos *cant* remove a member', async () => {
       // add
-      await PortfolioInstance.memberRegister(memberOne, {
+      await PortfolioInstance.memberRegister(memberThree, {
         from: foundingMember
       });
 
       // test add
-      const memberStruct = await PortfolioInstance.memberMap(memberOne);
-      assert.equal(memberStruct[0], memberOne, 'Member 1 not member');
+      const memberStruct = await PortfolioInstance.memberMap(memberThree);
+      assert.equal(memberStruct[0], memberThree, 'Member 3 not member');
 
       try {
         // remove
@@ -71,9 +82,9 @@ contract('Portfolio', accounts => {
   describe('Funds', () => {
     it('Member can deposit', async () => {
       // register member
-      await PortfolioInstance.memberRegister(memberOne, {
-        from: foundingMember
-      });
+      // await PortfolioInstance.memberRegister(memberOne, {
+      //   from: foundingMember
+      // });
 
       // member deposit
       await PortfolioInstance.memberDeposit({
@@ -91,9 +102,9 @@ contract('Portfolio', accounts => {
 
     it('Member can withdraw', async () => {
       // register member
-      await PortfolioInstance.memberRegister(memberOne, {
-        from: foundingMember
-      });
+      // await PortfolioInstance.memberRegister(memberOne, {
+      //   from: foundingMember
+      // });
 
       // member deposit
       await PortfolioInstance.memberDeposit({
@@ -132,9 +143,9 @@ contract('Portfolio', accounts => {
   describe('Trades', () => {
     it('Members can execute trades', async () => {
       // register member
-      await PortfolioInstance.memberRegister(memberOne, {
-        from: foundingMember
-      });
+      // await PortfolioInstance.memberRegister(memberOne, {
+      //   from: foundingMember
+      // });
 
       // build txn data
       const simpleStorageAddress = SimpleStorageInstance.address;
