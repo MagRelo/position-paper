@@ -5,7 +5,7 @@ class PortfolioList extends Component {
 
   render() {
     return (
-      <div className="portfolio">
+      <section className="portfolio">
         <h3>Portfolio</h3>
         <div className="list">
           <ul>
@@ -14,7 +14,7 @@ class PortfolioList extends Component {
             })}
           </ul>
         </div>
-      </div>
+      </section>
     );
   }
 }

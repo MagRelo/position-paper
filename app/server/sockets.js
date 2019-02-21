@@ -1,82 +1,29 @@
 var io = require('socket.io');
 
-const getWeb3 = require('./utils/getWeb3');
+// const getWeb3 = require('./utils/getWeb3');
 
-const bpArtifact = require('../src/contracts/BouncerProxy.json');
+// const bpArtifact = require('../src/contracts/BouncerProxy.json');
 
 module.exports = function startIo(server) {
   io = io.listen(server);
 
   io.on('connection', async socket => {
-    // console.log('socket connected:', socket.id);
+    console.log('socket connected:', socket.id);
 
     // setup
     io.emit('server-account', await getServerAccount());
 
     // events
-    socket.on('bounce-txn', async data => {
-      // received...
-      io.emit('bounce-response', { serverRecieved: true });
+    socket.on('submit-proposal', async data => {
+      console.log('server socket submitProposal');
+    });
 
-      // validate input data
-      const signature = data.signature;
-      const signingAccount = data.selectedAccount;
+    socket.on('submit-vote', async data => {
+      console.log('server socket submitVote');
+    });
 
-      const targetContractAddress = data.targetContractAddress;
-      const txnData = data.txnData;
-      const targetContractValue = data.targetContractAmount;
-      const rewardAddress = '0x0000000000000000000000000000000000000000';
-      const rewardAmount = 0;
-
-      // recover signature(?)
-
-      // setup bouncerProxy contract
-      const { web3, networkId, serverAccount } = await getWeb3.getWeb3();
-
-      const BouncerProxy = await new web3.eth.Contract(
-        bpArtifact.abi,
-        bpArtifact.networks[networkId].address
-      );
-
-      try {
-        // submitting...
-        io.emit('bounce-response', { serverSubmitted: true });
-
-        console.log({
-          signature,
-          signingAccount,
-          targetContractAddress,
-          targetContractValue,
-          txnData,
-          rewardAddress,
-          rewardAmount
-        });
-
-        // send transaction
-        const forwardReceipt = await BouncerProxy.methods
-          .forward(
-            signature,
-            signingAccount,
-            targetContractAddress,
-            targetContractValue,
-            txnData,
-            rewardAddress,
-            rewardAmount
-          )
-          .send({ from: serverAccount.address });
-
-        // transaction result
-        io.emit('bounce-response', {
-          serverComplete: true,
-          receipt: forwardReceipt
-        });
-      } catch (error) {
-        console.log(error);
-        io.emit('bounce-response', {
-          serverError: true,
-          errorMessage: error.message
-        });
-      }
+    socket.on('submit-chat', async data => {
+      console.log('server socket submitChat');
     });
   });
 
@@ -85,9 +32,10 @@ module.exports = function startIo(server) {
 
 async function getServerAccount() {
   // test web3
-  const { serverAccount, serverAccountBalance } = await getWeb3.getWeb3();
+  // const { serverAccount, serverAccountBalance } = await getWeb3.getWeb3();
 
-  return { serverAccount: serverAccount.address, serverAccountBalance };
+  // return { serverAccount: serverAccount.address, serverAccountBalance };
+  return { time: 'party' };
 }
 
 // debug

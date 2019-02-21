@@ -6,10 +6,7 @@ class Discuss extends Component {
 
   sendMessage(event) {
     event.preventDefault();
-    console.log(this.state.message);
-
     this.props.sendFunction(this.state.message);
-
     return this.setState({ message: '' });
   }
 
@@ -19,7 +16,7 @@ class Discuss extends Component {
 
   render() {
     return (
-      <div className="discuss">
+      <section className="discuss">
         <h3>Discuss</h3>
 
         <div className="list">
@@ -40,6 +37,7 @@ class Discuss extends Component {
             className="pure-input"
             name="message"
             id="message"
+            placeholder="type to chat..."
             value={this.state.message}
             onChange={this.handleFormChange.bind(this)}
           />
@@ -51,7 +49,7 @@ class Discuss extends Component {
             Send
           </button>
         </form>
-      </div>
+      </section>
     );
   }
 }

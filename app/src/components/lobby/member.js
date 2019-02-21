@@ -5,7 +5,7 @@ class MembersList extends Component {
 
   render() {
     return (
-      <div className="members">
+      <section className="members">
         <h3>Members</h3>
         <div className="list">
           <ul>
@@ -18,7 +18,7 @@ class MembersList extends Component {
             })}
           </ul>
         </div>
-      </div>
+      </section>
     );
   }
 }

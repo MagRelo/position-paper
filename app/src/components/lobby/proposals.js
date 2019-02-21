@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 
+import { submitProposal, submitVote } from './sockets';
 import InfoPanel from './infoPanel';
 
 class ProposalsList extends Component {
@@ -40,6 +41,12 @@ class ProposalsList extends Component {
       currentAsset: this.state.currentAsset.name,
       newAsset: this.state.newAsset.name
     });
+
+    this.props.submitProposal(
+      this.state.quantity.number,
+      this.state.currentAsset.name,
+      this.state.newAsset.name
+    );
   }
 
   // Vote form
@@ -50,8 +57,8 @@ class ProposalsList extends Component {
 
   render() {
     return (
-      <div className="proposals">
-        <h3>Proposals</h3>
+      <section className="proposals">
+        <h3>Active Proposals</h3>
 
         <div className="list">
           <ul>
@@ -81,11 +88,12 @@ class ProposalsList extends Component {
             gridTemplateRows: 'auto 1fr auto'
           }}
         >
-          <span>
-            Trade {this.state.selectedProposal.quantity * 100}%{' '}
+          <h3>
+            Proposal: Trade {this.state.selectedProposal.quantity * 100}%
+            {' of '}
             {this.state.selectedProposal.from.name} to{' '}
             {this.state.selectedProposal.to.name}
-          </span>
+          </h3>
 
           <div
             style={{
@@ -122,46 +130,7 @@ class ProposalsList extends Component {
             </button>
           </form>
         </div>
-
-        <form action="" className="pure-form proposal-form">
-          <label htmlFor="">Trade:</label>
-          <Select
-            placeholder="Quantity"
-            name="quantity"
-            id="quantity"
-            options={this.props.quantities}
-            onChange={this.onSelectAsset.bind(this)}
-          />
-
-          <p>of</p>
-
-          <Select
-            placeholder="Current Asset"
-            name="currentAsset"
-            id="currentAsset"
-            options={this.props.portfolio}
-            onChange={this.onSelectAsset.bind(this)}
-          />
-
-          <p>for</p>
-
-          <Select
-            placeholder="New Asset"
-            name="newAsset"
-            id="newAsset"
-            options={this.props.availableAssets}
-            onChange={this.onSelectAsset.bind(this)}
-          />
-
-          <button
-            type="button"
-            className="pure-button pure-button-primary"
-            onClick={this.submitProposal.bind(this)}
-          >
-            Add Proposal
-          </button>
-        </form>
-      </div>
+      </section>
     );
   }
 }
@@ -176,7 +145,11 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return {};
+  return {
+    submitProposal: (quantity, from, to) => {
+      submitProposal(quantity, from, to);
+    }
+  };
 };
 
 export default connect(

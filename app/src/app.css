@@ -1,7 +1,7 @@
 .header h1 {
   margin-bottom: 0;
   /* color: rgb(42, 64, 110); */
-  color: #004D8B;
+  color: #49708A;
 }
 
 .header h2 {
@@ -27,7 +27,7 @@ h4 {
 
 .header a {
   text-decoration: none;
-  color: #004D8B
+  color: #49708A
 }
 
 .header a:hover {

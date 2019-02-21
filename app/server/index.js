@@ -7,7 +7,8 @@ const server = require('http').Server(app);
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 
-const getWeb3 = require('./utils/getWeb3');
+// const getWeb3 = require('./utils/getWeb3');
+
 const sigUtil = require('eth-sig-util');
 // const ethUtil = require('ethereumjs-util');
 

@@ -5,7 +5,6 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 
 import { loadWeb3 } from 'state/loadWeb3';
-// import { initSockets } from 'state/sockets';
 
 // redux stote
 import store from 'state/store';
@@ -17,7 +16,6 @@ import store from 'state/store';
 // serviceWorker.unregister();
 
 loadWeb3();
-// initSockets();
 
 ReactDOM.render(
   <Provider store={store}>

@@ -1,25 +1,26 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import { initSockets } from './sockets';
+
 import './lobby.css';
 import Portfolio from './portfolio';
 import Proposals from './proposals';
+import AddProposal from './addProposal';
 import Discuss from './discuss';
 import Members from './member';
 
 class Lobby extends Component {
   state = { accounts: null };
 
-  componentDidMount() {
-    this.setState({ contractAddress: this.props.match.params.contractAddress });
-
+  async componentDidMount() {
     // init socket connection w/ contract address
+    const loaded = await initSockets(this.props.match.params.contractAddress);
 
-    // init contract with updated address(?)
-  }
-
-  sendMessage(message) {
-    console.log('send message:', message);
+    this.setState({
+      contractAddress: this.props.match.params.contractAddress,
+      contractLoaded: loaded
+    });
   }
 
   render() {
@@ -27,12 +28,15 @@ class Lobby extends Component {
       <div>
         <div className="lobby-grid">
           <h2>{this.state.contractAddress}</h2>
+
           <Proposals />
-          <Discuss
-            sendFunction={this.sendMessage.bind(this)}
-            messages={['adsf', 'asdfsdf']}
-          />
+
+          <AddProposal />
+
+          <Discuss messages={['adsf', 'asdfsdf']} />
+
           <Portfolio portfolio={['BTC', 'ETH', 'DAI']} />
+
           <Members members={['Matt', 'Jim']} />
 
           <div className="lobby-footer">
