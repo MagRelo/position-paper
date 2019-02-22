@@ -1,9 +1,7 @@
 .lobby-grid {
   display: grid;
   height: 100%;
-
 }
-
 
 .lobby-grid ul {
   padding: 0;
@@ -26,11 +24,8 @@
 }
 
 
-
 /* Members */
 .members {
-
-
   padding: 0.67em 0.5em 1em 1em;
 
   display: grid;
@@ -46,7 +41,6 @@
 /* Portfolio */
 .portfolio {
   padding: 0.67em 0.5em 0 1em;
-
 
   display: grid;
   grid-template-rows: auto 1fr;
@@ -70,15 +64,20 @@
   background: #ffffff;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
+
+  font-family: serif;
 }
 
-.message-user {
-  background: #dddddd;
-  padding: 0 0.5em;
-  margin-right: 1em;
+.discuss .list .message {
+  padding: 0.33em;
 }
 
-.message {}
+.discuss .list .message-user {
+  background: #d0d2d4;
+  padding: 0.33em 0.67em;
+
+  text-align: right;
+}
 
 .discuss form {
   padding: 0.5em;
@@ -89,9 +88,7 @@
 
   background: white;
   border-top: solid #dddddd 1px;
-
 }
-
 
 
 /* Proposals */
@@ -106,9 +103,7 @@
   grid-row: 2 / 3;
   grid-column: 1 / 2;
   color: white;
-  /* background: #88ABC2; */
 }
-
 
 .proposals .list li.selected {
   background: white;
@@ -130,7 +125,7 @@
   padding-left: 0.5em;
 }
 
-.info-panel {
+.proposals .info .info-panel {
   padding: 2em;
   text-align: center;
 }
@@ -157,14 +152,13 @@
   background: white;
   border-radius: 4px;
 
-
   display: grid;
   grid-gap: 0.5em;
 }
 
 
 
-/* asdf */
+/* laptop or better */
 @media screen and (min-width: 992px) {
 
   .lobby-grid {
@@ -201,7 +195,6 @@
   .vote-form {
     grid-template-columns: 1fr 1fr;
   }
-
 
   .discuss {
     grid-row: 6 / 8;

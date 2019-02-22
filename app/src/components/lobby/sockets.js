@@ -8,12 +8,10 @@ export async function submitProposal(proposalData) {
 }
 
 export async function submitVote(voteData) {
-  console.log('sockets: submit vote');
   socket.emit('submit-vote', voteData);
 }
 
 export async function submitChat(message) {
-  console.log('sockets: submit chat');
   socket.emit('submit-chat', message);
 }
 

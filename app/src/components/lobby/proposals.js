@@ -31,8 +31,12 @@ class ProposalsList extends Component {
 
   // Vote form
   voteOnProposal(proposalId, inFavor) {
-    this.props.submitVote(proposalId, inFavor);
-    // sign?
+    this.props.submitVote({
+      groupId: 'testing',
+      selectedAccount: this.props.selectedAccount,
+      proposalId: proposalId,
+      inFavor: inFavor
+    });
   }
 
   render() {

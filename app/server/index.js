@@ -27,36 +27,7 @@ if (process.env.ENV !== 'production') {
 // *
 // db
 // *
-
-// Connect to mongoDb
-const mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
-async function dbConnect() {
-  let conn = null;
-  const numRetries = 5;
-  for (let i = 1; i < numRetries; ++i) {
-    try {
-      conn = await mongoose.connect(
-        process.env.MONGODB_URL_INT ||
-          'mongodb://127.0.0.1:27017/' + process.env.DB_NAME,
-        { useNewUrlParser: true }
-      );
-      break;
-    } catch (error) {
-      console.log('connection error (', i, ') waiting: ', 1000 * i * 2, ' ms');
-      await new Promise(resolve => setTimeout(resolve, 1000 * i * 2));
-    }
-  }
-
-  if (!conn) {
-    process.exit(-1);
-  } else {
-    console.log('Mongoose connected.');
-  }
-
-  return;
-}
-dbConnect();
+require('./pg-controller.js');
 
 // *
 // Server
@@ -79,27 +50,27 @@ app.use(
 );
 
 // http routing
-app.post('/api/bouncer', async function(req, res) {
-  // input validation
-  // const userAddress = recover()
+// app.post('/api/bouncer', async function(req, res) {
+//   // input validation
+//   // const userAddress = recover()
 
-  // test web3
-  const {
-    web3Connected,
-    network,
-    networkId,
-    serverAccount,
-    serverAccountBalance
-  } = await getWeb3.getWeb3();
+//   // test web3
+//   const {
+//     web3Connected,
+//     network,
+//     networkId,
+//     serverAccount,
+//     serverAccountBalance
+//   } = await getWeb3.getWeb3();
 
-  res.status(200).send({
-    web3Connected,
-    network,
-    networkId,
-    serverAccount,
-    serverAccountBalance
-  });
-});
+//   res.status(200).send({
+//     web3Connected,
+//     network,
+//     networkId,
+//     serverAccount,
+//     serverAccountBalance
+//   });
+// });
 
 // serve the frontend for all non-api requests
 app.get('/*', function(req, res) {

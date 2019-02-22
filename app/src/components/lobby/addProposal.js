@@ -17,14 +17,11 @@ class ProposalsList extends Component {
       [option.value.formFeild]: option.value
     });
   }
-  submitProposal() {
-    console.log({
-      quantity: this.state.quantity.number,
-      currentAsset: this.state.currentAsset.name,
-      newAsset: this.state.newAsset.name
-    });
 
+  submitProposal() {
     this.props.submitProposal({
+      groupId: 'testing',
+      selectedAccount: this.props.selectedAccount,
       quantity: this.state.quantity.number,
       currentAsset: this.state.currentAsset.name,
       newAsset: this.state.newAsset.name
@@ -39,7 +36,7 @@ class ProposalsList extends Component {
         <form action="" className="pure-form proposal-form">
           <label htmlFor="">Trade:</label>
           <Select
-            placeholder="%"
+            placeholder="Select %"
             name="quantity"
             id="quantity"
             options={this.props.quantities}
@@ -86,6 +83,7 @@ class ProposalsList extends Component {
 
 const mapStateToProps = state => {
   return {
+    selectedAccount: state.account.selectedAccount,
     availableAssets: state.lobby.availableAssets,
     portfolio: state.lobby.portfolio,
     quantities: state.lobby.quantities,

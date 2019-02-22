@@ -9,7 +9,11 @@ class Discuss extends Component {
   sendMessage(event) {
     event.preventDefault();
 
-    this.props.submitChat(this.state.message);
+    this.props.submitChat({
+      groupId: 'testing',
+      selectedAccount: this.props.selectedAccount,
+      message: this.state.message
+    });
 
     return this.setState({ message: '' });
   }
@@ -24,16 +28,18 @@ class Discuss extends Component {
         <h3>Discuss</h3>
 
         <div className="list">
-          <ul>
-            {this.props.messages.map(message => {
-              return (
-                <li key={message.id}>
-                  <span className="message-user">{message.user}</span>
-                  <span className="message">{message.message}</span>
-                </li>
-              );
-            })}
-          </ul>
+          <table>
+            <tbody>
+              {this.props.messages.map(message => {
+                return (
+                  <tr key={message.id}>
+                    <td className="message-user">{message.user}</td>
+                    <td className="message">{message.message}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
 
         <form action="" className="pure-form">
@@ -62,9 +68,15 @@ class Discuss extends Component {
 const mapStateToProps = state => {
   return {
     messages: [
-      { id: 0, user: 'matt', message: 'hello' },
-      { id: 1, user: 'bill', message: 'high there' }
-    ]
+      {
+        id: 1,
+        user: '🤖',
+        message:
+          'Welcome to the tournament, meat-bags. Add proposals, vote on them, execute the trades.'
+      },
+      { id: 0, user: 'matt', message: 'hello' }
+    ],
+    selectedAccount: state.account.selectedAccount
   };
 };
 

@@ -5,14 +5,12 @@ class InfoPanel extends Component {
 
   componentDidMount() {
     if (this.props.item.messariLink) {
-      console.log('hit');
       this.getData();
     }
   }
 
   componentDidUpdate(prevState) {
     if (prevState.item.messariLink !== this.props.item.messariLink) {
-      console.log('two');
       this.getData();
     }
   }
@@ -21,9 +19,6 @@ class InfoPanel extends Component {
     const response = await fetch(this.props.item.messariLink).then(response =>
       response.json()
     );
-
-    console.log(response);
-
     this.setState({
       loaded: response.status === 200,
       name: response.data.name,

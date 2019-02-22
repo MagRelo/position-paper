@@ -1,8 +1,10 @@
 var io = require('socket.io');
 
-// const getWeb3 = require('./utils/getWeb3');
-
-// const bpArtifact = require('../src/contracts/BouncerProxy.json');
+const {
+  createProposal,
+  updateProposalVote,
+  updateGroupChat
+} = require('./pg-controller');
 
 module.exports = function startIo(server) {
   io = io.listen(server);
@@ -11,19 +13,19 @@ module.exports = function startIo(server) {
     console.log('socket connected:', socket.id);
 
     // setup
-    io.emit('server-account', await getServerAccount());
+    io.emit('group-setup', await getServerAccount());
 
     // events
     socket.on('submit-proposal', async data => {
-      console.log('server socket submitProposal', data);
+      await createProposal(data);
     });
 
     socket.on('submit-vote', async data => {
-      console.log('server socket submitVote', data);
+      await updateProposalVote(data);
     });
 
     socket.on('submit-chat', async data => {
-      console.log('server socket submitChat', data);
+      await updateGroupChat(data);
     });
   });
 
