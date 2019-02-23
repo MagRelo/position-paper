@@ -17,7 +17,7 @@
 
 /* game panels */
 .lobby-grid section {
-  background: #75797b;
+  background: #445e6b;
 }
 
 .lobby-grid section>h3 {
@@ -96,12 +96,6 @@
 /* Proposals */
 .proposals {
   padding: 0.67em 1em 0 0.5em;
-}
-
-.proposals .list {
-  background: white;
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
 }
 
 .proposals .info .info-panel {

@@ -12,7 +12,7 @@ import Discuss from './discuss';
 import Members from './member';
 
 class Lobby extends Component {
-  state = { groupName: '', midDeposit: 0 };
+  state = { groupName: 'loading...', midDeposit: 0 };
 
   async componentDidMount() {
     // init socket connection w/ contract address

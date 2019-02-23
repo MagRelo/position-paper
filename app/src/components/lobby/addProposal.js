@@ -73,7 +73,7 @@ class ProposalsList extends Component {
             }
             onClick={this.submitProposal.bind(this)}
           >
-            Add Proposal
+            Submit
           </button>
         </form>
       </section>

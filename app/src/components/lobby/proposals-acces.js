@@ -62,33 +62,40 @@ class ProposalsList extends Component {
                     </h3>
                   </AccordionItemTitle>
                   <AccordionItemBody>
-                    <InfoPanel item={proposal.from} />
-                    <InfoPanel item={proposal.to} />
+                    <div
+                      style={{
+                        display: 'grid',
+                        gridTemplateColumns: '1fr 1fr 1fr'
+                      }}
+                    >
+                      <InfoPanel item={proposal.from} />
+                      <InfoPanel item={proposal.to} />
 
-                    <form action="" className="pure-form">
-                      <button
-                        type="button"
-                        className="pure-button pure-button-primary"
-                        onClick={this.voteOnProposal.bind(
-                          this,
-                          proposal.id,
-                          true
-                        )}
-                      >
-                        Vote 'Yes'
-                      </button>
-                      <button
-                        type="button"
-                        className="pure-button pure-button-primary"
-                        onClick={this.voteOnProposal.bind(
-                          this,
-                          proposal.id,
-                          false
-                        )}
-                      >
-                        Vote 'No'
-                      </button>
-                    </form>
+                      <form action="" className="pure-form vote-form">
+                        <button
+                          type="button"
+                          className="pure-button pure-button-primary"
+                          onClick={this.voteOnProposal.bind(
+                            this,
+                            proposal.id,
+                            true
+                          )}
+                        >
+                          Vote 'Yes'
+                        </button>
+                        <button
+                          type="button"
+                          className="pure-button pure-button-primary"
+                          onClick={this.voteOnProposal.bind(
+                            this,
+                            proposal.id,
+                            false
+                          )}
+                        >
+                          Vote 'No'
+                        </button>
+                      </form>
+                    </div>
                   </AccordionItemBody>
                 </AccordionItem>
               );
