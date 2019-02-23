@@ -6,7 +6,7 @@ contract PortfolioFactory {
   event NewContract (
     address deployedAt,
     address platform,
-    address[] _members
+    address[] members
   );
 
   // create contract

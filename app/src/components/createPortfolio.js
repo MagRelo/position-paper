@@ -7,11 +7,10 @@ import store from 'state/store';
 class CreatePortfolio extends Component {
   state = {
     exchangeRate: 0,
-    platformFee: 0.075,
+    platformFee: 0.0125,
 
     groupName: '',
     minDeposit: 1,
-    createDeposit: 1,
 
     memberList: [],
     newMember: '',
@@ -55,14 +54,31 @@ class CreatePortfolio extends Component {
       formSubmitting: true
     });
 
-    const platformAddress = '0x66414e903305Ff1E9dD8266AEDb359A9773236FC';
+    // const memberParam = memberList.map(member => {});
 
     try {
+      const platformAddress = '0x66414e903305Ff1E9dD8266AEDb359A9773236FC';
       const reciept = await contract.methods
-        .createPortfolio(platformAddress, selectedAccount)
+        .createPortfolio(platformAddress, this.state.memberList)
         .send({
           from: selectedAccount
         });
+
+      const event = reciept.events.NewContract;
+      const deployedAt = event.returnValues.deployedAt;
+
+      const serverResponse = await fetch('group/' + deployedAt, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: this.state.groupName,
+          minDeposit: this.state.minDeposit,
+          contractAddress: deployedAt,
+          members: this.state.memberList
+        })
+      }).then(response => response.json());
 
       this.setState({
         formSuccess: true,
@@ -135,7 +151,7 @@ class CreatePortfolio extends Component {
     return (
       'Ξ' +
       this.round(ether, 5) +
-      ' ETH ($' +
+      ' ($' +
       this.round(this.state.exchangeRate * ether) +
       ')'
     );
@@ -145,10 +161,6 @@ class CreatePortfolio extends Component {
     return (
       <div>
         <h2>Create a New Group</h2>
-        <p>
-          Use the form below to set up your group (these settings can also be
-          changed later).
-        </p>
         <form
           name="autoForm"
           className="pure-form"
@@ -177,12 +189,11 @@ class CreatePortfolio extends Component {
             <span> Min: {this.formatEth(this.state.minDeposit)} </span>
           </fieldset>
 
-          <legend>Add Members</legend>
+          <legend>Group Members</legend>
 
           <p>
-            Add each members's address. Only listed members will be able to
-            deposit and participate. It's ok if you don't have everyone's
-            address right now – you can add and remove members at any time.
+            Only members will be able to deposit and participate. You can add
+            and remove members at any time.
           </p>
 
           <div

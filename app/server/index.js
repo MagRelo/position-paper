@@ -9,25 +9,31 @@ const morgan = require('morgan');
 
 // const getWeb3 = require('./utils/getWeb3');
 
+const { getAllGroups, getGroup, createGroup } = require('./pg-controller');
+
 const sigUtil = require('eth-sig-util');
 // const ethUtil = require('ethereumjs-util');
 
 // *
 // load env var's
 // *
-if (process.env.ENV !== 'production') {
+
+if (process.env.ENV === 'production') {
+  console.log('ENV: ' + process.env.ENV);
+} else {
+  // load local config from .env file
   const result = dotenv.config();
   if (result.error) {
     throw result.error;
   }
-} else {
-  console.log('ENV: ' + process.env.ENV);
+  console.log(result.parsed);
 }
 
 // *
 // db
 // *
-require('./pg-controller.js');
+const { initPG } = require('./pg-controller.js');
+initPG();
 
 // *
 // Server
@@ -37,7 +43,7 @@ require('./pg-controller.js');
 let io = require('./sockets')(server);
 
 // configure express middleware
-app.use(express.static('build_client'));
+app.use(express.static('build'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ limit: '1mb' }));
 app.use(
@@ -50,31 +56,81 @@ app.use(
 );
 
 // http routing
-// app.post('/api/bouncer', async function(req, res) {
-//   // input validation
-//   // const userAddress = recover()
+app.get('/group/', async function(req, res) {
+  try {
+    const response = await getAllGroups();
 
-//   // test web3
-//   const {
-//     web3Connected,
-//     network,
-//     networkId,
-//     serverAccount,
-//     serverAccountBalance
-//   } = await getWeb3.getWeb3();
+    // check response - 404
+    if (!response) {
+      res.status(404).send('Not Found');
+    }
 
-//   res.status(200).send({
-//     web3Connected,
-//     network,
-//     networkId,
-//     serverAccount,
-//     serverAccountBalance
-//   });
-// });
+    res.status(200).send(response);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+app.get('/group/:groupId', async function(req, res) {
+  try {
+    // auth - 403
+    // TODO check user is in group
+    // res.status(403).send('Unauthorized');
+
+    // validate params - 400
+    const groupId = req.params.groupId;
+    if (!groupId) {
+      res.status(400).send('Bad Request');
+    }
+
+    const response = await getGroup(groupId);
+
+    // check response - 404
+    if (!response) {
+      res.status(404).send('Not Found');
+    }
+
+    res.status(200).send(response);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+app.post('/group/:contractAddress', async function(req, res) {
+  console.log('body:', req.body);
+
+  try {
+    // validate params - 400
+    const name = req.body.name;
+    const minDeposit = req.body.minDeposit;
+    const members = req.body.members;
+    const contractAddress = req.params.contractAddress;
+
+    if (!name || !minDeposit || !contractAddress || !members) {
+      res.status(400).send('Bad Request');
+    }
+
+    const response = await createGroup(
+      name,
+      minDeposit,
+      members,
+      contractAddress
+    );
+
+    // check response - 404
+    // if (!response) {
+    //   res.status(404).send('Not Found');
+    // }
+
+    res.status(200).send(response);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
 
 // serve the frontend for all non-api requests
 app.get('/*', function(req, res) {
-  res.sendFile('index.html', { root: './build_client' });
+  res.sendFile('index.html', { root: './build' });
 });
 
 // start server

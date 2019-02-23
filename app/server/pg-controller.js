@@ -1,11 +1,17 @@
 const { Pool, Client } = require('pg');
 
-const connectionString = process.env.PG_CONNECTION_STRING;
-const pool = new Pool({
-  connectionString: connectionString
-});
+let pool;
 
-exports.getAllGameData = async function(name, minDeposit, memberArray) {
+exports.initPG = async function() {
+  const connectionString = process.env.PG_CONNECTION_STRING;
+  console.log('PG Connection:', process.env.PG_CONNECTION_STRING);
+
+  pool = new Pool({
+    connectionString: connectionString
+  });
+};
+
+exports.getAllGroupData = async function(name, minDeposit, memberArray) {
   console.log('pg', name, minDeposit, memberArray);
 
   try {
@@ -16,14 +22,76 @@ exports.getAllGameData = async function(name, minDeposit, memberArray) {
   }
 };
 
-exports.updateGroup = async function(name, minDeposit, memberArray) {
-  console.log('pg', name, minDeposit, memberArray);
+exports.getAllGroups = async function() {
+  const query = `
+    SELECT "groupName", "minDeposit", "groupId", "contractAddress"
+    FROM "groupsSchema"."group";
+  `;
+
+  const queryObj = {
+    text: query
+  };
 
   try {
-    const res = await pool.query('SELECT NOW()');
-    console.log(res.rows[0]);
+    const res = await pool.query(queryObj);
+
+    return res.rows;
   } catch (err) {
-    console.log(err.stack);
+    console.log(err);
+    return new Error(err);
+  }
+};
+
+exports.getGroup = async function(groupAddress) {
+  console.log('getGroup:', groupAddress);
+
+  const query = `
+    SELECT "groupName", "minDeposit", "groupId", "contractAddress"
+    FROM "groupsSchema"."group"
+    WHERE "group"."groupId" =$1;
+  `;
+
+  const queryObj = {
+    text: query,
+    values: [groupAddress]
+  };
+
+  try {
+    const res = await pool.query(queryObj);
+
+    return res.rows[0];
+  } catch (err) {
+    console.log(err);
+    return new Error(err);
+  }
+};
+
+exports.createGroup = async function(
+  name,
+  minDeposit,
+  memberArray,
+  contractAddress
+) {
+  console.log('createGroup', name, minDeposit, memberArray, contractAddress);
+
+  const query = `
+    INSERT INTO "groupsSchema"."group"(
+    "groupName", "minDeposit", "groupId", "contractAddress")
+    VALUES ($1, $2, $3, $4);
+  `;
+
+  const queryObj = {
+    text: query,
+    values: [name, minDeposit, 0, contractAddress]
+  };
+
+  try {
+    const res = await pool.query(queryObj);
+
+    return res;
+  } catch (err) {
+    console.log(err);
+    return new Error(err);
   }
 };
 

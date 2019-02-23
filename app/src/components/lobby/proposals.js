@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Select from 'react-select';
+// import Select from 'react-select';
 
 import { submitVote } from './sockets';
 import InfoPanel from './infoPanel';
@@ -73,8 +73,7 @@ class ProposalsList extends Component {
           }}
         >
           <h3>
-            Proposal: Trade {this.state.selectedProposal.quantity * 100}%
-            {' of '}
+            Trade {this.state.selectedProposal.quantity * 100}%{' of '}
             {this.state.selectedProposal.from.name} to{' '}
             {this.state.selectedProposal.to.name}
           </h3>

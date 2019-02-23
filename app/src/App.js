@@ -13,6 +13,8 @@ import About from 'components/about';
 import LandingPage from 'components/landingPage';
 import CreatePortfolio from 'components/createPortfolio';
 import AcceptInvite from 'components/acceptInvite';
+
+import allGroups from 'components/allGroups';
 import Lobby from 'components/lobby/lobby';
 
 import Auto from 'components/util/autoPage';
@@ -38,7 +40,9 @@ class App extends Component {
           <Route path="/create" component={CreatePortfolio} />
           <Route path="/invite" component={AcceptInvite} />
           <Route path="/about" component={About} />
+
           <Route path="/group/:contractAddress" component={Lobby} />
+          <Route path="/group/" component={allGroups} />
 
           <Route component={LandingPage} />
         </Switch>

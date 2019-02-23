@@ -26,9 +26,8 @@ class Lobby extends Component {
   render() {
     return (
       <div>
+        <h2>{this.state.contractAddress}</h2>
         <div className="lobby-grid">
-          <h2>{this.state.contractAddress}</h2>
-
           <Proposals />
 
           <AddProposal />

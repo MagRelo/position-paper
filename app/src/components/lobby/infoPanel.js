@@ -19,22 +19,36 @@ class InfoPanel extends Component {
     const response = await fetch(this.props.item.messariLink).then(response =>
       response.json()
     );
-    this.setState({
-      loaded: response.status === 200,
-      name: response.data.name,
-      symbol: response.data.symbol,
-      tagline: response.data.tagline,
-      links: response.data.relevant_resources
-    });
+
+    if (response.status === 200) {
+      this.setState({
+        loaded: true,
+        name: response.data.name,
+        symbol: response.data.symbol,
+        tagline: response.data.tagline,
+        links: response.data.relevant_resources
+      });
+    } else {
+      this.setState({
+        loaded: false,
+        error: response.status.error_message
+      });
+    }
   }
 
   render() {
     return (
       <div className="info-panel">
-        <p>
-          {this.state.name} ({this.state.symbol})
-        </p>
-        <p>{this.state.tagline}</p>
+        {this.state.loaded ? (
+          <div>
+            <p>
+              {this.state.name} ({this.state.symbol})
+            </p>
+            <p>{this.state.tagline}</p>
+          </div>
+        ) : (
+          <div>{this.state.error ? <p>{this.state.error}</p> : null}</div>
+        )}
       </div>
     );
   }

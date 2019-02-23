@@ -4,7 +4,6 @@ import Web3 from 'web3';
 // load ABIs
 import PortfolioFactory from 'contracts/PortfolioFactory';
 import Portfolio from 'contracts/Portfolio';
-import SimpleStorage from 'contracts/SimpleStorage';
 
 export async function loadWeb3() {
   // Wait for loading completion to avoid race conditions with web3 injection timing.
@@ -132,45 +131,39 @@ async function loadContracts() {
     const networkID = store.getState().web3.networkID;
 
     // check that we're on a network that this contract has been deployed to
-    const isDeployedOnNetwork =
-      !!Portfolio.networks[networkID] && !!SimpleStorage.networks[networkID];
+    const isDeployedOnNetwork = !!Portfolio.networks[networkID];
 
-    if (isDeployedOnNetwork) {
-      // PortfolioFactory
-      const PortfolioFactoryContract = await new web3.eth.Contract(
-        PortfolioFactory.abi,
-        PortfolioFactory.networks[networkID].address
-      );
-
-      // Portfolio
-      const PortfolioContract = await new web3.eth.Contract(
-        Portfolio.abi,
-        Portfolio.networks[networkID].address
-      );
-
-      // SimpleStorage
-      const SimpleStorageContract = await new web3.eth.Contract(
-        SimpleStorage.abi,
-        SimpleStorage.networks[networkID].address
-      );
-
-      // Add more contracts here...
-
-      store.dispatch({
-        type: 'CONTRACTS_INITIALIZED',
-        payload: {
-          portfolioFactory: PortfolioFactoryContract,
-          portfolio: PortfolioContract,
-          simpleStorage: SimpleStorageContract,
-          contractList: [
-            { value: 'simpleStorage', label: 'simpleStorage' },
-            { value: 'portfolio', label: 'Portfolio' },
-            { value: 'portfolioFactory', label: 'PortfolioFactory' }
-          ],
-          contractsReady: true
-        }
-      });
+    if (!isDeployedOnNetwork) {
+      return console.log('Contracts Not Deployed');
     }
+
+    // PortfolioFactory
+    const PortfolioFactoryContract = await new web3.eth.Contract(
+      PortfolioFactory.abi,
+      PortfolioFactory.networks[networkID].address
+    );
+
+    // Portfolio
+    const PortfolioContract = await new web3.eth.Contract(
+      Portfolio.abi,
+      Portfolio.networks[networkID].address
+    );
+
+    // Add more contracts here...
+
+    store.dispatch({
+      type: 'CONTRACTS_INITIALIZED',
+      payload: {
+        portfolioFactory: PortfolioFactoryContract,
+        portfolio: PortfolioContract,
+        contractList: [
+          { value: 'simpleStorage', label: 'simpleStorage' },
+          { value: 'portfolio', label: 'Portfolio' },
+          { value: 'portfolioFactory', label: 'PortfolioFactory' }
+        ],
+        contractsReady: true
+      }
+    });
 
     return unsubscribe();
   });

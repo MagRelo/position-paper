@@ -1,5 +1,6 @@
 const initialState = {
-  bouncerProxy: null,
+  portfolioFactory: null,
+  portfolio: null,
   simpleStorage: null,
   contractsReady: false,
   contractList: []

@@ -13,7 +13,8 @@
       ],
       "payable": false,
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "signature": "0x177b1ef5"
     },
     {
       "constant": true,
@@ -27,7 +28,8 @@
       ],
       "payable": false,
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "signature": "0x3fa4f245"
     },
     {
       "constant": false,
@@ -41,7 +43,8 @@
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
-      "type": "function"
+      "type": "function",
+      "signature": "0x45ad1fec"
     },
     {
       "constant": false,
@@ -55,7 +58,8 @@
       "outputs": [],
       "payable": true,
       "stateMutability": "payable",
-      "type": "function"
+      "type": "function",
+      "signature": "0xbc14bb4f"
     }
   ],
   "bytecode": "0x608060405234801561001057600080fd5b5061023d806100206000396000f3fe608060405260043610610062576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff168063177b1ef5146100675780633fa4f245146100be57806345ad1fec146100e9578063bc14bb4f14610124575b600080fd5b34801561007357600080fd5b5061007c610152565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b3480156100ca57600080fd5b506100d3610177565b6040518082815260200191505060405180910390f35b3480156100f557600080fd5b506101226004803603602081101561010c57600080fd5b810190808035906020019092919050505061017d565b005b6101506004803603602081101561013a57600080fd5b81019080803590602001909291905050506101c7565b005b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b60015481565b336000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055508060018190555050565b336000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550806001819055505056fea165627a7a72305820e5d40db9f087d419e239939adf7a5d3c8cf2296780f6535d3559c715f552cd4d0029",
@@ -932,12 +936,12 @@
     "1234": {
       "events": {},
       "links": {},
-      "address": "0xb2F301B5d7638dEd659F8881DCaa037A0245f05E",
-      "transactionHash": "0x691d7169ae028f30bf97be65998505e6e5bda33507a383b8a1e840de1684a821"
+      "address": "0x8E961C288fBe69FD1dA2B9811c56eb5429910BA0",
+      "transactionHash": "0x4514ee9340c6e21163264b033beaf49ccb2f6c79e0022c556d4d3ce400b43859"
     }
   },
   "schemaVersion": "3.0.1",
-  "updatedAt": "2019-02-21T16:08:11.932Z",
+  "updatedAt": "2019-02-23T01:04:19.818Z",
   "devdoc": {
     "methods": {}
   },
