@@ -13,7 +13,7 @@ contract PortfolioFactory {
   function createPortfolio(
     address _platform,
     address[] memory _members
-  ) public {
+  ) public payable {
 
     Portfolio newPortfolio = new Portfolio(
       _platform,

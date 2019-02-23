@@ -58,7 +58,7 @@ app.use(
 // http routing
 
 // get all groups
-app.get('/group/', async function(req, res) {
+app.get('/group', async function(req, res) {
   try {
     const response = await getAllGroups();
 
@@ -101,25 +101,32 @@ app.get('/group/:contractAddress', async function(req, res) {
 
 // create group
 app.post('/group/:contractAddress', async function(req, res) {
-  console.log('body:', req.body);
-
   try {
     // validate params - 400
-    const name = req.body.name;
+    const groupKey = req.params.contractAddress;
+    const groupName = req.body.name;
     const minDeposit = req.body.minDeposit;
-    const members = req.body.members;
-    const contractAddress = req.params.contractAddress;
 
-    if (!name || !minDeposit || !contractAddress || !members) {
+    // members
+    const members = req.body.members;
+
+    if (!groupKey || !groupName || !minDeposit) {
       res.status(400).send('Bad Request');
     }
 
+    const date = new Date();
+    const created = date;
+    const updated = date;
+
     const response = await createGroup(
-      name,
+      groupKey,
+      groupName,
       minDeposit,
-      members,
-      contractAddress
+      created,
+      updated
     );
+
+    console.log('do something with members', members);
 
     // check response - 404
     // if (!response) {
@@ -127,6 +134,39 @@ app.post('/group/:contractAddress', async function(req, res) {
     // }
 
     res.status(200).send(response);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+// create proposal
+app.post('/proposal', async function(req, res) {
+  console.log('proposal:', req.body);
+
+  try {
+    // validate params - 400
+    const userKey = req.body.userKey; // userKey,
+    const groupKey = req.body.groupKey; // groupKey
+
+    const fromAsset = req.body.fromAsset; //
+    const toAsset = req.body.toAsset; // toAsset,
+    const quantity = req.body.quantity; // quantity,
+
+    const date = new Date();
+    const created = date; // created,
+    const updated = date; // updated,
+
+    // if (!name) {
+    //   res.status(400).send('Bad Request');
+    // }
+
+    // const response = await createGroup(name);
+
+    // check response - 404
+    // if (!response) {
+    //   res.status(404).send('Not Found');
+    // }
+    // res.status(200).send(response);
   } catch (error) {
     res.status(500).send(error);
   }

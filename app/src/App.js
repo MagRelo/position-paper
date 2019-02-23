@@ -30,7 +30,7 @@ class App extends Component {
           <Route path="/about" component={About} />
 
           <Route path="/group/:contractAddress" component={Lobby} />
-          <Route path="/group/" component={allGroups} />
+          <Route path="/groups" component={allGroups} />
 
           <Route component={LandingPage} />
         </Switch>

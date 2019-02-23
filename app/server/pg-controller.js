@@ -11,21 +11,9 @@ exports.initPG = async function() {
   });
 };
 
-exports.getAllGroupData = async function(name, minDeposit, memberArray) {
-  console.log('pg', name, minDeposit, memberArray);
-
-  try {
-    const res = await pool.query('SELECT * FROM  NOW()');
-    console.log(res.rows[0]);
-  } catch (err) {
-    console.log(err.stack);
-  }
-};
-
 exports.getAllGroups = async function() {
   const query = `
-    SELECT "groupName", "minDeposit", "groupId", "contractAddress"
-    FROM "groupsSchema"."group";
+  SELECT * FROM "groupsSchema"."group"
   `;
 
   const queryObj = {
@@ -34,7 +22,6 @@ exports.getAllGroups = async function() {
 
   try {
     const res = await pool.query(queryObj);
-
     return res.rows;
   } catch (err) {
     console.log(err);
@@ -46,9 +33,9 @@ exports.getGroup = async function(contractAddress) {
   console.log('getGroup:', contractAddress);
 
   const query = `
-    SELECT "groupName", "minDeposit", "groupId", "contractAddress"
+    SELECT *
     FROM "groupsSchema"."group"
-    WHERE "group"."contractAddress" =$1;
+    WHERE "group"."groupKey" =$1;
   `;
 
   const queryObj = {
@@ -58,7 +45,6 @@ exports.getGroup = async function(contractAddress) {
 
   try {
     const res = await pool.query(queryObj);
-
     return res.rows[0];
   } catch (err) {
     console.log(err);
@@ -67,26 +53,33 @@ exports.getGroup = async function(contractAddress) {
 };
 
 exports.createGroup = async function(
-  name,
+  groupKey,
+  groupName,
   minDeposit,
-  memberArray,
-  contractAddress
+  created,
+  updated
 ) {
-  console.log('createGroup', name, minDeposit, memberArray, contractAddress);
+  console.log(
+    'createGroup:',
+    groupKey,
+    groupName,
+    minDeposit,
+    created,
+    updated
+  );
 
   const query = `
     INSERT INTO "groupsSchema"."group"(
-    "groupName", "minDeposit", "groupId", "contractAddress")
-    VALUES ($1, $2, $3, $4);
+    "groupKey", "groupName", "minDeposit", created, updated)
+    VALUES ($1, $2, $3, $4, $5);
   `;
-
-  const queryObj = {
-    text: query,
-    values: [name, minDeposit, 0, contractAddress]
-  };
+  const queryParams = [groupKey, groupName, minDeposit, created, updated];
 
   try {
-    const res = await pool.query(queryObj);
+    const res = await pool.query({
+      text: query,
+      values: queryParams
+    });
 
     return res;
   } catch (err) {
@@ -107,17 +100,43 @@ exports.updateGroupChat = async function(chatData) {
 };
 
 exports.updateUser = async function(userAddress, name) {
-  // create(update?) user
+  // create(update$) user
 };
 
-exports.createProposal = async function(userData) {
-  console.log('pg', userData);
+exports.createProposal = async function(
+  fromAsset,
+  toAsset,
+  quantity,
+  created,
+  updated,
+  userKey,
+  groupKey
+) {
+  // setup query
+  const query = `
+  INSERT INTO "groupsSchema"."groupProposal"(
+    "groupProposalId", "fromAsset", "toAsset", quantity, created, updated, "userKey", "groupKey")
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8);
+  `;
+  const queryParams = [
+    0,
+    fromAsset,
+    toAsset,
+    quantity,
+    created,
+    updated,
+    userKey,
+    groupKey
+  ];
 
   try {
-    const res = await pool.query('SELECT NOW()');
-    console.log(res.rows[0]);
+    return await pool.query({
+      text: query,
+      values: queryParams
+    });
   } catch (err) {
-    console.log(err.stack);
+    console.log(err);
+    return new Error(err);
   }
 };
 

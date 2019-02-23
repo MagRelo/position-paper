@@ -32,7 +32,7 @@ class LandingPage extends Component {
               return (
                 <tr key={group.groupId}>
                   <td>
-                    <Link to={'/group/' + group.contractAddress}>
+                    <Link to={'/group/' + group.groupKey}>
                       {group.groupName}
                     </Link>
                   </td>

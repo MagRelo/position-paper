@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
 import ethereum_address from 'ethereum-address';
+import web3 from 'web3';
 
 import Header from './header';
 
@@ -10,9 +12,9 @@ class CreatePortfolio extends Component {
   state = {
     exchangeRate: 0,
     platformFee: 0.0125,
+    minDeposit: 1,
 
     groupName: '',
-    minDeposit: 1,
 
     memberList: [],
     newMember: '',
@@ -69,15 +71,15 @@ class CreatePortfolio extends Component {
       const event = reciept.events.NewContract;
       const deployedAt = event.returnValues.deployedAt;
 
-      const serverResponse = await fetch('group/' + deployedAt, {
+      await fetch('group/' + deployedAt, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
+          contractAddress: deployedAt,
           name: this.state.groupName,
           minDeposit: this.state.minDeposit,
-          contractAddress: deployedAt,
           members: this.state.memberList
         })
       }).then(response => response.json());
@@ -255,10 +257,7 @@ class CreatePortfolio extends Component {
           <legend>Deposit & Create Group</legend>
           <fieldset>
             <p>Member Deposit: {this.formatEth(this.state.minDeposit)}</p>
-            <p>
-              Platform Fee:{' '}
-              {this.formatEth(this.state.minDeposit * this.state.platformFee)}
-            </p>
+            <p>Platform Fee: 1.25%</p>
           </fieldset>
 
           <button className="pure-button pure-button-primary">
