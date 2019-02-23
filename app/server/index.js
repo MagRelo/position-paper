@@ -56,6 +56,8 @@ app.use(
 );
 
 // http routing
+
+// all groups
 app.get('/group/', async function(req, res) {
   try {
     const response = await getAllGroups();
@@ -71,19 +73,20 @@ app.get('/group/', async function(req, res) {
   }
 });
 
-app.get('/group/:groupId', async function(req, res) {
+// single group
+app.get('/group/:contractAddress', async function(req, res) {
   try {
     // auth - 403
     // TODO check user is in group
     // res.status(403).send('Unauthorized');
 
     // validate params - 400
-    const groupId = req.params.groupId;
-    if (!groupId) {
+    const contractAddress = req.params.contractAddress;
+    if (!contractAddress) {
       res.status(400).send('Bad Request');
     }
 
-    const response = await getGroup(groupId);
+    const response = await getGroup(contractAddress);
 
     // check response - 404
     if (!response) {
@@ -96,6 +99,7 @@ app.get('/group/:groupId', async function(req, res) {
   }
 });
 
+// create group
 app.post('/group/:contractAddress', async function(req, res) {
   console.log('body:', req.body);
 

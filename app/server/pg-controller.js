@@ -42,18 +42,18 @@ exports.getAllGroups = async function() {
   }
 };
 
-exports.getGroup = async function(groupAddress) {
-  console.log('getGroup:', groupAddress);
+exports.getGroup = async function(contractAddress) {
+  console.log('getGroup:', contractAddress);
 
   const query = `
     SELECT "groupName", "minDeposit", "groupId", "contractAddress"
     FROM "groupsSchema"."group"
-    WHERE "group"."groupId" =$1;
+    WHERE "group"."contractAddress" =$1;
   `;
 
   const queryObj = {
     text: query,
-    values: [groupAddress]
+    values: [contractAddress]
   };
 
   try {
