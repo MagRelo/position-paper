@@ -11,23 +11,30 @@ import Discuss from './discuss';
 import Members from './member';
 
 class Lobby extends Component {
-  state = { accounts: null };
+  state = { groupName: '', midDeposit: 0 };
 
   async componentDidMount() {
     // init socket connection w/ contract address
-    const loaded = await initSockets(this.props.match.params.contractAddress);
+    initSockets(this.props.match.params.contractAddress);
+
+    const response = await fetch(
+      '/group/' + this.props.match.params.contractAddress
+    ).then(res => res.json());
+
+    console.log(response);
 
     this.setState({
       contractAddress: this.props.match.params.contractAddress,
-      contractLoaded: loaded
+      groupName: response.groupName,
+      minDeposit: response.minDeposit
     });
   }
 
   render() {
     return (
       <div>
-        <h2>{this.state.contractAddress}</h2>
         <div className="lobby-grid">
+          <h2>{this.state.groupName}</h2>
           <Proposals />
 
           <AddProposal />
