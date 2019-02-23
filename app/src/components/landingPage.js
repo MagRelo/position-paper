@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import Header from './header';
+
 class LandingPage extends Component {
   state = { accounts: null };
 
   render() {
     return (
       <div>
+        <Header />
         <h2>Get Started</h2>
         <div className="row row-2">
           <div>

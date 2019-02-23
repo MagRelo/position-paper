@@ -7,8 +7,8 @@ body,
 
 .container {
   display: grid;
-  grid-template-rows: auto 1fr;
-  padding: 1em;
+  grid-template-rows: 1fr;
+  padding: 0 1em 1em 1em;
 }
 
 body {

@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import Header from './header';
+
 class LandingPage extends Component {
   state = { accounts: null };
 
   render() {
     return (
       <div>
+        <Header />
         <h2>Up Next</h2>
         <div className="row row-3">
           <div>

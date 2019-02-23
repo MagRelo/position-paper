@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import store from 'state/store';
 
 // import Select from 'react-select';
+import Header from './header';
 
 class CreatePortfolio extends Component {
   state = {
@@ -95,10 +96,10 @@ class CreatePortfolio extends Component {
   render() {
     return (
       <div>
-        <h1>Accept Invitation</h1>
+        <Header />
+        <h2>Accept Invitation</h2>
         <p>(Group Info)</p>
         <p>(Members)</p>
-
         <form
           name="autoForm"
           className="pure-form"

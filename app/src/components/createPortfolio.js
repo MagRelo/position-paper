@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ethereum_address from 'ethereum-address';
 
+import Header from './header';
+
 import store from 'state/store';
 
 class CreatePortfolio extends Component {
@@ -160,6 +162,7 @@ class CreatePortfolio extends Component {
   render() {
     return (
       <div>
+        <Header />
         <h2>Create a New Group</h2>
         <form
           name="autoForm"

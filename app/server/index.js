@@ -57,7 +57,7 @@ app.use(
 
 // http routing
 
-// all groups
+// get all groups
 app.get('/group/', async function(req, res) {
   try {
     const response = await getAllGroups();
@@ -73,7 +73,7 @@ app.get('/group/', async function(req, res) {
   }
 });
 
-// single group
+// get single group
 app.get('/group/:contractAddress', async function(req, res) {
   try {
     // auth - 403

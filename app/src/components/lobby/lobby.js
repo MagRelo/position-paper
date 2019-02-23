@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 import { initSockets } from './sockets';
 
 import './lobby.css';
+import './accordian.css';
 import Portfolio from './portfolio';
-import Proposals from './proposals';
+import Proposals from './proposals-acces';
 import AddProposal from './addProposal';
 import Discuss from './discuss';
 import Members from './member';
@@ -32,23 +33,17 @@ class Lobby extends Component {
 
   render() {
     return (
-      <div>
-        <div className="lobby-grid">
-          <h2>{this.state.groupName}</h2>
-          <Proposals />
+      <div className="lobby-grid">
+        <h2>{this.state.groupName}</h2>
+        <Proposals />
 
-          <AddProposal />
+        <AddProposal />
 
-          <Discuss />
+        <Discuss />
 
-          <Portfolio portfolio={['BTC', 'ETH', 'DAI']} />
+        <Portfolio portfolio={['BTC', 'ETH', 'DAI']} />
 
-          <Members members={['Matt', 'Jim']} />
-
-          <div className="lobby-footer">
-            <p>Footer</p>
-          </div>
-        </div>
+        <Members members={['Matt', 'Jim']} />
       </div>
     );
   }
