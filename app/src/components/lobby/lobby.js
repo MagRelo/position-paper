@@ -6,7 +6,7 @@ import { initSockets } from './sockets';
 import './lobby.css';
 import './accordian.css';
 import Portfolio from './portfolio';
-import Proposals from './proposals-acces';
+import Proposals from './proposals';
 import AddProposal from './addProposal';
 import Discuss from './discuss';
 import Members from './member';
@@ -35,13 +35,19 @@ class Lobby extends Component {
     return (
       <div className="lobby-grid">
         <h2>{this.state.groupName}</h2>
-        <Proposals />
+        <Proposals groupKey={this.state.contractAddress} />
 
-        <AddProposal />
+        <AddProposal groupKey={this.state.contractAddress} />
 
-        <Discuss />
+        <Discuss groupKey={this.state.contractAddress} />
 
-        <Portfolio portfolio={['BTC', 'ETH', 'DAI']} />
+        <Portfolio
+          portfolio={[
+            { asset: 'BTC', allocation: 0.21 },
+            { asset: 'ETH', allocation: 0.72 },
+            { asset: 'DAI', allocation: 0.07 }
+          ]}
+        />
 
         <Members members={['Matt', 'Jim']} />
       </div>

@@ -18,7 +18,7 @@
 
 .accordion__item {
   /* border-top: 1px solid rgba(0, 0, 0, 0.1); */
-  margin-top: 0.5em;
+  margin-bottom: 0.5em;
 }
 
 .accordion__item--has-icon {
@@ -39,6 +39,11 @@
 
 }
 
+
+.accordion__title p {
+  margin: 0;
+}
+
 button:focus {
   outline: 0;
 }
@@ -53,13 +58,13 @@ button:focus {
   background-color: white;
 
   display: block;
-  animation: fadein 0.35s ease-in;
+  /* animation: fadein 0.15s ease-in; */
 }
 
 .accordion__body--hidden {
   display: none;
   opacity: 0;
-  animation: fadein 0.35s ease-in;
+  /* animation: fadein 0.15s ease-in; */
 }
 
 .accordion__title>*:last-child,

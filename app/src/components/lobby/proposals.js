@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import Select from 'react-select';
+
+import {
+  Accordion,
+  AccordionItem,
+  AccordionItemTitle,
+  AccordionItemBody
+} from 'react-accessible-accordion';
 
 import { submitVote } from './sockets';
 import InfoPanel from './infoPanel';
@@ -30,13 +36,19 @@ class ProposalsList extends Component {
   }
 
   // Vote form
-  voteOnProposal(proposalId, inFavor) {
-    this.props.submitVote({
-      groupId: 'testing',
-      selectedAccount: this.props.selectedAccount,
-      proposalId: proposalId,
-      inFavor: inFavor
-    });
+  async voteOnProposal(proposalId, inFavor) {
+    const response = await fetch('/vote', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        groupKey: this.props.groupKey,
+        userKey: this.props.selectedAccount,
+        proposalId: proposalId,
+        inFavor: inFavor
+      })
+    }).then(response => response.json());
   }
 
   render() {
@@ -45,73 +57,56 @@ class ProposalsList extends Component {
         <h3>Active Proposals</h3>
 
         <div className="list">
-          <ul>
-            {this.props.proposals.map(item => {
+          <Accordion>
+            {this.props.proposals.map(proposal => {
               return (
-                <li
-                  className={
-                    this.state.selectedProposalId === item.id ? ' selected' : ''
-                  }
-                  key={item.id}
-                  onClick={this.selectProposal.bind(this, item)}
-                >
-                  <span>
-                    Trade {item.quantity * 100}% {item.from.name} to{' '}
-                    {item.to.name}
-                  </span>
-                </li>
+                <AccordionItem key={proposal.id}>
+                  <AccordionItemTitle>
+                    <p>
+                      Trade {proposal.quantity * 100}%{' of '}
+                      {proposal.from.name} to {proposal.to.name}
+                    </p>
+                  </AccordionItemTitle>
+                  <AccordionItemBody>
+                    <div
+                      style={{
+                        display: 'grid',
+                        gridTemplateColumns: '1fr 1fr 1fr'
+                      }}
+                    >
+                      <InfoPanel item={proposal.from} />
+                      <InfoPanel item={proposal.to} />
+
+                      <form action="" className="pure-form vote-form">
+                        <button
+                          type="button"
+                          className="pure-button pure-button-primary"
+                          onClick={this.voteOnProposal.bind(
+                            this,
+                            proposal.id,
+                            true
+                          )}
+                        >
+                          Vote 'Yes'
+                        </button>
+                        <button
+                          type="button"
+                          className="pure-button pure-button-primary"
+                          onClick={this.voteOnProposal.bind(
+                            this,
+                            proposal.id,
+                            false
+                          )}
+                        >
+                          Vote 'No'
+                        </button>
+                      </form>
+                    </div>
+                  </AccordionItemBody>
+                </AccordionItem>
               );
             })}
-          </ul>
-        </div>
-
-        <div
-          className="info"
-          style={{
-            display: 'grid',
-            gridTemplateRows: 'auto 1fr auto'
-          }}
-        >
-          <h3>
-            Trade {this.state.selectedProposal.quantity * 100}%{' of '}
-            {this.state.selectedProposal.from.name} to{' '}
-            {this.state.selectedProposal.to.name}
-          </h3>
-
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr'
-            }}
-          >
-            <InfoPanel item={this.state.selectedProposal.from} />
-            <InfoPanel item={this.state.selectedProposal.to} />
-          </div>
-
-          <form action="" className="pure-form vote-form">
-            <button
-              type="button"
-              className="pure-button pure-button-primary"
-              onClick={this.voteOnProposal.bind(
-                this,
-                this.state.selectedProposal.id,
-                true
-              )}
-            >
-              Vote 'Yes'
-            </button>
-            <button
-              type="button"
-              className="pure-button pure-button-primary"
-              onClick={this.voteOnProposal.bind(
-                this,
-                this.state.selectedProposal.id,
-                false
-              )}
-            >
-              Vote 'No'
-            </button>
-          </form>
+          </Accordion>
         </div>
       </section>
     );
@@ -123,7 +118,8 @@ const mapStateToProps = state => {
     availableAssets: state.lobby.availableAssets,
     portfolio: state.lobby.portfolio,
     quantities: state.lobby.quantities,
-    proposals: state.lobby.proposals
+    proposals: state.lobby.proposals,
+    selectedAccount: state.account.selectedAccount
   };
 };
 

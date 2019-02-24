@@ -13,11 +13,13 @@ class CreatePortfolio extends Component {
     exchangeRate: 0,
     platformFee: 0.0125,
     minDeposit: 1,
+    memberDeposit: 1,
 
     groupName: '',
 
     memberList: [],
-    newMember: '',
+    newMemberName: '',
+    newMemberAddress: '',
 
     formAlert: false,
     formError: false,
@@ -38,12 +40,12 @@ class CreatePortfolio extends Component {
       });
 
     if (this.props.selectedAccount) {
-      this.addMember(this.props.selectedAccount);
+      this.setState({ newMemberAddress: this.props.selectedAccount });
     }
   }
   componentDidUpdate(prevState) {
     if (this.props.selectedAccount !== prevState.selectedAccount) {
-      this.addMember(this.props.selectedAccount);
+      this.setState({ newMemberAddress: this.props.selectedAccount });
     }
   }
 
@@ -182,16 +184,6 @@ class CreatePortfolio extends Component {
               name="groupName"
               onChange={this.handleFormChange.bind(this)}
             />
-            <label htmlFor="minDeposit">Member Deposit</label>
-            <input
-              className="pure-input-1-4"
-              type="number"
-              id="minDeposit"
-              name="minDeposit"
-              value={this.state.minDeposit}
-              onChange={this.handleFormChange.bind(this)}
-            />
-            <span> Min: {this.formatEth(this.state.minDeposit)} </span>
           </fieldset>
 
           <legend>Group Members</legend>
@@ -209,56 +201,71 @@ class CreatePortfolio extends Component {
           >
             <div />
 
-            <ul style={{ padding: 0 }}>
-              {this.state.memberList.map((item, index) => {
-                return (
-                  <li
-                    style={{ listStyle: 'none', marginBottom: '0.5em' }}
-                    key={index}
-                  >
-                    <span style={{ minWidth: '50%', display: 'inline-block' }}>
-                      {item}
-                    </span>
-                    <button
-                      className="pure-button pure-button-primary"
-                      style={{ marginLeft: '0.5em' }}
-                      type="button"
-                      disabled={item === this.props.selectedAccount}
-                      onClick={this.removeMember.bind(this, index)}
-                    >
-                      ✗
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
+            <table className="pure-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Address</th>
+                  <th>Remove</th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.state.memberList.map((item, index) => {
+                  return (
+                    <tr key={item}>
+                      <td />
+                      <td>{item}</td>
+                      <td>
+                        <button
+                          className="pure-button pure-button-primary"
+                          style={{ marginLeft: '0.5em' }}
+                          type="button"
+                          disabled={item === this.props.selectedAccount}
+                          onClick={this.removeMember.bind(this, index)}
+                        >
+                          ✗
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
 
-            <div>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr auto',
+                gridGap: '1em'
+              }}
+            >
               <input
-                className="pure-input-1-2"
+                className="pure-input-1"
                 type="text"
-                name="newMember"
-                value={this.state.newMember}
+                id="newMemberName"
+                name="newMemberName"
+                value={this.state.newMemberName}
+                onChange={this.handleFormChange.bind(this)}
+              />
+              <input
+                className="pure-input-1"
+                type="text"
+                id="newMemberAddress"
+                name="newMemberAddress"
+                value={this.state.newMemberAddress}
                 onChange={this.handleFormChange.bind(this)}
               />
 
               <button
                 className="pure-button pure-button-primary"
-                style={{ marginLeft: '0.5em' }}
                 type="button"
-                disabled={!this.validMemberAddress(this.state.newMember)}
+                disabled={!this.validMemberAddress(this.state.newMemberAddress)}
                 onClick={this.addMember.bind(this, this.state.newMember)}
               >
                 Add Member
               </button>
             </div>
           </div>
-
-          <legend>Deposit & Create Group</legend>
-          <fieldset>
-            <p>Member Deposit: {this.formatEth(this.state.minDeposit)}</p>
-            <p>Platform Fee: 1.25%</p>
-          </fieldset>
 
           <button className="pure-button pure-button-primary">
             Create Group
@@ -303,3 +310,29 @@ export default connect(
   mapStateToProps,
   null
 )(CreatePortfolio);
+
+{
+  /* <legend>Deposit & Create Group</legend>
+<fieldset>
+  <p>Member Deposit: {this.formatEth(this.state.minDeposit)}</p>
+  <p>Platform Fee: 1.25%</p>
+</fieldset>
+ */
+}
+
+{
+  /* <label htmlFor="memberDeposit">
+Deposit{' '}
+<span> Min: {this.formatEth(this.state.minDeposit)} </span>
+</label>
+<input
+className="pure-input-1-4"
+type="number"
+id="memberDeposit"
+name="memberDeposit"
+min={this.state.minDeposit}
+step="0.01"
+value={this.state.memberDeposit}
+onChange={this.handleFormChange.bind(this)}
+/> */
+}

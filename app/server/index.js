@@ -9,7 +9,13 @@ const morgan = require('morgan');
 
 // const getWeb3 = require('./utils/getWeb3');
 
-const { getAllGroups, getGroup, createGroup } = require('./pg-controller');
+const {
+  getAllGroups,
+  getGroup,
+  createGroup,
+  createProposal,
+  updateProposalVote
+} = require('./pg-controller');
 
 const sigUtil = require('eth-sig-util');
 // const ethUtil = require('ethereumjs-util');
@@ -160,13 +166,58 @@ app.post('/proposal', async function(req, res) {
     //   res.status(400).send('Bad Request');
     // }
 
-    // const response = await createGroup(name);
+    const response = await createProposal(
+      fromAsset,
+      toAsset,
+      quantity,
+      created,
+      updated,
+      userKey,
+      groupKey
+    );
 
     // check response - 404
     // if (!response) {
     //   res.status(404).send('Not Found');
     // }
-    // res.status(200).send(response);
+
+    res.status(200).send(response);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+// create vote
+app.post('/vote', async function(req, res) {
+  console.log('vote:', req.body);
+
+  try {
+    // validate params - 400
+    const userKey = req.body.userKey; // userKey,
+    const groupKey = req.body.groupKey; // groupKey
+
+    const proposalId = req.body.proposalId; //
+    const inFavor = req.body.inFavor; // toAsset,
+
+    console.log(typeof inFavor === 'boolean');
+
+    if (!userKey || !groupKey || !proposalId) {
+      return res.status(400).send('Bad Request');
+    }
+
+    const response = await updateProposalVote(
+      userKey,
+      groupKey,
+      proposalId,
+      inFavor
+    );
+
+    // check response - 404
+    // if (!response) {
+    //   res.status(404).send('Not Found');
+    // }
+
+    res.status(200).send(response);
   } catch (error) {
     res.status(500).send(error);
   }

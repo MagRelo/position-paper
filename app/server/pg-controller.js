@@ -1,4 +1,5 @@
-const { Pool, Client } = require('pg');
+const { Pool } = require('pg');
+// const { Pool, Client } = require('pg');
 
 let pool;
 
@@ -115,11 +116,10 @@ exports.createProposal = async function(
   // setup query
   const query = `
   INSERT INTO "groupsSchema"."groupProposal"(
-    "groupProposalId", "fromAsset", "toAsset", quantity, created, updated, "userKey", "groupKey")
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8);
+    "fromAsset", "toAsset", quantity, created, updated, "userKey", "groupKey")
+    VALUES ($1, $2, $3, $4, $5, $6, $7);
   `;
   const queryParams = [
-    0,
     fromAsset,
     toAsset,
     quantity,
@@ -128,6 +128,16 @@ exports.createProposal = async function(
     userKey,
     groupKey
   ];
+
+  console.log([
+    fromAsset,
+    toAsset,
+    quantity,
+    created,
+    updated,
+    userKey,
+    groupKey
+  ]);
 
   try {
     return await pool.query({
@@ -140,12 +150,38 @@ exports.createProposal = async function(
   }
 };
 
-exports.updateProposalVote = async function(voteData) {
-  console.log('pg', voteData);
+exports.updateProposalVote = async function(
+  userKey,
+  groupKey,
+  proposalId,
+  inFavor
+) {
+  console.log('pg vote', proposalId, inFavor);
+
+  const date = new Date();
+  const created = date; // created,
+  const updated = date; // updated,
+
+  // setup query
+  const query = `
+  INSERT INTO "groupsSchema"."proposalVote"(
+    "proposalId", "inFavor", created, updated, "userKey", "groupKey")
+    VALUES ($1, $2, $3, $4, $5, $6);
+  `;
+  const queryParams = [
+    proposalId,
+    inFavor,
+    created,
+    updated,
+    userKey,
+    groupKey
+  ];
 
   try {
-    const res = await pool.query('SELECT NOW()');
-    console.log(res.rows[0]);
+    return await pool.query({
+      text: query,
+      values: queryParams
+    });
   } catch (err) {
     console.log(err.stack);
   }
