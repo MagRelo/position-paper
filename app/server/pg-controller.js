@@ -241,9 +241,10 @@ exports.getLobbyData = async function(groupKey) {
 
   const chat = {
     text: `
-      SELECT *
-      FROM "groupsSchema"."groupChat"
+      SELECT "user"."userName", "groupChat"."message", "groupChat"."groupChatId"
+      FROM "groupsSchema"."groupChat", "groupsSchema"."user"
       WHERE "groupChat"."groupKey" = $1
+      AND "groupChat"."userKey" = "user"."userKey";
     `,
     values: [groupKey]
   };

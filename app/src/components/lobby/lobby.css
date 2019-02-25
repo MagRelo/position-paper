@@ -40,7 +40,7 @@
 
 .members .list {
   background: white;
-  /* border-radius: 4px; */
+  border-radius: 2px;
 }
 
 
@@ -54,7 +54,7 @@
 
 .portfolio .list {
   background: white;
-  /* border-radius: 4px; */
+  border-radius: 2px;
 }
 
 
@@ -68,10 +68,10 @@
 
 .discuss .list {
   background: #ffffff;
-  /* border-top-left-radius: 4px;
-  border-top-right-radius: 4px; */
+  border-top-right-radius: 2px;
+  border-top-left-radius: 2px;
+
   overflow: hidden;
-  font-family: serif;
 }
 
 .discuss .list .message {
@@ -81,23 +81,20 @@
 .discuss .list .message-user {
   background: #d0d2d4;
   padding: 0.33em 0.67em;
-
   text-align: right;
 }
 
 .discuss form {
   padding: 0.5em;
 
+  background: white;
+  border-top: solid #dddddd 1px;
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
+
   display: grid;
   grid-template-columns: 1fr auto;
   grid-gap: 0.5em;
-
-  background: white;
-  border-top: solid #dddddd 1px;
-
-  border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 4px;
-
 }
 
 
@@ -118,9 +115,8 @@
 
 .add-proposal form {
   padding: 0.5em;
-
   background: white;
-  border-radius: 4px;
+  border-radius: 2px;
 
   display: grid;
   grid-gap: 0.5em;

@@ -43,7 +43,7 @@ class Discuss extends Component {
               {this.props.messages.map(message => {
                 return (
                   <tr key={message.groupChatId}>
-                    <td className="message-user">{message.userKey}</td>
+                    <td className="message-user">{message.userName}</td>
                     <td className="message">{message.message}</td>
                   </tr>
                 );
