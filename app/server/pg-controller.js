@@ -31,7 +31,7 @@ exports.getAllGroups = async function() {
 };
 
 exports.getGroup = async function(contractAddress) {
-  console.log('getGroup:', contractAddress);
+  // console.log('getGroup:', contractAddress);
 
   const query = `
     SELECT *
@@ -201,6 +201,7 @@ exports.updateProposalTrade = async function(userData) {
 };
 
 exports.getLobbyData = async function(groupKey) {
+  console.log('lobby');
   const group = {
     text: `
       SELECT *
@@ -252,6 +253,8 @@ exports.getLobbyData = async function(groupKey) {
       await pool.query(proposals),
       await pool.query(chat)
     ]);
+
+    console.log('group', !!data[0].rows[0]);
 
     return {
       group: data[0].rows[0],

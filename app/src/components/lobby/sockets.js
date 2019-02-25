@@ -16,14 +16,16 @@ export async function submitChat(message) {
 }
 
 export async function initSockets(contractAddress) {
-  socket = io('/');
+  socket = io('/', {
+    query: 'groupKey=' + contractAddress
+  });
   socket.on('connect', () => {
     console.log('socket connected:', socket.id);
   });
 
   // servesa events
-  socket.on('server-account', updateServerData);
-  socket.on('bounce-response', bounceResponse);
+  socket.on('lobby-update', updateServerData);
+  // socket.on('bounce-response', bounceResponse);
 
   // standard errors
   socket.on('reconnecting', reconnectError);
@@ -38,17 +40,17 @@ export async function initSockets(contractAddress) {
 // socket handlers
 async function updateServerData(data) {
   return store.dispatch({
-    type: 'SERVER_ACCOUNT',
+    type: 'LOBBY_UPDATE',
     payload: data
   });
 }
 
-async function bounceResponse(data) {
-  return store.dispatch({
-    type: 'BOUNCE_RESPONSE',
-    payload: data
-  });
-}
+// async function bounceResponse(data) {
+//   return store.dispatch({
+//     type: 'BOUNCE_RESPONSE',
+//     payload: data
+//   });
+//}
 
 // standard errors
 

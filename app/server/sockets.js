@@ -3,17 +3,25 @@ var io = require('socket.io');
 const {
   createProposal,
   updateProposalVote,
-  updateGroupChat
+  updateGroupChat,
+  getLobbyData
 } = require('./pg-controller');
 
 module.exports = function startIo(server) {
   io = io.listen(server);
 
   io.on('connection', async socket => {
-    console.log('socket connected:', socket.id);
+    console.log(
+      'socket connected:',
+      socket.id,
+      socket.handshake.query.groupKey
+    );
 
     // setup
-    io.emit('group-setup', await getServerAccount());
+    io.emit(
+      'lobby-update',
+      await getLobbyData(socket.handshake.query.groupKey)
+    );
 
     // events
     socket.on('submit-proposal', async data => {
@@ -31,14 +39,6 @@ module.exports = function startIo(server) {
 
   return io;
 };
-
-async function getServerAccount() {
-  // test web3
-  // const { serverAccount, serverAccountBalance } = await getWeb3.getWeb3();
-
-  // return { serverAccount: serverAccount.address, serverAccountBalance };
-  return { time: 'party' };
-}
 
 // debug
 function timeout(ms) {
