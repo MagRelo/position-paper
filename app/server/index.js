@@ -18,6 +18,8 @@ const {
   createMessage
 } = require('./pg-controller');
 
+const { startIo, broadcastGroupUpdate } = require('./sockets');
+
 const sigUtil = require('eth-sig-util');
 // const ethUtil = require('ethereumjs-util');
 
@@ -46,8 +48,8 @@ initPG();
 // Server
 // *
 
-// sockets routing
-let io = require('./sockets')(server);
+// sockets
+startIo(server);
 
 // configure express middleware
 app.use(express.static('build'));
@@ -173,9 +175,11 @@ app.post('/proposal', async function(req, res) {
     //   res.status(404).send('Not Found');
     // }
 
-    res.status(200).send(response);
+    await broadcastGroupUpdate(groupKey);
+    return res.status(200).send(response);
   } catch (error) {
-    res.status(500).send(error);
+    console.log();
+    res.status(500).send(error.message);
   }
 });
 
@@ -209,7 +213,8 @@ app.post('/vote', async function(req, res) {
     //   res.status(404).send('Not Found');
     // }
 
-    res.status(200).send(response);
+    await broadcastGroupUpdate(groupKey);
+    return res.status(200).send(response);
   } catch (error) {
     res.status(500).send(error);
   }
@@ -239,7 +244,8 @@ app.post('/chat', async function(req, res) {
     //   res.status(404).send('Not Found');
     // }
 
-    res.status(200).send(response);
+    await broadcastGroupUpdate(groupKey);
+    return res.status(200).send(response);
   } catch (error) {
     res.status(500).send(error);
   }

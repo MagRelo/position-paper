@@ -7,7 +7,7 @@ const {
   getLobbyData
 } = require('./pg-controller');
 
-module.exports = function startIo(server) {
+exports.startIo = function(server) {
   io = io.listen(server);
 
   io.on('connection', async socket => {
@@ -17,27 +17,33 @@ module.exports = function startIo(server) {
       socket.handshake.query.groupKey
     );
 
+    const groupKey = socket.handshake.query.groupKey;
+
+    // join room
+    socket.join(groupKey);
+
     // setup
-    io.emit(
-      'lobby-update',
-      await getLobbyData(socket.handshake.query.groupKey)
-    );
+    io.to(groupKey).emit('lobby-update', await getLobbyData(groupKey));
 
-    // events
-    socket.on('submit-proposal', async data => {
-      await createProposal(data);
-    });
+    // // events
+    // socket.on('submit-proposal', async data => {
+    //   await createProposal(data);
+    // });
 
-    socket.on('submit-vote', async data => {
-      await updateProposalVote(data);
-    });
+    // socket.on('submit-vote', async data => {
+    //   await updateProposalVote(data);
+    // });
 
-    socket.on('submit-chat', async data => {
-      await updateGroupChat(data);
-    });
+    // socket.on('submit-chat', async data => {
+    //   await updateGroupChat(data);
+    // });
   });
 
   return io;
+};
+
+exports.broadcastGroupUpdate = async function(groupKey) {
+  return io.to(groupKey).emit('lobby-update', await getLobbyData(groupKey));
 };
 
 // debug

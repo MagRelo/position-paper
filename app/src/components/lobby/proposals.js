@@ -32,11 +32,11 @@ class ProposalsList extends Component {
                   {proposal.fromAsset} to {proposal.toAsset}
                 </p>
                 <p>
-                  Votes Cast: {proposal.votes || 5} of{' '}
-                  {proposal.votesNeeded || 8}
+                  Votes Cast: {proposal.votes || 'x'} of{' '}
+                  {proposal.votesNeeded || 'y'}
                 </p>
 
-                <p>Select Vote:</p>
+                <p>Vote:</p>
 
                 <form action="" className="pure-form vote-form">
                   <button

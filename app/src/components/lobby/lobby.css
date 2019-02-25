@@ -109,11 +109,13 @@
 }
 
 .proposals .list .list-item {
-  display: grid;
-  grid-template-columns: 1fr 1fr auto auto;
+  border-radius: 2px;
   background: white;
   padding: 0.5em;
-  border-radius: 2px;
+  margin-bottom: 1em;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr auto auto;
 }
 
 .proposals .list p {
