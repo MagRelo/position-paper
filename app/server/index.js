@@ -14,7 +14,8 @@ const {
   getGroup,
   createGroup,
   createProposal,
-  updateProposalVote
+  updateProposalVote,
+  createMessage
 } = require('./pg-controller');
 
 const sigUtil = require('eth-sig-util');
@@ -112,27 +113,18 @@ app.post('/group/:contractAddress', async function(req, res) {
     const groupKey = req.params.contractAddress;
     const groupName = req.body.name;
     const minDeposit = req.body.minDeposit;
-
-    // members
     const members = req.body.members;
 
-    if (!groupKey || !groupName || !minDeposit) {
+    if (!groupKey || !groupName || !minDeposit || !members) {
       res.status(400).send('Bad Request');
     }
-
-    const date = new Date();
-    const created = date;
-    const updated = date;
 
     const response = await createGroup(
       groupKey,
       groupName,
       minDeposit,
-      created,
-      updated
+      members
     );
-
-    console.log('do something with members', members);
 
     // check response - 404
     // if (!response) {
@@ -211,6 +203,36 @@ app.post('/vote', async function(req, res) {
       proposalId,
       inFavor
     );
+
+    // check response - 404
+    // if (!response) {
+    //   res.status(404).send('Not Found');
+    // }
+
+    res.status(200).send(response);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+// create vote
+app.post('/chat', async function(req, res) {
+  console.log('chat:', req.body);
+
+  try {
+    // validate params - 400
+    const userKey = req.body.userKey; // userKey,
+    const groupKey = req.body.groupKey; // groupKey
+
+    const message = req.body.message; //
+
+    console.log(typeof inFavor === 'boolean');
+
+    if (!userKey || !groupKey || !message) {
+      return res.status(400).send('Bad Request');
+    }
+
+    const response = await createMessage(userKey, groupKey, message);
 
     // check response - 404
     // if (!response) {

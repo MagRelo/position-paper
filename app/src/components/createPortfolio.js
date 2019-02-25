@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import ethereum_address from 'ethereum-address';
-import web3 from 'web3';
+// import web3 from 'web3';
 
 import Header from './header';
 
@@ -310,29 +310,3 @@ export default connect(
   mapStateToProps,
   null
 )(CreatePortfolio);
-
-{
-  /* <legend>Deposit & Create Group</legend>
-<fieldset>
-  <p>Member Deposit: {this.formatEth(this.state.minDeposit)}</p>
-  <p>Platform Fee: 1.25%</p>
-</fieldset>
- */
-}
-
-{
-  /* <label htmlFor="memberDeposit">
-Deposit{' '}
-<span> Min: {this.formatEth(this.state.minDeposit)} </span>
-</label>
-<input
-className="pure-input-1-4"
-type="number"
-id="memberDeposit"
-name="memberDeposit"
-min={this.state.minDeposit}
-step="0.01"
-value={this.state.memberDeposit}
-onChange={this.handleFormChange.bind(this)}
-/> */
-}

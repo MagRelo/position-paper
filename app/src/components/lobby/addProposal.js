@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 
-import { submitProposal } from './sockets';
-
 const assets = [
   ['ANT', '0x077d52B047735976dfdA76feF74d4d988AC25196'],
   ['BAT', '0x2E642b8D59B45a1D8c5aEf716A84FF44ea665914'],
@@ -46,14 +44,18 @@ const assets = [
 const assetOptions = assets.map(asset => {
   return {
     label: asset[0],
-    value: asset[1]
+    value: {
+      name: asset[0],
+      formFeild: 'toAsset',
+      address: asset[1]
+    }
   };
 });
 
 class ProposalsList extends Component {
   state = {
-    currentAsset: null,
-    newAsset: null,
+    fromAsset: null,
+    toAsset: null,
     quantity: 0
   };
 
@@ -74,8 +76,9 @@ class ProposalsList extends Component {
         groupKey: this.props.groupKey,
         userKey: this.props.selectedAccount,
         quantity: this.state.quantity.number,
-        fromAsset: this.state.currentAsset.name,
-        toAsset: this.state.newAsset.name
+
+        fromAsset: this.state.fromAsset.name,
+        toAsset: this.state.toAsset.name
       })
     }).then(response => response.json());
   }
@@ -83,12 +86,12 @@ class ProposalsList extends Component {
   render() {
     return (
       <section className="add-proposal">
-        <h3>Add a Proposal</h3>
+        <h3>Propose a Trade</h3>
 
         <form action="" className="pure-form proposal-form">
-          <label htmlFor="">Trade:</label>
+          <p>Move</p>
           <Select
-            placeholder="Select %"
+            placeholder="Amount (%)"
             name="quantity"
             id="quantity"
             options={this.props.quantities}
@@ -99,18 +102,18 @@ class ProposalsList extends Component {
 
           <Select
             placeholder="Current Asset"
-            name="currentAsset"
-            id="currentAsset"
+            name="fromAsset"
+            id="fromAsset"
             options={this.props.portfolio}
             onChange={this.onSelectAsset.bind(this)}
           />
 
-          <p>for</p>
+          <p>into</p>
 
           <Select
             placeholder="New Asset"
-            name="newAsset"
-            id="newAsset"
+            name="toAsset"
+            id="toAsset"
             options={assetOptions}
             onChange={this.onSelectAsset.bind(this)}
           />
@@ -119,9 +122,9 @@ class ProposalsList extends Component {
             type="button"
             className="pure-button pure-button-primary"
             disabled={
-              !this.state.newAsset ||
-              !this.state.currentAsset ||
-              !this.state.quantity
+              !this.state.quantity ||
+              !this.state.fromAsset ||
+              !this.state.toAsset
             }
             onClick={this.submitProposal.bind(this)}
           >
@@ -143,13 +146,7 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    submitProposal: (quantity, from, to) => {
-      submitProposal(quantity, from, to);
-    }
-  };
-};
+const mapDispatchToProps = dispatch => {};
 
 export default connect(
   mapStateToProps,

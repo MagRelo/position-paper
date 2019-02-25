@@ -53,21 +53,12 @@ exports.getGroup = async function(contractAddress) {
   }
 };
 
-exports.createGroup = async function(
-  groupKey,
-  groupName,
-  minDeposit,
-  created,
-  updated
-) {
-  console.log(
-    'createGroup:',
-    groupKey,
-    groupName,
-    minDeposit,
-    created,
-    updated
-  );
+exports.createGroup = async function(groupKey, groupName, minDeposit, members) {
+  console.log('createGroup:', groupKey, groupName, minDeposit, members);
+
+  const date = new Date();
+  const created = date; // created,
+  const updated = date; // updated,
 
   const query = `
     INSERT INTO "groupsSchema"."group"(
@@ -77,9 +68,26 @@ exports.createGroup = async function(
   const queryParams = [groupKey, groupName, minDeposit, created, updated];
 
   try {
+    // create group
     const res = await pool.query({
       text: query,
       values: queryParams
+    });
+
+    // create users
+    const usersInserts = members.map(member => {
+      return pool.query({
+        text: query,
+        values: queryParams
+      });
+    });
+
+    // create links
+    const linkInserts = members.map(member => {
+      return pool.query({
+        text: query,
+        values: queryParams
+      });
     });
 
     return res;
@@ -185,10 +193,94 @@ exports.updateProposalVote = async function(
   } catch (err) {
     console.log(err.stack);
   }
-  // all update
 };
 
 // Log Trades
 exports.updateProposalTrade = async function(userData) {
   // trade
+};
+
+exports.getLobbyData = async function(groupKey) {
+  const group = {
+    text: `
+      SELECT *
+      FROM "groupsSchema"."group"
+      WHERE "group"."groupKey" = $1
+    `,
+    values: [groupKey]
+  };
+
+  const proposals = {
+    text: `
+      SELECT *
+      FROM "groupsSchema"."groupProposal"
+      WHERE "groupProposal"."groupKey" = $1
+    `,
+    values: [groupKey]
+  };
+
+  const chat = {
+    text: `
+      SELECT *
+      FROM "groupsSchema"."groupChat"
+      WHERE "groupChat"."groupKey" = $1
+    `,
+    values: [groupKey]
+  };
+
+  // const portfolio = {
+  //   text: `
+  //     SELECT *
+  //     FROM "groupsSchema"."groupPortfolio"
+  //     WHERE "groupChat"."groupKey" = $1
+  //   `,
+  //   values: [groupKey]
+  // };
+
+  // const members = {
+  //   text: `
+  //     SELECT *
+  //     FROM "groupsSchema"."groupPortfolio"
+  //     WHERE "groupChat"."groupKey" = $1
+  //   `,
+  //   values: [groupKey]
+  // };
+
+  try {
+    const data = await Promise.all([
+      await pool.query(group),
+      await pool.query(proposals),
+      await pool.query(chat)
+    ]);
+
+    return {
+      group: data[0].rows[0],
+      proposals: data[1].rows,
+      chat: data[2].rows
+    };
+  } catch (err) {
+    console.log(err.stack);
+  }
+};
+
+exports.createMessage = async function(userKey, groupKey, message) {
+  const date = new Date();
+  const created = date; // created,
+  const updated = date; // updated,
+
+  const query = `
+  INSERT INTO "groupsSchema"."groupChat"(
+    message, "userKey", "groupKey", created, updated)
+    VALUES ($1, $2, $3, $4, $5);
+  `;
+  const queryParams = [message, userKey, groupKey, created, updated];
+
+  try {
+    return await pool.query({
+      text: query,
+      values: queryParams
+    });
+  } catch (err) {
+    console.log(err.stack);
+  }
 };

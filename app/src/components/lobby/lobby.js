@@ -22,8 +22,6 @@ class Lobby extends Component {
       '/group/' + this.props.match.params.contractAddress
     ).then(res => res.json());
 
-    console.log(response);
-
     this.setState({
       contractAddress: this.props.match.params.contractAddress,
       groupName: response.groupName,

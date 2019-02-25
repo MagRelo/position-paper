@@ -1,19 +1,23 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { submitChat } from './sockets';
-
 class Discuss extends Component {
   state = { accounts: null, message: '' };
 
-  sendMessage(event) {
+  async sendMessage(event) {
     event.preventDefault();
 
-    this.props.submitChat({
-      groupId: 'testing',
-      selectedAccount: this.props.selectedAccount,
-      message: this.state.message
-    });
+    const response = await fetch('/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        groupKey: this.props.groupKey,
+        userKey: this.props.selectedAccount,
+        message: this.state.message
+      })
+    }).then(response => response.json());
 
     return this.setState({ message: '' });
   }
@@ -32,8 +36,8 @@ class Discuss extends Component {
             <tbody>
               {this.props.messages.map(message => {
                 return (
-                  <tr key={message.id}>
-                    <td className="message-user">{message.user}</td>
+                  <tr key={message.groupChatId}>
+                    <td className="message-user">{message.userKey}</td>
                     <td className="message">{message.message}</td>
                   </tr>
                 );
@@ -67,25 +71,13 @@ class Discuss extends Component {
 
 const mapStateToProps = state => {
   return {
-    messages: [
-      {
-        id: 1,
-        user: '🤖',
-        message:
-          'Welcome to the tournament, meat-bags. Add proposals, vote on them, execute the trades.'
-      },
-      { id: 0, user: 'matt', message: 'hello' }
-    ],
+    messages: state.lobby.chat,
     selectedAccount: state.account.selectedAccount
   };
 };
 
 const mapDispatchToProps = dispatch => {
-  return {
-    submitChat: message => {
-      return submitChat(message);
-    }
-  };
+  return {};
 };
 
 export default connect(
