@@ -13,7 +13,7 @@ import InfoPanel from './infoPanel';
 class ProposalsList extends Component {
   // Vote form
   async voteOnProposal(proposalId, inFavor) {
-    const response = await fetch('/vote', {
+    await fetch('/vote', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

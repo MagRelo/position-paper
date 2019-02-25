@@ -40,7 +40,7 @@
 
 .members .list {
   background: white;
-  border-radius: 4px;
+  /* border-radius: 4px; */
 }
 
 
@@ -54,7 +54,7 @@
 
 .portfolio .list {
   background: white;
-  border-radius: 4px;
+  /* border-radius: 4px; */
 }
 
 
@@ -68,8 +68,8 @@
 
 .discuss .list {
   background: #ffffff;
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
+  /* border-top-left-radius: 4px;
+  border-top-right-radius: 4px; */
   overflow: hidden;
   font-family: serif;
 }
@@ -120,7 +120,7 @@
   padding: 0.5em;
 
   background: white;
-  /* border-radius: 4px; */
+  border-radius: 4px;
 
   display: grid;
   grid-gap: 0.5em;

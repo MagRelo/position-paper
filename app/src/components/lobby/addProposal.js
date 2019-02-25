@@ -67,7 +67,7 @@ class ProposalsList extends Component {
   }
 
   async submitProposal() {
-    const response = await fetch('/proposal', {
+    await fetch('/proposal', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

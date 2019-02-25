@@ -1,6 +1,7 @@
 const initialState = {
   group: {
-    groupName: ''
+    groupName: '',
+    groupKey: ''
   },
   members: [],
   proposals: [],

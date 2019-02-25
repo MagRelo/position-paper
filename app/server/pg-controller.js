@@ -69,28 +69,48 @@ exports.createGroup = async function(groupKey, groupName, minDeposit, members) {
 
   try {
     // create group
-    const res = await pool.query({
+    const groupResults = await pool.query({
       text: query,
       values: queryParams
     });
 
     // create users
-    const usersInserts = members.map(member => {
-      return pool.query({
-        text: query,
-        values: queryParams
-      });
+    const userInserts = [];
+    members.forEach(member => {
+      userInserts.push(
+        pool.query({
+          text: `
+          INSERT INTO "groupsSchema"."user"(
+            "userKey", "userName", created, updated)
+            VALUES ($1, $2, $3, $4);
+          `,
+          values: [member.address, member.name, created, updated]
+        })
+      );
     });
+
+    // execute users
+    const userResults = Promise.all(userInserts);
 
     // create links
-    const linkInserts = members.map(member => {
-      return pool.query({
-        text: query,
-        values: queryParams
-      });
+    const userLinkInserts = [];
+    members.forEach(member => {
+      userLinkInserts.push(
+        pool.query({
+          text: `
+          INSERT INTO "groupsSchema"."groupUser"(
+            "userKey", "groupKey")
+            VALUES ($1, $2);
+          `,
+          values: [member.address, groupKey]
+        })
+      );
     });
 
-    return res;
+    // execute links
+    const userLinkResults = Promise.all(userInserts);
+
+    return { groupResults, userResults, userLinkResults };
   } catch (err) {
     console.log(err);
     return new Error(err);
@@ -237,26 +257,26 @@ exports.getLobbyData = async function(groupKey) {
   //   values: [groupKey]
   // };
 
-  // const members = {
-  //   text: `
-  //     SELECT *
-  //     FROM "groupsSchema"."groupPortfolio"
-  //     WHERE "groupChat"."groupKey" = $1
-  //   `,
-  //   values: [groupKey]
-  // };
+  const members = {
+    text: `
+      SELECT *
+      FROM "groupsSchema"."user";
+    `
+  };
 
   try {
     const data = await Promise.all([
       await pool.query(group),
       await pool.query(proposals),
-      await pool.query(chat)
+      await pool.query(chat),
+      await pool.query(members)
     ]);
 
     return {
       group: data[0].rows[0],
       proposals: data[1].rows,
-      chat: data[2].rows
+      chat: data[2].rows,
+      members: data[3].rows
     };
   } catch (err) {
     console.log(err.stack);

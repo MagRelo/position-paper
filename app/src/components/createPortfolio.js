@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
 import ethereum_address from 'ethereum-address';
+
 // import web3 from 'web3';
 
-import Header from './header';
-
 import store from 'state/store';
+import Header from './header';
 
 class CreatePortfolio extends Component {
   state = {
@@ -15,9 +14,18 @@ class CreatePortfolio extends Component {
     minDeposit: 1,
     memberDeposit: 1,
 
-    groupName: '',
+    groupName: 'Test',
+    memberList: [
+      {
+        name: 'test1',
+        address: '0x863afa452f38966b54cb1149d934e34670d0683a'
+      },
+      {
+        name: 'test2',
+        address: '0x863afa452f38966b54cb1149d934e34670d0683f'
+      }
+    ],
 
-    memberList: [],
     newMemberName: '',
     newMemberAddress: '',
 
@@ -60,12 +68,15 @@ class CreatePortfolio extends Component {
       formSubmitting: true
     });
 
-    // const memberParam = memberList.map(member => {});
-
     try {
       const platformAddress = '0x66414e903305Ff1E9dD8266AEDb359A9773236FC';
       const reciept = await contract.methods
-        .createPortfolio(platformAddress, this.state.memberList)
+        .createPortfolio(
+          platformAddress,
+          this.state.memberList.map(member => {
+            return member.address;
+          })
+        )
         .send({
           from: selectedAccount
         });
@@ -125,12 +136,13 @@ class CreatePortfolio extends Component {
     this.setState({ [event.target.name]: event.target.value });
   }
 
-  addMember(member) {
+  addMember(name, address) {
     const tempArray = this.state.memberList;
-    tempArray.push(member);
+    tempArray.push({ name: name, address: address });
 
     this.setState({
-      newMember: '',
+      newMemberName: '',
+      newMemberAddress: '',
       memberList: tempArray
     });
   }
@@ -144,7 +156,7 @@ class CreatePortfolio extends Component {
 
   validMemberAddress(address) {
     const found = this.state.memberList.find(item => {
-      return item === address;
+      return item.address === address;
     });
 
     return ethereum_address.isAddress(address) && !found;
@@ -169,7 +181,7 @@ class CreatePortfolio extends Component {
         <Header />
         <h2>Create a New Group</h2>
         <form
-          name="autoForm"
+          name="createForm"
           className="pure-form"
           onSubmit={this.handleSubmit.bind(this)}
         >
@@ -182,25 +194,23 @@ class CreatePortfolio extends Component {
               type="text"
               id="groupName"
               name="groupName"
+              value={this.state.groupName}
               onChange={this.handleFormChange.bind(this)}
             />
           </fieldset>
 
           <legend>Group Members</legend>
 
-          <p>
-            Only members will be able to deposit and participate. You can add
-            and remove members at any time.
-          </p>
-
           <div
             style={{
-              padding: '1em',
+              padding: '0 1em 1em',
               marginBottom: '1em'
             }}
           >
-            <div />
-
+            <p>
+              Only members will be able to deposit and participate. You can add
+              and remove members at any time.
+            </p>
             <table className="pure-table">
               <thead>
                 <tr>
@@ -212,9 +222,9 @@ class CreatePortfolio extends Component {
               <tbody>
                 {this.state.memberList.map((item, index) => {
                   return (
-                    <tr key={item}>
-                      <td />
-                      <td>{item}</td>
+                    <tr key={item.address}>
+                      <td>{item.name}</td>
+                      <td>{item.address}</td>
                       <td>
                         <button
                           className="pure-button pure-button-primary"
@@ -235,15 +245,18 @@ class CreatePortfolio extends Component {
             <div
               style={{
                 display: 'grid',
-                gridTemplateColumns: '1fr 1fr auto',
-                gridGap: '1em'
+                gridTemplateColumns: 'auto 1fr 1fr auto',
+                gridGap: '1em',
+                marginTop: '4em'
               }}
             >
+              <p style={{ margin: '0.5em' }}>Add Member:</p>
               <input
                 className="pure-input-1"
                 type="text"
                 id="newMemberName"
                 name="newMemberName"
+                placeholder="Name"
                 value={this.state.newMemberName}
                 onChange={this.handleFormChange.bind(this)}
               />
@@ -252,6 +265,7 @@ class CreatePortfolio extends Component {
                 type="text"
                 id="newMemberAddress"
                 name="newMemberAddress"
+                placeholder="Address"
                 value={this.state.newMemberAddress}
                 onChange={this.handleFormChange.bind(this)}
               />
@@ -260,7 +274,11 @@ class CreatePortfolio extends Component {
                 className="pure-button pure-button-primary"
                 type="button"
                 disabled={!this.validMemberAddress(this.state.newMemberAddress)}
-                onClick={this.addMember.bind(this, this.state.newMember)}
+                onClick={this.addMember.bind(
+                  this,
+                  this.state.newMemberName,
+                  this.state.newMemberAddress
+                )}
               >
                 Add Member
               </button>

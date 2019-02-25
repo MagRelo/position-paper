@@ -17,29 +17,19 @@ class Lobby extends Component {
   async componentDidMount() {
     // init socket connection w/ contract address
     initSockets(this.props.match.params.contractAddress);
-
-    // const response = await fetch(
-    //   '/group/' + this.props.match.params.contractAddress
-    // ).then(res => res.json());
-
-    // this.setState({
-    //   contractAddress: this.props.match.params.contractAddress,
-    //   groupName: response.groupName,
-    //   minDeposit: response.minDeposit
-    // });
   }
 
   render() {
     return (
       <div className="lobby-grid">
-        <h2>{this.state.groupName}</h2>
+        <h2>{this.props.groupName}</h2>
         <Proposals groupKey={this.state.contractAddress} />
 
         <AddProposal groupKey={this.state.contractAddress} />
 
         <Discuss
           messages={this.props.chatMessages}
-          groupKey={this.state.contractAddress}
+          groupKey={this.props.groupKey}
           userKey={this.props.selectedAccount}
         />
 
@@ -53,7 +43,8 @@ class Lobby extends Component {
 
 const mapStateToProps = state => {
   return {
-    groupName: state.lobby.group.groupLobby,
+    groupName: state.lobby.group.groupName,
+    groupKey: state.lobby.group.groupKey,
     members: state.lobby.members,
     portfolio: state.lobby.portfolio,
     chatMessages: state.lobby.chat,

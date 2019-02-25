@@ -7,14 +7,20 @@ class Discuss extends Component {
   async sendMessage(event) {
     event.preventDefault();
 
-    const response = await fetch('/chat', {
+    console.log({
+      groupKey: this.props.groupKey,
+      userKey: this.props.userKey,
+      message: this.state.message
+    });
+
+    await fetch('/chat', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         groupKey: this.props.groupKey,
-        userKey: this.props.selectedAccount,
+        userKey: this.props.userKey,
         message: this.state.message
       })
     }).then(response => response.json());

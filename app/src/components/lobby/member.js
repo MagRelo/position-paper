@@ -16,11 +16,11 @@ class MembersList extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.props.members.map(position => {
+              {this.props.members.map(user => {
                 return (
-                  <tr key={position}>
-                    <td>{position}</td>
-                    <td>{position}</td>
+                  <tr key={user.userId}>
+                    <td>{user.userName}</td>
+                    <td>(true?)</td>
                   </tr>
                 );
               })}
