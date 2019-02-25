@@ -70,10 +70,7 @@ class Discuss extends Component {
 }
 
 const mapStateToProps = state => {
-  return {
-    messages: state.lobby.chat,
-    selectedAccount: state.account.selectedAccount
-  };
+  return {};
 };
 
 const mapDispatchToProps = dispatch => {

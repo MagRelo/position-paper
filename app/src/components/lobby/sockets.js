@@ -3,18 +3,6 @@ import store from 'state/store';
 
 let socket = null;
 
-export async function submitProposal(proposalData) {
-  socket.emit('submit-proposal', proposalData);
-}
-
-export async function submitVote(voteData) {
-  socket.emit('submit-vote', voteData);
-}
-
-export async function submitChat(message) {
-  socket.emit('submit-chat', message);
-}
-
 export async function initSockets(contractAddress) {
   socket = io('/', {
     query: 'groupKey=' + contractAddress
@@ -45,15 +33,19 @@ async function updateServerData(data) {
   });
 }
 
-// async function bounceResponse(data) {
-//   return store.dispatch({
-//     type: 'BOUNCE_RESPONSE',
-//     payload: data
-//   });
-//}
+// export async function submitProposal(proposalData) {
+//   socket.emit('submit-proposal', proposalData);
+// }
+
+// export async function submitVote(voteData) {
+//   socket.emit('submit-vote', voteData);
+// }
+
+// export async function submitChat(message) {
+//   socket.emit('submit-chat', message);
+// }
 
 // standard errors
-
 function reconnectError(data) {
   if (data > 5) {
     socket.disconnect();

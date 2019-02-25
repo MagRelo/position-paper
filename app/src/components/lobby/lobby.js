@@ -18,15 +18,15 @@ class Lobby extends Component {
     // init socket connection w/ contract address
     initSockets(this.props.match.params.contractAddress);
 
-    const response = await fetch(
-      '/group/' + this.props.match.params.contractAddress
-    ).then(res => res.json());
+    // const response = await fetch(
+    //   '/group/' + this.props.match.params.contractAddress
+    // ).then(res => res.json());
 
-    this.setState({
-      contractAddress: this.props.match.params.contractAddress,
-      groupName: response.groupName,
-      minDeposit: response.minDeposit
-    });
+    // this.setState({
+    //   contractAddress: this.props.match.params.contractAddress,
+    //   groupName: response.groupName,
+    //   minDeposit: response.minDeposit
+    // });
   }
 
   render() {
@@ -37,24 +37,28 @@ class Lobby extends Component {
 
         <AddProposal groupKey={this.state.contractAddress} />
 
-        <Discuss groupKey={this.state.contractAddress} />
-
-        <Portfolio
-          portfolio={[
-            { asset: 'BTC', allocation: 0.21 },
-            { asset: 'ETH', allocation: 0.72 },
-            { asset: 'DAI', allocation: 0.07 }
-          ]}
+        <Discuss
+          messages={this.props.chatMessages}
+          groupKey={this.state.contractAddress}
+          userKey={this.props.selectedAccount}
         />
 
-        <Members members={['Matt', 'Jim']} />
+        <Portfolio portfolio={this.props.portfolio} />
+
+        <Members members={this.props.members} />
       </div>
     );
   }
 }
 
 const mapStateToProps = state => {
-  return {};
+  return {
+    groupName: state.lobby.group.groupLobby,
+    members: state.lobby.members,
+    portfolio: state.lobby.portfolio,
+    chatMessages: state.lobby.chat,
+    selectedAccount: state.account.selectedAccount
+  };
 };
 
 const mapDispatchToProps = dispatch => {

@@ -139,10 +139,9 @@ class ProposalsList extends Component {
 const mapStateToProps = state => {
   return {
     selectedAccount: state.account.selectedAccount,
-    availableAssets: state.lobby.availableAssets,
     portfolio: state.lobby.portfolio,
-    quantities: state.lobby.quantities,
-    proposals: state.lobby.proposals
+    availableAssets: state.lobby.availableAssets,
+    quantities: state.lobby.quantities
   };
 };
 

@@ -1,4 +1,7 @@
 const initialState = {
+  group: {
+    groupName: ''
+  },
   members: [],
   proposals: [],
   portfolio: [],
