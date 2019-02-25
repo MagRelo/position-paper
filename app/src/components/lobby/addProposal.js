@@ -104,7 +104,12 @@ class ProposalsList extends Component {
             placeholder="Current Asset"
             name="fromAsset"
             id="fromAsset"
-            options={this.props.portfolio}
+            options={this.props.portfolio.map(position => {
+              return {
+                label: position.assetCode,
+                value: { name: position.assetCode, formFeild: 'fromAsset' }
+              };
+            })}
             onChange={this.onSelectAsset.bind(this)}
           />
 

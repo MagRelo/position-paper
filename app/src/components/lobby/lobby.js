@@ -23,9 +23,9 @@ class Lobby extends Component {
     return (
       <div className="lobby-grid">
         <h2>{this.props.groupName}</h2>
-        <Proposals groupKey={this.state.contractAddress} />
+        <Proposals groupKey={this.props.groupKey} />
 
-        <AddProposal groupKey={this.state.contractAddress} />
+        <AddProposal groupKey={this.props.groupKey} />
 
         <Discuss
           messages={this.props.chatMessages}

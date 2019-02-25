@@ -22,9 +22,9 @@ class PortfolioList extends Component {
             <tbody>
               {this.props.portfolio.map(position => {
                 return (
-                  <tr key={position.asset}>
-                    <td>{position.asset}</td>
-                    <td>{this.formatPercentage(position.allocation)}</td>
+                  <tr key={position.groupHoldingId}>
+                    <td>{position.assetCode}</td>
+                    <td>{this.formatPercentage(1)}</td>
                   </tr>
                 );
               })}

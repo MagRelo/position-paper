@@ -33,6 +33,7 @@
 /* Members */
 .members {
   padding: 0.67em 0.5em 1em 1em;
+  border-bottom-left-radius: 2px;
 
   display: grid;
   grid-template-rows: auto 1fr;
@@ -41,12 +42,15 @@
 .members .list {
   background: white;
   border-radius: 2px;
+
 }
 
 
 /* Portfolio */
 .portfolio {
   padding: 0.67em 0.5em 0 1em;
+
+  border-top-left-radius: 2px;
 
   display: grid;
   grid-template-rows: auto 1fr;
@@ -61,6 +65,7 @@
 /* Discuss */
 .discuss {
   padding: 0.67em 1em 1em 0.5em;
+  border-bottom-right-radius: 2px;
 
   display: grid;
   grid-template-rows: auto 1fr auto;
@@ -103,14 +108,27 @@
   padding: 0.67em 1em 0 0.5em;
 }
 
-.proposals .info .info-panel {
-  padding: 2em;
-  text-align: center;
+.proposals .list .list-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto auto;
+  background: white;
+  padding: 0.5em;
+  border-radius: 2px;
 }
+
+.proposals .list p {
+  margin: 0.5em;
+}
+
+.vote-form button.pure-button.pure-button-primary {
+  margin-left: 0.5em;
+}
+
 
 /* Add Proposal */
 .add-proposal {
   padding: 0.67em 1em 0 0.5em;
+  border-top-right-radius: 2px;
 }
 
 .add-proposal form {

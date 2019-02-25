@@ -157,16 +157,6 @@ exports.createProposal = async function(
     groupKey
   ];
 
-  console.log([
-    fromAsset,
-    toAsset,
-    quantity,
-    created,
-    updated,
-    userKey,
-    groupKey
-  ]);
-
   try {
     return await pool.query({
       text: query,
@@ -249,20 +239,23 @@ exports.getLobbyData = async function(groupKey) {
     values: [groupKey]
   };
 
-  // const portfolio = {
-  //   text: `
-  //     SELECT *
-  //     FROM "groupsSchema"."groupPortfolio"
-  //     WHERE "groupChat"."groupKey" = $1
-  //   `,
-  //   values: [groupKey]
-  // };
+  const holdings = {
+    text: `
+      SELECT "groupHoldingId", "assetCode", unit, amount, "groupKey", created, updated
+      FROM "groupsSchema"."groupHolding"
+      WHERE "groupHolding"."groupKey" = $1;
+    `,
+    values: [groupKey]
+  };
 
   const members = {
     text: `
-      SELECT *
-      FROM "groupsSchema"."user";
-    `
+      SELECT "user".*
+      FROM "groupsSchema"."groupUser", "groupsSchema"."user"
+      WHERE "groupUser"."userKey" = "user"."userKey"
+      AND "groupUser"."groupKey" = $1;
+    `,
+    values: [groupKey]
   };
 
   try {
@@ -270,14 +263,16 @@ exports.getLobbyData = async function(groupKey) {
       await pool.query(group),
       await pool.query(proposals),
       await pool.query(chat),
-      await pool.query(members)
+      await pool.query(members),
+      await pool.query(holdings)
     ]);
 
     return {
       group: data[0].rows[0],
       proposals: data[1].rows,
       chat: data[2].rows,
-      members: data[3].rows
+      members: data[3].rows,
+      portfolio: data[4].rows
     };
   } catch (err) {
     console.log(err.stack);

@@ -1,15 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import {
-  Accordion,
-  AccordionItem,
-  AccordionItemTitle,
-  AccordionItemBody
-} from 'react-accessible-accordion';
-
-import InfoPanel from './infoPanel';
-
 class ProposalsList extends Component {
   // Vote form
   async voteOnProposal(proposalId, inFavor) {
@@ -33,56 +24,47 @@ class ProposalsList extends Component {
         <h3>Vote on Proposals</h3>
 
         <div className="list">
-          <Accordion>
-            {this.props.proposals.map(proposal => {
-              return (
-                <AccordionItem key={proposal.groupProposalId}>
-                  <AccordionItemTitle>
-                    <p>
-                      Move {proposal.quantity * 100}%{' of '}
-                      {proposal.fromAsset} to {proposal.toAsset}
-                    </p>
-                  </AccordionItemTitle>
-                  <AccordionItemBody>
-                    <div
-                      style={{
-                        display: 'grid',
-                        gridTemplateColumns: '1fr 1fr 1fr'
-                      }}
-                    >
-                      {/* <InfoPanel item={proposal.from} />
-                      <InfoPanel item={proposal.to} /> */}
+          {this.props.proposals.map(proposal => {
+            return (
+              <div key={proposal.groupProposalId} className="list-item">
+                <p>
+                  Move {proposal.quantity * 100}%{' of '}
+                  {proposal.fromAsset} to {proposal.toAsset}
+                </p>
+                <p>
+                  Votes Cast: {proposal.votes || 5} of{' '}
+                  {proposal.votesNeeded || 8}
+                </p>
 
-                      <form action="" className="pure-form vote-form">
-                        <button
-                          type="button"
-                          className="pure-button pure-button-primary"
-                          onClick={this.voteOnProposal.bind(
-                            this,
-                            proposal.groupProposalId,
-                            true
-                          )}
-                        >
-                          Vote 'Yes'
-                        </button>
-                        <button
-                          type="button"
-                          className="pure-button pure-button-primary"
-                          onClick={this.voteOnProposal.bind(
-                            this,
-                            proposal.groupProposalId,
-                            false
-                          )}
-                        >
-                          Vote 'No'
-                        </button>
-                      </form>
-                    </div>
-                  </AccordionItemBody>
-                </AccordionItem>
-              );
-            })}
-          </Accordion>
+                <p>Select Vote:</p>
+
+                <form action="" className="pure-form vote-form">
+                  <button
+                    type="button"
+                    className="pure-button pure-button-primary"
+                    onClick={this.voteOnProposal.bind(
+                      this,
+                      proposal.groupProposalId,
+                      true
+                    )}
+                  >
+                    Yes
+                  </button>
+                  <button
+                    type="button"
+                    className="pure-button pure-button-primary"
+                    onClick={this.voteOnProposal.bind(
+                      this,
+                      proposal.groupProposalId,
+                      false
+                    )}
+                  >
+                    No
+                  </button>
+                </form>
+              </div>
+            );
+          })}
         </div>
       </section>
     );

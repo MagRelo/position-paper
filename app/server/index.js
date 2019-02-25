@@ -215,7 +215,7 @@ app.post('/vote', async function(req, res) {
   }
 });
 
-// create vote
+// create chat
 app.post('/chat', async function(req, res) {
   console.log('chat:', req.body);
 
