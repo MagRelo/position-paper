@@ -14,7 +14,7 @@ exports.initPG = async function() {
 
 exports.getAllGroups = async function() {
   const query = `
-  SELECT * FROM "groupsSchema"."group"
+  SELECT * FROM "groupsSchema".group
   `;
 
   const queryObj = {
@@ -35,8 +35,8 @@ exports.getGroup = async function(contractAddress) {
 
   const query = `
     SELECT *
-    FROM "groupsSchema"."group"
-    WHERE "group"."groupKey" =$1;
+    FROM "groupsSchema".group
+    WHERE group.groupkey =$1;
   `;
 
   const queryObj = {
@@ -61,8 +61,8 @@ exports.createGroup = async function(groupKey, groupName, minDeposit, members) {
   const updated = date; // updated,
 
   const query = `
-    INSERT INTO "groupsSchema"."group"(
-    "groupKey", "groupName", "minDeposit", created, updated)
+    INSERT INTO "groupsSchema".group(
+    groupkey, "groupName", "minDeposit", created, updated)
     VALUES ($1, $2, $3, $4, $5);
   `;
   const queryParams = [groupKey, groupName, minDeposit, created, updated];
@@ -80,8 +80,8 @@ exports.createGroup = async function(groupKey, groupName, minDeposit, members) {
       userInserts.push(
         pool.query({
           text: `
-          INSERT INTO "groupsSchema"."user"(
-            "userKey", "userName", created, updated)
+          INSERT INTO "groupsSchema".users(
+            userkey, "userName", created, updated)
             VALUES ($1, $2, $3, $4);
           `,
           values: [member.address, member.name, created, updated]
@@ -98,8 +98,8 @@ exports.createGroup = async function(groupKey, groupName, minDeposit, members) {
       userLinkInserts.push(
         pool.query({
           text: `
-          INSERT INTO "groupsSchema"."groupUser"(
-            "userKey", "groupKey")
+          INSERT INTO "groupsSchema".groupuser(
+            userkey, groupkey)
             VALUES ($1, $2);
           `,
           values: [member.address, groupKey]
@@ -143,8 +143,8 @@ exports.createProposal = async function(
 ) {
   // setup query
   const query = `
-  INSERT INTO "groupsSchema"."groupProposal"(
-    "fromAsset", "toAsset", quantity, created, updated, "userKey", "groupKey")
+  INSERT INTO "groupsSchema".groupproposal(
+    "fromAsset", "toAsset", quantity, created, updated, userkey, groupkey)
     VALUES ($1, $2, $3, $4, $5, $6, $7);
   `;
   const queryParams = [
@@ -183,7 +183,7 @@ exports.updateProposalVote = async function(
   // setup query
   const query = `
   INSERT INTO "groupsSchema"."proposalVote"(
-    "proposalId", "inFavor", created, updated, "userKey", "groupKey")
+    "proposalId", "inFavor", created, updated, userkey, groupkey)
     VALUES ($1, $2, $3, $4, $5, $6);
   `;
   const queryParams = [
@@ -214,46 +214,55 @@ exports.getLobbyData = async function(groupKey) {
   const group = {
     text: `
       SELECT *
-      FROM "groupsSchema"."group"
-      WHERE "group"."groupKey" = $1
+      FROM "groupsSchema".group g
+      WHERE g.groupkey = $1
     `,
     values: [groupKey]
   };
 
   const proposals = {
     text: `
-      SELECT *
-      FROM "groupsSchema"."groupProposal"
-      WHERE "groupProposal"."groupKey" = $1
+      SELECT gp.groupproposalid, gp.fromasset, gp.toasset, gp.quantity, gp.updated, gp.isopen, gp.ispassed, gp.isexecuted,
+      (SELECT COUNT(*)
+        FROM "groupsSchema".groupproposal gp, "groupsSchema".proposalvote pv
+        WHERE gp.groupkey = pv.groupkey
+        AND gp.groupkey = $1) as "totalVotes",
+      (SELECT COUNT(*)
+        FROM "groupsSchema".users u, "groupsSchema".groupuser gu, "groupsSchema".group g
+        WHERE u.userkey = gu.userKey
+        AND gu.groupKey = g.groupkey
+        AND g.groupkey = $1) as "totalMembers"
+      FROM "groupsSchema".groupproposal gp
+      WHERE gp.groupkey = $1
     `,
     values: [groupKey]
   };
 
   const chat = {
     text: `
-      SELECT "user"."userName", "groupChat"."message", "groupChat"."groupChatId"
-      FROM "groupsSchema"."groupChat", "groupsSchema"."user"
-      WHERE "groupChat"."groupKey" = $1
-      AND "groupChat"."userKey" = "user"."userKey";
+      SELECT users.username, groupchat.*
+      FROM "groupsSchema".groupchat, "groupsSchema".users
+      WHERE groupchat.groupkey = $1
+      AND groupchat.userkey = users.userkey;
     `,
     values: [groupKey]
   };
 
   const holdings = {
     text: `
-      SELECT "groupHoldingId", "assetCode", unit, amount, "groupKey", created, updated
-      FROM "groupsSchema"."groupHolding"
-      WHERE "groupHolding"."groupKey" = $1;
+      SELECT *
+      FROM "groupsSchema".groupholding
+      WHERE groupholding.groupkey = $1;
     `,
     values: [groupKey]
   };
 
   const members = {
     text: `
-      SELECT "user".*
-      FROM "groupsSchema"."groupUser", "groupsSchema"."user"
-      WHERE "groupUser"."userKey" = "user"."userKey"
-      AND "groupUser"."groupKey" = $1;
+      SELECT users.*
+      FROM "groupsSchema".groupuser, "groupsSchema".users
+      WHERE groupuser.userkey = users.userkey
+      AND groupuser.groupkey = $1;
     `,
     values: [groupKey]
   };
@@ -285,8 +294,8 @@ exports.createMessage = async function(userKey, groupKey, message) {
   const updated = date; // updated,
 
   const query = `
-  INSERT INTO "groupsSchema"."groupChat"(
-    message, "userKey", "groupKey", created, updated)
+  INSERT INTO "groupsSchema".groupchat(
+    message, userkey, groupkey, created, updated)
     VALUES ($1, $2, $3, $4, $5);
   `;
   const queryParams = [message, userKey, groupKey, created, updated];

@@ -19,8 +19,8 @@ class Discuss extends Component {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        groupKey: this.props.groupKey,
-        userKey: this.props.userKey,
+        groupKey: this.props.groupkey,
+        userKey: this.props.userkey,
         message: this.state.message
       })
     }).then(response => response.json());
@@ -42,8 +42,8 @@ class Discuss extends Component {
             <tbody>
               {this.props.messages.map(message => {
                 return (
-                  <tr key={message.groupChatId}>
-                    <td className="message-user">{message.userName}</td>
+                  <tr key={message.groupchatid}>
+                    <td className="message-user">{message.username}</td>
                     <td className="message">{message.message}</td>
                   </tr>
                 );

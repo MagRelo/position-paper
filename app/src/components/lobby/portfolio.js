@@ -22,8 +22,8 @@ class PortfolioList extends Component {
             <tbody>
               {this.props.portfolio.map(position => {
                 return (
-                  <tr key={position.groupHoldingId}>
-                    <td>{position.assetCode}</td>
+                  <tr key={position.groupholdingid}>
+                    <td>{position.assetcode}</td>
                     <td>{this.formatPercentage(1)}</td>
                   </tr>
                 );

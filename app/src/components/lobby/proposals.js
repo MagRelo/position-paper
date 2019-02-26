@@ -26,14 +26,14 @@ class ProposalsList extends Component {
         <div className="list">
           {this.props.proposals.map(proposal => {
             return (
-              <div key={proposal.groupProposalId} className="list-item">
+              <div key={proposal.groupproposalid} className="list-item">
                 <p>
                   Move {proposal.quantity * 100}%{' of '}
-                  {proposal.fromAsset} to {proposal.toAsset}
+                  {proposal.fromasset} to {proposal.toasset}
                 </p>
                 <p>
-                  Votes Cast: {proposal.votes || 'x'} of{' '}
-                  {proposal.votesNeeded || 'y'}
+                  Votes Cast: {proposal.totalVotes || 'x'} of{' '}
+                  {proposal.totalMembers || 'y'}
                 </p>
 
                 <p>Vote:</p>
@@ -44,7 +44,7 @@ class ProposalsList extends Component {
                     className="pure-button pure-button-primary"
                     onClick={this.voteOnProposal.bind(
                       this,
-                      proposal.groupProposalId,
+                      proposal.groupproposalid,
                       true
                     )}
                   >
@@ -55,7 +55,7 @@ class ProposalsList extends Component {
                     className="pure-button pure-button-primary"
                     onClick={this.voteOnProposal.bind(
                       this,
-                      proposal.groupProposalId,
+                      proposal.groupproposalid,
                       false
                     )}
                   >

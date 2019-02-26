@@ -18,8 +18,8 @@ class MembersList extends Component {
             <tbody>
               {this.props.members.map(user => {
                 return (
-                  <tr key={user.userId}>
-                    <td>{user.userName}</td>
+                  <tr key={user.userid}>
+                    <td>{user.username}</td>
                     <td>(true?)</td>
                   </tr>
                 );
