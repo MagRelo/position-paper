@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { initSockets } from './sockets';
 
 import './lobby.css';
-import './accordian.css';
 import Portfolio from './portfolio';
 import Proposals from './proposals';
 import AddProposal from './addProposal';
