@@ -13,8 +13,8 @@
 
 h3,
 h4 {
-  margin-top: 0;
-  font-weight: normal;
+  margin: 0;
+  /* font-weight: normal; */
 }
 
 .menu {
