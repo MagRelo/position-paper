@@ -124,7 +124,7 @@ exports.updateGroupChat = async function(chatData) {
     const res = await pool.query('SELECT NOW()');
     console.log(res.rows[0]);
   } catch (err) {
-    console.log(err.stack);
+    throw new Error(err.message);
   }
 };
 
@@ -144,8 +144,8 @@ exports.createProposal = async function(
   // setup query
   const query = `
   INSERT INTO "groupsSchema".groupproposal(
-    "fromAsset", "toAsset", quantity, created, updated, userkey, groupkey)
-    VALUES ($1, $2, $3, $4, $5, $6, $7);
+    fromasset, toasset, quantity, created, updated, userkey, groupkey, isopen, ispassed, isexecuted)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10);
   `;
   const queryParams = [
     fromAsset,
@@ -154,7 +154,10 @@ exports.createProposal = async function(
     created,
     updated,
     userKey,
-    groupKey
+    groupKey,
+    true,
+    false,
+    false
   ];
 
   try {
@@ -182,9 +185,11 @@ exports.updateProposalVote = async function(
 
   // setup query
   const query = `
-  INSERT INTO "groupsSchema"."proposalVote"(
-    "proposalId", "inFavor", created, updated, userkey, groupkey)
-    VALUES ($1, $2, $3, $4, $5, $6);
+  INSERT INTO "groupsSchema".proposalvote(
+    groupproposalid, infavor, created, updated, userkey, groupkey)
+    VALUES ($1, $2, $3, $4, $5, $6)
+    on conflict (groupproposalid, userkey) 
+    do update set infavor = $2;
   `;
   const queryParams = [
     proposalId,
@@ -201,7 +206,88 @@ exports.updateProposalVote = async function(
       values: queryParams
     });
   } catch (err) {
-    console.log(err.stack);
+    throw new Error(err.message);
+  }
+};
+
+exports.countProposalVote = async function(groupKey, groupProposalId) {
+  console.log('pg count', groupKey, groupProposalId);
+
+  try {
+    // start transaction
+    const results = await pool.query({
+      text: `
+        SELECT
+        (SELECT COUNT(*)
+          FROM "groupsSchema".users u, "groupsSchema".groupuser gu, "groupsSchema".group g
+          WHERE u.userkey = gu.userKey
+          AND gu.groupKey = g.groupkey
+          AND g.groupkey = $1) as "totalMembers",
+        (SELECT COUNT(*)
+          FROM "groupsSchema".proposalvote pv, "groupsSchema".groupproposal gp
+          WHERE pv.groupproposalid = gp.groupproposalid
+          AND gp.groupkey = $1
+          AND gp.groupproposalid = $2) as "totalVotes"
+        `,
+      values: [groupKey, groupProposalId]
+    });
+
+    return results.rows[0];
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
+
+exports.closeProposalVote = async function(groupKey, groupProposalId) {
+  console.log('pg close', groupProposalId);
+
+  const updated = new Date();
+  try {
+    // start transaction
+    const result = await pool.query({
+      text: `
+      SELECT
+        (SELECT COUNT(*)
+          FROM "groupsSchema".proposalvote pv, "groupsSchema".groupproposal gp
+          WHERE pv.groupproposalid = gp.groupproposalid
+          AND gp.groupkey = $1
+          AND gp.groupproposalid = $2
+		      AND pv.inFavor = true) as "yesVotes",		  
+        (SELECT COUNT(*)
+          FROM "groupsSchema".proposalvote pv, "groupsSchema".groupproposal gp
+          WHERE pv.groupproposalid = gp.groupproposalid
+          AND gp.groupkey = $1
+          AND gp.groupproposalid = $2
+		      AND pv.inFavor =false) as "noVotes"
+        `,
+      values: [groupKey, groupProposalId]
+    });
+
+    // a tie = true, vote passes
+    const voteCount = result.rows[0];
+    const isPassed =
+      parseInt(voteCount.yesVotes, 10) >= parseInt(voteCount.noVotes, 10);
+
+    console.log(
+      isPassed,
+      parseInt(voteCount.yesVotes, 10),
+      'yes vs no:',
+      parseInt(voteCount.noVotes, 10)
+    );
+
+    // start transaction
+    await pool.query({
+      text: `
+      UPDATE "groupsSchema".groupproposal gp
+      SET updated=$1, isopen=$2, ispassed=$3
+      WHERE gp.groupproposalid=$4;
+        `,
+      values: [updated, false, isPassed, groupProposalId]
+    });
+
+    return true;
+  } catch (err) {
+    throw new Error(err.message);
   }
 };
 
@@ -234,7 +320,7 @@ exports.getLobbyData = async function(groupKey, userKey) {
       (SELECT pv.infavor
             FROM "groupsSchema".proposalvote pv
             WHERE pv.groupproposalid = gp.groupproposalid
-      AND pv.userkey = $2) as "userVote"
+            AND pv.userkey = $2) as "userVote"
       FROM "groupsSchema".groupproposal gp
       WHERE gp.groupkey = $1
     `,
@@ -245,8 +331,8 @@ exports.getLobbyData = async function(groupKey, userKey) {
     text: `
       SELECT users.username, groupchat.*
       FROM "groupsSchema".groupchat, "groupsSchema".users
-      WHERE groupchat.groupkey = $1
-      AND groupchat.userkey = users.userkey;
+      WHERE groupchat.userkey = users.userkey
+      AND groupchat.groupkey = $1;
     `,
     values: [groupKey]
   };
@@ -273,21 +359,21 @@ exports.getLobbyData = async function(groupKey, userKey) {
   try {
     const data = await Promise.all([
       await pool.query(group),
-      await pool.query(proposals),
       await pool.query(chat),
       await pool.query(members),
-      await pool.query(holdings)
+      await pool.query(holdings),
+      await pool.query(proposals)
     ]);
 
     return {
       group: data[0].rows[0],
-      proposals: data[1].rows,
-      chat: data[2].rows,
-      members: data[3].rows,
-      portfolio: data[4].rows
+      chat: data[1].rows,
+      members: data[2].rows,
+      portfolio: data[3].rows,
+      proposals: data[4].rows
     };
   } catch (err) {
-    console.log(err.stack);
+    throw new Error(err.message);
   }
 };
 
@@ -309,6 +395,6 @@ exports.createMessage = async function(userKey, groupKey, message) {
       values: queryParams
     });
   } catch (err) {
-    console.log(err.stack);
+    throw new Error(err.message);
   }
 };

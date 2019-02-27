@@ -7,20 +7,14 @@ class Discuss extends Component {
   async sendMessage(event) {
     event.preventDefault();
 
-    console.log({
-      groupKey: this.props.groupKey,
-      userKey: this.props.userKey,
-      message: this.state.message
-    });
-
     await fetch('/chat', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        groupKey: this.props.groupkey,
-        userKey: this.props.userkey,
+        groupKey: this.props.groupKey,
+        userKey: this.props.userKey,
         message: this.state.message
       })
     }).then(response => response.json());
@@ -76,7 +70,9 @@ class Discuss extends Component {
 }
 
 const mapStateToProps = state => {
-  return {};
+  return {
+    groupKey: state.lobby.group.groupkey
+  };
 };
 
 const mapDispatchToProps = dispatch => {

@@ -36,9 +36,9 @@ class Lobby extends Component {
     return (
       <div className="lobby-grid">
         <h2>{this.props.groupName}</h2>
-        <Proposals groupKey={this.props.groupKey} />
+        <Proposals />
 
-        <AddProposal groupKey={this.props.groupKey} />
+        <AddProposal />
 
         <Discuss
           messages={this.props.chatMessages}
@@ -56,8 +56,7 @@ class Lobby extends Component {
 
 const mapStateToProps = state => {
   return {
-    groupName: state.lobby.group.groupName,
-    groupKey: state.lobby.group.groupKey,
+    groupName: state.lobby.group.groupname,
     members: state.lobby.members,
     portfolio: state.lobby.portfolio,
     chatMessages: state.lobby.chat,

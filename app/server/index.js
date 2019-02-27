@@ -15,7 +15,9 @@ const {
   createGroup,
   createProposal,
   updateProposalVote,
-  createMessage
+  createMessage,
+  countProposalVote,
+  closeProposalVote
 } = require('./pg-controller');
 
 const { startIo, broadcastGroupUpdate } = require('./sockets');
@@ -35,7 +37,6 @@ if (process.env.ENV === 'production') {
   if (result.error) {
     throw result.error;
   }
-  console.log(result.parsed);
 }
 
 // *
@@ -178,7 +179,7 @@ app.post('/proposal', async function(req, res) {
     await broadcastGroupUpdate(groupKey, userKey);
     return res.status(200).send(response);
   } catch (error) {
-    console.log();
+    console.log(error.message);
     res.status(500).send(error.message);
   }
 });
@@ -195,12 +196,11 @@ app.post('/vote', async function(req, res) {
     const proposalId = req.body.proposalId; //
     const inFavor = req.body.inFavor; // toAsset,
 
-    console.log(typeof inFavor === 'boolean');
-
     if (!userKey || !groupKey || !proposalId) {
       return res.status(400).send('Bad Request');
     }
 
+    // response
     const response = await updateProposalVote(
       userKey,
       groupKey,
@@ -208,15 +208,17 @@ app.post('/vote', async function(req, res) {
       inFavor
     );
 
-    // check response - 404
-    // if (!response) {
-    //   res.status(404).send('Not Found');
-    // }
+    // check results => close vote if vote === total members
+    const progress = await countProposalVote(groupKey, proposalId);
+    if (progress.totalVotes === progress.totalMembers) {
+      await closeProposalVote(groupKey, proposalId);
+    }
 
     await broadcastGroupUpdate(groupKey, userKey);
     return res.status(200).send(response);
   } catch (error) {
-    res.status(500).send(error);
+    console.log(error.message);
+    res.status(500).send(error.message);
   }
 });
 
@@ -230,8 +232,6 @@ app.post('/chat', async function(req, res) {
     const groupKey = req.body.groupKey; // groupKey
 
     const message = req.body.message; //
-
-    console.log(typeof inFavor === 'boolean');
 
     if (!userKey || !groupKey || !message) {
       return res.status(400).send('Bad Request');

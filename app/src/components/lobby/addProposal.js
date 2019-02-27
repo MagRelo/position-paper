@@ -52,7 +52,7 @@ const assetOptions = assets.map(asset => {
   };
 });
 
-class ProposalsList extends Component {
+class AddProposal extends Component {
   state = {
     fromAsset: null,
     toAsset: null,
@@ -76,11 +76,20 @@ class ProposalsList extends Component {
         groupKey: this.props.groupKey,
         userKey: this.props.selectedAccount,
         quantity: this.state.quantity.number,
-
         fromAsset: this.state.fromAsset.name,
         toAsset: this.state.toAsset.name
       })
-    }).then(response => response.json());
+    }).then(response => {
+      if (response.status !== 200) {
+        this.setState({
+          error: true
+        });
+      }
+
+      this.setState({
+        error: false
+      });
+    });
   }
 
   render() {
@@ -106,8 +115,8 @@ class ProposalsList extends Component {
             id="fromAsset"
             options={this.props.portfolio.map(position => {
               return {
-                label: position.assetCode,
-                value: { name: position.assetCode, formFeild: 'fromAsset' }
+                label: position.assetcode,
+                value: { name: position.assetcode, formFeild: 'fromAsset' }
               };
             })}
             onChange={this.onSelectAsset.bind(this)}
@@ -143,6 +152,8 @@ class ProposalsList extends Component {
 
 const mapStateToProps = state => {
   return {
+    groupKey: state.lobby.group.groupkey,
+    group: state.lobby.group,
     selectedAccount: state.account.selectedAccount,
     portfolio: state.lobby.portfolio,
     availableAssets: state.lobby.availableAssets,
@@ -150,9 +161,11 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {};
+const mapDispatchToProps = dispatch => {
+  return {};
+};
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ProposalsList);
+)(AddProposal);

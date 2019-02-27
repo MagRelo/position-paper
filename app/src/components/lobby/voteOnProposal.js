@@ -3,11 +3,18 @@ import { connect } from 'react-redux';
 
 class VoteOnProposal extends Component {
   state = {
+    userHasVoted: !(this.props.userVote === null)
     // isOpen - vote form
     // !isOpen && !isPassed - no trade, clear
     // !isOpen && isPassed && !isExecuted - execute trade form
     // !isOpen && isPassed && isExecuted - trade history
   };
+
+  componentDidUpdate(prev) {
+    if (prev.userVote !== this.props.userVote) {
+      this.setState({ userHasVoted: !(this.props.userVote === null) });
+    }
+  }
 
   // Vote form
   async voteOnProposal(proposalId, inFavor) {
@@ -18,30 +25,33 @@ class VoteOnProposal extends Component {
       },
       body: JSON.stringify({
         groupKey: this.props.groupKey,
-        userKey: this.props.selectedAccount,
+        userKey: this.props.userKey,
         proposalId: proposalId,
         inFavor: inFavor
       })
-    }).then(response => response.json());
+    });
+  }
+
+  setActiveVoteClass(buttonType, userVote) {
+    return buttonType === userVote
+      ? 'pure-button pure-button-primary'
+      : 'pure-button';
   }
 
   render() {
     return (
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr auto' }}>
         <p>
           Votes: {this.props.totalVotes || 'x'} /{' '}
           {this.props.totalMembers || 'y'}
         </p>
-
-        <p>Vote: {this.props.userVote ? 'yes' : 'no'}</p>
-
         <form action="" className="pure-form vote-form">
           <button
             type="button"
-            className="pure-button pure-button-primary"
+            className={this.setActiveVoteClass(true, this.props.userVote)}
             onClick={this.voteOnProposal.bind(
               this,
-              this.props.groupproposalid,
+              this.props.proposalId,
               true
             )}
           >
@@ -49,10 +59,10 @@ class VoteOnProposal extends Component {
           </button>
           <button
             type="button"
-            className="pure-button pure-button-primary"
+            className={this.setActiveVoteClass(false, this.props.userVote)}
             onClick={this.voteOnProposal.bind(
               this,
-              this.props.groupproposalid,
+              this.props.proposalId,
               false
             )}
           >
@@ -66,7 +76,8 @@ class VoteOnProposal extends Component {
 
 const mapStateToProps = state => {
   return {
-    selectedAccount: state.account.selectedAccount
+    userKey: state.account.selectedAccount,
+    groupKey: state.lobby.group.groupkey
   };
 };
 

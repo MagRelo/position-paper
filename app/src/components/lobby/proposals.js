@@ -26,10 +26,23 @@ class ProposalsList extends Component {
                   </p>
 
                   {proposal.isopen ? (
-                    <VoteOnProposal groupkey={this.props.groupkey} />
-                  ) : (
+                    <VoteOnProposal
+                      groupKey={this.props.groupkey}
+                      userKey={this.props.selectedAccount}
+                      proposalId={proposal.groupproposalid}
+                      totalVotes={proposal.totalVotes}
+                      totalMembers={proposal.totalMembers}
+                      userVote={proposal.userVote}
+                    />
+                  ) : null}
+
+                  {!proposal.isopen && proposal.ispassed ? (
                     <ExecuteTrade groupkey={this.props.groupkey} />
-                  )}
+                  ) : null}
+
+                  {!proposal.isopen && !proposal.ispassed ? (
+                    <p>Did not pass, bummer.</p>
+                  ) : null}
                 </div>
               );
             })}
@@ -42,8 +55,7 @@ class ProposalsList extends Component {
 
 const mapStateToProps = state => {
   return {
-    proposals: state.lobby.proposals,
-    selectedAccount: state.account.selectedAccount
+    proposals: state.lobby.proposals
   };
 };
 

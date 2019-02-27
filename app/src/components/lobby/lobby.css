@@ -76,7 +76,9 @@
   border-top-right-radius: 2px;
   border-top-left-radius: 2px;
 
-  overflow: hidden;
+  height: 100%;
+  overflow: auto;
+  max-height: 29vh;
 }
 
 .discuss .list .message {
@@ -108,6 +110,12 @@
   padding: 0.67em 1em 0 0.5em;
 }
 
+.proposals .list {
+  height: 100%;
+  overflow: auto;
+  max-height: 36vh;
+}
+
 .proposals .list .list-item {
   border-radius: 2px;
   background: white;
@@ -122,7 +130,7 @@
   margin: 0.5em;
 }
 
-.vote-form button.pure-button.pure-button-primary {
+.vote-form button.pure-button {
   margin-left: 0.5em;
 }
 

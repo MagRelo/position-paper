@@ -11,16 +11,9 @@ exports.startIo = function(server) {
   io = io.listen(server);
 
   io.on('connection', async socket => {
-    console.log(
-      'socket connected:',
-      socket.id,
-      socket.handshake.query.groupKey
-    );
-
     const groupKey = socket.handshake.query.groupKey;
     const userKey = socket.handshake.query.userKey;
 
-    console.log('userkey', userKey);
     // join room
     socket.join(groupKey);
 
