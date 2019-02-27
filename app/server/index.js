@@ -175,7 +175,7 @@ app.post('/proposal', async function(req, res) {
     //   res.status(404).send('Not Found');
     // }
 
-    await broadcastGroupUpdate(groupKey);
+    await broadcastGroupUpdate(groupKey, userKey);
     return res.status(200).send(response);
   } catch (error) {
     console.log();
@@ -213,7 +213,7 @@ app.post('/vote', async function(req, res) {
     //   res.status(404).send('Not Found');
     // }
 
-    await broadcastGroupUpdate(groupKey);
+    await broadcastGroupUpdate(groupKey, userKey);
     return res.status(200).send(response);
   } catch (error) {
     res.status(500).send(error);
@@ -244,7 +244,7 @@ app.post('/chat', async function(req, res) {
     //   res.status(404).send('Not Found');
     // }
 
-    await broadcastGroupUpdate(groupKey);
+    await broadcastGroupUpdate(groupKey, userKey);
     return res.status(200).send(response);
   } catch (error) {
     res.status(500).send(error);

@@ -18,12 +18,14 @@ exports.startIo = function(server) {
     );
 
     const groupKey = socket.handshake.query.groupKey;
+    const userKey = socket.handshake.query.userKey;
 
+    console.log('userkey', userKey);
     // join room
     socket.join(groupKey);
 
     // setup
-    io.to(groupKey).emit('lobby-update', await getLobbyData(groupKey));
+    io.to(groupKey).emit('lobby-update', await getLobbyData(groupKey, userKey));
 
     // // events
     // socket.on('submit-proposal', async data => {
@@ -42,8 +44,10 @@ exports.startIo = function(server) {
   return io;
 };
 
-exports.broadcastGroupUpdate = async function(groupKey) {
-  return io.to(groupKey).emit('lobby-update', await getLobbyData(groupKey));
+exports.broadcastGroupUpdate = async function(groupKey, userKey) {
+  return io
+    .to(groupKey)
+    .emit('lobby-update', await getLobbyData(groupKey, userKey));
 };
 
 // debug

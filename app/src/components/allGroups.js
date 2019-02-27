@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Header from './header';
 
-class LandingPage extends Component {
+class GroupList extends Component {
   state = { groups: [] };
 
   async componentDidMount() {
@@ -57,4 +57,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(LandingPage);
+)(GroupList);

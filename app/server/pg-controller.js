@@ -210,7 +210,7 @@ exports.updateProposalTrade = async function(userData) {
   // trade
 };
 
-exports.getLobbyData = async function(groupKey) {
+exports.getLobbyData = async function(groupKey, userKey) {
   const group = {
     text: `
       SELECT *
@@ -224,18 +224,21 @@ exports.getLobbyData = async function(groupKey) {
     text: `
       SELECT gp.groupproposalid, gp.fromasset, gp.toasset, gp.quantity, gp.updated, gp.isopen, gp.ispassed, gp.isexecuted,
       (SELECT COUNT(*)
-        FROM "groupsSchema".groupproposal gp, "groupsSchema".proposalvote pv
-        WHERE gp.groupkey = pv.groupkey
-        AND gp.groupkey = $1) as "totalVotes",
+            FROM "groupsSchema".users u, "groupsSchema".groupuser gu, "groupsSchema".group g
+            WHERE u.userkey = gu.userKey
+            AND gu.groupKey = g.groupkey
+            AND g.groupkey = $1) as "totalMembers",
       (SELECT COUNT(*)
-        FROM "groupsSchema".users u, "groupsSchema".groupuser gu, "groupsSchema".group g
-        WHERE u.userkey = gu.userKey
-        AND gu.groupKey = g.groupkey
-        AND g.groupkey = $1) as "totalMembers"
+            FROM "groupsSchema".proposalvote pv
+            WHERE pv.groupproposalid = gp.groupproposalid) as "totalVotes",
+      (SELECT pv.infavor
+            FROM "groupsSchema".proposalvote pv
+            WHERE pv.groupproposalid = gp.groupproposalid
+      AND pv.userkey = $2) as "userVote"
       FROM "groupsSchema".groupproposal gp
       WHERE gp.groupkey = $1
     `,
-    values: [groupKey]
+    values: [groupKey, userKey]
   };
 
   const chat = {

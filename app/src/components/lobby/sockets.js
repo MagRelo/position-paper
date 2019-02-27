@@ -3,9 +3,12 @@ import store from 'state/store';
 
 let socket = null;
 
-export async function initSockets(contractAddress) {
+export async function initSockets(contractAddress, userKey) {
   socket = io('/', {
-    query: 'groupKey=' + contractAddress
+    query: {
+      groupKey: contractAddress,
+      userKey: userKey
+    }
   });
   socket.on('connect', () => {
     console.log('socket connected:', socket.id);
