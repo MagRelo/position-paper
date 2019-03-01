@@ -94,58 +94,52 @@ class AddProposal extends Component {
 
   render() {
     return (
-      <section className="add-proposal">
-        <h3>Propose a Trade</h3>
+      <form action="" className="pure-form add-proposal">
+        <p>Move</p>
+        <Select
+          placeholder="Amount (%)"
+          name="quantity"
+          id="quantity"
+          options={this.props.quantities}
+          onChange={this.onSelectAsset.bind(this)}
+        />
 
-        <form action="" className="pure-form proposal-form">
-          <p>Move</p>
-          <Select
-            placeholder="Amount (%)"
-            name="quantity"
-            id="quantity"
-            options={this.props.quantities}
-            onChange={this.onSelectAsset.bind(this)}
-          />
+        <p>of</p>
 
-          <p>of</p>
+        <Select
+          placeholder="Current Asset"
+          name="fromAsset"
+          id="fromAsset"
+          options={this.props.portfolio.map(position => {
+            return {
+              label: position.assetcode,
+              value: { name: position.assetcode, formFeild: 'fromAsset' }
+            };
+          })}
+          onChange={this.onSelectAsset.bind(this)}
+        />
 
-          <Select
-            placeholder="Current Asset"
-            name="fromAsset"
-            id="fromAsset"
-            options={this.props.portfolio.map(position => {
-              return {
-                label: position.assetcode,
-                value: { name: position.assetcode, formFeild: 'fromAsset' }
-              };
-            })}
-            onChange={this.onSelectAsset.bind(this)}
-          />
+        <p>into</p>
 
-          <p>into</p>
+        <Select
+          placeholder="New Asset"
+          name="toAsset"
+          id="toAsset"
+          options={assetOptions}
+          onChange={this.onSelectAsset.bind(this)}
+        />
 
-          <Select
-            placeholder="New Asset"
-            name="toAsset"
-            id="toAsset"
-            options={assetOptions}
-            onChange={this.onSelectAsset.bind(this)}
-          />
-
-          <button
-            type="button"
-            className="pure-button pure-button-primary"
-            disabled={
-              !this.state.quantity ||
-              !this.state.fromAsset ||
-              !this.state.toAsset
-            }
-            onClick={this.submitProposal.bind(this)}
-          >
-            Submit
-          </button>
-        </form>
-      </section>
+        <button
+          type="button"
+          className="pure-button pure-button-primary"
+          disabled={
+            !this.state.quantity || !this.state.fromAsset || !this.state.toAsset
+          }
+          onClick={this.submitProposal.bind(this)}
+        >
+          Propose Trade
+        </button>
+      </form>
     );
   }
 }

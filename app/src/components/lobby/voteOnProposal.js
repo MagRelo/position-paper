@@ -40,7 +40,7 @@ class VoteOnProposal extends Component {
 
   render() {
     return (
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr auto' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr auto' }}>
         <p>
           Votes: {this.props.totalVotes || 'x'} /{' '}
           {this.props.totalMembers || 'y'}

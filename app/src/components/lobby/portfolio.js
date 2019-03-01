@@ -10,7 +10,7 @@ class PortfolioList extends Component {
   render() {
     return (
       <section className="portfolio">
-        <h3>Portfolio</h3>
+        <h3>Allocations</h3>
         <div className="list">
           <table className="pure-table">
             <thead>

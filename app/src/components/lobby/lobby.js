@@ -5,9 +5,16 @@ import { initSockets } from './sockets';
 
 import './lobby.css';
 import Portfolio from './portfolio';
+import PortfolioHistory from './portfolioHistory';
 import Proposals from './proposals';
-import AddProposal from './addProposal';
-import Discuss from './discuss';
+// import AddProposal from './addProposal';
+// import Discuss from './discuss';
+// <Discuss
+// messages={this.props.chatMessages}
+// groupKey={this.props.groupKey}
+// userKey={this.props.selectedAccount}
+// />
+
 import Members from './member';
 
 class Lobby extends Component {
@@ -36,15 +43,8 @@ class Lobby extends Component {
     return (
       <div className="lobby-grid">
         <h2>{this.props.groupName}</h2>
+        <PortfolioHistory />
         <Proposals />
-
-        <AddProposal />
-
-        <Discuss
-          messages={this.props.chatMessages}
-          groupKey={this.props.groupKey}
-          userKey={this.props.selectedAccount}
-        />
 
         <Portfolio portfolio={this.props.portfolio} />
 

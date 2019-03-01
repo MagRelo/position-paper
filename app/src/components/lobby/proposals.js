@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import VoteOnProposal from 'components/lobby/voteOnProposal';
 import ExecuteTrade from 'components/lobby/executeTrade';
+import ProposeTrade from 'components/lobby/addProposal';
 
 // isOpen - vote form
 // !isOpen && !isPassed - no trade, clear
@@ -13,9 +14,13 @@ class ProposalsList extends Component {
   render() {
     return (
       <section className="proposals">
-        <h3>Vote on Proposals</h3>
+        <h3>Proposals</h3>
 
         <div className="list">
+          <ProposeTrade />
+
+          <hr />
+
           <div className="list-container">
             {this.props.proposals.map(proposal => {
               return (
