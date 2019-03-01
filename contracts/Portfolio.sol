@@ -100,7 +100,7 @@ contract Portfolio {
     return memberMap[msg.sender].valid;
   }
 
-  function memberShare() public view returns(uint256 balance){
+  function memberShare() public view returns(uint256 share){
     return (address(this).balance * memberMap[msg.sender].shares) / totalShares;
   }
 

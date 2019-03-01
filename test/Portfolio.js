@@ -1,10 +1,12 @@
 const Portfolio = artifacts.require('./Portfolio.sol');
 const SimpleStorage = artifacts.require('./SimpleStorage.sol');
+const TestToken = artifacts.require('./TestToken.sol');
 
 const { soliditySha3 } = require('web3-utils');
 
 let PortfolioInstance;
 let SimpleStorageInstance;
+let TestTokenInstance;
 
 contract('Portfolio', accounts => {
   let [
@@ -25,6 +27,7 @@ contract('Portfolio', accounts => {
       memberTwo
     ]);
     SimpleStorageInstance = await SimpleStorage.deployed();
+    TestTokenInstance = await TestToken.deployed();
   });
 
   describe('Membership', () => {
@@ -141,16 +144,18 @@ contract('Portfolio', accounts => {
   });
 
   describe('Trades', () => {
-    it('Members can execute trades', async () => {
-      // register member
-      // await PortfolioInstance.memberRegister(memberOne, {
-      //   from: foundingMember
-      // });
+    it('Members can buy ERC20 through portfolio', async () => {
+      // fund portfolio
+      await PortfolioInstance.memberDeposit({
+        from: memberOne,
+        value: web3.utils.toWei('5')
+      });
 
       // build txn data
-      const simpleStorageAddress = SimpleStorageInstance.address;
-      const targetContractValue = 0;
-      const txnData = buildTxnData();
+      const targetContractABI = TestTokenInstance.abi;
+      const targetContractAddress = TestTokenInstance.address;
+      const targetContractValue = 2;
+      const txnData = buildTxnData(targetContractABI, targetContractAddress);
 
       // get signing account nonce
       const nonce = await PortfolioInstance.tradeNonce();
@@ -159,7 +164,7 @@ contract('Portfolio', accounts => {
       const parts = [
         PortfolioInstance.address,
         memberOne,
-        simpleStorageAddress,
+        targetContractAddress,
         web3.utils.toTwosComplement(targetContractValue),
         txnData,
         web3.utils.toTwosComplement(nonce)
@@ -174,7 +179,7 @@ contract('Portfolio', accounts => {
       await PortfolioInstance.executeTrade(
         signature,
         memberOne,
-        simpleStorageAddress,
+        targetContractAddress,
         targetContractValue,
         txnData,
         {
@@ -182,69 +187,28 @@ contract('Portfolio', accounts => {
         }
       );
 
-      // check simplesignature
-      const currentValue = await SimpleStorageInstance.value.call({
-        from: platform
-      });
-      assert.equal(currentValue, 100, 'Value not updated');
-      const lastUpdatedBy = await SimpleStorageInstance.lastUpdatedBy.call({
-        from: platform
-      });
-
-      assert.equal(
-        lastUpdatedBy,
+      // check that platform owne a token
+      const platformBalance = await TestTokenInstance.balanceOf(
         PortfolioInstance.address,
-        'Not updated by Portfolio'
+        {
+          from: platform
+        }
       );
-    });
-
-    it('Platform *cant* execute trades', async () => {
-      // build txn data
-      const simpleStorageAddress = SimpleStorageInstance.address;
-      const targetContractValue = 0;
-      const txnData = buildTxnData();
-
-      // get signing account nonce
-      const nonce = await PortfolioInstance.tradeNonce();
-
-      // hash
-      const parts = [
-        PortfolioInstance.address,
-        platform,
-        simpleStorageAddress,
-        web3.utils.toTwosComplement(targetContractValue),
-        txnData,
-        web3.utils.toTwosComplement(nonce)
-      ];
-      // console.log('parts', parts);
-      const message = soliditySha3(...parts);
-
-      // sign message
-      let signature = await web3.eth.sign(message, platform);
-
-      try {
-        // executeTrade(bytes memory sig, address signer, address destination, uint value, bytes memory data)
-        await PortfolioInstance.executeTrade(
-          signature,
-          platform,
-          simpleStorageAddress,
-          targetContractValue,
-          txnData,
-          {
-            from: platform
-          }
-        );
-      } catch (error) {
-        return assert.ok(true);
-      }
-      assert.equal(true, false, 'Platform executed trade');
+      assert.equal(
+        platformBalance.toString(10),
+        '1',
+        'Portfolio balance not 1'
+      );
     });
 
     it('Randos *cant* execute trades', async () => {
       // build txn data
       const simpleStorageAddress = SimpleStorageInstance.address;
       const targetContractValue = 0;
-      const txnData = buildTxnData();
+      const txnData = buildTxnData(
+        SimpleStorageInstance.abi,
+        SimpleStorageInstance.address
+      );
 
       // get signing account nonce
       const nonce = await PortfolioInstance.tradeNonce();
@@ -284,15 +248,7 @@ contract('Portfolio', accounts => {
   });
 });
 
-function buildTxnData() {
-  // build txn data
-  const simpleStorageABI = SimpleStorageInstance.abi;
-  const simpleStorageAddress = SimpleStorageInstance.address;
-  var destContractInstance = new web3.eth.Contract(
-    simpleStorageABI,
-    simpleStorageAddress
-  );
-  return destContractInstance.methods.saveSender(100).encodeABI();
+function buildTxnData(abi, address) {
+  var destContractInstance = new web3.eth.Contract(abi, address);
+  return destContractInstance.methods.buy().encodeABI();
 }
-
-function signature() {}
