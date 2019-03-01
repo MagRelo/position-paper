@@ -1,11 +1,6 @@
 var io = require('socket.io');
 
-const {
-  createProposal,
-  updateProposalVote,
-  updateGroupChat,
-  getLobbyData
-} = require('./pg-controller');
+const { getLobbyData, setUserSocket } = require('./pg-controller');
 
 exports.startIo = function(server) {
   io = io.listen(server);
@@ -15,7 +10,11 @@ exports.startIo = function(server) {
     const userKey = socket.handshake.query.userKey;
 
     // join room
+    // socket.nickname(userKey);
     socket.join(groupKey);
+
+    // set into db
+    await setUserSocket(userKey, socket.id);
 
     // setup
     io.to(groupKey).emit('lobby-update', await getLobbyData(groupKey, userKey));
@@ -38,12 +37,18 @@ exports.startIo = function(server) {
 };
 
 exports.broadcastGroupUpdate = async function(groupKey, userKey) {
+  let clientList;
+  await io.in(groupKey).clients((err, clients) => {
+    clientList = clients;
+    return console.log('clients', clients);
+  });
+
   return io
     .to(groupKey)
-    .emit('lobby-update', await getLobbyData(groupKey, userKey));
+    .emit('lobby-update', await getLobbyData(groupKey, userKey, clientList));
 };
 
 // debug
-function timeout(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
+// function timeout(ms) {
+//   return new Promise(resolve => setTimeout(resolve, ms));
+// }

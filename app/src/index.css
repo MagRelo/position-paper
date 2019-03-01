@@ -3,6 +3,7 @@ body,
 #root,
 .container {
   min-height: 100vh;
+  box-sizing: border-box;
 }
 
 .container {
@@ -144,6 +145,12 @@ pre {
 
 
 /*Buttons*/
+
+
+a.pure-button,
+.pure-button {
+  border: solid 1px lightgray;
+}
 
 a.pure-button-primary,
 .pure-button-primary {

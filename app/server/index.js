@@ -20,7 +20,11 @@ const {
   closeProposalVote
 } = require('./pg-controller');
 
-const { startIo, broadcastGroupUpdate } = require('./sockets');
+const {
+  startIo,
+  broadcastGroupUpdate,
+  getConnectedClients
+} = require('./sockets');
 
 const sigUtil = require('eth-sig-util');
 // const ethUtil = require('ethereumjs-util');

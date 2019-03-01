@@ -1,5 +1,6 @@
+// const { getConnectedClients } = require('./sockets');
+
 const { Pool } = require('pg');
-// const { Pool, Client } = require('pg');
 
 let pool;
 
@@ -296,7 +297,7 @@ exports.updateProposalTrade = async function(userData) {
   // trade
 };
 
-exports.getLobbyData = async function(groupKey, userKey) {
+exports.getLobbyData = async function(groupKey, userKey, clients) {
   const group = {
     text: `
       SELECT *
@@ -370,7 +371,8 @@ exports.getLobbyData = async function(groupKey, userKey) {
       chat: data[1].rows,
       members: data[2].rows,
       portfolio: data[3].rows,
-      proposals: data[4].rows
+      proposals: data[4].rows,
+      connected: clients
     };
   } catch (err) {
     throw new Error(err.message);
@@ -393,6 +395,21 @@ exports.createMessage = async function(userKey, groupKey, message) {
     return await pool.query({
       text: query,
       values: queryParams
+    });
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
+
+exports.setUserSocket = async function(userKey, socketId) {
+  try {
+    await pool.query({
+      text: `
+      UPDATE "groupsSchema".users
+      SET updated=$1, socketid=$2
+      WHERE users.userkey = $3;
+    `,
+      values: [new Date(), socketId, userKey]
     });
   } catch (err) {
     throw new Error(err.message);

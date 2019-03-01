@@ -20,7 +20,13 @@ class MembersList extends Component {
                 return (
                   <tr key={user.userid}>
                     <td>{user.username}</td>
-                    <td>(true?)</td>
+                    <td>
+                      {!!user.socketid ? (
+                        <span style={{ color: 'lightgreen' }}>●</span>
+                      ) : (
+                        '-'
+                      )}
+                    </td>
                   </tr>
                 );
               })}
