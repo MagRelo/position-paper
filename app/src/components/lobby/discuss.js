@@ -1,6 +1,48 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+// /* Discuss */
+// .discuss {
+//   /* padding: 0.67em 1em 1em 0.5em; */
+//   border-bottom-right-radius: 2px;
+
+//   display: grid;
+//   grid-template-rows: auto 1fr auto;
+// }
+
+// .discuss .list {
+//   background: #ffffff;
+//   border-top-right-radius: 2px;
+//   border-top-left-radius: 2px;
+
+//   height: 100%;
+//   overflow: auto;
+//   max-height: 29vh;
+// }
+
+// .discuss .list .message {
+//   padding: 0.33em;
+// }
+
+// .discuss .list .message-user {
+//   background: #d0d2d4;
+//   padding: 0.33em 0.67em;
+//   text-align: right;
+// }
+
+// .discuss form {
+//   padding: 0.5em;
+
+//   background: white;
+//   border-top: solid #dddddd 1px;
+//   border-bottom-right-radius: 2px;
+//   border-bottom-left-radius: 2px;
+
+//   display: grid;
+//   grid-template-columns: 1fr auto;
+//   grid-gap: 0.5em;
+// }
+
 class Discuss extends Component {
   state = { accounts: null, message: '' };
 

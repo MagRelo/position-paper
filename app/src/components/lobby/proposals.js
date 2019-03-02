@@ -19,8 +19,6 @@ class ProposalsList extends Component {
         <div className="list">
           <ProposeTrade />
 
-          <hr />
-
           <div className="list-container">
             {this.props.proposals.map(proposal => {
               return (
@@ -28,6 +26,10 @@ class ProposalsList extends Component {
                   <p>
                     Move {proposal.quantity * 100}%{' of '}
                     {proposal.fromasset} to {proposal.toasset}
+                  </p>
+                  <p>
+                    ({proposal.totalVotes || 'x'}/{proposal.totalMembers || 'y'}
+                    )
                   </p>
 
                   {proposal.isopen ? (

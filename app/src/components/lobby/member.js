@@ -22,10 +22,8 @@ class MembersList extends Component {
                     <td>{user.username}</td>
                     <td>
                       {!!user.socketid ? (
-                        <span style={{ color: 'lightgreen' }}>●</span>
-                      ) : (
-                        '-'
-                      )}
+                        <span style={{ color: '#20b560' }}>●</span>
+                      ) : null}
                     </td>
                   </tr>
                 );

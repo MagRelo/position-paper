@@ -29,7 +29,7 @@ class PortfolioHistory extends Component {
   render() {
     return (
       <section className="history">
-        <h3>History</h3>
+        <h3>Portfolio History</h3>
         <MarketGraph />
       </section>
     );

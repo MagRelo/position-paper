@@ -137,7 +137,7 @@ class AddProposal extends Component {
           }
           onClick={this.submitProposal.bind(this)}
         >
-          Propose Trade
+          Add Proposal
         </button>
       </form>
     );

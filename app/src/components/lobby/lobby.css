@@ -1,12 +1,14 @@
 .lobby-grid {
-  height: 100%;
   display: grid;
   grid-gap: 1em;
+  padding: 1em;
+  background: #1c405c;
 }
 
 /* portfolio name */
 .lobby-grid h2 {
   color: #e6e6e6;
+  margin: 0;
 }
 
 /* game panels */
@@ -16,7 +18,7 @@
 }
 
 .lobby-grid section>h3 {
-  padding: 0.5em 0;
+  padding: 0.667em 0;
   color: #e6e6e6;
 }
 
@@ -31,7 +33,7 @@
 }
 
 .members .list {
-  background: white;
+  color: white;
   border-radius: 2px;
 
 }
@@ -48,51 +50,8 @@
 }
 
 .portfolio .list {
-  background: white;
+  color: white;
   border-radius: 2px;
-}
-
-
-/* Discuss */
-.discuss {
-  /* padding: 0.67em 1em 1em 0.5em; */
-  border-bottom-right-radius: 2px;
-
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-}
-
-.discuss .list {
-  background: #ffffff;
-  border-top-right-radius: 2px;
-  border-top-left-radius: 2px;
-
-  height: 100%;
-  overflow: auto;
-  max-height: 29vh;
-}
-
-.discuss .list .message {
-  padding: 0.33em;
-}
-
-.discuss .list .message-user {
-  background: #d0d2d4;
-  padding: 0.33em 0.67em;
-  text-align: right;
-}
-
-.discuss form {
-  padding: 0.5em;
-
-  background: white;
-  border-top: solid #dddddd 1px;
-  border-bottom-right-radius: 2px;
-  border-bottom-left-radius: 2px;
-
-  display: grid;
-  grid-template-columns: 1fr auto;
-  grid-gap: 0.5em;
 }
 
 
@@ -102,6 +61,10 @@
 
   display: grid;
   grid-template-rows: auto 1fr;
+}
+
+.proposals .list-container {
+  margin-top: 1em;
 }
 
 .proposals .list {
@@ -114,13 +77,13 @@
 
 .proposals .list .list-item {
   border-radius: 2px;
-  background: white;
+  color: white;
   padding: 0.5em;
   margin-bottom: 1em;
   /* box-shadow: 1px 1px 3px #666; */
 
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr auto auto;
 
 }
 
@@ -128,18 +91,24 @@
   margin: 0.5em;
 }
 
+.vote-form {
+  border: solid 1px white;
+}
+
 .vote-form button.pure-button {
-  margin-left: 0.5em;
+  background: inherit;
+  color: lightgray;
+}
+
+.vote-form button.pure-button-primary {
+  background: white;
+  color: black;
 }
 
 
 /* Add Proposal */
 .proposals .add-proposal {
-  padding: 0.5em;
-  background: white;
-  border-radius: 2px;
-  box-shadow: 1px 1px 1px #666;
-
+  color: white;
   display: grid;
   grid-gap: 0.5em;
 }
@@ -150,7 +119,7 @@
 
   .lobby-grid {
     grid-template-columns: 2fr 4fr 2fr;
-    grid-template-rows: auto auto 1fr 1fr;
+    grid-template-rows: auto 1fr 1fr;
   }
 
   .lobby-grid h2 {
@@ -158,17 +127,17 @@
   }
 
   .portfolio {
-    grid-row: 4 / 5;
+    grid-row: 3 / 4;
     grid-column: 1 / 2;
   }
 
   .members {
-    grid-row: 2 / 4;
+    grid-row: 2 / 3;
     grid-column: 1 / 2;
   }
 
   .proposals {
-    grid-row: 4 / 5;
+    grid-row: 3 / 4;
     grid-column: 2 / 4;
   }
 
@@ -178,7 +147,7 @@
 
   .discuss,
   .history {
-    grid-row: 3/4;
+    grid-row: 2/4;
     grid-column: 2 / 4;
   }
 

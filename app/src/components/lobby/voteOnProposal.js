@@ -41,10 +41,6 @@ class VoteOnProposal extends Component {
   render() {
     return (
       <div style={{ display: 'grid', gridTemplateColumns: '1fr auto' }}>
-        <p>
-          Votes: {this.props.totalVotes || 'x'} /{' '}
-          {this.props.totalMembers || 'y'}
-        </p>
         <form action="" className="pure-form vote-form">
           <button
             type="button"
@@ -55,7 +51,7 @@ class VoteOnProposal extends Component {
               true
             )}
           >
-            Yes
+            In Favor
           </button>
           <button
             type="button"
@@ -66,7 +62,7 @@ class VoteOnProposal extends Component {
               false
             )}
           >
-            No
+            Against
           </button>
         </form>
       </div>
