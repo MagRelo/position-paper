@@ -20,22 +20,19 @@ import Members from './member';
 class Lobby extends Component {
   state = { groupName: 'loading...', midDeposit: 0 };
 
-  async componentDidMount() {}
+  async componentDidMount() {
+    initSockets(this.props.contractAddress, this.props.selectedAccount);
+  }
 
   //
   componentDidUpdate(prevState) {
     if (
       prevState.selectedAccount !== this.props.selectedAccount &&
-      !!this.props.match.params.contractAddress &&
+      !!this.props.contractAddress &&
       !!this.props.selectedAccount
     ) {
       console.log('init sockets lobby', this.props.selectedAccount);
-      // init socket connection w/ contract address
-
-      initSockets(
-        this.props.match.params.contractAddress,
-        this.props.selectedAccount
-      );
+      initSockets(this.props.contractAddress, this.props.selectedAccount);
     }
   }
 

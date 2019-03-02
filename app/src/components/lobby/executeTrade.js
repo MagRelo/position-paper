@@ -9,7 +9,7 @@ class ExecuteTrade extends Component {
     // !isOpen && isPassed && isExecuted - trade history
   };
 
-  // Vote form
+  // Prepare and execute trade
   async executeTrade(proposalId, inFavor) {
     // await fetch('/vote', {
     //   method: 'POST',

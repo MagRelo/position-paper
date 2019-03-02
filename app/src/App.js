@@ -15,7 +15,7 @@ import CreatePortfolio from 'components/createPortfolio';
 import AcceptInvite from 'components/acceptInvite';
 
 import allGroups from 'components/allGroups';
-import Lobby from 'components/lobby/lobby';
+import Lobby from 'components/lobby/lobbyPage';
 
 import Auto from 'components/util/autoPage';
 

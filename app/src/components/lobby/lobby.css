@@ -91,9 +91,9 @@
   margin: 0.5em;
 }
 
-.vote-form {
+/* .vote-form {
   border: solid 1px white;
-}
+} */
 
 .vote-form button.pure-button {
   background: inherit;
@@ -101,8 +101,8 @@
 }
 
 .vote-form button.pure-button-primary {
-  background: white;
-  color: black;
+  background: #12b45a;
+  color: #1c405c;
 }
 
 

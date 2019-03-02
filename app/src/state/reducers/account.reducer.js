@@ -2,7 +2,11 @@ const initialState = {
   accountsReady: false,
   accounts: [],
   selectedAccount: '',
-  balance: 0
+  balance: 0,
+  message: '',
+  signature: '',
+  duration: 0,
+  expires: null
 };
 
 function normalizeAccount(input) {
@@ -34,6 +38,19 @@ const AccountReducer = (state = initialState, action) => {
       selectedAccount: '',
       accounts: [],
       balance: 0
+    });
+  }
+
+  // Sessions
+  if (action.type === 'SESSION_LOAD') {
+    return Object.assign({}, state, action.payload);
+  }
+  if (action.type === 'SESSION_CLEAR') {
+    return Object.assign({}, state, {
+      message: '',
+      signature: '',
+      duration: 0,
+      expires: null
     });
   }
 
