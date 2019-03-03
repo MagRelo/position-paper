@@ -3,6 +3,7 @@ const initialState = {
   accounts: [],
   selectedAccount: '',
   balance: 0,
+  forbidden: false,
   message: '',
   signature: '',
   duration: 0,
@@ -51,6 +52,15 @@ const AccountReducer = (state = initialState, action) => {
       signature: '',
       duration: 0,
       expires: null
+    });
+  }
+  if (action.type === 'SESSION_FORBIDDEN') {
+    return Object.assign({}, state, {
+      message: '',
+      signature: '',
+      duration: 0,
+      expires: null,
+      forbidden: true
     });
   }
 

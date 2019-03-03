@@ -56,42 +56,50 @@ class AuthWrapper extends Component {
                 style={{ marginTop: '1em' }}
               />
 
-              <p>Auth Error</p>
-
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateRows: '1fr',
-                  gridTemplateColumns: '1fr 1fr 1fr',
-                  margin: '0.5em 0 1em',
-                  gridGap: '1em'
-                }}
-              >
-                <button
-                  name="1"
-                  type="button"
-                  className="pure-button pure-button-primary"
-                  onClick={this.createSession.bind(this, 1)}
-                >
-                  1 minute
-                </button>
-                <button
-                  name="30"
-                  type="button"
-                  className="pure-button pure-button-primary"
-                  onClick={this.createSession.bind(this, 30)}
-                >
-                  30 minutes
-                </button>
-                <button
-                  name="90"
-                  type="button"
-                  className="pure-button pure-button-primary"
-                  onClick={this.createSession.bind(this, 90)}
-                >
-                  90 minutes
-                </button>
-              </div>
+              {this.props.forbidden ? (
+                <div>
+                  <p>Account: {this.props.selectedAccount} </p>
+                  <p>You are not allowed to access this portfolio</p>
+                </div>
+              ) : (
+                <div>
+                  <p>Create an authenticated session</p>
+                  <div
+                    style={{
+                      display: 'grid',
+                      gridTemplateRows: '1fr',
+                      gridTemplateColumns: '1fr 1fr 1fr',
+                      margin: '0.5em 0 1em',
+                      gridGap: '1em'
+                    }}
+                  >
+                    <button
+                      name="1"
+                      type="button"
+                      className="pure-button pure-button-primary"
+                      onClick={this.createSession.bind(this, 1)}
+                    >
+                      1 minute
+                    </button>
+                    <button
+                      name="30"
+                      type="button"
+                      className="pure-button pure-button-primary"
+                      onClick={this.createSession.bind(this, 30)}
+                    >
+                      30 minutes
+                    </button>
+                    <button
+                      name="90"
+                      type="button"
+                      className="pure-button pure-button-primary"
+                      onClick={this.createSession.bind(this, 90)}
+                    >
+                      90 minutes
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -103,7 +111,8 @@ class AuthWrapper extends Component {
 const mapStateToProps = state => {
   return {
     selectedAccount: state.account.selectedAccount,
-    activeSession: !!state.account.expires
+    activeSession: !!state.account.expires,
+    forbidden: state.account.forbidden
   };
 };
 

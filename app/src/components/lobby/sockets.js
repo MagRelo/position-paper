@@ -75,4 +75,10 @@ function socketError(error) {
       type: 'SESSION_CLEAR'
     });
   }
+
+  if (error === '403') {
+    return store.dispatch({
+      type: 'SESSION_FORBIDDEN'
+    });
+  }
 }
