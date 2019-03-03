@@ -1,5 +1,7 @@
 const sigUtil = require('eth-sig-util');
 
+const { checkUserMembership } = require('./pg-controller');
+
 function recover(message, signature) {
   return sigUtil.recoverPersonalSignature({
     data: message,
@@ -19,9 +21,10 @@ exports.expressAuth = async function(req, res, next) {
     return res.status(401).send('Unauthorized');
   }
 
-  // pass along userAddress and message
-  req.userAddress = recover(authObject.message, authObject.signature);
-  req.userMessage = authObject.message;
+  // validate that user can access group key(?)
+  const recoveredUserKey = recover(authObject.message, authObject.signature);
+
+  // check of user can access group
 
   // call next middleware function
   next();
@@ -41,18 +44,16 @@ exports.socketAuth = async function(packet, next) {
     return next(new Error('401'));
   }
 
-  // pass along userAddress and message
-  packet.userAddress = recover(authObject.message, authObject.signature);
-  packet.userMessage = authObject.message;
+  // validate that user can access group key(?)
+  const recoveredUserKey = recover(authObject.message, authObject.signature);
+  const groupKey = packet.handshake.query.groupKey;
 
+  const isMember = await checkUserMembership(recoveredUserKey, groupKey);
+
+  if (!isMember) {
+    console.log('member not found in group');
+    return next(new Error('401'));
+  }
   // call next middleware function
   next();
 };
-
-function recover(message, signature) {
-  // recover public key
-  return sigUtil.recoverPersonalSignature({
-    data: message,
-    sig: signature
-  });
-}

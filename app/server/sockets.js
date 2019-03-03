@@ -11,6 +11,7 @@ exports.startIo = function(server) {
 
   io.on('connection', async socket => {
     const groupKey = socket.handshake.query.groupKey;
+
     const userKey = socket.handshake.query.userKey;
 
     // join room

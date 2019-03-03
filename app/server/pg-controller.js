@@ -414,3 +414,24 @@ exports.setUserSocket = async function(userKey, socketId) {
     throw new Error(err.message);
   }
 };
+
+exports.checkUserMembership = async function(userKey, groupKey) {
+  const membership = {
+    text: `
+    SELECT users.*
+    FROM "groupsSchema".groupuser, "groupsSchema".users
+    WHERE groupuser.userkey = users.userkey
+    AND users.userkey = $1
+    AND groupuser.groupkey = $2;
+  `,
+    values: [userKey, groupKey]
+  };
+
+  try {
+    const results = await pool.query(membership);
+
+    return !!results.rows.length;
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};

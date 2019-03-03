@@ -8,9 +8,8 @@ import {
   del as clearCache
 } from './money-clip';
 
-export function loadSession() {
+export function loadSession(userAddress) {
   return function(dispatch) {
-    const userAddress = store.getState().account.selectedAcount;
     getCache('session-' + userAddress).then(val => {
       // if no 'val' then we don't have a session or it has
       //  expired => clear out the rest of the session data

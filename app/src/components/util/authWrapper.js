@@ -6,20 +6,24 @@ import WarningIcon from 'images/warning.svg';
 import { loadSession, saveSession, clearSession } from './authActions';
 
 class AuthWrapper extends Component {
+  componentDidMount() {
+    console.log('cdm', this.props.selectedAccount);
+    this.props.getSession(this.props.selectedAccount);
+  }
+
   componentDidUpdate(prevState) {
     if (prevState.selectedAccount !== this.props.selectedAccount) {
-      loadSession();
+      this.props.getSession(this.props.selectedAccount);
+      console.log('cdu', this.props.selectedAccount);
     }
   }
 
   logout() {
-    // this.setState({ systemInfo: null });
     clearSession();
   }
 
   createSession(duration) {
     console.log('hit createSession');
-    // this.setState({ alert: false });
     this.props.createSession(duration);
   }
 
@@ -33,7 +37,6 @@ class AuthWrapper extends Component {
     }
     return { __html: message };
   }
-  // <p dangerouslySetInnerHTML={this.selectMessage()} />
 
   showChildren() {
     return this.props.activeSession;
@@ -108,6 +111,9 @@ const mapDispatchToProps = dispatch => {
   return {
     createSession: duration => {
       dispatch(saveSession(duration));
+    },
+    getSession: selectedAccount => {
+      dispatch(loadSession(selectedAccount));
     }
   };
 };

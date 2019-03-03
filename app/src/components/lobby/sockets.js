@@ -27,7 +27,6 @@ export async function initSockets(contractAddress, userKey) {
 
   // servesa events
   socket.on('lobby-update', updateServerData);
-  // socket.on('bounce-response', bounceResponse);
 
   // standard errors
   socket.on('reconnecting', reconnectError);

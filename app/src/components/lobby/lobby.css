@@ -3,46 +3,38 @@
   grid-gap: 1em;
   padding: 1em;
   background: #1c405c;
+  color: #e6e6e6;
 }
 
 /* portfolio name */
 .lobby-grid h2 {
-  color: #e6e6e6;
   margin: 0;
 }
 
 /* game panels */
 .lobby-grid section {
   background: #1c405c;
-  /* padding: 0 1em 1em 1em; */
 }
 
 .lobby-grid section>h3 {
   padding: 0.667em 0;
-  color: #e6e6e6;
 }
 
 
 /* Members */
 .members {
-  /* padding: 0.67em 0.5em 1em 1em; */
   border-bottom-left-radius: 2px;
-
   display: grid;
   grid-template-rows: auto 1fr;
 }
 
 .members .list {
-  color: white;
   border-radius: 2px;
-
 }
 
 
 /* Portfolio */
 .portfolio {
-  /* padding: 0.67em 0.5em 0 1em; */
-
   border-top-left-radius: 2px;
 
   display: grid;
@@ -50,15 +42,12 @@
 }
 
 .portfolio .list {
-  color: white;
   border-radius: 2px;
 }
 
 
 /* Proposals */
 .proposals {
-  /* padding: 0.67em 1em 1em 0.5em; */
-
   display: grid;
   grid-template-rows: auto 1fr;
 }
@@ -69,19 +58,13 @@
 
 .proposals .list {
   overflow: auto;
-  /* padding: 0 1em; */
-  /* background: #7f91a1; */
   box-sizing: border-box;
-  /* box-shadow: inset 1px 1px 1px #666; */
 }
 
 .proposals .list .list-item {
   border-radius: 2px;
-  color: white;
   padding: 0.5em;
   margin-bottom: 1em;
-  /* box-shadow: 1px 1px 3px #666; */
-
   display: grid;
   grid-template-columns: 1fr auto auto;
 
@@ -91,24 +74,18 @@
   margin: 0.5em;
 }
 
-/* .vote-form {
-  border: solid 1px white;
-} */
-
 .vote-form button.pure-button {
   background: inherit;
-  color: lightgray;
+  color: #e6e6e6;
 }
 
 .vote-form button.pure-button-primary {
   background: #12b45a;
-  color: #1c405c;
 }
 
 
 /* Add Proposal */
 .proposals .add-proposal {
-  color: white;
   display: grid;
   grid-gap: 0.5em;
 }
