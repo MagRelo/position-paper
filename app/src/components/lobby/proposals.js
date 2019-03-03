@@ -15,10 +15,9 @@ class ProposalsList extends Component {
     return (
       <section className="proposals">
         <h3>Proposals</h3>
+        <ProposeTrade />
 
         <div className="list">
-          <ProposeTrade />
-
           <div className="list-container">
             {this.props.proposals.map(proposal => {
               return (

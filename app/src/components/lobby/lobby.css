@@ -2,8 +2,9 @@
   display: grid;
   grid-gap: 1em;
   padding: 1em;
-  background: #1c405c;
-  color: #e6e6e6;
+  /* background: #1c405c; */
+  /* color: #e6e6e6; */
+  color: #1c405c;
 }
 
 /* portfolio name */
@@ -13,7 +14,7 @@
 
 /* game panels */
 .lobby-grid section {
-  background: #1c405c;
+  /* background: #1c405c; */
 }
 
 .lobby-grid section>h3 {
@@ -49,11 +50,14 @@
 /* Proposals */
 .proposals {
   display: grid;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: auto auto 1fr;
 }
 
 .proposals .list-container {
-  margin-top: 1em;
+  overflow: auto;
+  height: 30vh;
+
+  padding: 0 1em;
 }
 
 .proposals .list {
@@ -63,20 +67,19 @@
 
 .proposals .list .list-item {
   border-radius: 2px;
-  padding: 0.5em;
-  margin-bottom: 1em;
+  margin-top: 1em;
   display: grid;
   grid-template-columns: 1fr auto auto;
 
 }
 
-.proposals .list p {
-  margin: 0.5em;
+.vote-form {
+  margin-top: 0.5em;
 }
 
 .vote-form button.pure-button {
   background: inherit;
-  color: #e6e6e6;
+  /* color: #e6e6e6; */
 }
 
 .vote-form button.pure-button-primary {
