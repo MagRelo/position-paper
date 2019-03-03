@@ -4,10 +4,21 @@ import store from 'state/store';
 let socket = null;
 
 export async function initSockets(contractAddress, userKey) {
+  const message = store.getState().account.message;
+  const signature = store.getState().account.signature;
+  const expires = store.getState().account.expires;
+
   socket = io('/', {
     query: {
       groupKey: contractAddress,
       userKey: userKey
+    },
+    transportOptions: {
+      polling: {
+        extraHeaders: {
+          'x-servesa': JSON.stringify({ message, signature, expires })
+        }
+      }
     }
   });
   socket.on('connect', () => {
@@ -59,4 +70,10 @@ function reconnectError(data) {
 }
 function socketError(error) {
   console.error('socket error!', error);
+
+  if (error === '401') {
+    return store.dispatch({
+      type: 'SESSION_CLEAR'
+    });
+  }
 }

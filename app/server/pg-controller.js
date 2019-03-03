@@ -297,7 +297,7 @@ exports.updateProposalTrade = async function(userData) {
   // trade
 };
 
-exports.getLobbyData = async function(groupKey, userKey, clients) {
+exports.getLobbyData = async function(groupKey, userKey) {
   const group = {
     text: `
       SELECT *
@@ -371,8 +371,7 @@ exports.getLobbyData = async function(groupKey, userKey, clients) {
       chat: data[1].rows,
       members: data[2].rows,
       portfolio: data[3].rows,
-      proposals: data[4].rows,
-      connected: clients
+      proposals: data[4].rows
     };
   } catch (err) {
     throw new Error(err.message);
