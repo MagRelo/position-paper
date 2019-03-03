@@ -9,7 +9,12 @@ class LoadWrapper extends Component {
 
     let message = '';
 
-    if (!this.props.networkReady || !this.props.contractsReady) {
+    if (!this.props.contractsReady) {
+      message = `Required smart contracts not found. Please make sure you are connected to the right network.
+      <br/><br/> See our <a href="${networkConnectionDocs}" target="_blank" rel="noopener noreferrer">documentation</a> for more information.`;
+    }
+
+    if (!this.props.networkReady) {
       message = `Please make sure you are connected to the right network.
       <br/><br/> See our <a href="${networkConnectionDocs}" target="_blank" rel="noopener noreferrer">documentation</a> for more information.`;
     }
@@ -38,7 +43,7 @@ class LoadWrapper extends Component {
 
   render() {
     return (
-      <div>
+      <React.Fragment>
         {this.showChildren() ? (
           { ...this.props.children }
         ) : (
@@ -65,7 +70,7 @@ class LoadWrapper extends Component {
             )}
           </div>
         )}
-      </div>
+      </React.Fragment>
     );
   }
 }

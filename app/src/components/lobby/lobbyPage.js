@@ -3,18 +3,17 @@ import { connect } from 'react-redux';
 
 import Lobby from 'components/lobby/lobby';
 import AuthWrapper from 'components/util/authWrapper';
+import Web3Wrapper from 'components/util/web3Wrapper';
 
 class LobbyPage extends Component {
-  state = { groupName: 'loading...', midDeposit: 0 };
-
-  componentDidUpdate(prevState) {}
-
   render() {
     return (
       <React.Fragment>
-        <AuthWrapper>
-          <Lobby contractAddress={this.props.match.params.contractAddress} />
-        </AuthWrapper>
+        <Web3Wrapper skipContracts={true}>
+          <AuthWrapper>
+            <Lobby contractAddress={this.props.match.params.contractAddress} />
+          </AuthWrapper>
+        </Web3Wrapper>
       </React.Fragment>
     );
   }

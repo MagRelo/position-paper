@@ -5,7 +5,7 @@ import Select from 'react-select';
 
 import store from 'state/store';
 
-import Loader from 'components/util/loader';
+import Loader from 'components/util/web3Wrapper';
 import AutoForm from 'components/util/autoForm';
 
 class LandingPage extends Component {

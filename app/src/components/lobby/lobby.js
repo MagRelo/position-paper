@@ -21,17 +21,17 @@ class Lobby extends Component {
   state = { groupName: 'loading...', midDeposit: 0 };
 
   async componentDidMount() {
+    console.log('lobby cdm', this.props.selectedAccount);
     initSockets(this.props.contractAddress, this.props.selectedAccount);
   }
 
-  //
   componentDidUpdate(prevState) {
     if (
       prevState.selectedAccount !== this.props.selectedAccount &&
       !!this.props.contractAddress &&
       !!this.props.selectedAccount
     ) {
-      console.log('init sockets lobby', this.props.selectedAccount);
+      console.log('lobby cdu', this.props.selectedAccount);
       initSockets(this.props.contractAddress, this.props.selectedAccount);
     }
   }
@@ -42,9 +42,7 @@ class Lobby extends Component {
         <h2>{this.props.groupName}</h2>
         <PortfolioHistory />
         <Proposals />
-
         <Portfolio portfolio={this.props.portfolio} />
-
         <Members members={this.props.members} />
       </div>
     );
