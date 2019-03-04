@@ -39,7 +39,7 @@ class AuthWrapper extends Component {
   }
 
   showChildren() {
-    return this.props.activeSession;
+    return this.props.activeSession || this.props.skipAuth;
   }
 
   render() {

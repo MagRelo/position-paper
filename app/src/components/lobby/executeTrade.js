@@ -11,6 +11,8 @@ class ExecuteTrade extends Component {
 
   // Prepare and execute trade
   async executeTrade(proposalId, inFavor) {
+    // get contract abi and address from server
+    //
     // await fetch('/vote', {
     //   method: 'POST',
     //   headers: {
