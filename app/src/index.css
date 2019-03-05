@@ -167,7 +167,7 @@ a.pure-button-primary:hover,
 }
 
 .pure-table th {
-  border-bottom: solid 1px #648599;
+  border-bottom: solid 1px #cbcbcb;
   color: #648599;
 }
 
@@ -189,18 +189,10 @@ a.pure-button-primary:hover,
 
 .pure-table td,
 .pure-table th {
-  border-left: solid 1px #648599;
-  /* padding: .3em 1em; */
+  border-left: solid 1px #cbcbcb;
 }
 
 /* forms */
-.pure-form {
-  /* padding: 1em; */
-  /* margin: 0 1em; */
-  /* border-radius: 1em; */
-  /* border: 1px solid lightgray; */
-}
-
 form>p {
   margin-top: 0.5em;
   margin-bottom: 0.2em;

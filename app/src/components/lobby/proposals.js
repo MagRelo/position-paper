@@ -52,9 +52,9 @@ class ProposalsList extends Component {
   render() {
     return (
       <section className="proposals">
-        <h3>Add Proposal</h3>
+        <h3>Add Trade</h3>
         <ProposeTrade />
-        <h3>Proposals</h3>
+        <h3>Trades</h3>
         <table className="pure-table">
           <thead>
             <tr>
