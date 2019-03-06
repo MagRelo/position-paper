@@ -7,14 +7,14 @@ import { loadSession, saveSession, clearSession } from './authActions';
 
 class AuthWrapper extends Component {
   componentDidMount() {
-    console.log('cdm', this.props.selectedAccount);
+    // console.log('cdm', this.props.selectedAccount);
     this.props.getSession(this.props.selectedAccount);
   }
 
   componentDidUpdate(prevState) {
     if (prevState.selectedAccount !== this.props.selectedAccount) {
       this.props.getSession(this.props.selectedAccount);
-      console.log('cdu', this.props.selectedAccount);
+      // console.log('cdu', this.props.selectedAccount);
     }
   }
 
@@ -23,7 +23,7 @@ class AuthWrapper extends Component {
   }
 
   createSession(duration) {
-    console.log('hit createSession');
+    // console.log('hit createSession');
     this.props.createSession(duration);
   }
 

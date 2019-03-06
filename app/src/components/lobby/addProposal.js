@@ -112,8 +112,8 @@ class AddProposal extends Component {
           id="fromAsset"
           options={this.props.portfolio.map(position => {
             return {
-              label: position.assetcode,
-              value: { name: position.assetcode, formFeild: 'fromAsset' }
+              label: position.name,
+              value: { name: position.name, formFeild: 'fromAsset' }
             };
           })}
           onChange={this.onSelectAsset.bind(this)}

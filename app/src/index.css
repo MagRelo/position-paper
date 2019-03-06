@@ -168,7 +168,8 @@ a.pure-button-primary:hover,
 
 .pure-table th {
   border-bottom: solid 1px #cbcbcb;
-  color: #648599;
+  color: #555;
+  font-weight: normal;
 }
 
 .pure-table td {

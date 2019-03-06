@@ -21,7 +21,7 @@ class Lobby extends Component {
   state = { groupName: 'loading...', midDeposit: 0 };
 
   async componentDidMount() {
-    console.log('lobby cdm', this.props.selectedAccount);
+    // console.log('lobby cdm', this.props.selectedAccount);
     initSockets(this.props.contractAddress, this.props.selectedAccount);
   }
 
@@ -31,7 +31,7 @@ class Lobby extends Component {
       !!this.props.contractAddress &&
       !!this.props.selectedAccount
     ) {
-      console.log('lobby cdu', this.props.selectedAccount);
+      // console.log('lobby cdu', this.props.selectedAccount);
       initSockets(this.props.contractAddress, this.props.selectedAccount);
     }
   }
@@ -40,7 +40,7 @@ class Lobby extends Component {
     return (
       <div className="lobby-grid">
         <h2>{this.props.groupName}</h2>
-        <PortfolioHistory />
+        <PortfolioHistory portfolio={this.props.portfolio} />
         <Proposals />
         <Portfolio portfolio={this.props.portfolio} />
         <Members members={this.props.members} />
