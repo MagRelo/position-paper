@@ -83,7 +83,7 @@ exports.createGroup = async function(groupKey, groupName, minDeposit, members) {
           text: `
           INSERT INTO "groupsSchema".users(
             userkey, username, created, updated)
-            VALUES ($1, $2, $3, $4);
+            VALUES ($1, $2, $3, $4)
             on conflict (userkey) 
             do update set username = $2;
           `,
