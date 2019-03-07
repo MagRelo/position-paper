@@ -10,7 +10,7 @@ class LobbyPage extends Component {
     return (
       <React.Fragment>
         <Web3Wrapper skipContracts={true}>
-          <AuthWrapper skipAuth={true}>
+          <AuthWrapper>
             <Lobby contractAddress={this.props.match.params.contractAddress} />
           </AuthWrapper>
         </Web3Wrapper>

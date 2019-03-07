@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import store from 'state/store';
 
+import { BigNumber as BN } from 'bignumber.js';
+import EXCHANGE_ABI from 'uniswap/exchange.json';
+import { exchangeAddresses } from 'uniswap/exchangeData.json';
+
 class ExecuteTrade extends Component {
   state = {
     // isOpen - vote form
@@ -16,16 +20,14 @@ class ExecuteTrade extends Component {
     const web3 = store.getState().web3.instance;
     const selectedAccount = store.getState().account.selectedAccount;
 
-    // get target contract
-
-    // => fromToken[outputCurrency]
-
+    // get target contract address
+    // => exchangeAddresses.fromToken[outputAsset]
     // select method
     // build params
 
     // build txn data
-    // const targetContract = store.getState().contracts[contract];
-    // const txnData = targetContract.methods[method](...params).encodeABI();
+    // let exchange = new web3.eth.Contract(EXCHANGE_ABI, exchangeAddresses.fromToken[outputAsset]);
+    // const txnData = exchange.methods[method](...params).encodeABI();
     // const targetContractAmount = amount || 0;
 
     // get portfolio nonce
@@ -37,9 +39,9 @@ class ExecuteTrade extends Component {
 
     // hash & sign message
     // const parts = [
-    //   bouncerProxyInstance._address,
+    //   portfolio._address,
     //   selectedAccount,
-    //   targetContract._address,
+    //   exchange._address,
     //   web3.utils.toTwosComplement(targetContractAmount),
     //   txnData,
     //   rewardAddress,
@@ -51,13 +53,13 @@ class ExecuteTrade extends Component {
 
     // create portfolio contract
     // TODO
-    // const BouncerProxy = await new web3.eth.Contract(
-    //   bpArtifact.abi,
-    //   bpArtifact.networks[networkId].address
+    // const Portfolio = await new web3.eth.Contract(
+    //   portfolio.abi,
+    //   portfolio.networks[networkId].address
     // );
 
     // // send transaction to portfolio
-    // const forwardReceipt = await BouncerProxy.methods
+    // const forwardReceipt = await Portfolio.methods
     // .forward(
     //   signature,
     //   signingAccount,
@@ -121,98 +123,111 @@ export default connect(
   mapDispatchToProps
 )(ExecuteTrade);
 
-function getSwapType(inputCurrency, outputCurrency) {
-  if (!inputCurrency || !outputCurrency) {
+function getSwapType(inputAsset, outputAsset) {
+  if (!inputAsset || !outputAsset) {
     return;
   }
 
-  if (inputCurrency === outputCurrency) {
+  if (inputAsset === outputAsset) {
     return;
   }
 
-  if (inputCurrency !== 'ETH' && outputCurrency !== 'ETH') {
+  if (inputAsset !== 'ETH' && outputAsset !== 'ETH') {
     return 'TOKEN_TO_TOKEN';
   }
 
-  if (inputCurrency === 'ETH') {
+  if (inputAsset === 'ETH') {
     return 'ETH_TO_TOKEN';
   }
 
-  if (outputCurrency === 'ETH') {
+  if (outputAsset === 'ETH') {
     return 'TOKEN_TO_ETH';
   }
 
   return;
 }
 
-// this.props.inputCurrency, this.props.outputCurrency
+async function buildUniswapTxn(web3, inputAsset, outputAsset) {
+  const type = getSwapType(inputAsset, outputAsset);
+  const ALLOWED_SLIPPAGE = 0.025;
+  const TOKEN_ALLOWED_SLIPPAGE = 0.04;
 
-// const type = getSwapType(inputCurrency, outputCurrency);
+  const inputValue = 0;
+  const outputValue = 0;
+  const inputDecimals = 0;
+  const outputDecimals = 0;
+  // const { decimals: inputDecimals } = selectors().getBalance(account, inputAsset);
+  // const { decimals: outputDecimals } = selectors().getBalance(account, outputAsset);
 
-// const ALLOWED_SLIPPAGE = 0.025;
-// const TOKEN_ALLOWED_SLIPPAGE = 0.04;
+  let deadline;
+  try {
+    // deadline = await retry(() => getBlockDeadline(web3, 600));
+  } catch (e) {
+    // TODO: Handle error.
+    return;
+  }
 
-// const { decimals: inputDecimals } = selectors().getBalance(account, inputCurrency);
-// const { decimals: outputDecimals } = selectors().getBalance(account, outputCurrency);
-// let deadline;
-// try {
-//   deadline = await retry(() => getBlockDeadline(web3, 600));
-// } catch(e) {
-//   // TODO: Handle error.
-//   return;
-// }
-//   switch(type) {
-//     case 'ETH_TO_TOKEN':
-//       // let exchange = new web3.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]);
-//       new web3.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency])
-//         .methods
-//         .ethToTokenSwapInput(
-//           BN(outputValue).multipliedBy(10 ** outputDecimals).multipliedBy(1 - ALLOWED_SLIPPAGE).toFixed(0),
-//           deadline,
-//         )
-//         .send({
-//           from: account,
-//           value: BN(inputValue).multipliedBy(10 ** 18).toFixed(0),
-//         }, (err, data) => {
-//           if (!err) {
-//             addPendingTx(data);
-//             this.reset();
-//           }
-//         });
-//       break;
-//     case 'TOKEN_TO_ETH':
-//       new web3.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency])
-//         .methods
-//         .tokenToEthSwapInput(
-//           BN(inputValue).multipliedBy(10 ** inputDecimals).toFixed(0),
-//           BN(outputValue).multipliedBy(10 ** outputDecimals).multipliedBy(1 - ALLOWED_SLIPPAGE).toFixed(0),
-//           deadline,
-//         )
-//         .send({ from: account }, (err, data) => {
-//           if (!err) {
-//             addPendingTx(data);
-//             this.reset();
-//           }
-//         });
-//       break;
-//     case 'TOKEN_TO_TOKEN':
-//       new web3.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency])
-//         .methods
-//         .tokenToTokenSwapInput(
-//           BN(inputValue).multipliedBy(10 ** inputDecimals).toFixed(0),
-//           BN(outputValue).multipliedBy(10 ** outputDecimals).multipliedBy(1 - TOKEN_ALLOWED_SLIPPAGE).toFixed(0),
-//           '1',
-//           deadline,
-//           outputCurrency,
-//         )
-//         .send({ from: account }, (err, data) => {
-//           if (!err) {
-//             addPendingTx(data);
-//             this.reset();
-//           }
-//         });
-//       break;
-//     default:
-//       break;
-//   }
-// }
+  let exchangeContract = null;
+  let txnData = null;
+
+  switch (type) {
+    case 'ETH_TO_TOKEN':
+      exchangeContract = new web3.eth.Contract(
+        EXCHANGE_ABI,
+        exchangeAddresses.fromToken[outputAsset]
+      );
+      txnData = exchangeContract.methods
+        .ethToTokenSwapInput(
+          BN(outputValue)
+            .multipliedBy(10 ** outputDecimals)
+            .multipliedBy(1 - ALLOWED_SLIPPAGE)
+            .toFixed(0),
+          deadline
+        )
+        .encodeABI();
+      break;
+    case 'TOKEN_TO_ETH':
+      exchangeContract = new web3.eth.Contract(
+        EXCHANGE_ABI,
+        exchangeAddresses.fromToken[inputAsset]
+      );
+
+      txnData = exchangeContract.methods
+        .tokenToEthSwapInput(
+          BN(inputValue)
+            .multipliedBy(10 ** inputDecimals)
+            .toFixed(0),
+          BN(outputValue)
+            .multipliedBy(10 ** outputDecimals)
+            .multipliedBy(1 - ALLOWED_SLIPPAGE)
+            .toFixed(0),
+          deadline
+        )
+        .encodeABI();
+      break;
+    case 'TOKEN_TO_TOKEN':
+      exchangeContract = new web3.eth.Contract(
+        EXCHANGE_ABI,
+        exchangeAddresses.fromToken[inputAsset]
+      );
+      txnData = exchangeContract.methods
+        .tokenToTokenSwapInput(
+          BN(inputValue)
+            .multipliedBy(10 ** inputDecimals)
+            .toFixed(0),
+          BN(outputValue)
+            .multipliedBy(10 ** outputDecimals)
+            .multipliedBy(1 - TOKEN_ALLOWED_SLIPPAGE)
+            .toFixed(0),
+          '1',
+          deadline,
+          outputAsset
+        )
+        .encodeABI();
+      break;
+    default:
+      break;
+  }
+
+  return txnData;
+}

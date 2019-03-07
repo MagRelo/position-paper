@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import MemberDeposit from 'components/lobby/memberDeposit';
+
 class MembersList extends Component {
   state = { accounts: null };
 
@@ -31,6 +33,8 @@ class MembersList extends Component {
             </tbody>
           </table>
         </div>
+
+        <MemberDeposit />
       </section>
     );
   }

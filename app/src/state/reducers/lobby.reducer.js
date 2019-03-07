@@ -24,6 +24,8 @@ const initialState = {
     { interval: '6', eth: 170, btc: 200, dgx: 200, foam: 165 }
   ],
 
+  portfolioContract: null,
+
   quantities: [
     { value: { number: 0.1, formFeild: 'quantity' }, label: '10%' },
     { value: { number: 0.2, formFeild: 'quantity' }, label: '20%' },
@@ -43,6 +45,10 @@ const AccountReducer = (state = initialState, action) => {
   }
 
   if (action.type === 'LOBBY_ERROR') {
+    return Object.assign({}, state, action.payload);
+  }
+
+  if (action.type === 'LOAD_PORTFOLIO_CONTRACT') {
     return Object.assign({}, state, action.payload);
   }
 

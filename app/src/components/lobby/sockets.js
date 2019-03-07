@@ -1,6 +1,8 @@
 import io from 'socket.io-client';
 import store from 'state/store';
 
+import { loadPortfolioContract } from 'state/loadWeb3';
+
 let socket = null;
 
 export async function initSockets(contractAddress, userKey) {
@@ -23,6 +25,9 @@ export async function initSockets(contractAddress, userKey) {
   });
   socket.on('connect', () => {
     console.log('socket connected:', socket.id);
+
+    // get pertfolio contract ready to be used
+    loadPortfolioContract(contractAddress);
   });
 
   // servesa events

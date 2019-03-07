@@ -131,10 +131,10 @@ async function loadContracts() {
     const networkID = store.getState().web3.networkID;
 
     // check that we're on a network that this contract has been deployed to
-    const isDeployedOnNetwork = !!Portfolio.networks[networkID];
+    const isDeployedOnNetwork = !!PortfolioFactory.networks[networkID];
 
     if (!isDeployedOnNetwork) {
-      return console.log('Contracts Not Deployed');
+      return console.log('Contracts Not Deployed', networkID);
     }
 
     // PortfolioFactory
@@ -143,19 +143,12 @@ async function loadContracts() {
       PortfolioFactory.networks[networkID].address
     );
 
-    // Portfolio
-    const PortfolioContract = await new web3.eth.Contract(
-      Portfolio.abi,
-      Portfolio.networks[networkID].address
-    );
-
     // Add more contracts here...
 
     store.dispatch({
       type: 'CONTRACTS_INITIALIZED',
       payload: {
         portfolioFactory: PortfolioFactoryContract,
-        portfolio: PortfolioContract,
         contractList: [
           { value: 'simpleStorage', label: 'simpleStorage' },
           { value: 'portfolio', label: 'Portfolio' },
@@ -166,5 +159,24 @@ async function loadContracts() {
     });
 
     return unsubscribe();
+  });
+}
+
+export async function loadPortfolioContract(portfolioAddress) {
+  const web3 = store.getState().web3.instance;
+
+  // PortfolioFactory
+  const PortfolioContract = await new web3.eth.Contract(
+    Portfolio.abi,
+    portfolioAddress
+  );
+
+  // Add more contracts here...
+
+  store.dispatch({
+    type: 'LOAD_PORTFOLIO_CONTRACT',
+    payload: {
+      portfolioContract: PortfolioContract
+    }
   });
 }
