@@ -62,8 +62,8 @@ exports.createGroup = async function(groupKey, groupName, minDeposit, members) {
   const updated = date; // updated,
 
   const query = `
-    INSERT INTO "groupsSchema".group(
-    groupkey, "groupName", "minDeposit", created, updated)
+  INSERT INTO "groupsSchema"."group"(
+    groupkey, groupname, mindeposit, created, updated)
     VALUES ($1, $2, $3, $4, $5);
   `;
   const queryParams = [groupKey, groupName, minDeposit, created, updated];
@@ -82,8 +82,10 @@ exports.createGroup = async function(groupKey, groupName, minDeposit, members) {
         pool.query({
           text: `
           INSERT INTO "groupsSchema".users(
-            userkey, "userName", created, updated)
+            userkey, username, created, updated)
             VALUES ($1, $2, $3, $4);
+            on conflict (userkey) 
+            do update set username = $2;
           `,
           values: [member.address, member.name, created, updated]
         })
