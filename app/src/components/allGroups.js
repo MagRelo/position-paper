@@ -30,10 +30,10 @@ class GroupList extends Component {
           <tbody>
             {this.state.groups.map(group => {
               return (
-                <tr key={group.groupId}>
+                <tr key={group.groupid}>
                   <td>
-                    <Link to={'/group/' + group.groupKey}>
-                      {group.groupName}
+                    <Link to={'/group/' + group.groupkey}>
+                      {group.groupname}
                     </Link>
                   </td>
                 </tr>

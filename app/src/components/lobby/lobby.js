@@ -26,11 +26,7 @@ class Lobby extends Component {
   }
 
   componentDidUpdate(prevState) {
-    if (
-      prevState.selectedAccount !== this.props.selectedAccount &&
-      !!this.props.contractAddress &&
-      !!this.props.selectedAccount
-    ) {
+    if (prevState.selectedAccount !== this.props.selectedAccount) {
       // console.log('lobby cdu', this.props.selectedAccount);
       initSockets(this.props.contractAddress, this.props.selectedAccount);
     }

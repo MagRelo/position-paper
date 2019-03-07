@@ -247,7 +247,7 @@ class CreatePortfolio extends Component {
                 display: 'grid',
                 gridTemplateColumns: 'auto 1fr 1fr auto',
                 gridGap: '1em',
-                marginTop: '4em'
+                marginTop: '2em'
               }}
             >
               <p style={{ margin: '0.5em' }}>Add Member:</p>
