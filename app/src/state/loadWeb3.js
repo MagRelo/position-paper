@@ -171,12 +171,13 @@ export async function loadPortfolioContract(portfolioAddress) {
     portfolioAddress
   );
 
-  // Add more contracts here...
+  const ethBalance = await PortfolioContract.methods.ethBalance().call();
 
   store.dispatch({
     type: 'LOAD_PORTFOLIO_CONTRACT',
     payload: {
-      portfolioContract: PortfolioContract
+      portfolioContract: PortfolioContract,
+      ethBalance: web3.utils.fromWei(ethBalance)
     }
   });
 }

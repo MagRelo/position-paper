@@ -26,7 +26,7 @@ export async function initSockets(contractAddress, userKey) {
   socket.on('connect', () => {
     console.log('socket connected:', socket.id);
 
-    // get pertfolio contract ready to be used
+    // get portfolio contract ready to be used
     loadPortfolioContract(contractAddress);
   });
 

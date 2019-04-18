@@ -1,20 +1,9 @@
 import React, { Component } from 'react';
-// import React, { PureComponent } from 'react';
-// import { PieChart, Pie, Sector } from 'recharts';
-
 import { connect } from 'react-redux';
 import { ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
-// const data = [
-//   { name: 'Group A', value: 400 },
-//   { name: 'Group B', value: 300 },
-//   { name: 'Group C', value: 300 },
-//   { name: 'Group D', value: 200 }
-// ];
-// const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
-
 class Portfolio extends Component {
-  state = { accounts: null };
+  state = { accounts: null, contractBalance: 0 };
 
   formatPercentage(allocation) {
     return (allocation * 100).toFixed(2) + '%';
@@ -23,7 +12,7 @@ class Portfolio extends Component {
   render() {
     return (
       <section className="portfolio">
-        <h3>Portfolio</h3>
+        <h3>Portfolio ({this.props.ethBalance})</h3>
 
         <div style={{ width: '100%', height: 250 }}>
           <ResponsiveContainer>
@@ -78,7 +67,8 @@ const mapStateToProps = state => {
   return {
     colors: state.lobby.colors,
     portfolio: state.lobby.portfolio,
-    portfolioData: state.lobby.portfolioData
+    portfolioData: state.lobby.portfolioData,
+    ethBalance: state.lobby.ethBalance
   };
 };
 

@@ -5,15 +5,30 @@ import web3 from 'web3';
 import store from 'state/store';
 
 class MembersList extends Component {
-  state = { accounts: null };
+  state = {
+    accounts: null,
+    formAlert: false,
+    formError: false,
+    formSuccess: false,
+    formSubmitting: false,
+    formMessage: ''
+  };
 
   async deposit() {
-    const contract = store.getState().lobby.portfolioContract;
-    const selectedAccount = store.getState().account.selectedAccount;
+    this.setState({ formSubmitting: true });
 
-    const receipt = await contract.methods
-      .memberDeposit()
-      .send({ from: selectedAccount, value: web3.utils.toWei('1') });
+    try {
+      const contract = store.getState().lobby.portfolioContract;
+      const selectedAccount = store.getState().account.selectedAccount;
+
+      const receipt = await contract.methods
+        .memberDeposit()
+        .send({ from: selectedAccount, value: web3.utils.toWei('1') });
+
+      this.setState({ formSubmitting: false });
+    } catch (error) {
+      this.setState({ formSubmitting: false });
+    }
   }
 
   render() {
@@ -24,7 +39,15 @@ class MembersList extends Component {
           className="pure-button pure-button-primary"
           onClick={this.deposit.bind(this)}
         >
-          Deposit 1ETH
+          {this.state.formSubmitting ? (
+            <div className="spinner">
+              <div className="bounce1" />
+              <div className="bounce2" />
+              <div className="bounce3" />
+            </div>
+          ) : (
+            <span>Deposit 1ETH</span>
+          )}
         </button>
       </form>
     );

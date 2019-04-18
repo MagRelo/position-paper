@@ -14,6 +14,7 @@ const initialState = {
     { code: 'dgx', pct: 0.2, value: 200, name: 'dgx' },
     { code: 'foam', pct: 0.25, value: 500, name: 'foam' }
   ],
+  
   portfolioData: [
     { interval: '0', eth: 100, btc: 200, dgx: 110, foam: 90 },
     { interval: '1', eth: 110, btc: 190, dgx: 130, foam: 95 },
