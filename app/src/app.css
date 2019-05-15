@@ -42,3 +42,7 @@ ul {
 li {
   margin-bottom: 1em;
 }
+
+.pure-button+.pure-button {
+  margin: 0 0.5em;
+}

@@ -12,10 +12,10 @@ class InfoPanel extends Component {
         </div>
 
         <h1>
-          <Link to="/">RecruitMe</Link>
+          <Link to="/">Who you know</Link>
         </h1>
 
-        <h2>Private social recruiting</h2>
+        <h2>private social referrels</h2>
       </div>
     );
   }

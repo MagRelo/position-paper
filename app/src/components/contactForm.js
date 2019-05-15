@@ -3,18 +3,9 @@ import { connect } from 'react-redux';
 
 import store from 'state/store';
 
-// import Select from 'react-select';
-import Header from './header';
-
-class CreatePortfolio extends Component {
+class ContactForm extends Component {
   state = {
-    groupName: '',
-    adminName: '',
-    adminAddress: '',
-    minDeposit: 0,
-    contractAddress: '',
-    whitelistStatus: '',
-    deposit: 0,
+    name: '',
 
     formAlert: false,
     formError: false,
@@ -24,15 +15,23 @@ class CreatePortfolio extends Component {
   };
 
   componentDidMount() {
-    // get account
-    // const selectedAccount = store.getState().account.selectedAccount;
-    // get contract address
-    // load info from server(?)
-    // check whitelist()
+    // fetch('https://api.coinmarketcap.com/v1/ticker/ethereum/?convert=USD')
+    //   .then(res => {
+    //     return res.json();
+    //   })
+    //   .then(data => {
+    //     this.setState({
+    //       exchangeRate: parseInt(data[0].price_usd, 10)
+    //     });
+    //   });
+    // if (this.props.selectedAccount) {
+    //   this.setState({ newMemberAddress: this.props.selectedAccount });
+    // }
   }
-
-  componentDidUpdate() {
-    // watch for address change
+  componentDidUpdate(prevState) {
+    // if (this.props.selectedAccount !== prevState.selectedAccount) {
+    //   this.setState({ newMemberAddress: this.props.selectedAccount });
+    // }
   }
 
   async handleSubmit(event) {
@@ -43,16 +42,18 @@ class CreatePortfolio extends Component {
       formSubmitting: true
     });
 
-    // Need to get portfolio address and update contract object...
-    const contract = store.getState().contracts.portfolio;
-
-    // check whitelist?
-
     try {
-      const reciept = await contract.methods.memberRegister().send({
-        from: this.state.selectedAccount,
-        value: this.state.deposit
-      });
+      const newLink = await fetch('link/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          linkBase: this.props.linkBase
+        })
+      }).then(response => response.json());
+
+      console.log(newLink);
 
       this.setState({
         formSuccess: true,
@@ -60,8 +61,6 @@ class CreatePortfolio extends Component {
         formSubmitting: false,
         formMessage: 'Success!'
       });
-
-      return console.log(reciept);
     } catch (error) {
       this.setState({
         formError: true,
@@ -96,31 +95,24 @@ class CreatePortfolio extends Component {
   render() {
     return (
       <div>
-        <Header />
-        <h2>Accept Invitation</h2>
-        <p>(Group Info)</p>
-        <p>(Members)</p>
         <form
-          name="autoForm"
+          name="newLinkForm"
           className="pure-form"
           onSubmit={this.handleSubmit.bind(this)}
         >
-          <legend>Join</legend>
+          <legend>Contact Candidate</legend>
+
           <fieldset>
-            <label htmlFor="deposit">Deposit</label>
-            <input
-              className="pure-input"
-              type="number"
-              name="deposit"
-              id="deposit"
-            />
+            <textarea name="message" id="message" rows="5" />
           </fieldset>
 
-          <button className="pure-button pure-button-primary">Join</button>
+          <button className="pure-button pure-button-primary">
+            Send Message
+          </button>
 
           {this.state.formSubmitting ? (
             <span style={{ fontSize: 'smaller', marginLeft: '1em' }}>
-              Waiting for MetaMask...
+              Submitting...
             </span>
           ) : null}
 
@@ -147,6 +139,7 @@ const mapStateToProps = state => {
     web3Ready: state.web3.web3Ready,
     networkReady: state.web3.networkReady,
     showTip: state.web3.showTip,
+    selectedAccount: state.account.selectedAccount,
     accountsReady: state.account.accountsReady,
     contractsReady: state.contracts.contractsReady
   };
@@ -155,4 +148,4 @@ const mapStateToProps = state => {
 export default connect(
   mapStateToProps,
   null
-)(CreatePortfolio);
+)(ContactForm);

@@ -10,7 +10,7 @@ class LandingPage extends Component {
     return (
       <div>
         <Header />
-        <h2>Up Next</h2>
+        <h2>FAQ</h2>
         <div className="row row-3">
           <div>
             <h3>Expand trading options</h3>

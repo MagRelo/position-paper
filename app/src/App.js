@@ -11,27 +11,22 @@ import './app.css';
 
 import About from 'components/about';
 import LandingPage from 'components/landingPage';
-import CreatePortfolio from 'components/createPortfolio';
-import AcceptInvite from 'components/acceptInvite';
-
-import allGroups from 'components/allGroups';
-import Lobby from 'components/lobby/lobbyPage';
-
-import Auto from 'components/util/autoPage';
+import createProfile from 'components/createProfile';
+import Profile from 'components/profile';
+// import AcceptInvite from 'components/acceptInvite';
+// import Auto from 'components/util/autoPage';
+// import allGroups from 'components/allGroups';
+// import Lobby from 'components/lobby/lobbyPage';
 
 class App extends Component {
   render() {
     return (
       <div className="container">
         <Switch>
-          <Route path="/auto" component={Auto} />
-          <Route path="/create" component={CreatePortfolio} />
-          <Route path="/invite" component={AcceptInvite} />
+          <Route path="/create" component={createProfile} />
+          <Route path="/profile/:linkId" component={Profile} />
+
           <Route path="/about" component={About} />
-
-          <Route path="/group/:contractAddress" component={Lobby} />
-          <Route path="/groups" component={allGroups} />
-
           <Route component={LandingPage} />
         </Switch>
       </div>

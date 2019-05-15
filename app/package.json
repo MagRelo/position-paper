@@ -4,6 +4,7 @@
   "private": true,
   "proxy": "http://localhost:8080",
   "dependencies": {
+    "@reach/dialog": "^0.2.8",
     "bignumber.js": "^8.1.1",
     "dotenv": "^6.2.0",
     "eth-sig-util": "^2.1.0",
