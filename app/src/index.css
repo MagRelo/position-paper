@@ -27,7 +27,7 @@ body {
 .row {
   display: grid;
   grid-template-rows: 1fr;
-  grid-gap: 1em;
+  grid-gap: 2em;
 }
 
 .row-2,

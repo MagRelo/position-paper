@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import LobbyImage from 'images/lobby.png';
+import LobbyImage from 'images/jessica-sysengrath-440137-unsplash.jpg';
 
 import Header from './header';
 
@@ -16,25 +16,20 @@ class LandingPage extends Component {
 
         <section style={{ display: 'grid', gridTemplateColumns: '2fr 3fr' }}>
           <div>
-            <h3>Social</h3>
             <ul>
-              <li>Compare research</li>
-              <li>Vote on each trade </li>
-              <li>Pool risk & save on fees</li>
-            </ul>
-
-            <h3>Non-Custodial</h3>
-            <ul>
-              <li>Keep control of your assets</li>
-            </ul>
-
-            <h3>Support for all De·Fi Assets</h3>
-            <ul>
-              <li>Uniswap Assets</li>
-              <li>Loans (MakerDAO, Compound - Coming Soon)</li>
-              <li>Prediction Markets (Augur - Coming Soon)</li>
-              <li>Liquidity (UniSwap - Coming Soon)</li>
-              <li>Collectables (ERC 721 - Coming Soon)</li>
+              <li>
+                *You* get most of the recuiting fee – why should recruiters get
+                $10,000's?!
+              </li>
+              <li>
+                90% of jobs come from friends and colleagues because frinds and
+                colleagues know you and can vouch for you.
+              </li>
+              <li>
+                Completely private – you don't want to *advertise* that you're
+                looking for a better job!
+              </li>
+              <li>Aligned incentives – everyone gets paid to help</li>
             </ul>
           </div>
 
@@ -46,38 +41,37 @@ class LandingPage extends Component {
         </section>
 
         <section>
-          <h2>Get Started</h2>
-          <div className="row row-2">
+          <h2>How does it work?</h2>
+          <div className="row row-3">
             <div>
-              <h3>Accept Invite</h3>
-              <p>Accept an invitation you have received</p>
+              <h3>Create your profile without worry – everything is private</h3>
+              <p>
+                We'll help you create a beautiful portfolio to showcase your
+                talents. Share your link privately with friends and colleagues.
+                They can also create their own links, and share them with
+                employers.
+              </p>
               <Link to="/invite" className="pure-button pure-button-primary">
-                Accept Invite
+                Create Profile
               </Link>
             </div>
             <div>
-              <h3>Create a New Group</h3>
-              <p>Create a group and invite new members</p>
-              <Link to="/create" className="pure-button pure-button-primary">
-                Create Group
-              </Link>
+              <h3>You'll get contacted by prospective employers</h3>
+              <p>
+                Employers can contact you tehour our platform . Take your time
+                interviewing. Using the URL that they use to find you, we can
+                determine which connections led to the message.
+              </p>
+            </div>
+            <div>
+              <h3>Once you accept an offer, everyone gets paid!</h3>
+              <p>
+                Indicate which incoming message led to your offer, and the offer
+                details. We'll determine the links that led back to you and
+                split up the money.
+              </p>
             </div>
           </div>
-        </section>
-
-        <section>
-          <h2>How does it work?</h2>
-          <ol>
-            <li>Create a group and add members</li>
-            <li>
-              Each member can add funds to your group's custom portfolio
-              contract
-            </li>
-            <li>Research and discuss trades in private lobby with chat</li>
-            <li>Execute group trades through decentralized exchanges</li>
-            <li>Each member's share is secured by the portfolio contract</li>
-            <li>Cash out at any time</li>
-          </ol>
         </section>
       </div>
     );

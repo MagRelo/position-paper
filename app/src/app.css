@@ -33,3 +33,12 @@ h4 {
 .header a:hover {
   color: #0079db
 }
+
+ul {
+  /* list-style: none; */
+  padding: 1em;
+}
+
+li {
+  margin-bottom: 1em;
+}
