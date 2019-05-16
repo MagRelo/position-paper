@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import Header from './header';
 import Message from './message';
 
 const messages = [
@@ -17,7 +16,6 @@ class Inbox extends Component {
   render() {
     return (
       <div>
-        <Header />
         <h2>Inbox</h2>
 
         {this.state.messages.map(message => {

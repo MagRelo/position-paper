@@ -8,6 +8,9 @@ class InfoPanel extends Component {
     return (
       <div className="header">
         <div className="menu">
+          <Link to="/newprofile">Candidates</Link>
+          <Link to="/newposition">Employers</Link>
+          <span>|</span>
           <Link to="/about">About</Link>
         </div>
 

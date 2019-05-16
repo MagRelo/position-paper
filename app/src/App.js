@@ -9,6 +9,7 @@ import './css/pure-min.css';
 import './index.css';
 import './app.css';
 
+import Header from 'components/header';
 import About from 'components/about';
 import LandingPage from 'components/landingPage';
 import createProfile from 'components/createProfile';
@@ -25,6 +26,8 @@ class App extends Component {
   render() {
     return (
       <div className="container">
+        <Header />
+
         <Switch>
           <Route path="/newprofile" component={createProfile} />
           <Route path="/newposition" component={createPosition} />

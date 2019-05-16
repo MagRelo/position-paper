@@ -6,9 +6,10 @@ body,
   box-sizing: border-box;
 }
 
+
 .container {
-  display: grid;
-  grid-template-rows: 1fr;
+  /* display: grid;
+  grid-template-rows: 1fr; */
   padding: 1em;
 }
 

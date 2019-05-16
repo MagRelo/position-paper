@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 // import store from 'state/store';
-import Header from './header';
+// import Header from './header';
 
 class CreatePortfolio extends Component {
   state = {
@@ -112,7 +112,6 @@ class CreatePortfolio extends Component {
   render() {
     return (
       <div>
-        <Header />
         <h2>Create a New Profile</h2>
         <form
           name="createForm"
