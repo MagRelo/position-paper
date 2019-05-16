@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 // import store from 'state/store';
 
-class ContactForm extends Component {
+class LinkForm extends Component {
   state = {
     name: '',
 
@@ -14,26 +14,6 @@ class ContactForm extends Component {
     formMessage: ''
   };
 
-  componentDidMount() {
-    // fetch('https://api.coinmarketcap.com/v1/ticker/ethereum/?convert=USD')
-    //   .then(res => {
-    //     return res.json();
-    //   })
-    //   .then(data => {
-    //     this.setState({
-    //       exchangeRate: parseInt(data[0].price_usd, 10)
-    //     });
-    //   });
-    // if (this.props.selectedAccount) {
-    //   this.setState({ newMemberAddress: this.props.selectedAccount });
-    // }
-  }
-  componentDidUpdate(prevState) {
-    // if (this.props.selectedAccount !== prevState.selectedAccount) {
-    //   this.setState({ newMemberAddress: this.props.selectedAccount });
-    // }
-  }
-
   async handleSubmit(event) {
     event.preventDefault();
 
@@ -43,7 +23,7 @@ class ContactForm extends Component {
     });
 
     try {
-      const newLink = await fetch('link/', {
+      const newLink = await fetch('close/' + this.props.id, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -88,26 +68,20 @@ class ContactForm extends Component {
     if (this.state.formSuccess) return 'alert success';
   }
 
-  handleFormChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
-  }
-
   render() {
     return (
-      <div>
+      <div className="inbox-message">
+        <h3>{this.props.title}</h3>
+
+        <p>{this.props.message}</p>
+
         <form
           name="newLinkForm"
           className="pure-form"
           onSubmit={this.handleSubmit.bind(this)}
         >
-          <legend>Contact Candidate</legend>
-
-          <fieldset>
-            <textarea name="message" id="message" rows="5" />
-          </fieldset>
-
           <button className="pure-button pure-button-primary">
-            Send Message
+            Close Deal
           </button>
 
           {this.state.formSubmitting ? (
@@ -148,4 +122,4 @@ const mapStateToProps = state => {
 export default connect(
   mapStateToProps,
   null
-)(ContactForm);
+)(LinkForm);

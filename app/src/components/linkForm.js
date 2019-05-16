@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import store from 'state/store';
+// import store from 'state/store';
 
 class LinkForm extends Component {
   state = {

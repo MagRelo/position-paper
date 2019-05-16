@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 // import store from 'state/store';
+import Header from './header';
 
-class ContactForm extends Component {
+class CreatePortfolio extends Component {
   state = {
     name: '',
 
@@ -37,23 +38,39 @@ class ContactForm extends Component {
   async handleSubmit(event) {
     event.preventDefault();
 
+    // const contract = store.getState().contracts.portfolioFactory;
+    // const selectedAccount = store.getState().account.selectedAccount;
+
     // set loading state
     this.setState({
       formSubmitting: true
     });
 
     try {
-      const newLink = await fetch('link/', {
+      // const platformAddress = '0x66414e903305Ff1E9dD8266AEDb359A9773236FC';
+      // const reciept = await contract.methods
+      //   .createPortfolio(
+      //     platformAddress,
+      //     this.state.memberList.map(member => {
+      //       return member.address;
+      //     })
+      //   )
+      //   .send({
+      //     from: selectedAccount
+      //   });
+
+      // const event = reciept.events.NewContract;
+      // const deployedAt = event.returnValues.deployedAt;
+
+      await fetch('group/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          linkBase: this.props.linkBase
+          name: this.state.name
         })
       }).then(response => response.json());
-
-      console.log(newLink);
 
       this.setState({
         formSuccess: true,
@@ -95,19 +112,52 @@ class ContactForm extends Component {
   render() {
     return (
       <div>
+        <Header />
+        <h2>Create a New Position</h2>
         <form
-          name="newLinkForm"
+          name="createForm"
           className="pure-form"
           onSubmit={this.handleSubmit.bind(this)}
         >
-          <legend>Contact Candidate</legend>
+          <legend>Position Information</legend>
 
           <fieldset>
-            <textarea name="message" id="message" rows="5" />
+            <label htmlFor="name">Title </label>
+            <input
+              className="pure-input-1"
+              type="text"
+              id="name"
+              name="name"
+              value={this.state.name}
+              onChange={this.handleFormChange.bind(this)}
+            />
+            <label htmlFor="name">Approximate Salary </label>
+            <input
+              className="pure-input-1"
+              type="number"
+              id="salary"
+              name="salary"
+              value={this.state.salary}
+              onChange={this.handleFormChange.bind(this)}
+            />
+          </fieldset>
+          <fieldset>
+            <legend>Private Information</legend>
+            <label htmlFor="name">Email </label>
+            <input
+              className="pure-input-1"
+              type="email"
+              id="email"
+              name="email"
+              value={this.state.email}
+              onChange={this.handleFormChange.bind(this)}
+            />
           </fieldset>
 
+          <hr />
+
           <button className="pure-button pure-button-primary">
-            Send Message
+            Create Profile
           </button>
 
           {this.state.formSubmitting ? (
@@ -148,4 +198,4 @@ const mapStateToProps = state => {
 export default connect(
   mapStateToProps,
   null
-)(ContactForm);
+)(CreatePortfolio);

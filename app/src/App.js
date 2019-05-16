@@ -12,7 +12,10 @@ import './app.css';
 import About from 'components/about';
 import LandingPage from 'components/landingPage';
 import createProfile from 'components/createProfile';
+import createPosition from 'components/createPosition';
+import userSignup from 'components/userSignup';
 import Profile from 'components/profile';
+import Inbox from 'components/inbox';
 // import AcceptInvite from 'components/acceptInvite';
 // import Auto from 'components/util/autoPage';
 // import allGroups from 'components/allGroups';
@@ -23,8 +26,12 @@ class App extends Component {
     return (
       <div className="container">
         <Switch>
-          <Route path="/create" component={createProfile} />
+          <Route path="/newprofile" component={createProfile} />
+          <Route path="/newposition" component={createPosition} />
+          <Route path="/newuser" component={userSignup} />
+
           <Route path="/profile/:linkId" component={Profile} />
+          <Route path="/inbox/:profileId" component={Inbox} />
 
           <Route path="/about" component={About} />
           <Route component={LandingPage} />

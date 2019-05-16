@@ -42,13 +42,21 @@ class LandingPage extends Component {
             <div>
               <h3>Create your profile</h3>
               <p>
-                We'll help you create a beautiful portfolio to showcase your
-                talents. Share your link privately with friends and colleagues.
-                They can also create their own links, and share them with
-                employers.
+                We'll help you create a beautiful portfolio. Share your link
+                privately with friends and colleagues. They can also create
+                their own links, and share them with employers.
               </p>
-              <Link to="/create" className="pure-button pure-button-primary">
+              <Link
+                to="/newprofile"
+                className="pure-button pure-button-primary"
+              >
                 Create Profile
+              </Link>
+              <Link
+                to="/newposition"
+                className="pure-button pure-button-primary"
+              >
+                Create Position
               </Link>
             </div>
             <div>
