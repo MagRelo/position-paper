@@ -30,11 +30,14 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && docker build . -t magrelo/referral",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "server": "node server/index.js",
-    "dev": "NODE_ENV=development nodemon --inspect server/index.js"
+    "dev": "NODE_ENV=development nodemon --inspect server/index.js",
+    "docker-build": "docker build . -t magrelo/referral",
+    "docker-push": "docker push magrelo/referral",
+    "ssh": "ssh root@209.97.154.109"
   },
   "devDependencies": {
     "nodemon": "^1.18.6"
