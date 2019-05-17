@@ -1,20 +1,38 @@
 const mongoose = require('mongoose');
 
-const EventSchema = new mongoose.Schema(
+const UserSchema = new mongoose.Schema(
   {
-    logIndex: Number,
-    transactionIndex: Number,
-    transactionHash: String,
-    blockHash: String,
-    blockNumber: Number,
-    address: String,
-    type: String,
-    id: String,
-    returnValues: Object,
-    event: String,
-    signature: String,
-    raw: Object
+    name: String,
+    email: String,
+    balance: Number
   },
   { timestamps: true }
 );
-exports.EventModel = mongoose.model('Event', EventSchema);
+exports.UserModel = mongoose.model('User', UserSchema);
+
+const ProfileSchema = new mongoose.Schema(
+  {
+    name: String,
+    avatar: String,
+    linkedin: String,
+    github: String,
+    twitter: String,
+    medium: String,
+    email: String,
+    salary: Number,
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+  },
+  { timestamps: true }
+);
+exports.ProfileModel = mongoose.model('Profile', ProfileSchema);
+
+const LinkSchema = new mongoose.Schema(
+  {
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    profile: { type: mongoose.Schema.Types.ObjectId, ref: 'Profile' },
+    linkRef: Number,
+    parentLink: { type: mongoose.Schema.Types.ObjectId, ref: 'Link' }
+  },
+  { timestamps: true }
+);
+exports.LinkModel = mongoose.model('Link', LinkSchema);

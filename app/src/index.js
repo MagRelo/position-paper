@@ -4,8 +4,6 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 
-import { loadWeb3 } from 'state/loadWeb3';
-
 // redux stote
 import store from 'state/store';
 
@@ -15,7 +13,8 @@ import store from 'state/store';
 // Learn more about service workers: http://bit.ly/CRA-PWA
 // serviceWorker.unregister();
 
-loadWeb3();
+// import { loadWeb3 } from 'state/loadWeb3';
+// loadWeb3();
 
 ReactDOM.render(
   <Provider store={store}>

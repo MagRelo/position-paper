@@ -3,10 +3,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 // import LobbyImage from 'images/jessica-sysengrath-440137-unsplash.jpg';
-import AcImage from 'images/ac-revenue.png';
-import QuoImage from 'images/quo-revenue.png';
-
-import Header from './header';
+// import AcImage from 'images/ac-revenue.png';
+// import QuoImage from 'images/quo-revenue.png';
 
 class LandingPage extends Component {
   state = { accounts: null };
@@ -24,14 +22,17 @@ class LandingPage extends Component {
               </p>
 
               <ol>
-                <li>Share links with your network</li>
-                <li>Your network can create their own links and share them</li>
+                <li>Share unique links with your network</li>
+                <li>
+                  Your network can create their own links and share them with
+                  others
+                </li>
                 <li>Everyone in the chain shares in the refereral bonus</li>
               </ol>
             </div>
             <div>
               <img
-                src="https://image.shutterstock.com/image-vector/vector-illustration-abstract-social-network-450w-507791317.jpg"
+                src="https://cen.acs.org/content/cen/articles/95/i29/introverts-guide-networking/_jcr_content/articlebody/subpar/articlemedia_0.img.jpg/1499800449420.jpg"
                 alt="network"
               />
             </div>
@@ -88,24 +89,23 @@ class LandingPage extends Component {
             </div>
           </div>
         </section>
-
-        <section>
-          <h2>Old vs. New</h2>
-          <div className="row row-2">
-            <img
-              src={QuoImage}
-              alt="Lobby screenshot"
-              style={{ maxWidth: '600px' }}
-            />
-
-            <img
-              src={AcImage}
-              alt="Lobby screenshot"
-              style={{ maxWidth: '600px' }}
-            />
-          </div>
-        </section>
-
+        {
+          // <section>
+          //   <h2>Old vs. New</h2>
+          //   <div className="row row-2">
+          //     <img
+          //       src={QuoImage}
+          //       alt="Lobby screenshot"
+          //       style={{ maxWidth: '600px' }}
+          //     />
+          //     <img
+          //       src={AcImage}
+          //       alt="Lobby screenshot"
+          //       style={{ maxWidth: '600px' }}
+          //     />
+          //   </div>
+          // </section>
+        }
         <section>
           <h2>Get Started</h2>
 

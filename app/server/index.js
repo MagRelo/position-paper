@@ -7,20 +7,22 @@ const server = require('http').Server(app);
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 
-// const getWeb3 = require('./utils/getWeb3');
+const UserModel = require('./models').UserModel;
+const ProfileModel = require('./models').ProfileModel;
+const LinkModel = require('./models').LinkModel;
 
-const {
-  getAllGroups,
-  getGroup,
-  createGroup,
-  createProposal,
-  updateProposalVote,
-  createMessage,
-  countProposalVote,
-  closeProposalVote
-} = require('./pg-controller');
+// const {
+//   getAllGroups,
+//   getGroup,
+//   createGroup,
+//   createProposal,
+//   updateProposalVote,
+//   createMessage,
+//   countProposalVote,
+//   closeProposalVote
+// } = require('./pg-controller');
 
-const { startIo, broadcastGroupUpdate } = require('./sockets');
+// const { startIo, broadcastGroupUpdate } = require('./sockets');
 
 // *
 // load env var's
@@ -39,15 +41,24 @@ if (process.env.ENV === 'production') {
 // *
 // db
 // *
-const { initPG } = require('./pg-controller.js');
-initPG();
+
+const mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
+mongoose.connect(
+  process.env.MONGODB_URL_INT || 'mongodb://127.0.0.1:27017/recruiting',
+  { useNewUrlParser: true }
+);
+mongoose.connection.on('error', function(err) {
+  console.error('MongoDB connection error: ' + err);
+  process.exit(-1);
+});
 
 // *
 // Server
 // *
 
 // sockets
-startIo(server);
+// startIo(server);
 
 // configure express middleware
 app.use(express.static('build'));
@@ -65,184 +76,28 @@ app.use(
 // http routing
 
 // get all groups
-app.get('/group', async function(req, res) {
+app.get('/register/profile', async function(req, res) {
+  // required
+
   try {
-    const response = await getAllGroups();
+    // create the user
+    const user = new UserModel(req.body);
+    await user.save();
 
-    // check response - 404
-    if (!response) {
-      res.status(404).send('Not Found');
-    }
+    // create the profile
+    const profile = new ProfileModel(req.body);
+    await profile.save();
 
-    res.status(200).send(response);
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
-
-// get single group
-app.get('/group/:contractAddress', async function(req, res) {
-  try {
-    // auth - 403
-    // TODO check user is in group
-    // res.status(403).send('Unauthorized');
-
-    // validate params - 400
-    const contractAddress = req.params.contractAddress;
-    if (!contractAddress) {
-      res.status(400).send('Bad Request');
-    }
-
-    const response = await getGroup(contractAddress);
-
-    // check response - 404
-    if (!response) {
-      res.status(404).send('Not Found');
-    }
-
-    res.status(200).send(response);
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
-
-// create group
-app.post('/group/:contractAddress', async function(req, res) {
-  try {
-    // validate params - 400
-    const groupKey = req.params.contractAddress;
-    const groupName = req.body.name;
-    const minDeposit = req.body.minDeposit;
-    const members = req.body.members;
-
-    if (!groupKey || !groupName || !minDeposit || !members) {
-      res.status(400).send('Bad Request');
-    }
-
-    const response = await createGroup(
-      groupKey,
-      groupName,
-      minDeposit,
-      members
-    );
+    // create a link
+    const link = new LinkModel(req.body);
+    await link.save();
 
     // check response - 404
     // if (!response) {
     //   res.status(404).send('Not Found');
     // }
 
-    res.status(200).send(response);
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
-
-// create proposal
-app.post('/proposal', async function(req, res) {
-  console.log('proposal:', req.body);
-
-  try {
-    // validate params - 400
-    const userKey = req.body.userKey; // userKey,
-    const groupKey = req.body.groupKey; // groupKey
-
-    const fromAsset = req.body.fromAsset; //
-    const toAsset = req.body.toAsset; // toAsset,
-    const quantity = req.body.quantity; // quantity,
-
-    const date = new Date();
-    const created = date; // created,
-    const updated = date; // updated,
-
-    // if (!name) {
-    //   res.status(400).send('Bad Request');
-    // }
-
-    const response = await createProposal(
-      fromAsset,
-      toAsset,
-      quantity,
-      created,
-      updated,
-      userKey,
-      groupKey
-    );
-
-    // check response - 404
-    // if (!response) {
-    //   res.status(404).send('Not Found');
-    // }
-
-    await broadcastGroupUpdate(groupKey, userKey);
-    return res.status(200).send(response);
-  } catch (error) {
-    console.log(error.message);
-    res.status(500).send(error.message);
-  }
-});
-
-// create vote
-app.post('/vote', async function(req, res) {
-  console.log('vote:', req.body);
-
-  try {
-    // validate params - 400
-    const userKey = req.body.userKey; // userKey,
-    const groupKey = req.body.groupKey; // groupKey
-
-    const proposalId = req.body.proposalId; //
-    const inFavor = req.body.inFavor; // toAsset,
-
-    if (!userKey || !groupKey || !proposalId) {
-      return res.status(400).send('Bad Request');
-    }
-
-    // response
-    const response = await updateProposalVote(
-      userKey,
-      groupKey,
-      proposalId,
-      inFavor
-    );
-
-    // check results => close vote if vote === total members
-    const progress = await countProposalVote(groupKey, proposalId);
-    if (progress.totalVotes === progress.totalMembers) {
-      await closeProposalVote(groupKey, proposalId);
-    }
-
-    await broadcastGroupUpdate(groupKey, userKey);
-    return res.status(200).send(response);
-  } catch (error) {
-    console.log(error.message);
-    res.status(500).send(error.message);
-  }
-});
-
-// create chat
-app.post('/chat', async function(req, res) {
-  console.log('chat:', req.body);
-
-  try {
-    // validate params - 400
-    const userKey = req.body.userKey; // userKey,
-    const groupKey = req.body.groupKey; // groupKey
-
-    const message = req.body.message; //
-
-    if (!userKey || !groupKey || !message) {
-      return res.status(400).send('Bad Request');
-    }
-
-    const response = await createMessage(userKey, groupKey, message);
-
-    // check response - 404
-    // if (!response) {
-    //   res.status(404).send('Not Found');
-    // }
-
-    await broadcastGroupUpdate(groupKey, userKey);
-    return res.status(200).send(response);
+    res.status(200).send(true);
   } catch (error) {
     res.status(500).send(error);
   }
