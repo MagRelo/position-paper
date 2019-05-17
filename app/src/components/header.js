@@ -11,7 +11,7 @@ class InfoPanel extends Component {
           <Link to="/newprofile">Candidates</Link>
           <Link to="/newposition">Employers</Link>
           <span>|</span>
-          <Link to="/about">About</Link>
+          <Link to="/login">Login</Link>
         </div>
 
         <h1>

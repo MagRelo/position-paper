@@ -38,6 +38,9 @@ if (process.env.ENV === 'production') {
   }
 }
 
+// stripe
+require('./stripe');
+
 // *
 // db
 // *

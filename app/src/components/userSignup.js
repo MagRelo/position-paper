@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-// import store from 'state/store';
-import Header from './header';
-
 class UserSignup extends Component {
   state = {
     name: '',
@@ -15,53 +12,14 @@ class UserSignup extends Component {
     formMessage: ''
   };
 
-  componentDidMount() {
-    // fetch('https://api.coinmarketcap.com/v1/ticker/ethereum/?convert=USD')
-    //   .then(res => {
-    //     return res.json();
-    //   })
-    //   .then(data => {
-    //     this.setState({
-    //       exchangeRate: parseInt(data[0].price_usd, 10)
-    //     });
-    //   });
-    // if (this.props.selectedAccount) {
-    //   this.setState({ newMemberAddress: this.props.selectedAccount });
-    // }
-  }
-  componentDidUpdate(prevState) {
-    // if (this.props.selectedAccount !== prevState.selectedAccount) {
-    //   this.setState({ newMemberAddress: this.props.selectedAccount });
-    // }
-  }
-
   async handleSubmit(event) {
     event.preventDefault();
-
-    // const contract = store.getState().contracts.portfolioFactory;
-    // const selectedAccount = store.getState().account.selectedAccount;
-
     // set loading state
     this.setState({
       formSubmitting: true
     });
 
     try {
-      // const platformAddress = '0x66414e903305Ff1E9dD8266AEDb359A9773236FC';
-      // const reciept = await contract.methods
-      //   .createPortfolio(
-      //     platformAddress,
-      //     this.state.memberList.map(member => {
-      //       return member.address;
-      //     })
-      //   )
-      //   .send({
-      //     from: selectedAccount
-      //   });
-
-      // const event = reciept.events.NewContract;
-      // const deployedAt = event.returnValues.deployedAt;
-
       await fetch('group/', {
         method: 'POST',
         headers: {
@@ -112,14 +70,12 @@ class UserSignup extends Component {
   render() {
     return (
       <div>
-        <Header />
-        <h2>New User Signup</h2>
         <form
           name="createForm"
           className="pure-form"
           onSubmit={this.handleSubmit.bind(this)}
         >
-          <legend>Profile Information</legend>
+          <legend>Signup</legend>
 
           <fieldset>
             <label htmlFor="name">Name </label>
@@ -131,17 +87,22 @@ class UserSignup extends Component {
               value={this.state.name}
               onChange={this.handleFormChange.bind(this)}
             />
-          </fieldset>
-
-          <fieldset>
-            <legend>Private Information</legend>
-            <label htmlFor="name">Email </label>
+            <label htmlFor="newemail">Email </label>
             <input
               className="pure-input-1"
               type="email"
-              id="email"
-              name="email"
-              value={this.state.email}
+              id="newnewemail"
+              name="newemail"
+              value={this.state.newemail}
+              onChange={this.handleFormChange.bind(this)}
+            />
+            <label htmlFor="newPassword">Password </label>
+            <input
+              className="pure-input-1"
+              type="password"
+              id="newPassword"
+              name="newPassword"
+              value={this.state.newPassword}
               onChange={this.handleFormChange.bind(this)}
             />
           </fieldset>

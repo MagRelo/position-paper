@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-class LinkForm extends Component {
+class UserSignup extends Component {
   state = {
     name: '',
 
@@ -14,24 +14,21 @@ class LinkForm extends Component {
 
   async handleSubmit(event) {
     event.preventDefault();
-
     // set loading state
     this.setState({
       formSubmitting: true
     });
 
     try {
-      const newLink = await fetch('close/' + this.props.id, {
+      await fetch('group/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          linkBase: this.props.linkBase
+          name: this.state.name
         })
       }).then(response => response.json());
-
-      console.log(newLink);
 
       this.setState({
         formSuccess: true,
@@ -66,21 +63,44 @@ class LinkForm extends Component {
     if (this.state.formSuccess) return 'alert success';
   }
 
+  handleFormChange(event) {
+    this.setState({ [event.target.name]: event.target.value });
+  }
+
   render() {
     return (
-      <div className="inbox-message">
-        <h3>{this.props.title}</h3>
-
-        <p>{this.props.message}</p>
-
+      <div>
         <form
-          name="newLinkForm"
+          name="createForm"
           className="pure-form"
           onSubmit={this.handleSubmit.bind(this)}
         >
-          <button className="pure-button pure-button-primary">
-            Close Deal
-          </button>
+          <legend>Login</legend>
+
+          <fieldset>
+            <label htmlFor="name">Email </label>
+            <input
+              className="pure-input-1"
+              type="email"
+              id="email"
+              name="email"
+              value={this.state.email}
+              onChange={this.handleFormChange.bind(this)}
+            />
+            <label htmlFor="name">Password </label>
+            <input
+              className="pure-input-1"
+              type="password"
+              id="password"
+              name="password"
+              value={this.state.password}
+              onChange={this.handleFormChange.bind(this)}
+            />
+          </fieldset>
+
+          <hr />
+
+          <button className="pure-button pure-button-primary">Signup</button>
 
           {this.state.formSubmitting ? (
             <span style={{ fontSize: 'smaller', marginLeft: '1em' }}>
@@ -120,4 +140,4 @@ const mapStateToProps = state => {
 export default connect(
   mapStateToProps,
   null
-)(LinkForm);
+)(UserSignup);

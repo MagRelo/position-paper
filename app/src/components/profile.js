@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { Dialog, DialogOverlay, DialogContent } from '@reach/dialog';
+import { Dialog } from '@reach/dialog';
 import '@reach/dialog/styles.css';
 
-// contact form
-// link form
-
-import Header from './header';
 import LinkForm from './linkForm';
 import ContactForm from './contactForm';
 
@@ -50,8 +46,6 @@ class Profile extends Component {
   render() {
     return (
       <div>
-        <Header />
-
         {this.buttons()}
 
         <h2>Name</h2>

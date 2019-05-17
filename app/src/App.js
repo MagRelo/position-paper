@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
-// import { Link } from 'react-router-dom';
+import { StripeProvider } from 'react-stripe-elements';
 
 // CSS
 import './css/open-sans.css';
@@ -12,34 +12,43 @@ import './app.css';
 import Header from 'components/header';
 import About from 'components/about';
 import LandingPage from 'components/landingPage';
-import createProfile from 'components/createProfile';
+import UserSignup from 'components/login';
+import User from 'components/user';
+
+// employers
 import createPosition from 'components/createPosition';
-import userSignup from 'components/userSignup';
+import ReferralRequest from 'components/referralRequest';
+
+// candidates
+import createProfile from 'components/createProfile';
 import Profile from 'components/profile';
-import Inbox from 'components/inbox';
-// import AcceptInvite from 'components/acceptInvite';
-// import Auto from 'components/util/autoPage';
-// import allGroups from 'components/allGroups';
-// import Lobby from 'components/lobby/lobbyPage';
+import MessageList from 'components/messageList';
+import Message from 'components/message';
 
 class App extends Component {
   render() {
     return (
-      <div className="container">
-        <Header />
+      <StripeProvider apiKey="pk_test_dMv1AAldL0wj69FLCG4c8jce00J8jWxWg9">
+        <div className="container">
+          <Header />
 
-        <Switch>
-          <Route path="/newprofile" component={createProfile} />
-          <Route path="/newposition" component={createPosition} />
-          <Route path="/newuser" component={userSignup} />
+          <Switch>
+            <Route path="/login" component={UserSignup} />
+            <Route path="/user/:userId" component={User} />
+            <Route path="/referral/:requestId" component={ReferralRequest} />
 
-          <Route path="/profile/:linkId" component={Profile} />
-          <Route path="/inbox/:profileId" component={Inbox} />
+            <Route path="/newprofile" component={createProfile} />
+            <Route path="/profile/:linkId" component={Profile} />
+            <Route path="/messages/:profileId" component={MessageList} />
+            <Route path="/message/:messageId" component={Message} />
 
-          <Route path="/about" component={About} />
-          <Route component={LandingPage} />
-        </Switch>
-      </div>
+            <Route path="/newposition" component={createPosition} />
+
+            <Route path="/about" component={About} />
+            <Route component={LandingPage} />
+          </Switch>
+        </div>
+      </StripeProvider>
     );
   }
 }
