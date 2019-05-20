@@ -28,7 +28,7 @@ class Profile extends Component {
           className="pure-button pure-button-primary"
           onClick={() => this.setState({ contactOpen: true })}
         >
-          Contact
+          Activate Referral
         </button>
         <Dialog
           isOpen={this.state.contactOpen}
@@ -41,7 +41,7 @@ class Profile extends Component {
           className="pure-button pure-button-primary"
           onClick={() => this.setState({ linkOpen: true })}
         >
-          Create Link
+          Share Profile
         </button>
 
         <Dialog
@@ -59,12 +59,12 @@ class Profile extends Component {
       <div>
         {this.generateButtons()}
 
-        <h2>{this.state.name}</h2>
         <div className="row row-3">
           <div>
             <p>profile pic</p>
           </div>
           <div>
+            <h2>{this.state.name}</h2>
             <p>bio</p>
           </div>
         </div>

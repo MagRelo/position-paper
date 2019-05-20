@@ -103,69 +103,82 @@ class CreatePortfolio extends Component {
               onChange={this.handleFormChange.bind(this)}
             />
           </fieldset>
+
           <fieldset>
-            <legend>Social</legend>
-            <label htmlFor="name">LinkedIn </label>
-            <input
-              className="pure-input-1"
-              type="text"
-              id="linkedin"
-              name="linkedin"
-              value={this.state.linkedin}
-              onChange={this.handleFormChange.bind(this)}
-            />
+            <div className="row row-2">
+              <div>
+                <label htmlFor="name">LinkedIn </label>
+                <input
+                  className="pure-input-1"
+                  type="text"
+                  id="linkedin"
+                  name="linkedin"
+                  value={this.state.linkedin}
+                  onChange={this.handleFormChange.bind(this)}
+                />
 
-            <label htmlFor="name">Github </label>
-            <input
-              className="pure-input-1"
-              type="text"
-              id="github"
-              name="github"
-              value={this.state.github}
-              onChange={this.handleFormChange.bind(this)}
-            />
+                <label htmlFor="name">Github </label>
+                <input
+                  className="pure-input-1"
+                  type="text"
+                  id="github"
+                  name="github"
+                  value={this.state.github}
+                  onChange={this.handleFormChange.bind(this)}
+                />
+              </div>
+              <div>
+                <label htmlFor="name">Twitter </label>
+                <input
+                  className="pure-input-1"
+                  type="text"
+                  id="twitter"
+                  name="twitter"
+                  value={this.state.twitter}
+                  onChange={this.handleFormChange.bind(this)}
+                />
 
-            <label htmlFor="name">Twitter </label>
-            <input
-              className="pure-input-1"
-              type="text"
-              id="twitter"
-              name="twitter"
-              value={this.state.twitter}
-              onChange={this.handleFormChange.bind(this)}
-            />
-
-            <label htmlFor="name">Medium </label>
-            <input
-              className="pure-input-1"
-              type="text"
-              id="medium"
-              name="medium"
-              value={this.state.medium}
-              onChange={this.handleFormChange.bind(this)}
-            />
+                <label htmlFor="name">Medium </label>
+                <input
+                  className="pure-input-1"
+                  type="text"
+                  id="medium"
+                  name="medium"
+                  value={this.state.medium}
+                  onChange={this.handleFormChange.bind(this)}
+                />
+              </div>
+            </div>
           </fieldset>
 
           <fieldset>
             <legend>Private Information</legend>
-            <label htmlFor="name">Email </label>
-            <input
-              className="pure-input-1"
-              type="email"
-              id="email"
-              name="email"
-              value={this.state.email}
-              onChange={this.handleFormChange.bind(this)}
-            />
-            <label htmlFor="name">Approximate Salary </label>
-            <input
-              className="pure-input-1"
-              type="number"
-              id="salary"
-              name="salary"
-              value={this.state.salary}
-              onChange={this.handleFormChange.bind(this)}
-            />
+
+            <div className="row row-2">
+              <div>
+                <label htmlFor="name">Email </label>
+                <input
+                  className="pure-input-1"
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={this.state.email}
+                  onChange={this.handleFormChange.bind(this)}
+                />
+              </div>
+
+              <div>
+                <label htmlFor="name">Approximate Salary </label>
+                <input
+                  className="pure-input-1"
+                  type="number"
+                  id="salary"
+                  name="salary"
+                  value={this.state.salary}
+                  onChange={this.handleFormChange.bind(this)}
+                />
+              </div>
+            </div>
           </fieldset>
 
           <hr />

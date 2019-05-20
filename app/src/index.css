@@ -234,6 +234,10 @@ form>p {
 .pure-form label {
   margin-bottom: 0.4em;
   display: block;
+
+  text-transform: uppercase;
+  color: gray;
+  font-size: small;
 }
 
 .pure-form hr {

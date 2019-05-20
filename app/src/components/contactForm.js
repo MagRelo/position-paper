@@ -89,7 +89,13 @@ class ContactForm extends Component {
           <legend>Contact Candidate</legend>
 
           <fieldset>
-            <textarea name="message" id="message" rows="5" />
+            <label htmlFor="message">Message</label>
+            <textarea
+              className="pure-input"
+              name="message"
+              id="message"
+              rows="5"
+            />
           </fieldset>
 
           <button className="pure-button pure-button-primary">
