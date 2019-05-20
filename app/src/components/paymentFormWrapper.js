@@ -8,7 +8,7 @@ class CheckoutForm extends Component {
     this.submit = this.submit.bind(this);
   }
 
-  async submit(ev) {
+  async submit(event) {
     let { token } = await this.props.stripe.createToken({ name: 'Name' });
     let response = await fetch('/charge', {
       method: 'POST',
@@ -22,13 +22,13 @@ class CheckoutForm extends Component {
   render() {
     return (
       <div className="checkout">
-        <p>Would you like to complete the purchase?</p>
         <CardElement />
+
         <button
           className="pure-button pure-button-primary"
           onClick={this.submit}
         >
-          Send
+          Save
         </button>
       </div>
     );
@@ -36,8 +36,6 @@ class CheckoutForm extends Component {
 }
 
 const Injected = injectStripe(CheckoutForm);
-
-// import PaymentForm from './paymentForm';
 
 class Element extends Component {
   render() {

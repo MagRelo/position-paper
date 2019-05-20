@@ -77,7 +77,9 @@ app.use(
   })
 );
 
-// http routing
+//
+// PUBLIC
+//
 
 // add profile
 app.post('/api/register/profile', async function(req, res) {
@@ -111,6 +113,47 @@ app.post('/api/register/profile', async function(req, res) {
   }
 });
 
+app.post('/api/register/position', async function(req, res) {
+  // required
+
+  const userProfile = req.body;
+
+  try {
+    // create the profile
+    const profile = new ProfileModel(userProfile);
+    await profile.save();
+
+    // add profile id
+    userProfile.profile = profile._id;
+
+    // create a link
+    const link = new LinkModel(userProfile);
+    await link.save();
+
+    res.status(200).send(link);
+  } catch (error) {
+    console.log('API Error:', error);
+    res.status(500).send(error);
+  }
+});
+
+app.post('/api/register/user', async function(req, res) {
+  // required
+
+  const userProfile = req.body;
+
+  try {
+    // create the user
+    const user = new UserModel(userProfile);
+    await user.save();
+
+    res.status(200).send(user);
+  } catch (error) {
+    console.log('API Error:', error);
+    res.status(500).send(error);
+  }
+});
+
 // get profile by link
 app.get('/api/profile/:linkId', async function(req, res) {
   // validate input
@@ -130,7 +173,9 @@ app.get('/api/profile/:linkId', async function(req, res) {
   }
 });
 
-// send message || active referral
+//
+// AUTH
+//
 
 // add profile
 app.post('/api/messages', async function(req, res) {
@@ -139,6 +184,32 @@ app.post('/api/messages', async function(req, res) {
     await message.save();
 
     res.status(200).send(message);
+  } catch (error) {
+    console.log('API Error:', error);
+    res.status(500).send(error);
+  }
+});
+
+app.post('/api/link', async function(req, res) {
+  // validate input
+  const userId = req.body.userId;
+  const linkId = parseInt(req.body.parentLinkId, 10);
+  if (typeof linkId != 'number') {
+    return res.status(401).send('bad input: ' + typeof linkId);
+  }
+
+  try {
+    // get existing link, add
+    const link = await LinkModel.findOne({ linkId: linkId });
+
+    const newLink = new LinkModel({
+      parentLinkId: link._id,
+      profile: link.profile,
+      user: userId
+    });
+    await newLink.save();
+
+    res.status(200).send(newLink);
   } catch (error) {
     console.log('API Error:', error);
     res.status(500).send(error);

@@ -19,15 +19,21 @@ class UserSignup extends Component {
       formSubmitting: true
     });
 
+    // get and format form data
+    const formData = new FormData(event.target);
+    var object = {};
+    formData.forEach((value, key) => {
+      object[key] = value;
+    });
+    var json = JSON.stringify(object);
+
     try {
-      await fetch('group/', {
+      await fetch('/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          name: this.state.name
-        })
+        body: json
       }).then(response => response.json());
 
       this.setState({
@@ -100,7 +106,9 @@ class UserSignup extends Component {
 
           <hr />
 
-          <button className="pure-button pure-button-primary">Signup</button>
+          <button className="pure-button pure-button-primary" type="submit">
+            Login
+          </button>
 
           {this.state.formSubmitting ? (
             <span style={{ fontSize: 'smaller', marginLeft: '1em' }}>

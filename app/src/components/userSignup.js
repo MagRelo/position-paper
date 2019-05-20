@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 class UserSignup extends Component {
   state = {
     name: '',
+    email: '',
+    password: '',
 
     formAlert: false,
     formError: false,
@@ -19,15 +21,21 @@ class UserSignup extends Component {
       formSubmitting: true
     });
 
+    // get and format form data
+    const formData = new FormData(event.target);
+    var object = {};
+    formData.forEach((value, key) => {
+      object[key] = value;
+    });
+    var json = JSON.stringify(object);
+
     try {
-      await fetch('group/', {
+      await fetch('/api/register/user', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          name: this.state.name
-        })
+        body: json
       }).then(response => response.json());
 
       this.setState({
@@ -87,21 +95,21 @@ class UserSignup extends Component {
               value={this.state.name}
               onChange={this.handleFormChange.bind(this)}
             />
-            <label htmlFor="newemail">Email </label>
+            <label htmlFor="signup-email">Email </label>
             <input
               className="pure-input-1"
               type="email"
-              id="newnewemail"
-              name="newemail"
+              id="signup-email"
+              name="email"
               value={this.state.newemail}
               onChange={this.handleFormChange.bind(this)}
             />
-            <label htmlFor="newPassword">Password </label>
+            <label htmlFor="signup-password">Password </label>
             <input
               className="pure-input-1"
               type="password"
-              id="newPassword"
-              name="newPassword"
+              id="signup-password"
+              name="password"
               value={this.state.newPassword}
               onChange={this.handleFormChange.bind(this)}
             />

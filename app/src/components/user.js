@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
-import '@reach/dialog/styles.css';
+import PaymentForm from './paymentFormWrapper';
+// import '@reach/dialog/styles.css';
 
 import RefferalsList from './referralsList';
 
@@ -21,7 +21,19 @@ class Profile extends Component {
           </div>
         </div>
         <hr />
-        <RefferalsList />
+
+        <div className="row row-2">
+          <div>
+            <RefferalsList />
+          </div>
+          <div>
+            <h3>Payment Sources</h3>
+
+            <h3>Add Payment Source</h3>
+
+            <PaymentForm />
+          </div>
+        </div>
       </div>
     );
   }

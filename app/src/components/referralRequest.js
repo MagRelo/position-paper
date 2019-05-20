@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import PaymentForm from './paymentFormWrapper';
-
 class LinkForm extends Component {
   state = {
     name: '',
@@ -76,8 +74,6 @@ class LinkForm extends Component {
           className="pure-form"
           onSubmit={this.handleSubmit.bind(this)}
         >
-          <PaymentForm />
-
           {this.state.formSubmitting ? (
             <span style={{ fontSize: 'smaller', marginLeft: '1em' }}>
               Submitting...
