@@ -31,7 +31,7 @@ class ContactForm extends Component {
     var json = JSON.stringify(object);
 
     try {
-      const newMessage = await fetch('api/messages', {
+      const newMessage = await fetch('/api/messages', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

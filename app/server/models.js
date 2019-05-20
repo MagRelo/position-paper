@@ -38,7 +38,6 @@ const LinkSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
 LinkSchema.pre('save', function(next) {
   try {
     if (this.isNew) {
@@ -51,5 +50,14 @@ LinkSchema.pre('save', function(next) {
   }
   next();
 });
-
 exports.LinkModel = mongoose.model('Link', LinkSchema);
+
+const MessageSchema = new mongoose.Schema(
+  {
+    message: String,
+    from: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    linkId: { type: mongoose.Schema.Types.ObjectId, ref: 'Link' }
+  },
+  { timestamps: true }
+);
+exports.MessageModel = mongoose.model('Message', MessageSchema);

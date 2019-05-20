@@ -48,7 +48,7 @@ class Profile extends Component {
           isOpen={this.state.linkOpen}
           onDismiss={() => this.setState({ linkOpen: false })}
         >
-          <LinkForm />
+          <LinkForm parentLinkId={this.state.linkId} />
         </Dialog>
       </div>
     );

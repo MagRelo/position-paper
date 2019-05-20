@@ -43,18 +43,18 @@ class LinkForm extends Component {
     });
 
     try {
-      const newLink = await fetch('link/', {
+      const newLink = await fetch('/api/link', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          linkBase: this.props.linkBase
+          parentLinkId: this.props.parentLinkId,
+          userId: '123'
         })
       }).then(response => response.json());
 
       console.log(newLink);
-
       this.setState({
         formSuccess: true,
         formAlert: true,
