@@ -36,7 +36,7 @@ class CreatePortfolio extends Component {
 
     // submit
     try {
-      const response = await fetch('/register/profile', {
+      const response = await fetch('api/register/profile', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

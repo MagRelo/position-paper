@@ -14,26 +14,6 @@ class ContactForm extends Component {
     formMessage: ''
   };
 
-  componentDidMount() {
-    // fetch('https://api.coinmarketcap.com/v1/ticker/ethereum/?convert=USD')
-    //   .then(res => {
-    //     return res.json();
-    //   })
-    //   .then(data => {
-    //     this.setState({
-    //       exchangeRate: parseInt(data[0].price_usd, 10)
-    //     });
-    //   });
-    // if (this.props.selectedAccount) {
-    //   this.setState({ newMemberAddress: this.props.selectedAccount });
-    // }
-  }
-  componentDidUpdate(prevState) {
-    // if (this.props.selectedAccount !== prevState.selectedAccount) {
-    //   this.setState({ newMemberAddress: this.props.selectedAccount });
-    // }
-  }
-
   async handleSubmit(event) {
     event.preventDefault();
 
@@ -42,18 +22,24 @@ class ContactForm extends Component {
       formSubmitting: true
     });
 
+    // get and format form data
+    const formData = new FormData(event.target);
+    var object = {};
+    formData.forEach((value, key) => {
+      object[key] = value;
+    });
+    var json = JSON.stringify(object);
+
     try {
-      const newLink = await fetch('link/', {
+      const newMessage = await fetch('api/messages', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          linkBase: this.props.linkBase
-        })
+        body: json
       }).then(response => response.json());
 
-      console.log(newLink);
+      console.log(newMessage);
 
       this.setState({
         formSuccess: true,

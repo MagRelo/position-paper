@@ -78,8 +78,8 @@ app.use(
 
 // http routing
 
-// get all groups
-app.post('/register/profile', async function(req, res) {
+// add profile
+app.post('/api/register/profile', async function(req, res) {
   // required
 
   const userProfile = req.body;
