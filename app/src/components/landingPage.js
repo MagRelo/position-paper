@@ -13,29 +13,18 @@ class LandingPage extends Component {
     return (
       <div>
         <section>
-          <div className="row row-2">
+          <div className="row row-3">
             <div>
-              <h2>Social Referrals</h2>
-              <p>
-                Social Referrals encourage and incentivize your network to help,
-                and reward them when you are sucessful
-              </p>
-
-              <ol>
-                <li>Share unique links with your network</li>
-                <li>
-                  Your network can create their own links and share them with
-                  others
-                </li>
-                <li>Everyone in the chain shares in the refereral bonus</li>
-              </ol>
+              <h2>Candidates</h2>
             </div>
             <div>
               <img
+                style={{ maxWidth: '300px' }}
                 src="https://cen.acs.org/content/cen/articles/95/i29/introverts-guide-networking/_jcr_content/articlebody/subpar/articlemedia_0.img.jpg/1499800449420.jpg"
                 alt="network"
               />
             </div>
+            <h2>Employers</h2>
           </div>
         </section>
 

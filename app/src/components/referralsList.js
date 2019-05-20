@@ -20,12 +20,19 @@ class Inbox extends Component {
 
         {this.state.messages.map(message => {
           return (
-            <ReferralRequest
-              title={message.title}
-              message={message.message}
-              id={message.id}
-              key={message.id}
-            />
+            <div className="row row-2 inbox-message" key={message.id}>
+              <div>
+                <h3>{message.title}</h3>
+
+                <p>{message.message}</p>
+              </div>
+
+              <ReferralRequest
+                title={message.title}
+                message={message.message}
+                id={message.id}
+              />
+            </div>
           );
         })}
       </div>

@@ -70,20 +70,12 @@ class LinkForm extends Component {
 
   render() {
     return (
-      <div className="inbox-message">
-        <h3>{this.props.title}</h3>
-
-        <p>{this.props.message}</p>
-
+      <div>
         <form
           name="newLinkForm"
           className="pure-form"
           onSubmit={this.handleSubmit.bind(this)}
         >
-          <button className="pure-button pure-button-primary">
-            Close Deal
-          </button>
-
           <PaymentForm />
 
           {this.state.formSubmitting ? (
