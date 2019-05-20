@@ -79,29 +79,51 @@ app.use(
 // http routing
 
 // get all groups
-app.get('/register/profile', async function(req, res) {
+app.post('/register/profile', async function(req, res) {
   // required
+
+  const userProfile = req.body;
 
   try {
     // create the user
-    const user = new UserModel(req.body);
+    const user = new UserModel(userProfile);
     await user.save();
 
+    // add user id
+    userProfile.user = user._id;
+
     // create the profile
-    const profile = new ProfileModel(req.body);
+    const profile = new ProfileModel(userProfile);
     await profile.save();
 
+    // add profile id
+    userProfile.profile = profile._id;
+
     // create a link
-    const link = new LinkModel(req.body);
+    const link = new LinkModel(userProfile);
     await link.save();
 
-    // check response - 404
-    // if (!response) {
-    //   res.status(404).send('Not Found');
-    // }
-
-    res.status(200).send(true);
+    res.status(200).send(link);
   } catch (error) {
+    console.log('API Error:', error);
+    res.status(500).send(error);
+  }
+});
+
+app.get('/api/profile/:linkId', async function(req, res) {
+  // validate input
+  const linkId = parseInt(req.params.linkId, 10);
+  if (typeof linkId != 'number') {
+    return res.status(401).send('bad input: ' + typeof linkId);
+  }
+
+  try {
+    const link = await LinkModel.findOne({ linkId: linkId });
+    const profile = await ProfileModel.findOne({ _id: link.profile });
+
+    res.status(200).send(profile);
+  } catch (error) {
+    console.log('apierror');
     res.status(500).send(error);
   }
 });

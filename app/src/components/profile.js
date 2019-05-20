@@ -8,9 +8,20 @@ import LinkForm from './linkForm';
 import ContactForm from './contactForm';
 
 class Profile extends Component {
-  state = { accounts: null, contactOpen: false, linkOpen: false };
+  state = { contactOpen: false, linkOpen: false };
 
-  buttons() {
+  async componentDidMount() {
+    // get linkId from URL
+    const linkId = this.props.match.params.linkId;
+
+    // get data from server for this link
+    const response = await fetch('/api/profile/' + linkId);
+    const body = await response.json();
+
+    this.setState(Object.assign(body, { linkId }));
+  }
+
+  generateButtons() {
     return (
       <div>
         <button
@@ -46,9 +57,9 @@ class Profile extends Component {
   render() {
     return (
       <div>
-        {this.buttons()}
+        {this.generateButtons()}
 
-        <h2>Name</h2>
+        <h2>{this.state.name}</h2>
         <div className="row row-3">
           <div>
             <p>profile pic</p>
@@ -60,16 +71,16 @@ class Profile extends Component {
         <hr />
         <div className="row row-2">
           <div>
-            <p>linkedin</p>
-            <p>github</p>
+            <p>linkedin: {this.state.linkedin}</p>
+            <p>github: {this.state.github}</p>
           </div>
           <div>
-            <p>twitter</p>
-            <p>medium</p>
+            <p>twitter: {this.state.twitter}</p>
+            <p>medium: {this.state.medium}</p>
           </div>
         </div>
 
-        {this.buttons()}
+        {this.generateButtons()}
       </div>
     );
   }

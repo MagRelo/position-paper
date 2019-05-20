@@ -6,11 +6,13 @@
   "dependencies": {
     "@reach/dialog": "^0.2.8",
     "bignumber.js": "^8.1.1",
+    "biguint-format": "^1.0.1",
     "dotenv": "^6.2.0",
     "eth-sig-util": "^2.1.0",
     "ethereum-address": "0.0.4",
     "ethereumjs-util": "^6.1.0",
     "express": "^4.16.4",
+    "flake-idgen": "^1.1.2",
     "moment": "^2.24.0",
     "mongoose": "^5.4.5",
     "morgan": "^1.9.1",

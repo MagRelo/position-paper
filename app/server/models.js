@@ -1,4 +1,7 @@
 const mongoose = require('mongoose');
+var FlakeIdGen = require('flake-idgen'),
+  intformat = require('biguint-format'),
+  generator = new FlakeIdGen();
 
 const UserSchema = new mongoose.Schema(
   {
@@ -30,9 +33,23 @@ const LinkSchema = new mongoose.Schema(
   {
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     profile: { type: mongoose.Schema.Types.ObjectId, ref: 'Profile' },
-    linkRef: Number,
-    parentLink: { type: mongoose.Schema.Types.ObjectId, ref: 'Link' }
+    linkId: Number,
+    parentLinkId: { type: mongoose.Schema.Types.ObjectId, ref: 'Link' }
   },
   { timestamps: true }
 );
+
+LinkSchema.pre('save', function(next) {
+  try {
+    if (this.isNew) {
+      var id = generator.next();
+      this.linkId = intformat(id, 'hex', { prefix: '0x' });
+      console.log(typeof this.linkId, id, this.linkId);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+  next();
+});
+
 exports.LinkModel = mongoose.model('Link', LinkSchema);

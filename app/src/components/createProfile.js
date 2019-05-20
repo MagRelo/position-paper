@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-// import store from 'state/store';
-// import Header from './header';
-
 class CreatePortfolio extends Component {
   state = {
-    name: '',
+    name: 'test',
+    linkedin: 'linked',
+    github: 'git',
+    twitter: 'twit',
+    medium: 'meitt',
+    email: 'm@aol.com',
+    salary: 10000,
 
     formAlert: false,
     formError: false,
@@ -15,68 +18,37 @@ class CreatePortfolio extends Component {
     formMessage: ''
   };
 
-  componentDidMount() {
-    // fetch('https://api.coinmarketcap.com/v1/ticker/ethereum/?convert=USD')
-    //   .then(res => {
-    //     return res.json();
-    //   })
-    //   .then(data => {
-    //     this.setState({
-    //       exchangeRate: parseInt(data[0].price_usd, 10)
-    //     });
-    //   });
-    // if (this.props.selectedAccount) {
-    //   this.setState({ newMemberAddress: this.props.selectedAccount });
-    // }
-  }
-  componentDidUpdate(prevState) {
-    // if (this.props.selectedAccount !== prevState.selectedAccount) {
-    //   this.setState({ newMemberAddress: this.props.selectedAccount });
-    // }
-  }
-
   async handleSubmit(event) {
     event.preventDefault();
-
-    // const contract = store.getState().contracts.portfolioFactory;
-    // const selectedAccount = store.getState().account.selectedAccount;
 
     // set loading state
     this.setState({
       formSubmitting: true
     });
 
+    // get and format form data
+    const formData = new FormData(event.target);
+    var object = {};
+    formData.forEach((value, key) => {
+      object[key] = value;
+    });
+    var json = JSON.stringify(object);
+
+    // submit
     try {
-      // const platformAddress = '0x66414e903305Ff1E9dD8266AEDb359A9773236FC';
-      // const reciept = await contract.methods
-      //   .createPortfolio(
-      //     platformAddress,
-      //     this.state.memberList.map(member => {
-      //       return member.address;
-      //     })
-      //   )
-      //   .send({
-      //     from: selectedAccount
-      //   });
-
-      // const event = reciept.events.NewContract;
-      // const deployedAt = event.returnValues.deployedAt;
-
-      await fetch('group/', {
+      const response = await fetch('/register/profile', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          name: this.state.name
-        })
+        body: json
       }).then(response => response.json());
 
       this.setState({
         formSuccess: true,
         formAlert: true,
         formSubmitting: false,
-        formMessage: 'Success!'
+        formMessage: 'Success! Redirecting to ' + response.linkId + '...'
       });
     } catch (error) {
       this.setState({
@@ -198,7 +170,7 @@ class CreatePortfolio extends Component {
 
           <hr />
 
-          <button className="pure-button pure-button-primary">
+          <button className="pure-button pure-button-primary" type="submit">
             Create Profile
           </button>
 
