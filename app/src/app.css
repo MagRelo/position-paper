@@ -52,5 +52,5 @@ li {
 .inbox-message {
   border: solid 1px #bbb;
   margin-bottom: 1em;
-  padding: 1em;
+  padding: 0 1em 1em;
 }

@@ -17,13 +17,10 @@ import User from 'components/user';
 
 // employers
 import createPosition from 'components/createPosition';
-import ReferralRequest from 'components/referralRequest';
 
 // candidates
 import createProfile from 'components/createProfile';
 import Profile from 'components/profile';
-import MessageList from 'components/messageList';
-import Message from 'components/message';
 
 class App extends Component {
   render() {
@@ -35,14 +32,11 @@ class App extends Component {
           <Switch>
             <Route path="/login" component={UserSignup} />
             <Route path="/user/:userId" component={User} />
-            <Route path="/referral/:requestId" component={ReferralRequest} />
 
             <Route path="/newprofile" component={createProfile} />
             <Route path="/profile/:linkId" component={Profile} />
-            <Route path="/messages/:profileId" component={MessageList} />
-            <Route path="/message/:messageId" component={Message} />
-
             <Route path="/newposition" component={createPosition} />
+            <Route path="/position/:linkId" component={createPosition} />
 
             <Route path="/about" component={About} />
             <Route component={LandingPage} />

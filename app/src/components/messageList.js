@@ -16,7 +16,7 @@ class Inbox extends Component {
   render() {
     return (
       <div>
-        <h2>Inbox</h2>
+        <h3>Messages</h3>
 
         {this.state.messages.map(message => {
           return (

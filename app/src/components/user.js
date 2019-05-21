@@ -4,6 +4,7 @@ import PaymentForm from './paymentFormWrapper';
 // import '@reach/dialog/styles.css';
 
 import RefferalsList from './referralsList';
+import MessageList from 'components/messageList';
 
 class Profile extends Component {
   state = { accounts: null, contactOpen: false, linkOpen: false };
@@ -22,15 +23,18 @@ class Profile extends Component {
         </div>
         <hr />
 
-        <div className="row row-2">
+        <div className="row row-3">
           <div>
             <RefferalsList />
           </div>
           <div>
-            <h3>Add Payment Source</h3>
-
-            <PaymentForm />
+            <MessageList />
+          </div>
+          <div>
             <h3>Payment Sources</h3>
+
+            <h3>Add Payment Source</h3>
+            <PaymentForm />
           </div>
         </div>
       </div>

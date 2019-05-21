@@ -16,11 +16,11 @@ class Inbox extends Component {
   render() {
     return (
       <div>
-        <h2>Referrals</h2>
+        <h3>Referrals</h3>
 
         {this.state.messages.map(message => {
           return (
-            <div className="row row-2 inbox-message" key={message.id}>
+            <div className="inbox-message" key={message.id}>
               <div>
                 <h3>{message.title}</h3>
 
