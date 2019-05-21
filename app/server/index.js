@@ -7,23 +7,7 @@ const server = require('http').Server(app);
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 
-const UserModel = require('./models').UserModel;
-const ProfileModel = require('./models').ProfileModel;
-const LinkModel = require('./models').LinkModel;
-const MessageModel = require('./models').MessageModel;
-
-// const {
-//   getAllGroups,
-//   getGroup,
-//   createGroup,
-//   createProposal,
-//   updateProposalVote,
-//   createMessage,
-//   countProposalVote,
-//   closeProposalVote
-// } = require('./pg-controller');
-
-// const { startIo, broadcastGroupUpdate } = require('./sockets');
+const httpApi = require('./api');
 
 // *
 // load env var's
@@ -38,9 +22,6 @@ if (process.env.ENV === 'production') {
     throw result.error;
   }
 }
-
-// stripe
-require('./stripe');
 
 // *
 // db
@@ -61,8 +42,8 @@ mongoose.connection.on('error', function(err) {
 // Server
 // *
 
-// sockets
-// startIo(server);
+// load stripe api
+require('./stripe');
 
 // configure express middleware
 app.use(express.static('build'));
@@ -77,170 +58,8 @@ app.use(
   })
 );
 
-//
-// PUBLIC
-//
-
-// add profile
-app.post('/api/register/profile', async function(req, res) {
-  // required
-
-  const userProfile = req.body;
-
-  try {
-    // create the user
-    const user = new UserModel(userProfile);
-    await user.save();
-
-    // add user id
-    userProfile.user = user._id;
-
-    // create the profile
-    const profile = new ProfileModel(userProfile);
-    await profile.save();
-
-    // add profile id
-    userProfile.profile = profile._id;
-
-    // create a link
-    const link = new LinkModel(userProfile);
-    await link.save();
-
-    res.status(200).send(link);
-  } catch (error) {
-    console.log('API Error:', error);
-    res.status(500).send(error);
-  }
-});
-
-app.post('/api/register/position', async function(req, res) {
-  // required
-
-  const userProfile = req.body;
-
-  try {
-    // create the profile
-    const profile = new ProfileModel(userProfile);
-    await profile.save();
-
-    // add profile id
-    userProfile.profile = profile._id;
-
-    // create a link
-    const link = new LinkModel(userProfile);
-    await link.save();
-
-    res.status(200).send(link);
-  } catch (error) {
-    console.log('API Error:', error);
-    res.status(500).send(error);
-  }
-});
-
-app.post('/api/register/user', async function(req, res) {
-  // required
-
-  const userProfile = req.body;
-
-  try {
-    // create the user
-    const user = new UserModel(userProfile);
-    await user.save();
-
-    res.status(200).send(user);
-  } catch (error) {
-    console.log('API Error:', error);
-    res.status(500).send(error);
-  }
-});
-
-// get profile by link
-app.get('/api/profile/:linkId', async function(req, res) {
-  // validate input
-  const linkId = parseInt(req.params.linkId, 10);
-  if (typeof linkId != 'number') {
-    return res.status(401).send('bad input: ' + typeof linkId);
-  }
-
-  try {
-    const link = await LinkModel.findOne({ linkId: linkId });
-    const profile = await ProfileModel.findOne({ _id: link.profile });
-
-    res.status(200).send(profile);
-  } catch (error) {
-    console.log('apierror');
-    res.status(500).send(error);
-  }
-});
-
-//
-// AUTH
-//
-
-// add profile
-app.post('/api/messages', async function(req, res) {
-  try {
-    const message = new MessageModel(req.body);
-    await message.save();
-
-    res.status(200).send(message);
-  } catch (error) {
-    console.log('API Error:', error);
-    res.status(500).send(error);
-  }
-});
-
-app.post('/api/link', async function(req, res) {
-  // validate input
-  const userId = req.body.userId;
-  const linkId = parseInt(req.body.parentLinkId, 10);
-  if (typeof linkId != 'number') {
-    return res.status(401).send('bad input: ' + typeof linkId);
-  }
-
-  try {
-    // get existing link, add
-    const link = await LinkModel.findOne({ linkId: linkId });
-
-    const newLink = new LinkModel({
-      parentLinkId: link._id,
-      profile: link.profile,
-      user: userId
-    });
-    await newLink.save();
-
-    res.status(200).send(newLink);
-  } catch (error) {
-    console.log('API Error:', error);
-    res.status(500).send(error);
-  }
-});
-
-app.post('/api/link', async function(req, res) {
-  // validate input
-  const userId = req.body.userId;
-  const linkId = parseInt(req.body.parentLinkId, 10);
-  if (typeof linkId != 'number') {
-    return res.status(401).send('bad input: ' + typeof linkId);
-  }
-
-  try {
-    // get existing link, add
-    const link = await LinkModel.findOne({ linkId: linkId });
-
-    const newLink = new LinkModel({
-      parentLinkId: link._id,
-      profile: link.profile,
-      user: userId
-    });
-    await newLink.save();
-
-    res.status(200).send(newLink);
-  } catch (error) {
-    console.log('API Error:', error);
-    res.status(500).send(error);
-  }
-});
+// add http routing
+app.use('/api', httpApi);
 
 // serve the frontend for all non-api requests
 app.get('/*', function(req, res) {

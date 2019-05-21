@@ -43,7 +43,7 @@ LinkSchema.pre('save', function(next) {
     if (this.isNew) {
       var id = generator.next();
       this.linkId = intformat(id, 'hex', { prefix: '0x' });
-      console.log(typeof this.linkId, id, this.linkId);
+      // console.log(typeof this.linkId, id, this.linkId);
     }
   } catch (error) {
     console.log(error);

@@ -27,11 +27,10 @@ class Profile extends Component {
             <RefferalsList />
           </div>
           <div>
-            <h3>Payment Sources</h3>
-
             <h3>Add Payment Source</h3>
 
             <PaymentForm />
+            <h3>Payment Sources</h3>
           </div>
         </div>
       </div>
