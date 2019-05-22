@@ -2,10 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 const messages = [
-  { id: '1', title: 'asdf', message: 'asdoiuasdfo' },
-  { id: '2', title: '1234', message: 'asdoiuasdfo' },
-  { id: '3', title: 'poiu', message: 'asdoiuasdfo' },
-  { id: '4', title: 'xcvb', message: 'asdoiuasdfo' }
+  { id: '1', title: 'Visa', message: 'asdoiuasdfo' },
+  { id: '2', title: 'Mastercard', message: 'asdoiuasdfo' }
 ];
 
 class Inbox extends Component {
