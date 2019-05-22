@@ -64,19 +64,18 @@ export function saveSession(duration) {
           message: contentHex,
           signature: result.result,
           duration: duration,
-          expires: expiration.toISOString()
+          expires: expiration.toISOString(),
+          staleAfter: Date.now() + duration * 60 * 1000
         };
 
-        // save session to IndexedDB
-        const staleAfter = Date.now() + duration * 60 * 1000;
-        setCache('session-' + userAddress, JSON.stringify(sessionData), {
-          staleAfter: staleAfter
-        }).then(val => {
-          return dispatch({
-            type: 'SESSION_LOAD',
-            payload: sessionData
-          });
-        });
+        setCache('session-' + userAddress, JSON.stringify(sessionData)).then(
+          val => {
+            return dispatch({
+              type: 'SESSION_LOAD',
+              payload: sessionData
+            });
+          }
+        );
       }
     );
   };
