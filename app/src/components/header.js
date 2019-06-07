@@ -11,17 +11,9 @@ class Header extends Component {
     return (
       <div className="header">
         <div className="menu">
-          {this.props.activeSession ? (
-            <React.Fragment>
-              <Link to={'/profile/' + this.props.selectedAccount}>Profile</Link>
-              <Link to={'/user/' + this.props.selectedAccount}>Account</Link>
-            </React.Fragment>
-          ) : (
-            <React.Fragment>
-              <Link to="/newprofile">Candidates</Link>
-              <Link to="/newposition">Employers</Link>
-            </React.Fragment>
-          )}
+          <React.Fragment>
+            <Link to={'/user/' + this.props.selectedAccount}>Account</Link>
+          </React.Fragment>
 
           <span>|</span>
           <LoginButton />

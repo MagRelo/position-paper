@@ -4,26 +4,26 @@ import { connect } from 'react-redux';
 // import '@reach/dialog/styles.css';
 // import PaymentSourceList from './paymentSourceList';
 
-import AuthWrapper from './util/authWrapper';
-import Web3Wrapper from './util/web3Wrapper';
+// import AuthWrapper from './util/authWrapper';
+// import Web3Wrapper from './util/web3Wrapper';
 
-import RefferalsList from './referralsList';
+import LinksList from './linksList';
+import PositionsList from './positionsList';
 
 class Profile extends Component {
   state = { linkOpen: false };
 
   render() {
     return (
-      <Web3Wrapper skipContracts={true}>
-        <AuthWrapper>
-          <div>
-            <h2>{this.props.selectedAccount}</h2>
-            <hr />
+      <div>
+        <h2>My Name</h2>
 
-            <RefferalsList />
-          </div>
-        </AuthWrapper>
-      </Web3Wrapper>
+        <hr />
+        <div className="row row-2">
+          <LinksList />
+          <PositionsList />
+        </div>
+      </div>
     );
   }
 }

@@ -14,11 +14,14 @@ class Profile extends Component {
     // get linkId from URL
     const linkId = this.props.match.params.linkId;
 
-    // get data from server for this link
+    // get position data
     const response = await fetch('/api/profile/' + linkId);
-    const body = await response.json();
-
-    this.setState(Object.assign(body, { linkId }));
+    if (response.status === 200) {
+      const body = await response.json();
+      this.setState(Object.assign(body, { linkId }));
+    } else {
+      console.log('not found', response.status);
+    }
   }
 
   generateButtons() {
@@ -41,7 +44,7 @@ class Profile extends Component {
           className="pure-button pure-button-primary"
           onClick={() => this.setState({ linkOpen: true })}
         >
-          Share Profile
+          Create Link
         </button>
 
         <Dialog

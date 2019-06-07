@@ -36,6 +36,11 @@ section {
   margin-top: 4em;
 }
 
+a {
+  color: #0079db;
+  text-decoration: none;
+}
+
 ul {
   /* list-style: none; */
   padding: 1em;
@@ -57,4 +62,16 @@ li {
 
 .inbox-message button {
   margin-bottom: 1em;
+}
+
+.inbox-message h3 {
+  margin-bottom: 0;
+}
+
+.inbox-message .copy {
+  text-transform: uppercase;
+  font-size: 14px;
+  color: #676767;
+  margin-left: 0.5em;
+  line-height: 1em;
 }

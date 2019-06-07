@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import WarningIcon from 'images/warning.svg';
 
-import { loadSession, saveSession, clearSession } from './authActions';
+import { loadSession, saveSession } from './authActions';
 
 class AuthWrapper extends Component {
   componentDidMount() {

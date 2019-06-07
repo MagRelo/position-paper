@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
+
 import { StripeProvider } from 'react-stripe-elements';
 
 // CSS
@@ -17,10 +18,7 @@ import User from 'components/user';
 
 // employers
 import createPosition from 'components/createPosition';
-
-// candidates
-import createProfile from 'components/createProfile';
-import Profile from 'components/profile';
+import Position from 'components/profile';
 
 class App extends Component {
   render() {
@@ -33,10 +31,9 @@ class App extends Component {
             <Route path="/login" component={UserSignup} />
             <Route path="/user/:userId" component={User} />
 
-            <Route path="/newprofile" component={createProfile} />
-            <Route path="/profile/:linkId" component={Profile} />
             <Route path="/newposition" component={createPosition} />
-            <Route path="/position/:linkId" component={createPosition} />
+
+            <Route path="/link/:linkId" component={Position} />
 
             <Route path="/about" component={About} />
             <Route component={LandingPage} />

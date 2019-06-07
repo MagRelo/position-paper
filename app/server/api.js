@@ -93,7 +93,14 @@ router.get('/profile/:linkId', async function(req, res) {
 
   try {
     const link = await LinkModel.findOne({ linkId: linkId });
+    if (!link) {
+      return res.status(401).send('link not found');
+    }
+
     const profile = await ProfileModel.findOne({ _id: link.profile });
+    if (!profile) {
+      return res.status(404).send('profile not found');
+    }
 
     res.status(200).send(profile);
   } catch (error) {
@@ -119,6 +126,7 @@ router.post('/messages', async function(req, res) {
   }
 });
 
+// create link
 router.post('/link', async function(req, res) {
   // validate input
   const userId = req.body.userId;
@@ -131,6 +139,7 @@ router.post('/link', async function(req, res) {
     // get existing link, add
     const link = await LinkModel.findOne({ linkId: linkId });
 
+    // add new link(?)
     const newLink = new LinkModel({
       parentLinkId: link._id,
       profile: link.profile,
