@@ -13,8 +13,8 @@ import store from 'state/store';
 // Learn more about service workers: http://bit.ly/CRA-PWA
 // serviceWorker.unregister();
 
-// import { loadWeb3 } from 'state/loadWeb3';
-// loadWeb3();
+import { loadWeb3 } from 'state/loadWeb3';
+loadWeb3();
 
 ReactDOM.render(
   <Provider store={store}>

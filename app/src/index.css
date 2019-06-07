@@ -6,13 +6,6 @@ body,
   box-sizing: border-box;
 }
 
-
-.container {
-  /* display: grid;
-  grid-template-rows: 1fr; */
-  padding: 1em;
-}
-
 body {
   margin: 0;
   font-family: "Open Sans", sans-serif;
@@ -22,8 +15,7 @@ body {
 }
 
 .container {
-  box-sizing: border-box;
-  height: 100%;
+  padding: 1em 2em;
 }
 
 .row {

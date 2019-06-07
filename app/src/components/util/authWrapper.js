@@ -11,16 +11,16 @@ class AuthWrapper extends Component {
     this.props.getSession(this.props.selectedAccount);
   }
 
-  componentDidUpdate(prevState) {
-    if (prevState.selectedAccount !== this.props.selectedAccount) {
-      this.props.getSession(this.props.selectedAccount);
-      // console.log('cdu', this.props.selectedAccount);
-    }
-  }
+  // componentDidUpdate(prevState) {
+  //   if (prevState.selectedAccount !== this.props.selectedAccount) {
+  //     this.props.getSession(this.props.selectedAccount);
+  //     // console.log('cdu', this.props.selectedAccount);
+  //   }
+  // }
 
-  logout() {
-    clearSession();
-  }
+  // logout() {
+  //   clearSession();
+  // }
 
   createSession(duration) {
     // console.log('hit createSession');

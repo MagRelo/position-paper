@@ -34,8 +34,6 @@ export function clearSession() {
 }
 export function saveSession(duration) {
   return function(dispatch) {
-    console.log('hit saveSession');
-
     const web3 = store.getState().web3.instance;
     const userAddress = store.getState().account.selectedAccount;
     console.log('user:', userAddress);

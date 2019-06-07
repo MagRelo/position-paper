@@ -1,17 +1,30 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-class InfoPanel extends Component {
-  state = { accounts: null, links: [] };
+import LoginButton from './login';
+import { connect } from 'react-redux';
+
+class Header extends Component {
+  state = { accounts: null };
 
   render() {
     return (
       <div className="header">
         <div className="menu">
-          <Link to="/newprofile">Candidates</Link>
-          <Link to="/newposition">Employers</Link>
+          {this.props.activeSession ? (
+            <React.Fragment>
+              <Link to={'/profile/' + this.props.selectedAccount}>Profile</Link>
+              <Link to={'/user/' + this.props.selectedAccount}>Account</Link>
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              <Link to="/newprofile">Candidates</Link>
+              <Link to="/newposition">Employers</Link>
+            </React.Fragment>
+          )}
+
           <span>|</span>
-          <Link to="/login">Login</Link>
+          <LoginButton />
         </div>
 
         <h1>
@@ -24,4 +37,13 @@ class InfoPanel extends Component {
   }
 }
 
-export default InfoPanel;
+const mapStateToProps = state => {
+  return {
+    selectedAccount: state.account.selectedAccount,
+    activeSession: !!state.account.expires
+  };
+};
+export default connect(
+  mapStateToProps,
+  null
+)(Header);
