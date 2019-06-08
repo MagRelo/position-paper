@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-// import store from 'state/store';
-
 class LinkForm extends Component {
   state = {
     name: '',
@@ -13,26 +11,6 @@ class LinkForm extends Component {
     formSubmitting: false,
     formMessage: ''
   };
-
-  componentDidMount() {
-    // fetch('https://api.coinmarketcap.com/v1/ticker/ethereum/?convert=USD')
-    //   .then(res => {
-    //     return res.json();
-    //   })
-    //   .then(data => {
-    //     this.setState({
-    //       exchangeRate: parseInt(data[0].price_usd, 10)
-    //     });
-    //   });
-    // if (this.props.selectedAccount) {
-    //   this.setState({ newMemberAddress: this.props.selectedAccount });
-    // }
-  }
-  componentDidUpdate(prevState) {
-    // if (this.props.selectedAccount !== prevState.selectedAccount) {
-    //   this.setState({ newMemberAddress: this.props.selectedAccount });
-    // }
-  }
 
   async handleSubmit(event) {
     event.preventDefault();

@@ -9,6 +9,8 @@ import Web3Wrapper from './util/web3Wrapper';
 import { Dialog } from '@reach/dialog';
 import '@reach/dialog/styles.css';
 
+import UserLogin from './userLogin';
+
 class LoginButton extends Component {
   state = { accounts: null, loginOpen: false };
   componentDidMount() {
@@ -47,9 +49,7 @@ class LoginButton extends Component {
               isOpen={this.state.loginOpen}
               onDismiss={() => this.setState({ loginOpen: false })}
             >
-              <Web3Wrapper skipContracts={true}>
-                <AuthWrapper />
-              </Web3Wrapper>
+              <UserLogin />
             </Dialog>
           </React.Fragment>
         )}

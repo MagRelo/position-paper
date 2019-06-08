@@ -28,13 +28,11 @@ class App extends Component {
           <Header />
 
           <Switch>
-            <Route path="/login" component={UserSignup} />
-            <Route path="/user/:userId" component={User} />
-
-            <Route path="/newposition" component={createPosition} />
-
             <Route path="/link/:linkId" component={Position} />
 
+            <Route path="/login" component={UserSignup} />
+            <Route path="/user/:userId" component={User} />
+            <Route path="/newposition" component={createPosition} />
             <Route path="/about" component={About} />
             <Route component={LandingPage} />
           </Switch>
