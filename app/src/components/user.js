@@ -1,14 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import PaymentForm from './paymentFormWrapper';
-// import '@reach/dialog/styles.css';
-// import PaymentSourceList from './paymentSourceList';
 
-// import AuthWrapper from './util/authWrapper';
-// import Web3Wrapper from './util/web3Wrapper';
-
-import LinksList from './linksList';
-import PositionsList from './positionsList';
+import LinksList from './userLinksList';
+import QueryList from './userQueryList';
 
 class Profile extends Component {
   state = { linkOpen: false };
@@ -21,7 +15,7 @@ class Profile extends Component {
         <hr />
         <div className="row row-2">
           <LinksList />
-          <PositionsList />
+          <QueryList />
         </div>
       </div>
     );

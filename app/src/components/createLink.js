@@ -3,13 +3,15 @@ import { connect } from 'react-redux';
 
 class LinkForm extends Component {
   state = {
-    name: '',
-
     formAlert: false,
     formError: false,
     formSuccess: false,
     formSubmitting: false,
-    formMessage: ''
+    formMessage: '',
+
+    linkCreated: false,
+    parentLink: 'null',
+    debug: true
   };
 
   async handleSubmit(event) {
@@ -37,7 +39,8 @@ class LinkForm extends Component {
         formSuccess: true,
         formAlert: true,
         formSubmitting: false,
-        formMessage: 'Success!'
+        formMessage: 'Success!',
+        linkCreated: true
       });
     } catch (error) {
       this.setState({
@@ -80,6 +83,13 @@ class LinkForm extends Component {
         >
           <legend>Create Referral Link</legend>
 
+          {this.state.debug ? (
+            <div>
+              <p>parent: {this.state.parentLink}</p>
+              <p>account: {this.state.selectedAccount}</p>
+            </div>
+          ) : null}
+
           <button className="pure-button pure-button-primary">
             Create Link
           </button>
@@ -114,12 +124,7 @@ class LinkForm extends Component {
 
 const mapStateToProps = state => {
   return {
-    web3Ready: state.web3.web3Ready,
-    networkReady: state.web3.networkReady,
-    showTip: state.web3.showTip,
-    selectedAccount: state.account.selectedAccount,
-    accountsReady: state.account.accountsReady,
-    contractsReady: state.contracts.contractsReady
+    selectedAccount: state.account.selectedAccount
   };
 };
 

@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-class CreatePortfolio extends Component {
+// import store from 'state/store';
+// import Header from './header';
+
+class CreateQuery extends Component {
   state = {
-    name: 'test',
-    linkedin: 'linked',
-    github: 'git',
-    twitter: 'twit',
-    medium: 'meitt',
-    email: 'm@aol.com',
-    salary: 10000,
+    name: '',
 
     formAlert: false,
     formError: false,
@@ -26,29 +23,22 @@ class CreatePortfolio extends Component {
       formSubmitting: true
     });
 
-    // get and format form data
-    const formData = new FormData(event.target);
-    var object = {};
-    formData.forEach((value, key) => {
-      object[key] = value;
-    });
-    var json = JSON.stringify(object);
-
-    // submit
     try {
-      const response = await fetch('api/register/profile', {
+      await fetch('group/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: json
+        body: JSON.stringify({
+          name: this.state.name
+        })
       }).then(response => response.json());
 
       this.setState({
         formSuccess: true,
         formAlert: true,
         formSubmitting: false,
-        formMessage: 'Success! Redirecting to ' + response.linkId + '...'
+        formMessage: 'Success!'
       });
     } catch (error) {
       this.setState({
@@ -84,89 +74,27 @@ class CreatePortfolio extends Component {
   render() {
     return (
       <div>
-        <h2>Create a New Profile</h2>
+        <h2>Create a New Position</h2>
         <form
           name="createForm"
           className="pure-form"
           onSubmit={this.handleSubmit.bind(this)}
         >
-          <legend>Profile Information</legend>
-
-          <fieldset>
-            <label htmlFor="name">Name </label>
-            <input
-              className="pure-input-1"
-              type="text"
-              id="name"
-              name="name"
-              value={this.state.name}
-              onChange={this.handleFormChange.bind(this)}
-            />
-          </fieldset>
+          <legend>Query Information</legend>
 
           <fieldset>
             <div className="row row-2">
               <div>
-                <label htmlFor="name">LinkedIn </label>
+                <label htmlFor="name">Title </label>
                 <input
                   className="pure-input-1"
                   type="text"
-                  id="linkedin"
-                  name="linkedin"
-                  value={this.state.linkedin}
-                  onChange={this.handleFormChange.bind(this)}
-                />
-
-                <label htmlFor="name">Github </label>
-                <input
-                  className="pure-input-1"
-                  type="text"
-                  id="github"
-                  name="github"
-                  value={this.state.github}
+                  id="name"
+                  name="name"
+                  value={this.state.name}
                   onChange={this.handleFormChange.bind(this)}
                 />
               </div>
-              <div>
-                <label htmlFor="name">Twitter </label>
-                <input
-                  className="pure-input-1"
-                  type="text"
-                  id="twitter"
-                  name="twitter"
-                  value={this.state.twitter}
-                  onChange={this.handleFormChange.bind(this)}
-                />
-
-                <label htmlFor="name">Medium </label>
-                <input
-                  className="pure-input-1"
-                  type="text"
-                  id="medium"
-                  name="medium"
-                  value={this.state.medium}
-                  onChange={this.handleFormChange.bind(this)}
-                />
-              </div>
-            </div>
-          </fieldset>
-
-          <fieldset>
-            <legend>Private Information</legend>
-
-            <div className="row row-2">
-              <div>
-                <label htmlFor="name">Email </label>
-                <input
-                  className="pure-input-1"
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={this.state.email}
-                  onChange={this.handleFormChange.bind(this)}
-                />
-              </div>
-
               <div>
                 <label htmlFor="name">Approximate Salary </label>
                 <input
@@ -179,12 +107,22 @@ class CreatePortfolio extends Component {
                 />
               </div>
             </div>
+
+            <label htmlFor="name">Description </label>
+            <input
+              className="pure-input-1"
+              type="text"
+              id="description"
+              name="description"
+              value={this.state.salary}
+              onChange={this.handleFormChange.bind(this)}
+            />
           </fieldset>
 
           <hr />
 
-          <button className="pure-button pure-button-primary" type="submit">
-            Create Profile
+          <button className="pure-button pure-button-primary">
+            Create Query
           </button>
 
           {this.state.formSubmitting ? (
@@ -225,4 +163,4 @@ const mapStateToProps = state => {
 export default connect(
   mapStateToProps,
   null
-)(CreatePortfolio);
+)(CreateQuery);

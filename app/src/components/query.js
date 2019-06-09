@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { Dialog } from '@reach/dialog';
 import '@reach/dialog/styles.css';
 
-import LinkForm from './linkForm';
-import ContactForm from './contactForm';
+import LinkForm from './createLink';
+// import ContactForm from './contactForm';
 
 class Profile extends Component {
   state = { contactOpen: false, linkOpen: false };
@@ -37,7 +37,7 @@ class Profile extends Component {
           isOpen={this.state.contactOpen}
           onDismiss={() => this.setState({ contactOpen: false })}
         >
-          <ContactForm />
+          <p>(UI needed to request payment)</p>
         </Dialog>
 
         <button

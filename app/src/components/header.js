@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import LoginButton from './login';
+import LoginButton from './loginButton';
 import { connect } from 'react-redux';
 
 class Header extends Component {

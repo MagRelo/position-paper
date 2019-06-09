@@ -3,6 +3,9 @@ var FlakeIdGen = require('flake-idgen'),
   intformat = require('biguint-format'),
   generator = new FlakeIdGen();
 
+//
+// User
+//
 const UserSchema = new mongoose.Schema(
   {
     name: String,
@@ -13,22 +16,22 @@ const UserSchema = new mongoose.Schema(
 );
 exports.UserModel = mongoose.model('User', UserSchema);
 
-const ProfileSchema = new mongoose.Schema(
+//
+// Query
+//
+const QuerySchema = new mongoose.Schema(
   {
-    name: String,
-    avatar: String,
-    linkedin: String,
-    github: String,
-    twitter: String,
-    medium: String,
-    email: String,
-    salary: Number,
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    type: String,
+    data: Object
   },
   { timestamps: true }
 );
-exports.ProfileModel = mongoose.model('Profile', ProfileSchema);
+exports.QueryModel = mongoose.model('Query', QuerySchema);
 
+//
+// Link
+//
 const LinkSchema = new mongoose.Schema(
   {
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
@@ -51,13 +54,3 @@ LinkSchema.pre('save', function(next) {
   next();
 });
 exports.LinkModel = mongoose.model('Link', LinkSchema);
-
-const MessageSchema = new mongoose.Schema(
-  {
-    message: String,
-    from: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    linkId: { type: mongoose.Schema.Types.ObjectId, ref: 'Link' }
-  },
-  { timestamps: true }
-);
-exports.MessageModel = mongoose.model('Message', MessageSchema);

@@ -3,13 +3,13 @@ import { connect } from 'react-redux';
 
 import { loadSession, saveSession, clearSession } from './util/authActions';
 
-import AuthWrapper from './util/authWrapper';
-import Web3Wrapper from './util/web3Wrapper';
+// import AuthWrapper from './util/authWrapper';
+// import Web3Wrapper from './util/web3Wrapper';
 
 import { Dialog } from '@reach/dialog';
 import '@reach/dialog/styles.css';
 
-import UserLogin from './userLogin';
+import UserLogin from './loginForm';
 
 class LoginButton extends Component {
   state = { accounts: null, loginOpen: false };
