@@ -60,7 +60,7 @@ class LoginButton extends Component {
 
 const mapStateToProps = state => {
   return {
-    activeSession: !!state.account.expires
+    activeSession: !!state.account.email
   };
 };
 

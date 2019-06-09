@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 
 class UserSignup extends Component {
   state = {
-    name: '',
-
     formAlert: false,
     formError: false,
     formSuccess: false,
@@ -28,19 +26,31 @@ class UserSignup extends Component {
     var json = JSON.stringify(object);
 
     try {
-      await fetch('/login', {
+      const response = await fetch('/api/user/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: json
-      }).then(response => response.json());
+      });
 
-      this.setState({
-        formSuccess: true,
-        formAlert: true,
-        formSubmitting: false,
-        formMessage: 'Success!'
+      if (response.status === 401) {
+        throw Error(response.status);
+      }
+
+      const user = await response.json();
+
+      // this.setState({
+      //   formSuccess: true,
+      //   formAlert: true,
+      //   formSubmitting: false,
+      //   formMessage: 'Success! ...redirecting'
+      // });
+
+      // set user data to redux
+      this.props.dispatch({
+        type: 'LOGIN',
+        payload: user
       });
     } catch (error) {
       this.setState({
@@ -90,8 +100,6 @@ class UserSignup extends Component {
               type="email"
               id="email"
               name="email"
-              value={this.state.email}
-              onChange={this.handleFormChange.bind(this)}
             />
             <label htmlFor="name">Password </label>
             <input
@@ -99,8 +107,6 @@ class UserSignup extends Component {
               type="password"
               id="password"
               name="password"
-              value={this.state.password}
-              onChange={this.handleFormChange.bind(this)}
             />
           </fieldset>
 

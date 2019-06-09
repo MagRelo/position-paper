@@ -30,7 +30,7 @@ class UserSignup extends Component {
     var json = JSON.stringify(object);
 
     try {
-      await fetch('/api/register/user', {
+      await fetch('/api/user/add', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -87,22 +87,13 @@ class UserSignup extends Component {
 
           <fieldset>
             <label htmlFor="name">Name </label>
-            <input
-              className="pure-input-1"
-              type="text"
-              id="name"
-              name="name"
-              value={this.state.name}
-              onChange={this.handleFormChange.bind(this)}
-            />
+            <input className="pure-input-1" type="text" id="name" name="name" />
             <label htmlFor="signup-email">Email </label>
             <input
               className="pure-input-1"
               type="email"
               id="signup-email"
               name="email"
-              value={this.state.newemail}
-              onChange={this.handleFormChange.bind(this)}
             />
             <label htmlFor="signup-password">Password </label>
             <input
@@ -110,8 +101,6 @@ class UserSignup extends Component {
               type="password"
               id="signup-password"
               name="password"
-              value={this.state.newPassword}
-              onChange={this.handleFormChange.bind(this)}
             />
           </fieldset>
 

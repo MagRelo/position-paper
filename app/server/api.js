@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
+const passport = require('passport');
+
 const UserModel = require('./models').UserModel;
 const QueryModel = require('./models').QueryModel;
 const LinkModel = require('./models').LinkModel;
@@ -9,6 +11,7 @@ const LinkModel = require('./models').LinkModel;
 // PUBLIC
 //
 
+// add
 router.post('/user/add', async function(req, res) {
   // required
 
@@ -20,6 +23,19 @@ router.post('/user/add', async function(req, res) {
     await user.save();
 
     res.status(200).send(user);
+  } catch (error) {
+    console.log('API Error:', error);
+    res.status(500).send(error);
+  }
+});
+
+// login
+router.post('/user/login', passport.authenticate('local'), async function(
+  req,
+  res
+) {
+  try {
+    res.status(200).send(req.user);
   } catch (error) {
     console.log('API Error:', error);
     res.status(500).send(error);

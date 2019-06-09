@@ -8,12 +8,18 @@ var FlakeIdGen = require('flake-idgen'),
 //
 const UserSchema = new mongoose.Schema(
   {
-    name: String,
     email: String,
+    password: String,
+    name: String,
     balance: Number
   },
   { timestamps: true }
 );
+
+UserSchema.methods.validPassword = function(password) {
+  return true;
+};
+
 exports.UserModel = mongoose.model('User', UserSchema);
 
 //
@@ -35,9 +41,9 @@ exports.QueryModel = mongoose.model('Query', QuerySchema);
 const LinkSchema = new mongoose.Schema(
   {
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    profile: { type: mongoose.Schema.Types.ObjectId, ref: 'Profile' },
-    linkId: Number,
-    parentLinkId: { type: mongoose.Schema.Types.ObjectId, ref: 'Link' }
+    profile: { type: mongoose.Schema.Types.ObjectId, ref: 'Query' },
+    parentLinkId: { type: mongoose.Schema.Types.ObjectId, ref: 'Link' },
+    linkId: Number
   },
   { timestamps: true }
 );

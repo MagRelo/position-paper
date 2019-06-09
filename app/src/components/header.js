@@ -32,7 +32,7 @@ class Header extends Component {
 const mapStateToProps = state => {
   return {
     selectedAccount: state.account.selectedAccount,
-    activeSession: !!state.account.expires
+    activeSession: !!state.account.email
   };
 };
 export default connect(

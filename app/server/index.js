@@ -3,10 +3,15 @@ const dotenv = require('dotenv');
 const express = require('express');
 const app = require('express')();
 const server = require('http').Server(app);
-
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 
+const passport = require('passport');
+require('./auth/local');
+
+// all routes
 const httpApi = require('./api');
 
 // *
@@ -49,6 +54,16 @@ require('./stripe');
 app.use(express.static('build'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ limit: '1mb' }));
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || 'pasta',
+    store: new MongoStore({ mongooseConnection: mongoose.connection }),
+    resave: false,
+    saveUninitialized: true
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(
   morgan('dev', {
     skip: function(req, res) {
