@@ -3,18 +3,14 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { combineReducers } from 'redux';
 
-import web3 from 'state/reducers/web3.reducer';
 import account from 'state/reducers/account.reducer';
-import contracts from 'state/reducers/contracts.reducer';
-import bounce from 'state/reducers/bounce.reducer';
-import lobby from 'state/reducers/lobby.reducer';
+// import web3 from 'state/reducers/web3.reducer';
+// import contracts from 'state/reducers/contracts.reducer';
+// import bounce from 'state/reducers/bounce.reducer';
+// import lobby from 'state/reducers/lobby.reducer';
 
 const reducer = combineReducers({
-  web3,
-  account,
-  contracts,
-  bounce,
-  lobby
+  account
 });
 
 // Redux DevTools
