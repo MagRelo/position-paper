@@ -70,15 +70,20 @@ router.get('/query/:linkId', async function(req, res) {
 //
 
 // add query
-router.post('/query/add', passport.authenticate('local'), async function(
-  req,
-  res
-) {
+router.post('/query/add', async function(req, res) {
+  // check auth
+  if (!req.user) {
+    return res.status(401);
+  }
   const query = req.body;
 
   try {
     // create the query
-    const newQuery = new QueryModel({ type: query.type, data: query.data });
+    const newQuery = new QueryModel({
+      type: query.type,
+      data: query.data,
+      user: req.user._id
+    });
     await newQuery.save();
 
     res.status(200).send(newQuery);

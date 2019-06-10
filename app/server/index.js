@@ -59,7 +59,13 @@ app.use(
     secret: process.env.SESSION_SECRET || 'pasta',
     store: new MongoStore({ mongooseConnection: mongoose.connection }),
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie: {
+      path: '/',
+      httpOnly: true,
+      secure: false,
+      maxAge: 1000 * 60 * 60 * 24 * 14
+    }
   })
 );
 app.use(passport.initialize());
