@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 class LinkForm extends Component {
   state = {
@@ -38,7 +39,7 @@ class LinkForm extends Component {
     });
 
     try {
-      const newLink = await fetch('/api/link/add', {
+      await fetch('/api/link/add', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -49,7 +50,8 @@ class LinkForm extends Component {
         })
       }).then(response => response.json());
 
-      console.log(newLink);
+      // console.log(newLink);
+
       this.setState({
         formSuccess: true,
         formAlert: true,
@@ -106,7 +108,10 @@ class LinkForm extends Component {
                       <div>
                         <p
                           onClick={() => {
-                            this.setState({ queryId: item._id });
+                            this.setState({
+                              queryId: item._id,
+                              parentLink: null
+                            });
                           }}
                         >
                           {item.data.name}
@@ -120,11 +125,12 @@ class LinkForm extends Component {
                                 onClick={() => {
                                   this.setState({
                                     queryId: item._id,
-                                    parentLink: link._id
+                                    parentLink: link.linkId
                                   });
                                 }}
                               >
-                                {link._id}
+                                {link.linkId} (
+                                <Link to={'/link/' + link.linkId}>view</Link>)
                               </li>
                             );
                           })}

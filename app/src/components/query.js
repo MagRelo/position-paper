@@ -3,9 +3,22 @@ import { connect } from 'react-redux';
 
 import { Dialog } from '@reach/dialog';
 import '@reach/dialog/styles.css';
+import { Graph } from 'react-d3-graph';
 
 import LinkForm from './createLink';
 // import ContactForm from './contactForm';
+
+const graphOptions = {
+  nodeHighlightBehavior: true,
+  node: {
+    color: 'lightgreen',
+    size: 120,
+    highlightStrokeColor: 'blue'
+  },
+  link: {
+    highlightColor: 'lightblue'
+  }
+};
 
 class Profile extends Component {
   state = { contactOpen: false, linkOpen: false };
@@ -15,10 +28,10 @@ class Profile extends Component {
     const linkId = this.props.match.params.linkId;
 
     // get position data
-    const response = await fetch('/api/profile/' + linkId);
+    const response = await fetch('/api/query/' + linkId);
     if (response.status === 200) {
-      const body = await response.json();
-      this.setState(Object.assign(body, { linkId }));
+      const query = await response.json();
+      this.setState(query);
     } else {
       console.log('not found', response.status);
     }
@@ -81,6 +94,16 @@ class Profile extends Component {
             <p>twitter: {this.state.twitter}</p>
             <p>medium: {this.state.medium}</p>
           </div>
+        </div>
+
+        <div>
+          {this.state.graphData ? (
+            <Graph
+              id="graph-id"
+              data={this.state.graphData}
+              config={graphOptions}
+            />
+          ) : null}
         </div>
 
         {this.generateButtons()}

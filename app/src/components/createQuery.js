@@ -29,7 +29,7 @@ class CreateQuery extends Component {
     });
 
     try {
-      await fetch('/api/query/add', {
+      const newQuery = await fetch('/api/query/add', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -44,8 +44,10 @@ class CreateQuery extends Component {
         formSuccess: true,
         formAlert: true,
         formSubmitting: false,
-        formMessage: 'Success!'
+        formMessage: 'Success! Redirecting to: ' + newQuery.links[0].linkId
       });
+
+      // redirect to query
     } catch (error) {
       this.setState({
         formError: true,
