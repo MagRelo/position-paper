@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
-var FlakeIdGen = require('flake-idgen'),
-  intformat = require('biguint-format'),
-  generator = new FlakeIdGen();
+const nanoid = require('nanoid');
 
 //
 // User
@@ -29,7 +27,8 @@ const QuerySchema = new mongoose.Schema(
   {
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     type: String,
-    data: Object
+    data: Object,
+    links: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Link' }]
   },
   { timestamps: true }
 );
@@ -41,22 +40,13 @@ exports.QueryModel = mongoose.model('Query', QuerySchema);
 const LinkSchema = new mongoose.Schema(
   {
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    profile: { type: mongoose.Schema.Types.ObjectId, ref: 'Query' },
-    parentLinkId: { type: mongoose.Schema.Types.ObjectId, ref: 'Link' },
-    linkId: Number
+    query: { type: mongoose.Schema.Types.ObjectId, ref: 'Query' },
+    parentLink: { type: mongoose.Schema.Types.ObjectId, ref: 'Link' },
+    linkId: {
+      type: String,
+      default: () => nanoid()
+    }
   },
   { timestamps: true }
 );
-LinkSchema.pre('save', function(next) {
-  try {
-    if (this.isNew) {
-      var id = generator.next();
-      this.linkId = intformat(id, 'hex', { prefix: '0x' });
-      // console.log(typeof this.linkId, id, this.linkId);
-    }
-  } catch (error) {
-    console.log(error);
-  }
-  next();
-});
 exports.LinkModel = mongoose.model('Link', LinkSchema);

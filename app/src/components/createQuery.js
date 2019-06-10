@@ -28,16 +28,16 @@ class CreateQuery extends Component {
       formObject[key] = value;
     });
 
-    // add in email
-    formObject.email = this.props.email;
-
     try {
       await fetch('/api/query/add', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(formObject)
+        body: JSON.stringify({
+          type: 'general',
+          data: formObject
+        })
       }).then(response => response.json());
 
       this.setState({
@@ -89,27 +89,15 @@ class CreateQuery extends Component {
           <legend>Query Information</legend>
 
           <fieldset>
-            <div className="row row-2">
-              <div>
-                <label htmlFor="name">Title </label>
-                <input
-                  className="pure-input-1"
-                  type="text"
-                  id="name"
-                  name="name"
-                />
-              </div>
-              <div>
-                <label htmlFor="name">Bonus </label>
-                <input
-                  className="pure-input-1"
-                  type="number"
-                  id="bonus"
-                  name="bonus"
-                />
-              </div>
-            </div>
-
+            <label htmlFor="name">Title </label>
+            <input className="pure-input-1" type="text" id="name" name="name" />
+            <label htmlFor="name">Bonus </label>
+            <input
+              className="pure-input-1"
+              type="number"
+              id="bonus"
+              name="bonus"
+            />
             <label htmlFor="name">Description </label>
             <input
               className="pure-input-1"

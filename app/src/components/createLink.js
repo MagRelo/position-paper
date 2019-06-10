@@ -10,9 +10,24 @@ class LinkForm extends Component {
     formMessage: '',
 
     linkCreated: false,
-    parentLink: 'null',
-    debug: true
+
+    debug: true,
+    queryList: [],
+    queryId: null,
+    parentLink: null
   };
+
+  componentDidMount() {
+    this.getQueries();
+  }
+
+  async getQueries() {
+    const queryList = await fetch('/api/query/list', { method: 'GET' }).then(
+      response => response.json()
+    );
+
+    this.setState({ queryList: queryList });
+  }
 
   async handleSubmit(event) {
     event.preventDefault();
@@ -23,14 +38,14 @@ class LinkForm extends Component {
     });
 
     try {
-      const newLink = await fetch('/api/link', {
+      const newLink = await fetch('/api/link/add', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          parentLinkId: this.props.parentLinkId,
-          userId: '123'
+          queryId: this.state.queryId,
+          parentLink: this.state.parentLink
         })
       }).then(response => response.json());
 
@@ -42,6 +57,9 @@ class LinkForm extends Component {
         formMessage: 'Success!',
         linkCreated: true
       });
+
+      // refresh queries
+      this.getQueries();
     } catch (error) {
       this.setState({
         formError: true,
@@ -69,10 +87,6 @@ class LinkForm extends Component {
     if (this.state.formSuccess) return 'alert success';
   }
 
-  handleFormChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
-  }
-
   render() {
     return (
       <div>
@@ -85,8 +99,43 @@ class LinkForm extends Component {
 
           {this.state.debug ? (
             <div>
-              <p>parent: {this.state.parentLink}</p>
-              <p>account: {this.state.selectedAccount}</p>
+              <ul>
+                {this.state.queryList.map(item => {
+                  return (
+                    <li key={item._id}>
+                      <div>
+                        <p
+                          onClick={() => {
+                            this.setState({ queryId: item._id });
+                          }}
+                        >
+                          {item.data.name}
+                        </p>
+
+                        <ul>
+                          {item.links.map(link => {
+                            return (
+                              <li
+                                key={link._id}
+                                onClick={() => {
+                                  this.setState({
+                                    queryId: item._id,
+                                    parentLink: link._id
+                                  });
+                                }}
+                              >
+                                {link._id}
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+              <p>query: {this.state.queryId}</p>
+              <p>parent link: {this.state.parentLink}</p>
             </div>
           ) : null}
 
@@ -112,10 +161,6 @@ class LinkForm extends Component {
               </button>
             </div>
           ) : null}
-
-          <hr />
-
-          <p>links and stuff </p>
         </form>
       </div>
     );
