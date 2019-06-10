@@ -3,10 +3,6 @@ import { connect } from 'react-redux';
 
 class UserSignup extends Component {
   state = {
-    name: '',
-    email: '',
-    password: '',
-
     formAlert: false,
     formError: false,
     formSuccess: false,
@@ -44,6 +40,8 @@ class UserSignup extends Component {
         formSubmitting: false,
         formMessage: 'Success!'
       });
+
+      //
     } catch (error) {
       this.setState({
         formError: true,
@@ -54,25 +52,6 @@ class UserSignup extends Component {
 
       return console.log(error);
     }
-  }
-
-  resetForm() {
-    this.setState({
-      formAlert: false,
-      formError: false,
-      formSuccess: false,
-      formSubmitting: false,
-      formMessage: ''
-    });
-  }
-
-  alertClass() {
-    if (this.state.formError) return 'alert error';
-    if (this.state.formSuccess) return 'alert success';
-  }
-
-  handleFormChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
   }
 
   render() {
@@ -133,14 +112,7 @@ class UserSignup extends Component {
 }
 
 const mapStateToProps = state => {
-  return {
-    web3Ready: state.web3.web3Ready,
-    networkReady: state.web3.networkReady,
-    showTip: state.web3.showTip,
-    selectedAccount: state.account.selectedAccount,
-    accountsReady: state.account.accountsReady,
-    contractsReady: state.contracts.contractsReady
-  };
+  return {};
 };
 
 export default connect(

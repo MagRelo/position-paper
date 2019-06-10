@@ -6,8 +6,6 @@ import { connect } from 'react-redux';
 
 class CreateQuery extends Component {
   state = {
-    name: '',
-
     formAlert: false,
     formError: false,
     formSuccess: false,
@@ -23,15 +21,23 @@ class CreateQuery extends Component {
       formSubmitting: true
     });
 
+    // get and format form data
+    const formData = new FormData(event.target);
+    var formObject = {};
+    formData.forEach((value, key) => {
+      formObject[key] = value;
+    });
+
+    // add in email
+    formObject.email = this.props.email;
+
     try {
-      await fetch('group/', {
+      await fetch('/api/query/add', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          name: this.state.name
-        })
+        body: JSON.stringify(formObject)
       }).then(response => response.json());
 
       this.setState({
@@ -74,7 +80,7 @@ class CreateQuery extends Component {
   render() {
     return (
       <div>
-        <h2>Create a New Position</h2>
+        <h2>Create Query</h2>
         <form
           name="createForm"
           className="pure-form"
@@ -91,19 +97,15 @@ class CreateQuery extends Component {
                   type="text"
                   id="name"
                   name="name"
-                  value={this.state.name}
-                  onChange={this.handleFormChange.bind(this)}
                 />
               </div>
               <div>
-                <label htmlFor="name">Approximate Salary </label>
+                <label htmlFor="name">Bonus </label>
                 <input
                   className="pure-input-1"
                   type="number"
-                  id="salary"
-                  name="salary"
-                  value={this.state.salary}
-                  onChange={this.handleFormChange.bind(this)}
+                  id="bonus"
+                  name="bonus"
                 />
               </div>
             </div>
@@ -114,8 +116,6 @@ class CreateQuery extends Component {
               type="text"
               id="description"
               name="description"
-              value={this.state.salary}
-              onChange={this.handleFormChange.bind(this)}
             />
           </fieldset>
 
@@ -151,12 +151,7 @@ class CreateQuery extends Component {
 
 const mapStateToProps = state => {
   return {
-    web3Ready: state.web3.web3Ready,
-    networkReady: state.web3.networkReady,
-    showTip: state.web3.showTip,
-    selectedAccount: state.account.selectedAccount,
-    accountsReady: state.account.accountsReady,
-    contractsReady: state.contracts.contractsReady
+    email: state.account.email
   };
 };
 

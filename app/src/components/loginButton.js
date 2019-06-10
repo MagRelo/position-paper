@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { loadSession, saveSession, clearSession } from './util/authActions';
-
-// import AuthWrapper from './util/authWrapper';
-// import Web3Wrapper from './util/web3Wrapper';
+import { loadSession, clearSession } from './util/authActions';
 
 import { Dialog } from '@reach/dialog';
 import '@reach/dialog/styles.css';
@@ -13,17 +10,13 @@ import UserLogin from './loginForm';
 
 class LoginButton extends Component {
   state = { accounts: null, loginOpen: false };
+
   componentDidMount() {
     this.props.getSession(this.props.selectedAccount);
   }
 
   logout() {
     this.props.clearSession();
-  }
-
-  createSession(duration) {
-    this.setState({ loginOpen: false });
-    this.props.createSession(duration);
   }
 
   render() {
@@ -66,9 +59,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    createSession: duration => {
-      dispatch(saveSession(duration));
-    },
     clearSession: () => {
       dispatch(clearSession());
     },

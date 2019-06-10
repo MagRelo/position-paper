@@ -30,14 +30,11 @@ router.post('/user/add', async function(req, res) {
 });
 
 // login
-router.post('/user/login', passport.authenticate('local'), async function(
-  req,
-  res
-) {
+router.post('/user/login', passport.authenticate('local'), function(req, res) {
   try {
     res.status(200).send(req.user);
   } catch (error) {
-    console.log('API Error:', error);
+    console.log(req.path, error);
     res.status(500).send(error);
   }
 });
@@ -73,7 +70,10 @@ router.get('/query/:linkId', async function(req, res) {
 //
 
 // add query
-router.post('/query/add', async function(req, res) {
+router.post('/query/add', passport.authenticate('local'), async function(
+  req,
+  res
+) {
   const query = req.body;
 
   try {

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import { saveSession } from './util/authActions';
+
 class UserSignup extends Component {
   state = {
     formAlert: false,
@@ -19,11 +21,10 @@ class UserSignup extends Component {
 
     // get and format form data
     const formData = new FormData(event.target);
-    var object = {};
+    var formObject = {};
     formData.forEach((value, key) => {
-      object[key] = value;
+      formObject[key] = value;
     });
-    var json = JSON.stringify(object);
 
     try {
       const response = await fetch('/api/user/login', {
@@ -31,7 +32,7 @@ class UserSignup extends Component {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: json
+        body: JSON.stringify(formObject)
       });
 
       if (response.status === 401) {
@@ -39,18 +40,13 @@ class UserSignup extends Component {
       }
 
       const user = await response.json();
+      this.props.createSession(user, 90000);
 
-      // this.setState({
-      //   formSuccess: true,
-      //   formAlert: true,
-      //   formSubmitting: false,
-      //   formMessage: 'Success! ...redirecting'
-      // });
-
-      // set user data to redux
-      this.props.dispatch({
-        type: 'LOGIN',
-        payload: user
+      this.setState({
+        formSuccess: true,
+        formAlert: true,
+        formSubmitting: false,
+        formMessage: 'Success! ...redirecting'
       });
     } catch (error) {
       this.setState({
@@ -62,25 +58,6 @@ class UserSignup extends Component {
 
       return console.log(error);
     }
-  }
-
-  resetForm() {
-    this.setState({
-      formAlert: false,
-      formError: false,
-      formSuccess: false,
-      formSubmitting: false,
-      formMessage: ''
-    });
-  }
-
-  alertClass() {
-    if (this.state.formError) return 'alert error';
-    if (this.state.formSuccess) return 'alert success';
-  }
-
-  handleFormChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
   }
 
   render() {
@@ -121,19 +98,6 @@ class UserSignup extends Component {
               Submitting...
             </span>
           ) : null}
-
-          {this.state.formAlert ? (
-            <div className={this.alertClass()}>
-              <p>{this.state.formMessage}</p>
-
-              <button
-                className="pure-button"
-                onClick={this.resetForm.bind(this)}
-              >
-                Ok
-              </button>
-            </div>
-          ) : null}
         </form>
       </div>
     );
@@ -142,16 +106,19 @@ class UserSignup extends Component {
 
 const mapStateToProps = state => {
   return {
-    web3Ready: state.web3.web3Ready,
-    networkReady: state.web3.networkReady,
-    showTip: state.web3.showTip,
-    selectedAccount: state.account.selectedAccount,
-    accountsReady: state.account.accountsReady,
-    contractsReady: state.contracts.contractsReady
+    accountsReady: !!state.account.expires
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    createSession: duration => {
+      dispatch(saveSession(duration));
+    }
   };
 };
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(UserSignup);

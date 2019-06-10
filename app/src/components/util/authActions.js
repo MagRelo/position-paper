@@ -1,4 +1,4 @@
-import { bufferToHex } from 'ethereumjs-util';
+// import { bufferToHex } from 'ethereumjs-util';
 import moment from 'moment';
 
 import store from 'state/store';
@@ -32,49 +32,26 @@ export function clearSession() {
     });
   };
 }
-export function saveSession(duration) {
+export function saveSession(user, duration) {
   return function(dispatch) {
-    const web3 = store.getState().web3.instance;
-    const userAddress = store.getState().account.selectedAccount;
-    console.log('user:', userAddress);
+    console.log('user:', user);
 
     // calculate expiration
     const expiration = moment().add(duration, 'minutes');
 
-    // prepare the message for signing
-    const content = `{"expires": "${expiration.toISOString()}"}`;
-    const contentHex = bufferToHex(new Buffer(content, 'utf8'));
+    const sessionData = {
+      email: user.email,
+      name: user.name,
+      duration: duration,
+      expires: expiration.toISOString(),
+      staleAfter: Date.now() + duration * 60 * 1000
+    };
 
-    // sign message
-    web3.currentProvider.sendAsync(
-      {
-        method: 'personal_sign',
-        params: [contentHex, userAddress],
-        from: userAddress
-      },
-      (err, result) => {
-        if (err) return console.error(err);
-        if (result.error) {
-          return console.log('User denied signature.');
-        }
-
-        const sessionData = {
-          message: contentHex,
-          signature: result.result,
-          duration: duration,
-          expires: expiration.toISOString(),
-          staleAfter: Date.now() + duration * 60 * 1000
-        };
-
-        setCache('session-' + userAddress, JSON.stringify(sessionData)).then(
-          val => {
-            return dispatch({
-              type: 'SESSION_LOAD',
-              payload: sessionData
-            });
-          }
-        );
-      }
-    );
+    setCache('session-' + user.email, JSON.stringify(sessionData)).then(val => {
+      return dispatch({
+        type: 'SESSION_LOAD',
+        payload: sessionData
+      });
+    });
   };
 }
