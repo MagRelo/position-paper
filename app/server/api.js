@@ -126,12 +126,7 @@ router.get('/query/list', async function(req, res) {
       .lean()
       .populate({ path: 'links', populate: { path: 'parentLink' } });
 
-    // build graph data
-    const hydratedQueryData = queryList.map(query => {
-      return buildGraphData(query);
-    });
-
-    res.status(200).send(hydratedQueryData);
+    res.status(200).send(queryList);
   } catch (error) {
     console.log('API Error:', error);
     res.status(500).send(error);
@@ -150,7 +145,7 @@ router.get('/query/:linkId', async function(req, res) {
     // get query
     const query = await QueryModel.findOne({ _id: link.query })
       .lean()
-      .populate({ path: 'links', populate: { path: 'parentLink' } });
+      .populate({ path: 'links', populate: { path: 'parentLink query' } });
     if (!query) {
       return res.status(404).send('profile not found');
     }
@@ -160,37 +155,12 @@ router.get('/query/:linkId', async function(req, res) {
       return res.status(401).send();
     }
 
-    res.status(200).send(buildGraphData(query));
+    res.status(200).send(query);
   } catch (error) {
-    console.log('apierror');
-    res.status(500).send(error);
+    console.log(error.message);
+    res.status(500).send(error.message);
   }
 });
-
-function buildGraphData(query) {
-  query.graphData = {
-    nodes: [{ id: 'root', color: '#333' }],
-    links: []
-  };
-
-  // loop through links
-  query.links.forEach(link => {
-    // add link as node
-    query.graphData.nodes.push({ id: link.linkId });
-
-    // add link as link
-    if (link.parentLink) {
-      query.graphData.links.push({
-        source: link.linkId,
-        target: link.parentLink.linkId
-      });
-    } else {
-      query.graphData.links.push({ source: link.linkId, target: 'root' });
-    }
-  });
-
-  return query;
-}
 
 // get query by linkId
 router.get('/link/:linkId', async function(req, res) {

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-import LinksList from './userLinksList';
+import LinksList from './linksList';
 import QueryList from './userQueryList';
 
 class Profile extends Component {
@@ -28,8 +29,23 @@ class Profile extends Component {
 
         <hr />
         <div className="row row-2">
-          <LinksList links={this.state.links} />
-          <QueryList queries={this.state.queries} />
+          <div>
+            <h3>Links</h3>
+            <LinksList links={this.state.links} />
+          </div>
+
+          <div>
+            <Link
+              to="/addquery"
+              className="pure-button pure-button-primary"
+              style={{ float: 'right' }}
+            >
+              Add Query
+            </Link>
+            <h3>Queries</h3>
+
+            <QueryList queries={this.state.queries} />
+          </div>
         </div>
       </div>
     );

@@ -6,13 +6,6 @@ class Inbox extends Component {
   render() {
     return (
       <div>
-        <span style={{ float: 'right', marginTop: '1em' }}>
-          <Link to="/addquery" className="pure-button pure-button-primary">
-            Add Query
-          </Link>
-        </span>
-        <h2>My Queries</h2>
-
         {this.props.queries.map(query => {
           return (
             <div className="inbox-message" key={query._id}>

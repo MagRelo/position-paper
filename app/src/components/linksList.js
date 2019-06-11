@@ -19,8 +19,6 @@ class Inbox extends Component {
   render() {
     return (
       <div>
-        <h2>My Links</h2>
-
         {this.props.links.map(link => {
           return (
             <div className="inbox-message" key={link._id}>
