@@ -16,6 +16,7 @@ import LandingPage from 'components/landingPage';
 import UserSignup from 'components/loginButton';
 import User from 'components/user';
 import Query from 'components/query';
+import Link from 'components/link';
 
 // testing
 import createUser from 'components/createUser';
@@ -35,9 +36,10 @@ class App extends Component {
             <Route path="/addquery" component={createQuery} />
 
             {/* non auth */}
-            <Route path="/link/:linkId" component={Query} />
+            <Route path="/link/:linkId" component={Link} />
+            <Route path="/query/:linkId" component={Query} />
             <Route path="/login" component={UserSignup} />
-            <Route path="/user/:userId" component={User} />
+            <Route path="/user" component={User} />
             <Route component={LandingPage} />
           </Switch>
         </div>

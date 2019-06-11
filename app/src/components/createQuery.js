@@ -35,6 +35,8 @@ class CreateQuery extends Component {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
+          title: formObject.title,
+          bonus: formObject.bonus,
           type: 'general',
           data: formObject
         })
@@ -91,16 +93,22 @@ class CreateQuery extends Component {
           <legend>Query Information</legend>
 
           <fieldset>
-            <label htmlFor="name">Title </label>
-            <input className="pure-input-1" type="text" id="name" name="name" />
-            <label htmlFor="name">Bonus </label>
+            <label htmlFor="title">Title </label>
+            <input
+              className="pure-input-1"
+              type="text"
+              id="title"
+              name="title"
+            />
+
+            <label htmlFor="bonus">Bonus </label>
             <input
               className="pure-input-1"
               type="number"
               id="bonus"
               name="bonus"
             />
-            <label htmlFor="name">Description </label>
+            <label htmlFor="description">Description </label>
             <input
               className="pure-input-1"
               type="text"

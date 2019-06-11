@@ -5,17 +5,31 @@ import LinksList from './userLinksList';
 import QueryList from './userQueryList';
 
 class Profile extends Component {
-  state = { linkOpen: false };
+  state = { name: '', email: '', links: [], queries: [] };
+
+  async componentDidMount() {
+    const user = await fetch('/api/user', {
+      method: 'GET'
+    }).then(response => response.json());
+
+    this.setState({
+      name: user.name,
+      email: user.email,
+      links: user.links,
+      queries: user.queries
+    });
+  }
 
   render() {
     return (
       <div>
-        <h2>My Name</h2>
+        <h2>{this.state.name}</h2>
+        <p>{this.state.email}</p>
 
         <hr />
         <div className="row row-2">
-          <LinksList />
-          <QueryList />
+          <LinksList links={this.state.links} />
+          <QueryList queries={this.state.queries} />
         </div>
       </div>
     );

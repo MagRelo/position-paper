@@ -39,6 +39,32 @@ router.post('/user/login', passport.authenticate('local'), function(req, res) {
   }
 });
 
+router.get('/user', async function(req, res) {
+  // check auth
+  if (!req.user) {
+    return res.status(401);
+  }
+
+  // get queries and links
+  const userObject = {
+    name: req.user.name,
+    email: req.user.email
+  };
+  userObject.queries = await QueryModel.find({ user: req.user._id }).populate({
+    path: 'links'
+  });
+  userObject.links = await LinkModel.find({ user: req.user._id }).populate({
+    path: 'query'
+  });
+
+  try {
+    res.status(200).send(userObject);
+  } catch (error) {
+    console.log(req.path, error);
+    res.status(500).send(error);
+  }
+});
+
 //
 // AUTH
 //
@@ -54,6 +80,8 @@ router.post('/query/add', async function(req, res) {
   try {
     // create query
     const newQuery = new QueryModel({
+      title: query.title,
+      bonus: query.bonus,
       type: query.type,
       data: query.data,
       user: req.user._id
@@ -64,7 +92,8 @@ router.post('/query/add', async function(req, res) {
     const newLink = new LinkModel({
       user: req.user._id,
       query: newQuery._id,
-      parentLink: null
+      parentLink: null,
+      generation: 0
     });
     await newLink.save();
 
@@ -112,16 +141,23 @@ router.get('/query/list', async function(req, res) {
 // get query by linkId
 router.get('/query/:linkId', async function(req, res) {
   try {
+    // get link
     const link = await LinkModel.findOne({ linkId: req.params.linkId });
     if (!link) {
       return res.status(404).send('link not found');
     }
 
+    // get query
     const query = await QueryModel.findOne({ _id: link.query })
       .lean()
       .populate({ path: 'links', populate: { path: 'parentLink' } });
     if (!query) {
       return res.status(404).send('profile not found');
+    }
+
+    // auth - only send to owner
+    if (!req.user._id.equals(query.user)) {
+      return res.status(401).send();
     }
 
     res.status(200).send(buildGraphData(query));
@@ -133,7 +169,7 @@ router.get('/query/:linkId', async function(req, res) {
 
 function buildGraphData(query) {
   query.graphData = {
-    nodes: [{ id: 'root' }],
+    nodes: [{ id: 'root', color: '#333' }],
     links: []
   };
 
@@ -156,7 +192,35 @@ function buildGraphData(query) {
   return query;
 }
 
-// create link to query
+// get query by linkId
+router.get('/link/:linkId', async function(req, res) {
+  try {
+    // get link
+    const link = await LinkModel.findOne({ linkId: req.params.linkId });
+    if (!link) {
+      return res.status(404).send('link not found');
+    }
+
+    // get query
+    const query = await QueryModel.findOne({ _id: link.query }).lean();
+    if (!query) {
+      return res.status(404).send('query not found');
+    }
+
+    // increment link views
+    console.log(link.views);
+    link.views += 1;
+    link.save();
+    console.log(link.views);
+
+    res.status(200).send(query);
+  } catch (error) {
+    console.log('apierror');
+    res.status(500).send(error);
+  }
+});
+
+// create link
 router.post('/link/add', async function(req, res) {
   // auth-only
   if (!req.user) {
@@ -168,23 +232,27 @@ router.post('/link/add', async function(req, res) {
     return res.status(400);
   }
 
-  let parentLink = {};
-  if (req.body.parentLink) {
-    parentLink = await LinkModel.findOne({ linkId: req.body.parentLink });
+  try {
+    // get parent link
+    const parentLink = await LinkModel.findOne({ linkId: req.body.parentLink });
     if (!parentLink) {
       return res.status(404).send('parent link not found');
     }
-  }
 
-  try {
-    // add new link(?)
+    // add new link
     const newLink = new LinkModel({
       user: req.user._id,
       query: req.body.queryId,
-      parentLink: parentLink._id
+      parentLink: parentLink._id,
+      generation: parentLink.generation + 1
     });
     await newLink.save();
 
+    // add link ref to parent
+    parentLink.children.push(newLink._id);
+    await parentLink.save();
+
+    // add new link to query
     await QueryModel.updateOne(
       { _id: req.body.queryId },
       { $push: { links: newLink._id } }

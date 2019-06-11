@@ -12,7 +12,7 @@ class Header extends Component {
       <div className="header">
         <div className="menu">
           <React.Fragment>
-            <Link to={'/user/' + this.props.selectedAccount}>Account</Link>
+            <Link to={'/user'}>Account</Link>
           </React.Fragment>
 
           <span>|</span>
@@ -23,7 +23,7 @@ class Header extends Component {
           <Link to="/">Social Referrals</Link>
         </h1>
 
-        <h2>Activate and reward your network</h2>
+        <h2>Paid participation</h2>
       </div>
     );
   }
