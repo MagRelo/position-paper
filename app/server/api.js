@@ -283,7 +283,7 @@ function expectedValue(bonus, generation, position) {
   const payoffs = [
     [1],
     [0.2, 0.8],
-    [0.1, 0.2, 0.7],
+    [0.1, 0.18, 0.72],
     [0.05, 0.125, 0.25, 0.575],
     [0.04, 0.06, 0.12, 0.28, 0.5]
   ];

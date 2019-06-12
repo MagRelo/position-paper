@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
+function formatCurrency(input) {
+  if (typeof input === 'number') {
+    return input.toLocaleString('en-US', {
+      style: 'currency',
+      currency: 'USD'
+    });
+  }
+  return '';
+}
+
 class UserQueryTable extends Component {
   render() {
     return (
@@ -22,7 +32,7 @@ class UserQueryTable extends Component {
                     {query.title}
                   </Link>
                 </td>
-                <td>{query.bonus}</td>
+                <td>{formatCurrency(query.bonus)}</td>
                 <td>{query.links.length}</td>
                 <td>{query.totalViews}</td>
               </tr>

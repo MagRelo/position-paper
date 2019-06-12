@@ -2,6 +2,16 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+function formatCurrency(input) {
+  if (typeof input === 'number') {
+    return input.toLocaleString('en-US', {
+      style: 'currency',
+      currency: 'USD'
+    });
+  }
+  return '';
+}
+
 class Inbox extends Component {
   render() {
     return (
@@ -9,9 +19,9 @@ class Inbox extends Component {
         <thead>
           <tr>
             <th>Query</th>
-            <th>Payoff</th>
-            <th>Child Links</th>
+            <th>Value</th>
             <th>Views</th>
+            <th>Child Links</th>
           </tr>
         </thead>
         <tbody>
@@ -21,9 +31,9 @@ class Inbox extends Component {
                 <td>
                   <Link to={'/link/' + link.linkId}>{link.query.title}</Link>
                 </td>
-                <td>{link.payoff}</td>
-                <td>{link.children.length}</td>
+                <td>{formatCurrency(link.userPayoff)}</td>
                 <td>{link.views}</td>
+                <td>{link.children.length}</td>
               </tr>
             );
           })}
