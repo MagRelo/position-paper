@@ -50,11 +50,25 @@ router.get('/user', async function(req, res) {
     name: req.user.name,
     email: req.user.email
   };
-  userObject.queries = await QueryModel.find({ user: req.user._id }).populate({
-    path: 'links'
-  });
-  userObject.links = await LinkModel.find({ user: req.user._id }).populate({
-    path: 'query'
+
+  userObject.queries = await QueryModel.find({ user: req.user._id })
+    .populate({
+      path: 'links',
+      populate: { path: 'parentLink query' },
+      options: { sort: { generation: 1 } }
+    })
+    .lean();
+  userObject.links = await LinkModel.find({ user: req.user._id })
+    .populate({
+      path: 'query'
+    })
+    .lean();
+
+  // hack to add total link views
+  userObject.queries.forEach((query, index) => {
+    userObject.queries[index].totalViews = query.links.reduce((acc, link) => {
+      return acc + link.views;
+    }, 0);
   });
 
   try {
@@ -93,7 +107,9 @@ router.post('/query/add', async function(req, res) {
       user: req.user._id,
       query: newQuery._id,
       parentLink: null,
-      generation: 0
+      generation: 0,
+      payoff: expectedValue(newQuery.bonus, 0, 0),
+      userPayoff: expectedValue(newQuery.bonus, 0, 0)
     });
     await newLink.save();
 
@@ -145,7 +161,11 @@ router.get('/query/:linkId', async function(req, res) {
     // get query
     const query = await QueryModel.findOne({ _id: link.query })
       .lean()
-      .populate({ path: 'links', populate: { path: 'parentLink query' } });
+      .populate({
+        path: 'links',
+        populate: { path: 'parentLink query' },
+        options: { sort: { generation: 1 } }
+      });
     if (!query) {
       return res.status(404).send('profile not found');
     }
@@ -178,12 +198,20 @@ router.get('/link/:linkId', async function(req, res) {
     }
 
     // increment link views
-    console.log(link.views);
     link.views += 1;
     link.save();
-    console.log(link.views);
 
-    res.status(200).send(query);
+    res.status(200).send({
+      query: {
+        title: query.title,
+        description: query.data.description
+      },
+      link: {
+        payoff: link.payoff,
+        isUser: req.user._id.equals(query.user),
+        userPayoff: link.userPayoff
+      }
+    });
   } catch (error) {
     console.log('apierror');
     res.status(500).send(error);
@@ -204,7 +232,11 @@ router.post('/link/add', async function(req, res) {
 
   try {
     // get parent link
-    const parentLink = await LinkModel.findOne({ linkId: req.body.parentLink });
+    const parentLink = await LinkModel.findOne({
+      linkId: req.body.parentLink
+    }).populate({
+      path: 'query'
+    });
     if (!parentLink) {
       return res.status(404).send('parent link not found');
     }
@@ -214,7 +246,17 @@ router.post('/link/add', async function(req, res) {
       user: req.user._id,
       query: req.body.queryId,
       parentLink: parentLink._id,
-      generation: parentLink.generation + 1
+      generation: parentLink.generation + 1,
+      payoff: expectedValue(
+        parentLink.query.bonus,
+        parentLink.generation + 1,
+        parentLink.generation + 1
+      ),
+      userPayoff: expectedValue(
+        parentLink.query.bonus,
+        parentLink.generation + 1,
+        parentLink.generation
+      )
     });
     await newLink.save();
 
@@ -234,5 +276,23 @@ router.post('/link/add', async function(req, res) {
     res.status(500).send(error);
   }
 });
+
+function expectedValue(bonus, generation, position) {
+  // console.log(bonus, distance, links, views);
+
+  const payoffs = [
+    [1],
+    [0.2, 0.8],
+    [0.1, 0.2, 0.7],
+    [0.05, 0.125, 0.25, 0.575],
+    [0.04, 0.06, 0.12, 0.28, 0.5]
+  ];
+
+  // const payoffs = [1, 0.8, 0.7, 0.575, 0.5];
+
+  const payoff = bonus * payoffs[generation][position];
+
+  return Math.round(payoff * 100) / 100;
+}
 
 module.exports = router;

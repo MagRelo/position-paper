@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import LinksList from './userLinksTable';
-import QueryList from './userQueryList';
+import QueryList from './userQueryTable';
 
 class Profile extends Component {
   state = { name: '', email: '', links: [], queries: [] };

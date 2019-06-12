@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 class Inbox extends Component {
   render() {
@@ -8,9 +7,9 @@ class Inbox extends Component {
       <table className="pure-table">
         <thead>
           <tr>
-            <th>Query</th>
+            <th>Generation</th>
             <th>Payoff</th>
-            <th>Child Links</th>
+            <th>Children</th>
             <th>Views</th>
           </tr>
         </thead>
@@ -18,9 +17,7 @@ class Inbox extends Component {
           {this.props.links.map(link => {
             return (
               <tr key={link._id}>
-                <td>
-                  <Link to={'/link/' + link.linkId}>{link.query.title}</Link>
-                </td>
+                <td>{link.generation}</td>
                 <td>{link.payoff}</td>
                 <td>{link.children.length}</td>
                 <td>{link.views}</td>

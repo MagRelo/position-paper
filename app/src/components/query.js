@@ -1,12 +1,21 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Graph } from 'react-d3-graph';
 
-import LinksList from './linksTable';
+import LinksList from './queryLinksTable';
 import LinkGraph from './queryLinkGraph';
 
 class Query extends Component {
   state = { contactOpen: false, linkOpen: false, links: [] };
+
+  formatCurrency(input) {
+    if (typeof input === 'number') {
+      return input.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD'
+      });
+    }
+    return '';
+  }
 
   async componentDidMount() {
     // get linkId from URL
@@ -21,7 +30,7 @@ class Query extends Component {
 
       this.setState({
         title: query.title,
-        bonus: query.data.bonus,
+        bonus: query.bonus,
         description: query.data.description,
         links: query.links
       });
@@ -34,15 +43,9 @@ class Query extends Component {
     return (
       <div>
         <h2>Query</h2>
-        <div
-          style={{
-            border: 'solid 1px',
-            padding: '0 1em',
-            borderRadius: '1em'
-          }}
-        >
+        <div className="panel">
           <h2>{this.state.title}</h2>
-          <p>Bonus: {this.state.bonus}</p>
+          <p>Bonus: {this.formatCurrency(this.state.bonus)}</p>
           <p>Description: {this.state.description}</p>
         </div>
 
