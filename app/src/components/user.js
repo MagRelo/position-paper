@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import LinksList from './linksList';
+import LinksList from './userLinksTable';
 import QueryList from './userQueryList';
 
 class Profile extends Component {
@@ -38,7 +38,7 @@ class Profile extends Component {
             <Link
               to="/addquery"
               className="pure-button pure-button-primary"
-              style={{ float: 'right' }}
+              style={{ float: 'right', marginTop: '0.8em' }}
             >
               Add Query
             </Link>
