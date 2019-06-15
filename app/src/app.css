@@ -81,7 +81,7 @@ li {
 
 
 .panel {
+  margin-top: 2em;
   border: solid 1px #999;
   padding: 0 1em;
-  box-shadow: 1px 1px 2px #bbb;
 }

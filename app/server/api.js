@@ -108,8 +108,8 @@ router.post('/query/add', async function(req, res) {
       query: newQuery._id,
       parentLink: null,
       generation: 0,
-      payoff: expectedValue(newQuery.bonus, 0, 0),
-      userPayoff: expectedValue(newQuery.bonus, 0, 0)
+      payoff: newQuery.bonus,
+      userPayoff: 0
     });
     await newLink.save();
 
@@ -197,9 +197,17 @@ router.get('/link/:linkId', async function(req, res) {
       return res.status(404).send('query not found');
     }
 
+    // check user
+    let isOwner = false;
+    if (req.user) {
+      isOwner = req.user._id.equals(query.user);
+    }
+
     // increment link views
-    link.views += 1;
-    link.save();
+    if (!isOwner) {
+      link.views += 1;
+      link.save();
+    }
 
     res.status(200).send({
       query: {
@@ -208,13 +216,13 @@ router.get('/link/:linkId', async function(req, res) {
       },
       link: {
         payoff: link.payoff,
-        isUser: req.user._id.equals(query.user),
+        isUser: isOwner,
         userPayoff: link.userPayoff
       }
     });
   } catch (error) {
-    console.log('apierror');
-    res.status(500).send(error);
+    console.log(error.message);
+    res.status(500).send(error.message);
   }
 });
 

@@ -54,6 +54,21 @@ class UserSignup extends Component {
     }
   }
 
+  resetForm() {
+    this.setState({
+      formAlert: false,
+      formError: false,
+      formSuccess: false,
+      formSubmitting: false,
+      formMessage: ''
+    });
+  }
+
+  alertClass() {
+    if (this.state.formError) return 'alert error';
+    if (this.state.formSuccess) return 'alert success';
+  }
+
   render() {
     return (
       <div>
