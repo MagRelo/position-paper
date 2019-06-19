@@ -28,6 +28,7 @@ class Profile extends Component {
         description: responseObj.query.description,
         payoff: responseObj.link.payoff,
         userPayoff: responseObj.link.userPayoff,
+        nextUserPayoff: responseObj.link.nextUserPayoff,
         isQueryOwner: responseObj.link.isQueryOwner,
         isLinkOwner: responseObj.link.isLinkOwner
       });
@@ -80,7 +81,7 @@ class Profile extends Component {
               style={{ marginTop: '1em' }}
               onClick={() => this.setState({ linkOpen: true })}
             >
-              Promote for {this.formatCurrency(this.state.userPayoff)}
+              Promote for {this.formatCurrency(this.state.nextUserPayoff)}
             </button>
             <Dialog
               isOpen={this.state.linkOpen}

@@ -47,6 +47,7 @@ const LinkSchema = new mongoose.Schema(
     children: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Link' }],
     payoff: Number,
     userPayoff: Number,
+    nextUserPayoff: Number,
     linkId: {
       type: String,
       default: () => nanoid()

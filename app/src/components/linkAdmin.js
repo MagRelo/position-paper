@@ -26,9 +26,15 @@ class LinkAdmin extends Component {
         <h2>Link Admin</h2>
 
         <p>
-          This is your link. If it is claimed the candidate will get{' '}
-          <b>{this.formatCurrency(this.props.payoff)}</b> and you will get{' '}
-          <b>{this.formatCurrency(this.props.userPayoff)}</b>
+          This is your link. If it is claimed the candidate will recieve{' '}
+          <b>{this.formatCurrency(this.props.payoff)}</b>
+          {this.props.userPayoff > 0 ? (
+            <span>
+              {' '}
+              and you will recieve{' '}
+              <b>{this.formatCurrency(this.props.userPayoff)}</b>.
+            </span>
+          ) : null}
         </p>
 
         <div className="row row-1-3">

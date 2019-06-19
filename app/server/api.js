@@ -222,9 +222,10 @@ router.get('/link/:linkId', async function(req, res) {
       },
       link: {
         payoff: link.payoff,
+        userPayoff: link.userPayoff,
+        nextUserPayoff: link.nextUserPayoff,
         isQueryOwner: isQueryOwner,
-        isLinkOwner: isLinkOwner,
-        userPayoff: link.userPayoff
+        isLinkOwner: isLinkOwner
       }
     });
   } catch (error) {
@@ -273,6 +274,11 @@ router.post('/link/add', async function(req, res) {
         parentLink.query.bonus,
         parentLink.generation + 1,
         parentLink.generation
+      ),
+      nextUserPayoff: expectedValue(
+        parentLink.query.bonus,
+        parentLink.generation + 2,
+        parentLink.generation + 1
       )
     });
     await newLink.save();
@@ -300,7 +306,7 @@ function expectedValue(bonus, generation, position) {
   const payoffs = [
     [1],
     [0.2, 0.8],
-    [0.1, 0.18, 0.72],
+    [0.1, 0.25, 0.65],
     [0.05, 0.125, 0.25, 0.575],
     [0.04, 0.06, 0.12, 0.28, 0.5]
   ];
