@@ -191,6 +191,17 @@ router.get('/link/:linkId', async function(req, res) {
       return res.status(404).send('link not found');
     }
 
+    let isLinkOwner = false;
+    if (req.user) {
+      isLinkOwner = req.user._id.equals(link.user);
+    }
+
+    // increment link views
+    if (!isLinkOwner) {
+      link.views += 1;
+      link.save();
+    }
+
     // get query
     const query = await QueryModel.findOne({ _id: link.query }).lean();
     if (!query) {
@@ -198,25 +209,21 @@ router.get('/link/:linkId', async function(req, res) {
     }
 
     // check user
-    let isOwner = false;
+    let isQueryOwner = false;
     if (req.user) {
-      isOwner = req.user._id.equals(query.user);
-    }
-
-    // increment link views
-    if (!isOwner) {
-      link.views += 1;
-      link.save();
+      isQueryOwner = req.user._id.equals(query.user);
     }
 
     res.status(200).send({
       query: {
+        _id: query._id,
         title: query.title,
         description: query.data.description
       },
       link: {
         payoff: link.payoff,
-        isUser: isOwner,
+        isQueryOwner: isQueryOwner,
+        isLinkOwner: isLinkOwner,
         userPayoff: link.userPayoff
       }
     });
@@ -228,14 +235,16 @@ router.get('/link/:linkId', async function(req, res) {
 
 // create link
 router.post('/link/add', async function(req, res) {
+  console.log('hit');
+
   // auth-only
   if (!req.user) {
-    return res.status(401);
+    return res.status(401).send();
   }
 
   // validate
   if (!req.body.queryId) {
-    return res.status(400);
+    return res.status(400).send('must set query id');
   }
 
   try {

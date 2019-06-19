@@ -12,7 +12,7 @@ class LinkForm extends Component {
 
     linkCreated: false,
 
-    debug: true,
+    debug: false,
     queryList: [],
     queryId: null,
     parentLink: null
@@ -45,8 +45,8 @@ class LinkForm extends Component {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          queryId: this.state.queryId,
-          parentLink: this.state.parentLink
+          queryId: this.props.queryId,
+          parentLink: this.props.parentLink
         })
       }).then(response => response.json());
 
@@ -61,7 +61,7 @@ class LinkForm extends Component {
       });
 
       // refresh queries
-      this.getQueries();
+      // this.getQueries();
     } catch (error) {
       this.setState({
         formError: true,
@@ -140,7 +140,7 @@ class LinkForm extends Component {
                   );
                 })}
               </ul>
-              <p>query: {this.state.queryId}</p>
+              <p>query: {this.props.queryId}</p>
               <p>parent link: {this.state.parentLink}</p>
             </div>
           ) : null}

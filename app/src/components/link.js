@@ -19,14 +19,17 @@ class Profile extends Component {
     if (response.status === 200) {
       const responseObj = await response.json();
 
-      // console.log(query);
+      // console.log(responseObj);
 
       this.setState({
+        linkId: linkId,
+        queryId: responseObj.query._id,
         name: responseObj.query.title,
         description: responseObj.query.description,
         payoff: responseObj.link.payoff,
         userPayoff: responseObj.link.userPayoff,
-        isUser: responseObj.link.isUser
+        isQueryOwner: responseObj.link.isQueryOwner,
+        isLinkOwner: responseObj.link.isLinkOwner
       });
     } else {
       console.log('not found', response.status);
@@ -65,19 +68,30 @@ class Profile extends Component {
           </Dialog>
         </div>
 
-        {this.state.isUser ? (
+        {this.state.isLinkOwner ? (
           <LinkAdmin
             payoff={this.state.payoff}
             userPayoff={this.state.userPayoff}
           />
         ) : (
-          <button
-            className="pure-button pure-button-primary"
-            style={{ marginTop: '1em' }}
-            onClick={() => this.setState({ contactOpen: true })}
-          >
-            Promote for {this.formatCurrency(this.state.userPayoff)}
-          </button>
+          <React.Fragment>
+            <button
+              className="pure-button pure-button-primary"
+              style={{ marginTop: '1em' }}
+              onClick={() => this.setState({ linkOpen: true })}
+            >
+              Promote for {this.formatCurrency(this.state.userPayoff)}
+            </button>
+            <Dialog
+              isOpen={this.state.linkOpen}
+              onDismiss={() => this.setState({ linkOpen: false })}
+            >
+              <LinkForm
+                queryId={this.state.queryId}
+                parentLink={this.state.linkId}
+              />
+            </Dialog>
+          </React.Fragment>
         )}
       </div>
     );
