@@ -9,16 +9,21 @@ class Profile extends Component {
   state = { name: '', email: '', links: [], queries: [] };
 
   async componentDidMount() {
-    const user = await fetch('/api/user', {
+    const response = await fetch('/api/user', {
       method: 'GET'
-    }).then(response => response.json());
-
-    this.setState({
-      name: user.name,
-      email: user.email,
-      links: user.links,
-      queries: user.queries
     });
+
+    if (response.status === 200) {
+      const user = await response.json();
+      this.setState({
+        name: user.name,
+        email: user.email,
+        links: user.links,
+        queries: user.queries
+      });
+    } else {
+      console.log('not found', response.status);
+    }
   }
 
   render() {

@@ -42,7 +42,7 @@ router.post('/user/login', passport.authenticate('local'), function(req, res) {
 router.get('/user', async function(req, res) {
   // check auth
   if (!req.user) {
-    return res.status(401);
+    return res.status(401).send();
   }
 
   // get queries and links
@@ -87,7 +87,7 @@ router.get('/user', async function(req, res) {
 router.post('/query/add', async function(req, res) {
   // check auth
   if (!req.user) {
-    return res.status(401);
+    return res.status(401).send();
   }
   const query = req.body;
 
@@ -135,7 +135,7 @@ router.post('/query/add', async function(req, res) {
 router.get('/query/list', async function(req, res) {
   // check auth
   if (!req.user) {
-    return res.status(401);
+    return res.status(401).send();
   }
 
   try {
