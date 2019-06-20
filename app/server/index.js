@@ -35,7 +35,7 @@ if (process.env.ENV === 'production') {
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 mongoose.connect(
-  process.env.MONGODB_URL_INT || 'mongodb://127.0.0.1:27017/recruiting',
+  process.env.MONGODB_URL_INT || 'mongodb://127.0.0.1:27017/referral',
   { useNewUrlParser: true }
 );
 mongoose.connection.on('error', function(err) {

@@ -47,8 +47,8 @@
     "docker-build": "docker build . -t magrelo/referral",
     "docker-push": "docker push magrelo/referral",
     "ssh": "ssh root@209.97.154.109",
-    "dump-db": "mongodump  --db recruiting",
-    "restore-db": "mongorestore --db recruiting dump/recruiting"
+    "dump-db": "mongodump  --db referral",
+    "restore-db": "mongorestore --db recruiting dump/referral"
   },
   "devDependencies": {
     "nodemon": "^1.18.6"

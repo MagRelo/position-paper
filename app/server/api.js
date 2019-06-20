@@ -109,7 +109,8 @@ router.post('/query/add', async function(req, res) {
       parentLink: null,
       generation: 0,
       payoff: newQuery.bonus,
-      userPayoff: 0
+      userPayoff: 0,
+      nextUserPayoff: newQuery.bonus
     });
     await newLink.save();
 
