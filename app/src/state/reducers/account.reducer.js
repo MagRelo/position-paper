@@ -57,7 +57,8 @@ const AccountReducer = (state = initialState, action) => {
       message: '',
       signature: '',
       duration: 0,
-      expires: null
+      expires: null,
+      authCookie: false
     });
   }
   if (action.type === 'SESSION_FORBIDDEN') {

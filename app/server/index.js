@@ -60,9 +60,10 @@ app.use(
     store: new MongoStore({ mongooseConnection: mongoose.connection }),
     resave: false,
     saveUninitialized: true,
+    name: 'servesa',
     cookie: {
       path: '/',
-      httpOnly: true,
+      httpOnly: false,
       secure: false,
       maxAge: 1000 * 60 * 60 * 24 * 14
     }

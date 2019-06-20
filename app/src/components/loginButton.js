@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { loadSession, clearSession } from './util/authActions';
+import { loadCookie, clearSession } from './util/authActions';
 
 import { Dialog } from '@reach/dialog';
 import '@reach/dialog/styles.css';
@@ -12,7 +12,7 @@ class LoginButton extends Component {
   state = { accounts: null, loginOpen: false };
 
   componentDidMount() {
-    this.props.getSession(this.props.selectedAccount);
+    this.props.getSession();
   }
 
   logout() {
@@ -20,6 +20,7 @@ class LoginButton extends Component {
   }
 
   render() {
+    console.log('session:' + this.props.activeSession);
     return (
       <React.Fragment>
         {this.props.activeSession ? (
@@ -53,7 +54,7 @@ class LoginButton extends Component {
 
 const mapStateToProps = state => {
   return {
-    activeSession: !!state.account.email
+    activeSession: state.account.authCookie
   };
 };
 
@@ -63,7 +64,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(clearSession());
     },
     getSession: selectedAccount => {
-      dispatch(loadSession(selectedAccount));
+      dispatch(loadCookie());
     }
   };
 };

@@ -1,12 +1,27 @@
 // import { bufferToHex } from 'ethereumjs-util';
 import moment from 'moment';
 
-import store from 'state/store';
 import {
   get as getCache,
   set as setCache,
   del as clearCache
 } from './money-clip';
+import Cookies from 'js-cookie';
+
+import store from 'state/store';
+
+export function loadCookie() {
+  return function(dispatch) {
+    const servesaCookie = Cookies.get('servesa');
+
+    return dispatch({
+      type: 'SESSION_LOAD',
+      payload: {
+        authCookie: !!servesaCookie
+      }
+    });
+  };
+}
 
 export function loadSession(userAddress) {
   return function(dispatch) {

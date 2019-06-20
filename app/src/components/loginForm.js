@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { saveSession } from './util/authActions';
 
-class UserSignup extends Component {
+class LoginForm extends Component {
   state = {
     formAlert: false,
     formError: false,
@@ -60,6 +60,21 @@ class UserSignup extends Component {
     }
   }
 
+  resetForm() {
+    this.setState({
+      formAlert: false,
+      formError: false,
+      formSuccess: false,
+      formSubmitting: false,
+      formMessage: ''
+    });
+  }
+
+  alertClass() {
+    if (this.state.formError) return 'alert error';
+    if (this.state.formSuccess) return 'alert success';
+  }
+
   render() {
     return (
       <div>
@@ -98,6 +113,19 @@ class UserSignup extends Component {
               Submitting...
             </span>
           ) : null}
+
+          {this.state.formAlert ? (
+            <div className={this.alertClass()}>
+              <p>{this.state.formMessage}</p>
+
+              <button
+                className="pure-button"
+                onClick={this.resetForm.bind(this)}
+              >
+                Ok
+              </button>
+            </div>
+          ) : null}
         </form>
       </div>
     );
@@ -121,4 +149,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(UserSignup);
+)(LoginForm);
