@@ -15,10 +15,11 @@ import './app.css';
 import LoginButton from './components/loginButton';
 
 import LandingPage from 'components/landingPage';
-import UserSignup from 'components/loginButton';
+// import UserSignup from 'components/loginButton';
 import User from 'components/user';
 import Query from 'components/query';
 import QueryLink from 'components/link';
+import LinkList from 'components/publicLinksTable';
 
 // testing
 import createUser from 'components/createUser';
@@ -52,6 +53,7 @@ function App() {
       <div className="container">
         <div className="header">
           <div className="menu">
+            <Link to={'/search'}>Search</Link>
             {activeSession ? (
               <React.Fragment>
                 <Link to={'/user'}>Account</Link>
@@ -73,23 +75,28 @@ function App() {
           <h2>Paid participation</h2>
         </div>
 
-        <Switch>
-          {activeSession ? (
-            <React.Fragment>
+        {activeSession ? (
+          <React.Fragment>
+            <Switch>
               <Route path="/adduser" component={createUser} />
               <Route path="/addlink" component={createLink} />
               <Route path="/addquery" component={createQuery} />
+
+              <Route path="/search" component={LinkList} />
               <Route path="/link/:linkId" component={QueryLink} />
               <Route path="/query/:linkId" component={Query} />
               <Route path="/user" component={User} />
-            </React.Fragment>
-          ) : (
-            <React.Fragment>
-              <Route path="/login" component={UserSignup} />
+              <Route component={User} />
+            </Switch>
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            <Switch>
+              <Route path="/search" component={LinkList} />
               <Route component={LandingPage} />
-            </React.Fragment>
-          )}
-        </Switch>
+            </Switch>
+          </React.Fragment>
+        )}
       </div>
     </StripeProvider>
   );

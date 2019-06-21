@@ -29,10 +29,46 @@ router.post('/user/add', async function(req, res) {
   }
 });
 
+//
+
 // login
 router.post('/user/login', passport.authenticate('local'), function(req, res) {
   try {
     res.status(200).send(req.user);
+  } catch (error) {
+    console.log(req.path, error);
+    res.status(500).send(error);
+  }
+});
+
+router.get('/search', async function(req, res) {
+  try {
+    // get the max gen for each query
+    const queryGenList = await LinkModel.aggregate([
+      {
+        $group: {
+          _id: '$query',
+          latestGen: { $max: '$generation' }
+        }
+      }
+    ]);
+
+    // selsct a link
+    const promises = [];
+    queryGenList.forEach(query => {
+      return promises.push(
+        LinkModel.findOne({
+          query: query._id,
+          generation: query.latestGen
+        }).populate({
+          path: 'query'
+        })
+      );
+    });
+
+    const hydrated = await Promise.all(promises);
+
+    res.status(200).send(hydrated);
   } catch (error) {
     console.log(req.path, error);
     res.status(500).send(error);
