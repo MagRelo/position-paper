@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 function QueryLinkTable() {
   const [loadingData, setLoadingData] = useState(true);
@@ -42,7 +43,9 @@ function QueryLinkTable() {
           {links.map(link => {
             return (
               <tr key={link._id}>
-                <td>{link.query.title}</td>
+                <td>
+                  <Link to={'/link/' + link.linkId}>{link.query.title}</Link>
+                </td>
                 <td>{link.query.bonus}</td>
                 <td>{link.views}</td>
               </tr>

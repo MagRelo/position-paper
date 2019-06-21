@@ -93,6 +93,7 @@ function App() {
           <React.Fragment>
             <Switch>
               <Route path="/search" component={LinkList} />
+              <Route path="/link/:linkId" component={QueryLink} />
               <Route component={LandingPage} />
             </Switch>
           </React.Fragment>

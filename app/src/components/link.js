@@ -26,9 +26,7 @@ class Profile extends Component {
         queryId: responseObj.query._id,
         name: responseObj.query.title,
         description: responseObj.query.description,
-        payoff: responseObj.link.payoff,
-        userPayoff: responseObj.link.userPayoff,
-        nextUserPayoff: responseObj.link.nextUserPayoff,
+        payoffs: responseObj.link.payoffs,
         isQueryOwner: responseObj.link.isQueryOwner,
         isLinkOwner: responseObj.link.isLinkOwner
       });

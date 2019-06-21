@@ -78,7 +78,7 @@ router.get('/search', async function(req, res) {
 router.get('/user', async function(req, res) {
   // check auth
   if (!req.user) {
-    return res.status(401).send();
+    return res.status(401).send('no user');
   }
 
   // get queries and links
@@ -258,9 +258,7 @@ router.get('/link/:linkId', async function(req, res) {
         description: query.data.description
       },
       link: {
-        payoff: link.payoff,
-        userPayoff: link.userPayoff,
-        nextUserPayoff: link.nextUserPayoff,
+        payoffs: link.payoffs,
         isQueryOwner: isQueryOwner,
         isLinkOwner: isLinkOwner
       }
@@ -302,21 +300,7 @@ router.post('/link/add', async function(req, res) {
       query: req.body.queryId,
       parentLink: parentLink._id,
       generation: parentLink.generation + 1,
-      payoff: expectedValue(
-        parentLink.query.bonus,
-        parentLink.generation + 1,
-        parentLink.generation + 1
-      ),
-      userPayoff: expectedValue(
-        parentLink.query.bonus,
-        parentLink.generation + 1,
-        parentLink.generation
-      ),
-      nextUserPayoff: expectedValue(
-        parentLink.query.bonus,
-        parentLink.generation + 2,
-        parentLink.generation + 1
-      )
+      payoffs: expectedValue(parentLink.query.bonus, parentLink.generation + 2)
     });
     await newLink.save();
 
@@ -337,22 +321,25 @@ router.post('/link/add', async function(req, res) {
   }
 });
 
-function expectedValue(bonus, generation, position) {
-  // console.log(bonus, distance, links, views);
+function expectedValue(bonus, generations) {
+  let payoffs = [];
+  let remaining = bonus;
 
-  const payoffs = [
-    [1],
-    [0.2, 0.8],
-    [0.1, 0.25, 0.65],
-    [0.05, 0.125, 0.25, 0.575],
-    [0.04, 0.06, 0.12, 0.28, 0.5]
-  ];
+  for (let precision = 3; precision > 0; precision--) {
+    for (let i = 0; i < generations; i++) {
+      const share = Math.round(remaining * 0.7 * 100) / 100;
+      payoffs[i] = (payoffs[i] || 0) + share;
+      remaining = remaining - share;
+    }
+  }
 
-  // const payoffs = [1, 0.8, 0.7, 0.575, 0.5];
+  const total = payoffs.reduce((acc, item) => {
+    return acc + item;
+  }, 0);
 
-  const payoff = bonus * payoffs[generation][position];
+  console.log(total);
 
-  return Math.round(payoff * 100) / 100;
+  return payoffs;
 }
 
 module.exports = router;
