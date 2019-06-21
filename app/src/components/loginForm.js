@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-
-import { saveSession } from './util/authActions';
 
 class LoginForm extends Component {
   state = {
@@ -35,19 +32,12 @@ class LoginForm extends Component {
         body: JSON.stringify(formObject)
       });
 
-      if (response.status === 401) {
+      if (response.status === 200) {
+        // const user = await response.json();
+        this.props.createSession();
+      } else {
         throw Error(response.status);
       }
-
-      const user = await response.json();
-      this.props.createSession(user, 90000);
-
-      this.setState({
-        formSuccess: true,
-        formAlert: true,
-        formSubmitting: false,
-        formMessage: 'Success! ...redirecting'
-      });
     } catch (error) {
       this.setState({
         formError: true,
@@ -132,21 +122,4 @@ class LoginForm extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    accountsReady: !!state.account.expires
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    createSession: duration => {
-      dispatch(saveSession(duration));
-    }
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(LoginForm);
+export default LoginForm;

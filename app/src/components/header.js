@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import LoginButton from './loginButton';
-import { connect } from 'react-redux';
+import LoginButton from './loginButton-2';
 
 class Header extends Component {
-  state = { accounts: null };
-
   render() {
     return (
       <div className="header">
@@ -16,7 +13,10 @@ class Header extends Component {
           </React.Fragment>
 
           <span>|</span>
-          <LoginButton />
+          <LoginButton
+            activeSession={this.props.activeSession}
+            createSession={this.props.createSession}
+          />
         </div>
 
         <h1>
@@ -29,13 +29,4 @@ class Header extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    selectedAccount: state.account.selectedAccount,
-    activeSession: !!state.account.email
-  };
-};
-export default connect(
-  mapStateToProps,
-  null
-)(Header);
+export default Header;
