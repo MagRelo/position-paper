@@ -22,6 +22,17 @@ export function loadCookie() {
     });
   };
 }
+export function clearCookie() {
+  return function(dispatch) {
+    // const userAddress = store.getState().account.selectedAcount;
+    // clearCache('session-' + userAddress).then(() => {
+    //   return dispatch({ type: 'SESSION_CLEAR' });
+    // });
+
+    Cookies.remove('servesa');
+    return dispatch({ type: 'SESSION_CLEAR' });
+  };
+}
 
 export function loadSession(userAddress) {
   return function(dispatch) {

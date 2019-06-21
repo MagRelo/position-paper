@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { loadCookie, clearSession } from './util/authActions';
+import { loadCookie, clearCookie } from './util/authActions';
 
 import { Dialog } from '@reach/dialog';
 import '@reach/dialog/styles.css';
@@ -61,7 +61,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     clearSession: () => {
-      dispatch(clearSession());
+      dispatch(clearCookie());
     },
     getSession: selectedAccount => {
       dispatch(loadCookie());
