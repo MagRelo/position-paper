@@ -15,7 +15,6 @@ import './app.css';
 import LoginButton from './components/loginButton';
 
 import LandingPage from 'components/landingPage';
-// import UserSignup from 'components/loginButton';
 import User from 'components/user';
 import Query from 'components/query';
 import QueryLink from 'components/link';
@@ -33,6 +32,7 @@ function App() {
     () => {
       const servesaCookie = Cookies.get('servesa');
       if (servesaCookie) {
+        console.log(servesaCookie);
         setActiveSession(true);
       }
     },
@@ -69,10 +69,10 @@ function App() {
           </div>
 
           <h1>
-            <Link to="/">Social Referrals</Link>
+            <Link to="/">Incentive Engine</Link>
           </h1>
 
-          <h2>Paid participation</h2>
+          <h2>opportunities unleashed</h2>
         </div>
 
         {activeSession ? (
@@ -86,7 +86,7 @@ function App() {
               <Route path="/link/:linkId" component={QueryLink} />
               <Route path="/query/:linkId" component={Query} />
               <Route path="/user" component={User} />
-              <Route component={User} />
+              <Route component={LandingPage} />
             </Switch>
           </React.Fragment>
         ) : (
