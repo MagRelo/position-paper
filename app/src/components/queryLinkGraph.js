@@ -69,7 +69,7 @@ function buildGraphData(links) {
     }
   });
 
-  console.log(graphData);
+  // console.log(graphData);
 
   return graphData;
 }

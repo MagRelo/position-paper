@@ -31,7 +31,7 @@ class Inbox extends Component {
                 <td>
                   <Link to={'/link/' + link.linkId}>{link.query.title}</Link>
                 </td>
-                <td>{formatCurrency(link.userPayoff)}</td>
+                <td>{formatCurrency(link.payoffs[link.generation])}</td>
                 <td>{link.views}</td>
                 <td>{link.children.length}</td>
               </tr>

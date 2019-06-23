@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 
 import { Dialog } from '@reach/dialog';
 import '@reach/dialog/styles.css';
@@ -8,7 +7,7 @@ import LinkForm from './createLink';
 import LinkAdmin from './linkAdmin';
 
 class Profile extends Component {
-  state = { contactOpen: false, linkOpen: false, name: '' };
+  state = { contactOpen: false, linkOpen: false, name: '', payoffs: [] };
 
   async componentDidMount() {
     // get linkId from URL
@@ -28,7 +27,8 @@ class Profile extends Component {
         description: responseObj.query.description,
         payoffs: responseObj.link.payoffs,
         isQueryOwner: responseObj.link.isQueryOwner,
-        isLinkOwner: responseObj.link.isLinkOwner
+        isLinkOwner: responseObj.link.isLinkOwner,
+        generation: responseObj.link.generation
       });
     } else {
       console.log('not found', response.status);
@@ -57,7 +57,7 @@ class Profile extends Component {
             style={{ marginBottom: '1em' }}
             onClick={() => this.setState({ contactOpen: true })}
           >
-            Apply – {this.formatCurrency(this.state.payoff)}
+            Apply – {this.formatCurrency(this.state.payoffs[0])}
           </button>
           <Dialog
             isOpen={this.state.contactOpen}
@@ -69,8 +69,8 @@ class Profile extends Component {
 
         {this.state.isLinkOwner ? (
           <LinkAdmin
-            payoff={this.state.payoff}
-            userPayoff={this.state.userPayoff}
+            payoff={this.state.payoffs[0]}
+            userPayoff={this.state.payoffs[this.state.generation]}
           />
         ) : (
           <React.Fragment>
@@ -97,15 +97,4 @@ class Profile extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {};
-};
-
-const mapDispatchToProps = dispatch => {
-  return {};
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Profile);
+export default Profile;
