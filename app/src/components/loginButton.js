@@ -5,6 +5,8 @@ import '@reach/dialog/styles.css';
 
 import UserLogin from './loginForm';
 
+import PlaidLink from './plaidLink';
+
 function LoginButton(props) {
   const [loginOpen, setLoginOpen] = useState(false);
 
@@ -24,13 +26,14 @@ function LoginButton(props) {
         </button>
       ) : (
         <React.Fragment>
+          <PlaidLink />
+
           <button
             className="pure-button pure-button-primary"
             onClick={() => setLoginOpen(true)}
           >
             Login
           </button>
-
           <Dialog isOpen={loginOpen} onDismiss={() => setLoginOpen(false)}>
             <UserLogin createSession={closeAndCreateSession} />
           </Dialog>
