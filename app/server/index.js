@@ -14,6 +14,8 @@ require('./auth/local');
 // all routes
 const httpApi = require('./api');
 
+// require('./utils/seedDb');
+
 // *
 // load env var's
 // *

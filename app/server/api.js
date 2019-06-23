@@ -144,9 +144,7 @@ router.post('/query/add', async function(req, res) {
       query: newQuery._id,
       parentLink: null,
       generation: 0,
-      payoff: newQuery.bonus,
-      userPayoff: 0,
-      nextUserPayoff: newQuery.bonus
+      payoffs: expectedValue(query.bonus, 1)
     });
     await newLink.save();
 
@@ -258,6 +256,7 @@ router.get('/link/:linkId', async function(req, res) {
         description: query.data.description
       },
       link: {
+        generation: link.generation,
         payoffs: link.payoffs,
         isQueryOwner: isQueryOwner,
         isLinkOwner: isLinkOwner
@@ -271,14 +270,12 @@ router.get('/link/:linkId', async function(req, res) {
 
 // create link
 router.post('/link/add', async function(req, res) {
-  console.log('hit');
-
   // auth-only
   if (!req.user) {
     return res.status(401).send();
   }
 
-  // validate
+  // validate input
   if (!req.body.queryId) {
     return res.status(400).send('must set query id');
   }
@@ -304,11 +301,11 @@ router.post('/link/add', async function(req, res) {
     });
     await newLink.save();
 
-    // add link ref to parent
+    // add link ref to parent link
     parentLink.children.push(newLink._id);
     await parentLink.save();
 
-    // add new link to query
+    // add link ref to query
     await QueryModel.updateOne(
       { _id: req.body.queryId },
       { $push: { links: newLink._id } }
