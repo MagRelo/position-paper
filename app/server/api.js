@@ -2,14 +2,72 @@ var express = require('express');
 var router = express.Router();
 
 const passport = require('passport');
+const plaid = require('plaid');
 
 const UserModel = require('./models').UserModel;
 const QueryModel = require('./models').QueryModel;
 const LinkModel = require('./models').LinkModel;
 
+const clientId = '5d0cdd955a4c3e0012b14f6e';
+const secret = 'ac69552f4c2f146f9a8ee31686e7ec';
+const publicKey = '2b3f9221802f14178deef36cd7f168';
+const env = 'sandbox';
+
+//
+// Plaid Client
+//
+var client = new plaid.Client(
+  clientId,
+  secret,
+  publicKey,
+  plaid.environments[env],
+  {
+    version: '2019-05-29',
+    clientApp: 'Plaid Quickstart'
+  }
+);
+
 //
 // PUBLIC
 //
+
+// plaid signup
+router.post('/user/signup', async function(req, res) {
+  // required
+  const publicToken = req.body.token;
+  if (!publicToken) {
+    res.status(400).send('no token');
+  }
+
+  try {
+    // exchange for access token
+    client.exchangePublicToken(publicToken, function(error, tokenResponse) {
+      if (error != null) throw Error(error);
+
+      // get item
+      client.getItem(tokenResponse.access_token, async function(
+        error,
+        itemResponse
+      ) {
+        if (error != null) throw Error(error);
+
+        // create the user
+        const user = new UserModel({
+          plaid_token: tokenResponse,
+          plaid_item: itemResponse
+        });
+        await user.save();
+
+        // login?
+
+        res.status(200).send(user);
+      });
+    });
+  } catch (error) {
+    console.log('API Error:', error);
+    res.status(500).send(error);
+  }
+});
 
 // add
 router.post('/user/add', async function(req, res) {
@@ -28,8 +86,6 @@ router.post('/user/add', async function(req, res) {
     res.status(500).send(error);
   }
 });
-
-//
 
 // login
 router.post('/user/login', passport.authenticate('local'), function(req, res) {

@@ -3,37 +3,13 @@ import React from 'react';
 const apiVersion = 'v2';
 const clientName = 'Incentive Engine';
 const env = 'sandbox';
+
 const publicKey = '2b3f9221802f14178deef36cd7f168';
 
-const products = ['auth', 'identity', 'transactions'];
+const products = ['auth', 'transactions'];
 const institution = null;
 
 function PlaidLinkWrapper() {
-  // const [loadingData, setLoadingData] = useState(true);
-  // const [links, setLinks] = useState([]);
-  // const [searchTerm, setSearchTerm] = useState('');
-
-  // async function getData(searchTerm) {
-  //   // prepare searchterm as safe url
-  //   const response = await fetch('/api/search?' + searchTerm, {
-  //     method: 'GET'
-  //   });
-
-  //   if (response.status === 200) {
-  //     setLinks(await response.json());
-  //     setLoadingData(false);
-  //   } else {
-  //     console.log('not found', response.status);
-  //   }
-  // }
-
-  // useEffect(
-  //   () => {
-  //     getData(searchTerm);
-  //   },
-  //   [searchTerm]
-  // );
-
   window.linkHandler = window.Plaid.create({
     apiVersion: apiVersion,
     clientName: clientName,
@@ -41,16 +17,21 @@ function PlaidLinkWrapper() {
     key: publicKey,
     product: products,
     onExit: onExit,
-    onEvent: onEvent,
     onSuccess: onSuccess
   });
 
-  function onSuccess(info) {
-    console.log('success', info);
-  }
+  async function onSuccess(token) {
+    console.log('success', token);
 
-  function onEvent(event) {
-    console.log('event:', event);
+    let user;
+
+    try {
+      user = await sendPublicToken(token);
+    } catch (error) {
+      console.log(error);
+    }
+
+    console.log('user', user);
   }
 
   function onExit() {
@@ -65,9 +46,41 @@ function PlaidLinkWrapper() {
 
   return (
     <button className="pure-button pure-button-primary" onClick={handleOnClick}>
-      Link Bank Account
+      Signup
     </button>
   );
 }
 
 export default PlaidLinkWrapper;
+
+// const [loadingData, setLoadingData] = useState(true);
+// const [links, setLinks] = useState([]);
+// const [searchTerm, setSearchTerm] = useState('');
+
+// useEffect(
+//   () => {
+//     getData(searchTerm);
+//   },
+//   [searchTerm]
+// );
+
+async function sendPublicToken(token) {
+  // prepare searchterm as safe url
+  const response = await fetch('/api/user/signup', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      token: token
+    })
+  });
+
+  if (response.status === 200) {
+    const user = await response.json();
+    return user;
+  } else {
+    console.log('signup error');
+    throw Error(response.status);
+  }
+}
