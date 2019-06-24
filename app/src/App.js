@@ -12,13 +12,15 @@ import './css/pure-min.css';
 import './index.css';
 import './app.css';
 
-import LoginButton from './components/loginButton';
+// Header
+import Login from 'components/login';
 
+// Header
 import LandingPage from 'components/landingPage';
 import User from 'components/user';
 import Query from 'components/query';
 import QueryLink from 'components/link';
-import LinkList from 'components/publicLinksTable';
+import Search from 'components/publicLinksTable';
 
 // testing
 import createUser from 'components/createUser';
@@ -54,14 +56,11 @@ function App() {
         <div className="header">
           <div className="menu">
             <Link to={'/search'}>Search</Link>
-            {activeSession ? (
-              <React.Fragment>
-                <Link to={'/user'}>Account</Link>
-              </React.Fragment>
-            ) : null}
+            {activeSession ? <Link to={'/user'}>Account</Link> : null}
 
             <span>|</span>
-            <LoginButton
+
+            <Login
               activeSession={activeSession}
               createSession={createSession}
               clearSession={clearSession}
@@ -76,27 +75,23 @@ function App() {
         </div>
 
         {activeSession ? (
-          <React.Fragment>
-            <Switch>
-              <Route path="/adduser" component={createUser} />
-              <Route path="/addlink" component={createLink} />
-              <Route path="/addquery" component={createQuery} />
+          <Switch>
+            <Route path="/adduser" component={createUser} />
+            <Route path="/addlink" component={createLink} />
+            <Route path="/addquery" component={createQuery} />
 
-              <Route path="/search" component={LinkList} />
-              <Route path="/link/:linkId" component={QueryLink} />
-              <Route path="/query/:linkId" component={Query} />
-              <Route path="/user" component={User} />
-              <Route component={LandingPage} />
-            </Switch>
-          </React.Fragment>
+            <Route path="/search" component={Search} />
+            <Route path="/link/:linkId" component={QueryLink} />
+            <Route path="/query/:linkId" component={Query} />
+            <Route path="/user" component={User} />
+            <Route component={LandingPage} />
+          </Switch>
         ) : (
-          <React.Fragment>
-            <Switch>
-              <Route path="/search" component={LinkList} />
-              <Route path="/link/:linkId" component={QueryLink} />
-              <Route component={LandingPage} />
-            </Switch>
-          </React.Fragment>
+          <Switch>
+            <Route path="/search" component={Search} />
+            <Route path="/link/:linkId" component={Link} />
+            <Route component={LandingPage} />
+          </Switch>
         )}
       </div>
     </StripeProvider>

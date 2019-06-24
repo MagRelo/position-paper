@@ -23,7 +23,7 @@ var client = new plaid.Client(
   plaid.environments[env],
   {
     version: '2019-05-29',
-    clientApp: 'Plaid Quickstart'
+    clientApp: 'Incentive Engine'
   }
 );
 
@@ -51,36 +51,25 @@ router.post('/user/signup', async function(req, res) {
       ) {
         if (error != null) throw Error(error);
 
+        // merge plaid data with front-end form data
+        const fullUserObject = Object.assign(
+          {},
+          {
+            plaid_token: tokenResponse,
+            plaid_item: itemResponse
+          },
+          req.body
+        );
+
         // create the user
-        const user = new UserModel({
-          plaid_token: tokenResponse,
-          plaid_item: itemResponse
-        });
+        const user = new UserModel(fullUserObject);
         await user.save();
 
-        // login?
-
-        res.status(200).send(user);
+        req.login(user, function() {
+          res.status(200).send(user);
+        });
       });
     });
-  } catch (error) {
-    console.log('API Error:', error);
-    res.status(500).send(error);
-  }
-});
-
-// add
-router.post('/user/add', async function(req, res) {
-  // required
-
-  const userProfile = req.body;
-
-  try {
-    // create the user
-    const user = new UserModel(userProfile);
-    await user.save();
-
-    res.status(200).send(user);
   } catch (error) {
     console.log('API Error:', error);
     res.status(500).send(error);
@@ -97,6 +86,7 @@ router.post('/user/login', passport.authenticate('local'), function(req, res) {
   }
 });
 
+// search
 router.get('/search', async function(req, res) {
   try {
     // get the max gen for each query
@@ -131,6 +121,11 @@ router.get('/search', async function(req, res) {
   }
 });
 
+//
+// AUTH
+//
+
+// get user
 router.get('/user', async function(req, res) {
   // check auth
   if (!req.user) {
@@ -170,10 +165,6 @@ router.get('/user', async function(req, res) {
     res.status(500).send(error);
   }
 });
-
-//
-// AUTH
-//
 
 // add query
 router.post('/query/add', async function(req, res) {
@@ -273,7 +264,7 @@ router.get('/query/:linkId', async function(req, res) {
   }
 });
 
-// get query by linkId
+// get link by linkId
 router.get('/link/:linkId', async function(req, res) {
   try {
     // get link

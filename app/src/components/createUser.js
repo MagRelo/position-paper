@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 
 class UserSignup extends Component {
   state = {
@@ -23,17 +22,8 @@ class UserSignup extends Component {
     formData.forEach((value, key) => {
       object[key] = value;
     });
-    var json = JSON.stringify(object);
 
     try {
-      await fetch('/api/user/add', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: json
-      }).then(response => response.json());
-
       this.setState({
         formSuccess: true,
         formAlert: true,
@@ -41,7 +31,8 @@ class UserSignup extends Component {
         formMessage: 'Success!'
       });
 
-      //
+      // createSession
+      this.props.getForm(object);
     } catch (error) {
       this.setState({
         formError: true,
@@ -126,11 +117,4 @@ class UserSignup extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {};
-};
-
-export default connect(
-  mapStateToProps,
-  null
-)(UserSignup);
+export default UserSignup;

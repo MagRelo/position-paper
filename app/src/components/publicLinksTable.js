@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 function QueryLinkTable() {
   const [loadingData, setLoadingData] = useState(true);
   const [links, setLinks] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm] = useState('');
 
   async function getData(searchTerm) {
     // prepare searchterm as safe url
