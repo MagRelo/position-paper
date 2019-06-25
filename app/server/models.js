@@ -74,7 +74,8 @@ const ResponseSchema = new mongoose.Schema(
   {
     query: { type: mongoose.Schema.Types.ObjectId, ref: 'Query' },
     link: { type: mongoose.Schema.Types.ObjectId, ref: 'Link' },
-    respondingUser: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+    respondingUser: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    message: String
   },
   { timestamps: true }
 );

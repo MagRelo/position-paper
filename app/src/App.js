@@ -72,7 +72,7 @@ function App() {
             <Link to="/">Incentive Engine</Link>
           </h1>
 
-          <h2>opportunities unleashed</h2>
+          <h2>Transparent Incentives</h2>
         </div>
 
         {activeSession ? (

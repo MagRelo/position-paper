@@ -7,7 +7,7 @@ class QueryLinkTable extends Component {
         <thead>
           <tr>
             <th>Generation</th>
-            <th>Payoff</th>
+            <th>Bonus</th>
             <th>Children</th>
             <th>Views</th>
           </tr>
@@ -17,7 +17,7 @@ class QueryLinkTable extends Component {
             return (
               <tr key={link._id}>
                 <td>{link.generation}</td>
-                <td>{link.payoff}</td>
+                <td>{link.payoffs[0]}</td>
                 <td>{link.children.length}</td>
                 <td>{link.views}</td>
               </tr>

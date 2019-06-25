@@ -192,7 +192,7 @@ router.post('/query/add', async function(req, res) {
       query: newQuery._id,
       parentLink: null,
       generation: 0,
-      payoffs: expectedValue(query.bonus, 1)
+      payoffs: calcLinkPayouts(query.bonus, 1)
     });
     await newLink.save();
 
@@ -349,7 +349,10 @@ router.post('/link/add', async function(req, res) {
       query: req.body.queryId,
       parentLink: parentLink._id,
       generation: parentLink.generation + 1,
-      payoffs: expectedValue(parentLink.query.bonus, parentLink.generation + 2)
+      payoffs: calcLinkPayouts(
+        parentLink.query.bonus,
+        parentLink.generation + 2
+      )
     });
     await newLink.save();
 
@@ -425,24 +428,28 @@ router.get('/response/:responseId', async function(req, res) {
   try {
     // get response
     const response = await ResponseModel.findOne({
-      linkId: req.body.responseId
+      _id: req.params.responseId
     })
+      .populate('link')
+      .populate('query')
       .populate({
-        path: 'link'
+        path: 'respondingUser',
+        select: 'name email'
       })
-      .populate({
-        path: 'query'
-      });
+      .lean();
     if (!response) {
-      return res.status(404).send('link not found');
+      return res
+        .status(404)
+        .send('response not found: ', req.params.responseId);
     }
 
-    res.status(200).send({
-      _id: response._id,
-      title: response.query.title,
-      description: response.query.data.description,
-      payoffs: response.link.payoffs
-    });
+    // populate with table of user payouts
+    response.payoutArray = await calcUserPayouts(
+      response.link,
+      response.respondingUser
+    );
+
+    res.status(200).send(response);
   } catch (error) {
     console.log('API Error:', error);
     res.status(500).send(error);
@@ -469,7 +476,7 @@ router.post('/payment/:responseId', async function(req, res) {
   }
 });
 
-function expectedValue(bonus, generations) {
+function calcLinkPayouts(bonus, generations) {
   let payoffs = [];
   let remaining = bonus;
 
@@ -485,9 +492,46 @@ function expectedValue(bonus, generations) {
     return acc + item;
   }, 0);
 
-  console.log(total);
+  // console.log(total);
 
   return payoffs;
+}
+
+async function calcUserPayouts(link, respondant) {
+  let payoutArray = [];
+
+  // first is always respondant
+  payoutArray.push({
+    _id: respondant._id,
+    name: respondant.name,
+    payout: link.payoffs[0]
+  });
+
+  const parents = await populateParent(link.parentLink, link.payoffs);
+  recursionParents = []; //cleanup
+  return payoutArray.concat(parents);
+}
+
+let recursionParents = [];
+async function populateParent(parentLinkId, payoffs) {
+  // get parent
+  const link = await LinkModel.findOne({ _id: parentLinkId })
+    .populate('user', 'name email')
+    .lean();
+
+  if (link.parentLink) {
+    const distance = recursionParents.length;
+    const payoff = payoffs[distance + 1];
+    // console.log(distance, payoff);
+
+    // push into array
+    recursionParents.push(
+      Object.assign({ name: link.user.name, payout: payoff })
+    );
+    return await populateParent(link.parentLink, payoffs);
+  } else {
+    return recursionParents;
+  }
 }
 
 module.exports = router;

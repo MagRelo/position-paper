@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 
 function Response(props) {
   const [response, setResponse] = useState({});
+  const [payoffs, setPayoffs] = useState([]);
+  const [respondant, setRespondant] = useState({});
 
   async function getResponse(responseId) {
     // get position data
@@ -9,10 +11,15 @@ function Response(props) {
     if (response.status === 200) {
       const queryResponse = await response.json();
       setResponse(queryResponse);
+      setPayoffs(queryResponse.payoutArray);
+      setRespondant(queryResponse.respondingUser);
     } else {
       console.log('not found', response.status);
     }
   }
+  useEffect(() => {
+    getResponse(props.match.params.responseId);
+  }, props.match.params.responseId);
 
   async function makePayment(responseId) {
     // get position data
@@ -32,16 +39,36 @@ function Response(props) {
     }
   }
 
-  useEffect(() => {
-    getResponse(props.match.params.responseId);
-  }, props.match.params.responseId);
-
   return (
     <div>
-      <h2>{response.title}</h2>
-      <p>{response.description}</p>
+      <h2>Response</h2>
+
+      <p>
+        {respondant.name} <small>{respondant.email}</small>
+      </p>
+
       <p>{response.message}</p>
-      <hr />
+
+      <h3>Link Payments</h3>
+      <table className="pure-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Payout</th>
+          </tr>
+        </thead>
+        <tbody>
+          {payoffs.map(item => {
+            return (
+              <tr key={item.name}>
+                <td>{item.name}</td>
+                <td>{item.payout}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+
       <button
         className="pure-button pure-button-primary"
         onClick={() => {
