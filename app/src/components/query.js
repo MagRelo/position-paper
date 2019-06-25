@@ -3,9 +3,10 @@ import { connect } from 'react-redux';
 
 import LinksList from './queryLinksTable';
 import LinkGraph from './queryLinkGraph';
+import ResponseList from './queryResponseTable';
 
 class Query extends Component {
-  state = { contactOpen: false, linkOpen: false, links: [] };
+  state = { contactOpen: false, linkOpen: false, links: [], responses: [] };
 
   formatCurrency(input) {
     if (typeof input === 'number') {
@@ -32,7 +33,8 @@ class Query extends Component {
         title: query.title,
         bonus: query.bonus,
         description: query.data.description,
-        links: query.links
+        links: query.links,
+        responses: query.responses
       });
     } else {
       console.log('not found', response.status);
@@ -49,16 +51,18 @@ class Query extends Component {
           <p>Description: {this.state.description}</p>
         </div>
 
-        <h2>Links</h2>
         <div className="row row-2">
           <div>
+            <h3>Links</h3>
             <LinksList links={this.state.links} />
           </div>
 
           <div>
-            <LinkGraph links={this.state.links} />
+            <h3>Responses</h3>
+            <ResponseList responses={this.state.responses} />
           </div>
         </div>
+        <LinkGraph links={this.state.links} />
       </div>
     );
   }

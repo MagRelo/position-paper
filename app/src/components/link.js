@@ -4,7 +4,18 @@ import { Dialog } from '@reach/dialog';
 import '@reach/dialog/styles.css';
 
 import LinkForm from './createLink';
+import ResponseForm from './createResponse';
 import LinkAdmin from './linkAdmin';
+
+function formatCurrency(input) {
+  if (typeof input === 'number') {
+    return input.toLocaleString('en-US', {
+      style: 'currency',
+      currency: 'USD'
+    });
+  }
+  return '';
+}
 
 class Profile extends Component {
   state = { contactOpen: false, linkOpen: false, name: '', payoffs: [] };
@@ -35,14 +46,30 @@ class Profile extends Component {
     }
   }
 
-  formatCurrency(input) {
-    if (typeof input === 'number') {
-      return input.toLocaleString('en-US', {
-        style: 'currency',
-        currency: 'USD'
-      });
+  async sendResponse(formData) {
+    console.log(formData);
+
+    // add params
+    formData.queryId = this.state.queryId;
+    formData.linkId = this.state.linkId;
+
+    const response = await fetch('/api/response/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    });
+    if (response.status === 200) {
+      const responseObj = await response.json();
+      console.log(responseObj);
+
+      // this.setState({
+      //   linkId: linkId,
+      // });
+    } else {
+      console.log('not found', response.status);
     }
-    return '';
   }
 
   render() {
@@ -55,15 +82,16 @@ class Profile extends Component {
           <button
             className="pure-button pure-button-primary"
             style={{ marginBottom: '1em' }}
+            disabled={this.state.isLinkOwner}
             onClick={() => this.setState({ contactOpen: true })}
           >
-            Apply – {this.formatCurrency(this.state.payoffs[0])}
+            Apply – {formatCurrency(this.state.payoffs[0])}
           </button>
           <Dialog
             isOpen={this.state.contactOpen}
             onDismiss={() => this.setState({ contactOpen: false })}
           >
-            <p>(UI needed to request payment)</p>
+            <ResponseForm submit={this.sendResponse.bind(this)} />
           </Dialog>
         </div>
 
@@ -79,7 +107,7 @@ class Profile extends Component {
               style={{ marginTop: '1em' }}
               onClick={() => this.setState({ linkOpen: true })}
             >
-              Promote for {this.formatCurrency(this.state.nextUserPayoff)}
+              Promote for {formatCurrency(this.state.nextUserPayoff)}
             </button>
             <Dialog
               isOpen={this.state.linkOpen}

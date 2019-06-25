@@ -21,6 +21,7 @@ import User from 'components/user';
 import Query from 'components/query';
 import QueryLink from 'components/link';
 import Search from 'components/publicLinksTable';
+import Response from 'components/response';
 
 // testing
 import createUser from 'components/createUser';
@@ -83,13 +84,14 @@ function App() {
             <Route path="/search" component={Search} />
             <Route path="/link/:linkId" component={QueryLink} />
             <Route path="/query/:linkId" component={Query} />
+            <Route path="/response/:responseId" component={Response} />
             <Route path="/user" component={User} />
             <Route component={LandingPage} />
           </Switch>
         ) : (
           <Switch>
             <Route path="/search" component={Search} />
-            <Route path="/link/:linkId" component={Link} />
+            <Route path="/link/:linkId" component={QueryLink} />
             <Route component={LandingPage} />
           </Switch>
         )}

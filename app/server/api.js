@@ -7,6 +7,7 @@ const plaid = require('plaid');
 const UserModel = require('./models').UserModel;
 const QueryModel = require('./models').QueryModel;
 const LinkModel = require('./models').LinkModel;
+const ResponseModel = require('./models').ResponseModel;
 
 const clientId = '5d0cdd955a4c3e0012b14f6e';
 const secret = 'ac69552f4c2f146f9a8ee31686e7ec';
@@ -247,6 +248,10 @@ router.get('/query/:linkId', async function(req, res) {
         path: 'links',
         populate: { path: 'parentLink query' },
         options: { sort: { generation: 1 } }
+      })
+      .populate({
+        path: 'responses',
+        populate: { path: ' query' }
       });
     if (!query) {
       return res.status(404).send('profile not found');
@@ -359,6 +364,105 @@ router.post('/link/add', async function(req, res) {
     );
 
     res.status(200).send(newLink);
+  } catch (error) {
+    console.log('API Error:', error);
+    res.status(500).send(error);
+  }
+});
+
+// create response
+router.post('/response/add', async function(req, res) {
+  // auth-only
+  if (!req.user) {
+    return res.status(401).send();
+  }
+
+  // validate input
+  if (!req.body.queryId) {
+    return res.status(400).send('must set query id');
+  }
+
+  // get link
+  const link = await LinkModel.findOne({ linkId: req.body.linkId });
+  if (!link) {
+    return res.status(404).send('link not found');
+  }
+
+  try {
+    // add new response
+    const newResponse = new ResponseModel({
+      query: req.body.queryId,
+      link: link._id,
+      respondingUser: req.user._id
+    });
+    await newResponse.save();
+
+    // add link ref to query
+    await QueryModel.updateOne(
+      { _id: req.body.queryId },
+      { $push: { responses: newResponse._id } }
+    );
+
+    res.status(200).send(newResponse);
+  } catch (error) {
+    console.log('API Error:', error);
+    res.status(500).send(error);
+  }
+});
+
+// get response
+router.get('/response/:responseId', async function(req, res) {
+  // auth-only
+  if (!req.user) {
+    return res.status(401).send();
+  }
+
+  // validate input
+  if (!req.params.responseId) {
+    return res.status(400).send('must set responseId');
+  }
+
+  try {
+    // get response
+    const response = await ResponseModel.findOne({
+      linkId: req.body.responseId
+    })
+      .populate({
+        path: 'link'
+      })
+      .populate({
+        path: 'query'
+      });
+    if (!response) {
+      return res.status(404).send('link not found');
+    }
+
+    res.status(200).send({
+      _id: response._id,
+      title: response.query.title,
+      description: response.query.data.description,
+      payoffs: response.link.payoffs
+    });
+  } catch (error) {
+    console.log('API Error:', error);
+    res.status(500).send(error);
+  }
+});
+
+// create payment
+router.post('/payment/:responseId', async function(req, res) {
+  // auth-only
+  if (!req.user) {
+    return res.status(401).send();
+  }
+
+  // validate input
+  if (!req.params.responseId) {
+    return res.status(400).send('must set responseId');
+  }
+
+  try {
+    res.status(200).send({});
   } catch (error) {
     console.log('API Error:', error);
     res.status(500).send(error);

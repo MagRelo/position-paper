@@ -32,7 +32,9 @@ const QuerySchema = new mongoose.Schema(
     bonus: Number,
     type: String,
     data: Object,
-    links: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Link' }]
+    links: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Link' }],
+    responses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Response' }],
+    payments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Payment' }]
   },
   { timestamps: true }
 );
@@ -64,3 +66,38 @@ const LinkSchema = new mongoose.Schema(
   { timestamps: true }
 );
 exports.LinkModel = mongoose.model('Link', LinkSchema);
+
+//
+// Response
+//
+const ResponseSchema = new mongoose.Schema(
+  {
+    query: { type: mongoose.Schema.Types.ObjectId, ref: 'Query' },
+    link: { type: mongoose.Schema.Types.ObjectId, ref: 'Link' },
+    respondingUser: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+  },
+  { timestamps: true }
+);
+exports.ResponseModel = mongoose.model('Response', ResponseSchema);
+
+//
+// Payment
+//
+const PaymentSchema = new mongoose.Schema(
+  {
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    targetUser: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    amount: {
+      type: Number,
+      default: 0
+    },
+    isPaid: {
+      type: Boolean,
+      default: false
+    },
+    query: { type: mongoose.Schema.Types.ObjectId, ref: 'Query' },
+    link: { type: mongoose.Schema.Types.ObjectId, ref: 'Link' }
+  },
+  { timestamps: true }
+);
+exports.PaymentModel = mongoose.model('Payment', PaymentSchema);
