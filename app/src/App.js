@@ -69,10 +69,10 @@ function App() {
           </div>
 
           <h1>
-            <Link to="/">Incentive Engine</Link>
+            <Link to="/">Incentive Exchange</Link>
           </h1>
 
-          <h2>Transparent Incentives</h2>
+          <h2>Business protocol layer</h2>
         </div>
 
         {activeSession ? (

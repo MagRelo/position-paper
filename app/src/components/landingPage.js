@@ -8,17 +8,17 @@ class LandingPage extends Component {
     return (
       <div>
         <section>
-          <div className="row row-2">
-            <h2 style={{ textAlign: 'right' }}>
-              Referrals are
-              <br /> the best hires.
-            </h2>
-            <h2>
-              Everyone. <br /> Hates. Recruiters.
-            </h2>
-          </div>
+          <h2>Incentive Engine</h2>
+          <p>
+            Post a request and a completion bonus and watch as a network of
+            referrals form.
+          </p>
+        </section>
 
+        <section>
           <div style={{ textAlign: 'center' }}>
+            <h2>Referrals are the best hires.</h2>
+            <h2>Everyone. Hates. Recruiters.</h2>
             <p>
               Recruiters can't help you find the perfect candidate. Who can?
             </p>
@@ -32,11 +32,6 @@ class LandingPage extends Component {
               <b>cheaper than recruiters</b>.
             </p>
           </div>
-        </section>
-
-        <section>
-          <h2>Incentive Engine</h2>
-          <p>Watch a network of referrals form </p>
         </section>
       </div>
     );
