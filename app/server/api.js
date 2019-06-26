@@ -2,31 +2,12 @@ var express = require('express');
 var router = express.Router();
 
 const passport = require('passport');
-const plaid = require('plaid');
+const plaidClient = require('./integrations/plaid_client');
 
 const UserModel = require('./models').UserModel;
 const QueryModel = require('./models').QueryModel;
 const LinkModel = require('./models').LinkModel;
 const ResponseModel = require('./models').ResponseModel;
-
-const clientId = '5d0cdd955a4c3e0012b14f6e';
-const secret = 'ac69552f4c2f146f9a8ee31686e7ec';
-const publicKey = '2b3f9221802f14178deef36cd7f168';
-const env = 'sandbox';
-
-//
-// Plaid Client
-//
-var client = new plaid.Client(
-  clientId,
-  secret,
-  publicKey,
-  plaid.environments[env],
-  {
-    version: '2019-05-29',
-    clientApp: 'Incentive Engine'
-  }
-);
 
 //
 // PUBLIC
@@ -35,41 +16,33 @@ var client = new plaid.Client(
 // plaid signup
 router.post('/user/signup', async function(req, res) {
   // required
-  const publicToken = req.body.token;
-  if (!publicToken) {
-    res.status(400).send('no token');
+  const plaid_publicToken = req.body.token;
+  const plaid_account = req.body.account;
+  if (!plaid_publicToken || !plaid_account) {
+    return res.status(400).send('no token or account');
   }
 
   try {
-    // exchange for access token
-    client.exchangePublicToken(publicToken, function(error, tokenResponse) {
-      if (error != null) throw Error(error);
+    const plaid_bankAccountToken = await plaidClient.getStripeBankAccountToken(
+      plaid_publicToken,
+      plaid_account
+    );
+    // merge plaid data with front-end form data
+    const fullUserObject = Object.assign(
+      {},
+      {
+        plaid_bankAccountToken,
+        plaid_publicToken
+      },
+      req.body
+    );
 
-      // get item
-      client.getItem(tokenResponse.access_token, async function(
-        error,
-        itemResponse
-      ) {
-        if (error != null) throw Error(error);
+    // create the user
+    const user = new UserModel(fullUserObject);
+    await user.save();
 
-        // merge plaid data with front-end form data
-        const fullUserObject = Object.assign(
-          {},
-          {
-            plaid_token: tokenResponse,
-            plaid_item: itemResponse
-          },
-          req.body
-        );
-
-        // create the user
-        const user = new UserModel(fullUserObject);
-        await user.save();
-
-        req.login(user, function() {
-          res.status(200).send(user);
-        });
-      });
+    req.login(user, function() {
+      res.status(200).send(user);
     });
   } catch (error) {
     console.log('API Error:', error);

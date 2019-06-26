@@ -50,7 +50,7 @@ mongoose.connection.on('error', function(err) {
 // *
 
 // load stripe api
-require('./stripe');
+// require('./integrations/stripe');
 
 // configure express middleware
 app.use(express.static('build'));

@@ -20,7 +20,7 @@ import LandingPage from 'components/landingPage';
 import User from 'components/user';
 import Query from 'components/query';
 import QueryLink from 'components/link';
-import Search from 'components/publicLinksTable';
+import Search from 'components/search';
 import Response from 'components/response';
 
 // testing

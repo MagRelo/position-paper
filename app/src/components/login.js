@@ -14,16 +14,18 @@ function LoginButton(props) {
 
   // data
   const [token, setToken] = useState(false);
+  const [account, setAccount] = useState(false);
 
-  function getToken(token) {
+  function getToken(token, account) {
     setToken(token);
+    setAccount(account);
     // open form to get addtl user data
     setCreateOpen(true);
   }
 
   async function getForm(formJson) {
     // merge in token
-    const userObj = Object.assign({}, formJson, { token: token });
+    const userObj = Object.assign({}, formJson, { token, account });
 
     try {
       const user = await createUser(userObj);

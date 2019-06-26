@@ -35,7 +35,7 @@ class Profile extends Component {
         <hr />
         <div className="row row-2">
           <div>
-            <h3>Links</h3>
+            <h3>Promoting</h3>
             <LinksList links={this.state.links} />
           </div>
 
@@ -47,7 +47,7 @@ class Profile extends Component {
             >
               Add Query
             </Link>
-            <h3>Queries</h3>
+            <h3>Requesting</h3>
 
             <QueryList queries={this.state.queries} />
           </div>

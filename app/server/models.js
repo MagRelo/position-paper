@@ -6,8 +6,8 @@ const nanoid = require('nanoid');
 //
 const UserSchema = new mongoose.Schema(
   {
-    plaid_token: Object,
-    plaid_item: Object,
+    plaid_publicToken: Object,
+    plaid_bankAccountToken: String,
     email: String,
     password: String,
     name: String,

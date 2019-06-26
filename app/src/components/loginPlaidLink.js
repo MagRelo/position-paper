@@ -1,29 +1,27 @@
 import React from 'react';
 
-const apiVersion = 'v2';
 const clientName = 'Incentive Engine';
 const env = 'sandbox';
 
 const publicKey = '2b3f9221802f14178deef36cd7f168';
 
-const products = ['auth', 'transactions'];
+const products = ['auth'];
 const institution = null;
 
 function PlaidLinkWrapper(props) {
   // setup plaid link
   window.linkHandler = window.Plaid.create({
-    apiVersion: apiVersion,
-    clientName: clientName,
+    selectAccount: true,
     env: env,
+    clientName: clientName,
     key: publicKey,
     product: products,
     onExit: onExit,
     onSuccess: onSuccess
   });
 
-  function onSuccess(token) {
-    console.log('token', token);
-    props.getToken(token);
+  function onSuccess(token, metadata) {
+    props.getToken(token, metadata.account_id);
   }
 
   function onExit() {
