@@ -54,7 +54,7 @@ function App() {
   return (
     <StripeProvider apiKey="pk_test_dMv1AAldL0wj69FLCG4c8jce00J8jWxWg9">
       <div className="container">
-        <div className="header">
+        <nav className="header">
           <div className="menu">
             <Link to={'/search'}>Search</Link>
             {activeSession ? <Link to={'/user'}>Account</Link> : null}
@@ -73,7 +73,7 @@ function App() {
           </h1>
 
           <h2>Business protocol layer</h2>
-        </div>
+        </nav>
 
         {activeSession ? (
           <Switch>

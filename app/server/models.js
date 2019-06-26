@@ -61,6 +61,10 @@ const LinkSchema = new mongoose.Schema(
     generation: {
       type: Number,
       default: 0
+    },
+    isQueryOwner: {
+      type: Boolean,
+      default: false
     }
   },
   { timestamps: true }

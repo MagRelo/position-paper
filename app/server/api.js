@@ -164,6 +164,7 @@ router.post('/query/add', async function(req, res) {
       user: req.user._id,
       query: newQuery._id,
       parentLink: null,
+      isQueryOwner: true,
       generation: 0,
       payoffs: calcLinkPayouts(query.bonus, 1)
     });
@@ -403,8 +404,11 @@ router.get('/response/:responseId', async function(req, res) {
     const response = await ResponseModel.findOne({
       _id: req.params.responseId
     })
-      .populate('link')
       .populate('query')
+      .populate({
+        path: 'link',
+        populate: { path: 'user' }
+      })
       .populate({
         path: 'respondingUser',
         select: 'name email'
@@ -480,6 +484,14 @@ async function calcUserPayouts(link, respondant) {
     payout: link.payoffs[0]
   });
 
+  // second is link owner
+  payoutArray.push({
+    _id: link.user._id,
+    name: link.user.name,
+    payout: link.payoffs[1]
+  });
+
+  // if parents
   const parents = await populateParent(link.parentLink, link.payoffs);
   recursionParents = []; //cleanup
   return payoutArray.concat(parents);
@@ -492,19 +504,26 @@ async function populateParent(parentLinkId, payoffs) {
     .populate('user', 'name email')
     .lean();
 
-  if (link.parentLink) {
+  if (link && !link.isQueryOwner) {
     const distance = recursionParents.length;
     const payoff = payoffs[distance + 1];
     // console.log(distance, payoff);
 
     // push into array
     recursionParents.push(
-      Object.assign({ name: link.user.name, payout: payoff })
+      Object.assign({
+        _id: link.user._id,
+        name: link.user.name,
+        payout: payoff
+      })
     );
-    return await populateParent(link.parentLink, payoffs);
-  } else {
-    return recursionParents;
+
+    if (link.parentLink) {
+      return await populateParent(link.parentLink, payoffs);
+    }
   }
+
+  return recursionParents;
 }
 
 module.exports = router;
