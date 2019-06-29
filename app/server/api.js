@@ -2,12 +2,13 @@ var express = require('express');
 var router = express.Router();
 
 const passport = require('passport');
-const plaidClient = require('./integrations/plaid_client');
+const payments = require('./integrations/payments');
 
 const UserModel = require('./models').UserModel;
 const QueryModel = require('./models').QueryModel;
 const LinkModel = require('./models').LinkModel;
 const ResponseModel = require('./models').ResponseModel;
+const PaymentModel = require('./models').PaymentModel;
 
 //
 // PUBLIC
@@ -16,26 +17,21 @@ const ResponseModel = require('./models').ResponseModel;
 // plaid signup
 router.post('/user/signup', async function(req, res) {
   // required
-  const plaid_publicToken = req.body.token;
-  const plaid_account = req.body.account;
-  if (!plaid_publicToken || !plaid_account) {
-    return res.status(400).send('no token or account');
-  }
+  // const plaid_publicToken = req.body.token;
+  // const plaid_account = req.body.account;
+  // if (!plaid_publicToken || !plaid_account) {
+  //   return res.status(400).send('no token or account');
+  // }
 
   try {
-    const plaid_bankAccountToken = await plaidClient.getStripeBankAccountToken(
-      plaid_publicToken,
-      plaid_account
-    );
-    // merge plaid data with front-end form data
-    const fullUserObject = Object.assign(
-      {},
-      {
-        plaid_bankAccountToken,
-        plaid_publicToken
-      },
-      req.body
-    );
+    debugger;
+    // create a stripe customer
+    const stripeAccount = await payments.createStripeAccount(req.body, req.ip);
+
+    // merge stripe data with front-end form data
+    const fullUserObject = Object.assign({}, { stripeAccount }, req.body);
+
+    console.log('user: ', fullUserObject);
 
     // create the user
     const user = new UserModel(fullUserObject);
@@ -434,18 +430,73 @@ router.get('/response/:responseId', async function(req, res) {
 });
 
 // create payment
-router.post('/payment/:responseId', async function(req, res) {
+router.post('/response/:responseId', async function(req, res) {
   // auth-only
   if (!req.user) {
     return res.status(401).send();
   }
-
   // validate input
   if (!req.params.responseId) {
     return res.status(400).send('must set responseId');
   }
 
   try {
+    // get response
+    const response = await ResponseModel.findOne({
+      _id: req.params.responseId
+    })
+      .populate({
+        path: 'query',
+        populate: { path: 'user' }
+      })
+      .populate({
+        path: 'link',
+        populate: { path: 'user' }
+      })
+      .populate({
+        path: 'respondingUser',
+        select: 'name email'
+      })
+      .lean();
+
+    // must have response
+    if (!response) {
+      return res
+        .status(404)
+        .send('response not found: ', req.params.responseId);
+    }
+    // auth - must be owner
+    if (!req.user._id.equals(response.query.user._id)) {
+      return res.status(401).send();
+    }
+
+    // create payment record
+    const newPayment = new PaymentModel({
+      user: req.user._id,
+      query: response.query._id,
+      link: response.link._id,
+      parent: null,
+      amount: response.query.bonus,
+      isPayable: false,
+      isPaid: false
+    });
+    newPayment.save();
+
+    // create Stripe payment
+    // const payment = await payments.createCharge(
+    //   response.query.stripeCustomer.id,
+    //   response.query.bonus
+    // );
+
+    // save stripe response
+    // newPayment.data = payment;
+    // newPayment.save();
+
+    // create child payments
+    const payouts = calcUserPayouts(response.link, response.query.user);
+
+    // create account-to-account payments
+
     res.status(200).send({});
   } catch (error) {
     console.log('API Error:', error);

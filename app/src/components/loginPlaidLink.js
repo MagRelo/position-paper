@@ -21,7 +21,7 @@ function PlaidLinkWrapper(props) {
   });
 
   function onSuccess(token, metadata) {
-    props.getToken(token, metadata.account_id);
+    props.getToken(token, metadata);
   }
 
   function onExit() {
@@ -29,6 +29,7 @@ function PlaidLinkWrapper(props) {
   }
 
   function handleOnClick(event) {
+    event.preventDefault();
     if (window.linkHandler) {
       window.linkHandler.open(institution);
     }
@@ -40,7 +41,7 @@ function PlaidLinkWrapper(props) {
         className="pure-button pure-button-primary"
         onClick={handleOnClick}
       >
-        Signup
+        Connect Bank Account
       </button>
     </React.Fragment>
   );

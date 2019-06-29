@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
-import { StripeProvider } from 'react-stripe-elements';
+// import { StripeProvider } from 'react-stripe-elements';
 import Cookies from 'js-cookie';
 
 // CSS
@@ -13,15 +13,15 @@ import './index.css';
 import './app.css';
 
 // Header
-import Login from 'components/login';
+import LoginButton from 'components/loginButton';
 
-// Header
 import LandingPage from 'components/landingPage';
 import User from 'components/user';
 import Query from 'components/query';
 import QueryLink from 'components/link';
 import Search from 'components/search';
 import Response from 'components/response';
+import Signup from 'components/createUser';
 
 // testing
 import createUser from 'components/createUser';
@@ -52,51 +52,50 @@ function App() {
   }
 
   return (
-    <StripeProvider apiKey="pk_test_dMv1AAldL0wj69FLCG4c8jce00J8jWxWg9">
-      <div className="container">
-        <nav className="header">
-          <div className="menu">
-            <Link to={'/search'}>Search</Link>
-            {activeSession ? <Link to={'/user'}>Account</Link> : null}
+    <div className="container">
+      <nav className="header">
+        <div className="menu">
+          <Link to={'/search'}>Search</Link>
+          {activeSession ? <Link to={'/user'}>Account</Link> : null}
 
-            <span>|</span>
+          <span>|</span>
 
-            <Login
-              activeSession={activeSession}
-              createSession={createSession}
-              clearSession={clearSession}
-            />
-          </div>
+          <LoginButton
+            activeSession={activeSession}
+            createSession={createSession}
+            clearSession={clearSession}
+          />
+        </div>
 
-          <h1>
-            <Link to="/">Incentive Exchange</Link>
-          </h1>
+        <h1>
+          <Link to="/">Incentive Exchange</Link>
+        </h1>
 
-          <h2>Business protocol layer</h2>
-        </nav>
+        <h2>Business protocol layer</h2>
+      </nav>
 
-        {activeSession ? (
-          <Switch>
-            <Route path="/adduser" component={createUser} />
-            <Route path="/addlink" component={createLink} />
-            <Route path="/addquery" component={createQuery} />
+      {activeSession ? (
+        <Switch>
+          <Route path="/adduser" component={createUser} />
+          <Route path="/addlink" component={createLink} />
+          <Route path="/addquery" component={createQuery} />
 
-            <Route path="/search" component={Search} />
-            <Route path="/link/:linkId" component={QueryLink} />
-            <Route path="/query/:linkId" component={Query} />
-            <Route path="/response/:responseId" component={Response} />
-            <Route path="/user" component={User} />
-            <Route component={LandingPage} />
-          </Switch>
-        ) : (
-          <Switch>
-            <Route path="/search" component={Search} />
-            <Route path="/link/:linkId" component={QueryLink} />
-            <Route component={LandingPage} />
-          </Switch>
-        )}
-      </div>
-    </StripeProvider>
+          <Route path="/search" component={Search} />
+          <Route path="/link/:linkId" component={QueryLink} />
+          <Route path="/query/:linkId" component={Query} />
+          <Route path="/response/:responseId" component={Response} />
+          <Route path="/user" component={User} />
+          <Route component={LandingPage} />
+        </Switch>
+      ) : (
+        <Switch>
+          <Route path="/link/:linkId" component={QueryLink} />
+          <Route path="/search" component={Search} />
+          <Route path="/signup" component={Signup} />
+          <Route component={LandingPage} />
+        </Switch>
+      )}
+    </div>
   );
 }
 

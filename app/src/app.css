@@ -85,3 +85,11 @@ li {
   border: solid 1px #999;
   padding: 0 1em;
 }
+
+.pure-form label {
+  margin-top: 1rem;
+}
+
+.pure-form fieldset {
+  margin: 0 1.25rem;
+}

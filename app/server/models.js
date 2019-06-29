@@ -6,8 +6,8 @@ const nanoid = require('nanoid');
 //
 const UserSchema = new mongoose.Schema(
   {
-    plaid_publicToken: Object,
-    plaid_bankAccountToken: String,
+    metaData: Object,
+    stripeAccount: Object,
     email: String,
     password: String,
     name: String,
@@ -91,17 +91,22 @@ exports.ResponseModel = mongoose.model('Response', ResponseSchema);
 const PaymentSchema = new mongoose.Schema(
   {
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    targetUser: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    query: { type: mongoose.Schema.Types.ObjectId, ref: 'Query' },
+    link: { type: mongoose.Schema.Types.ObjectId, ref: 'Link' },
+    parent: { type: mongoose.Schema.Types.ObjectId, ref: 'Payment' },
     amount: {
       type: Number,
       default: 0
+    },
+    isPayable: {
+      type: Boolean,
+      default: false
     },
     isPaid: {
       type: Boolean,
       default: false
     },
-    query: { type: mongoose.Schema.Types.ObjectId, ref: 'Query' },
-    link: { type: mongoose.Schema.Types.ObjectId, ref: 'Link' }
+    data: Object
   },
   { timestamps: true }
 );

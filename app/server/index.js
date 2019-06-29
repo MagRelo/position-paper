@@ -1,4 +1,16 @@
+// *
+// load env var's
+// *
 const dotenv = require('dotenv');
+if (process.env.ENV === 'production') {
+  console.log('ENV: ' + process.env.ENV);
+} else {
+  // load local config from .env file
+  const result = dotenv.config();
+  if (result.error) {
+    throw result.error;
+  }
+}
 
 const express = require('express');
 const app = require('express')();
@@ -15,20 +27,6 @@ require('./auth/local');
 const httpApi = require('./api');
 
 // require('./utils/seedDb');
-
-// *
-// load env var's
-// *
-
-if (process.env.ENV === 'production') {
-  console.log('ENV: ' + process.env.ENV);
-} else {
-  // load local config from .env file
-  const result = dotenv.config();
-  if (result.error) {
-    throw result.error;
-  }
-}
 
 // *
 // db
@@ -56,6 +54,7 @@ mongoose.connection.on('error', function(err) {
 app.use(express.static('build'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ limit: '1mb' }));
+app.set('trust proxy', true);
 app.use(
   session({
     secret: process.env.SESSION_SECRET || 'pasta',
