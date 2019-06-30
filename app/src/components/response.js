@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import PaymentButton from 'components/paymentButton';
+import PaymentForm from 'components/createPayment';
 
 function Response(props) {
   const [response, setResponse] = useState({});
@@ -34,7 +34,7 @@ function Response(props) {
       <p>{response.message}</p>
       <hr />
 
-      <PaymentButton lineItems={payoffs}>Confirm and Pay</PaymentButton>
+      <PaymentForm lineItems={payoffs}>Confirm and Pay</PaymentForm>
     </div>
   );
 }
