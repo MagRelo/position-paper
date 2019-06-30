@@ -1,7 +1,8 @@
 import React from 'react';
 
-function CreateResponse(props) {
-  function submit(event) {
+function CreatePayment(props) {
+  
+  async function submit(event) {
     event.preventDefault();
 
     // get and format form data
@@ -11,9 +12,8 @@ function CreateResponse(props) {
       formObj[key] = value;
     });
 
-    console.log('formObj', formObj);
 
-    props.submit(formData);
+    // props.submit(formData);
   }
 
   return (
@@ -32,11 +32,28 @@ function CreateResponse(props) {
         </fieldset>
 
         <button className="pure-button pure-button-primary">
-          Send Response
+          Make Payment
         </button>
       </form>
     </React.Fragment>
   );
 }
 
-export default CreateResponse;
+export default CreatePayment;
+
+
+async function createPaymnet(formData) {
+  return await fetch('/api/user/signup', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(formData)
+  }).then(response => {
+    if (response.status === 200) {
+      return response.json();
+    }
+
+    throw new Error(response.status);
+  });
+}

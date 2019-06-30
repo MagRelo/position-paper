@@ -10,7 +10,8 @@ const UserSchema = new mongoose.Schema(
     stripeAccount: Object,
     email: String,
     password: String,
-    name: String,
+    first_name: String,
+    last_name: String,
     balance: Number
   },
   { timestamps: true }
@@ -90,23 +91,24 @@ exports.ResponseModel = mongoose.model('Response', ResponseSchema);
 //
 const PaymentSchema = new mongoose.Schema(
   {
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    from: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    to: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     query: { type: mongoose.Schema.Types.ObjectId, ref: 'Query' },
     link: { type: mongoose.Schema.Types.ObjectId, ref: 'Link' },
-    parent: { type: mongoose.Schema.Types.ObjectId, ref: 'Payment' },
     amount: {
       type: Number,
       default: 0
-    },
-    isPayable: {
-      type: Boolean,
-      default: false
     },
     isPaid: {
       type: Boolean,
       default: false
     },
-    data: Object
+    isInError: {
+      type: Boolean,
+      default: false
+    },
+    stripeData: Object,
+    stripeResponse: Object
   },
   { timestamps: true }
 );

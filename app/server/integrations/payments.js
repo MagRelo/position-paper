@@ -54,7 +54,7 @@ exports.createCharge = async function(
   toAccountId,
   amount_in_cents
 ) {
-  return stripe.charges.create({
+  const response = await stripe.charges.create({
     amount: amount_in_cents,
     currency: 'usd',
     customer: fromAccountId,
@@ -62,6 +62,8 @@ exports.createCharge = async function(
       destination: toAccountId
     }
   });
+
+  return response;
 };
 
 exports.createStripeAccount = async function(userData, ipAddress) {
@@ -99,7 +101,7 @@ exports.createStripeAccount = async function(userData, ipAddress) {
       ip: ipAddress,
       user_agent: userData.tos.user_agent
     },
-    requested_capabilities: ['platform_payments']
+    requested_capabilities: ['platform_payments', 'card_payments']
   });
 
   return account;

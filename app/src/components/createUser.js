@@ -39,13 +39,14 @@ class UserSignup extends Component {
       date: Math.floor(Date.now() / 1000),
       user_agent: window.navigator.userAgent
     };
-    // formObj.tos.ip = '';
 
     try {
-      // createSession
-      console.log(formObj);
-
+      // create user on server
       await createUser(formObj);
+
+      // redirect to user... or server side?
+
+      // createSession
       this.setState({
         formSuccess: true,
         formAlert: true,

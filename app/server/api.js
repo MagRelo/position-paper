@@ -404,7 +404,7 @@ router.get('/response/:responseId', async function(req, res) {
       })
       .populate({
         path: 'respondingUser',
-        select: 'name email'
+        select: 'name email stripeAccount'
       })
       .lean();
     if (!response) {
@@ -427,7 +427,7 @@ router.get('/response/:responseId', async function(req, res) {
 });
 
 // create payment
-router.post('/response/:responseId', async function(req, res) {
+router.post('/payment/:responseId', async function(req, res) {
   // auth-only
   if (!req.user) {
     return res.status(401).send();
@@ -452,7 +452,7 @@ router.post('/response/:responseId', async function(req, res) {
       })
       .populate({
         path: 'respondingUser',
-        select: 'name email'
+        select: 'name email stripeAccount'
       })
       .lean();
 
@@ -462,44 +462,47 @@ router.post('/response/:responseId', async function(req, res) {
         .status(404)
         .send('response not found: ', req.params.responseId);
     }
-    // auth - must be owner
+
+    // auth - must be query owner
     if (!req.user._id.equals(response.query.user._id)) {
       return res.status(401).send();
     }
 
-    // create payment record
-    const newPayment = new PaymentModel({
-      user: req.user._id,
-      query: response.query._id,
-      link: response.link._id,
-      parent: null,
-      amount: response.query.bonus,
-      isPayable: false,
-      isPaid: false
-    });
-    newPayment.save();
-
-    // create Stripe payment
-    // const payment = await payments.createCharge(
-    //   response.query.stripeCustomer.id,
-    //   response.query.bonus
-    // );
-
-    // save stripe response
-    // newPayment.data = payment;
-    // newPayment.save();
-
     // create child payments
-    const payouts = calcUserPayouts(response.link, response.query.user);
+    const payouts = await calcUserPayouts(
+      response.link,
+      response.respondingUser
+    );
 
-    // create account-to-account payments
+    const paymentPromises = [];
+    payouts.forEach(payout => {
+      paymentPromises.push(
+        createPayment(
+          response.query._id,
+          response.link._id,
+          response.query.user._id,
+          response.query.user.stripeAccount.id,
+          payout._id,
+          payout.stripeAccount.id,
+          payout.amount
+        )
+      );
+    });
 
-    res.status(200).send({});
+    console.log(paymentPromises);
+
+    const payments = await Promise.all(paymentPromises);
+
+    console.log(payments);
+
+    res.status(200).send(payments);
   } catch (error) {
     console.log('API Error:', error);
     res.status(500).send(error);
   }
 });
+
+module.exports = router;
 
 function calcLinkPayouts(bonus, generations) {
   let payoffs = [];
@@ -528,6 +531,9 @@ async function calcUserPayouts(link, respondant) {
   // first is always respondant
   payoutArray.push({
     _id: respondant._id,
+    stripeAccount: {
+      id: respondant.stripeAccount.id
+    },
     name: respondant.name,
     payout: link.payoffs[0]
   });
@@ -535,6 +541,9 @@ async function calcUserPayouts(link, respondant) {
   // second is link owner
   payoutArray.push({
     _id: link.user._id,
+    stripeAccount: {
+      id: link.user.stripeAccount.id
+    },
     name: link.user.name,
     payout: link.payoffs[1]
   });
@@ -549,7 +558,7 @@ let recursionParents = [];
 async function populateParent(parentLinkId, payoffs) {
   // get parent
   const link = await LinkModel.findOne({ _id: parentLinkId })
-    .populate('user', 'name email')
+    .populate('user', 'name email stripeAccount')
     .lean();
 
   if (link && !link.isQueryOwner) {
@@ -561,6 +570,9 @@ async function populateParent(parentLinkId, payoffs) {
     recursionParents.push(
       Object.assign({
         _id: link.user._id,
+        stripeAccount: {
+          id: link.user.stripeAccount.id
+        },
         name: link.user.name,
         payout: payoff
       })
@@ -574,4 +586,40 @@ async function populateParent(parentLinkId, payoffs) {
   return recursionParents;
 }
 
-module.exports = router;
+async function createPayment(
+  queryId,
+  linkId,
+  fromUserId,
+  fromAccountId,
+  toUserId,
+  toAccountId,
+  amount_in_cents
+) {
+  // create payment record
+  const newPayment = new PaymentModel({
+    from: fromUserId,
+    to: toUserId,
+    query: queryId,
+    link: linkId,
+    amount: amount_in_cents,
+    stripeData: { fromAccountId, toAccountId, amount_in_cents }
+  });
+  await newPayment.save();
+
+  // create account-to-account payments through stripe
+  const payment = await payments.createCharge(
+    fromAccountId,
+    toAccountId,
+    amount_in_cents
+  );
+
+  console.log('payment', payment);
+
+  // save stripe response
+  newPayment.stripeResponse = payment;
+  await newPayment.save(err => {
+    if (err) throw new Error(err);
+  });
+
+  return newPayment;
+}

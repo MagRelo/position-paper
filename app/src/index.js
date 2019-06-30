@@ -4,6 +4,9 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 
+// stripe
+import { StripeProvider } from 'react-stripe-elements';
+
 // redux stote
 import store from 'state/store';
 
@@ -19,7 +22,9 @@ import store from 'state/store';
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
-      <App />
+      <StripeProvider apiKey="pk_test_dMv1AAldL0wj69FLCG4c8jce00J8jWxWg9">
+        <App />
+      </StripeProvider>
     </BrowserRouter>
   </Provider>,
 

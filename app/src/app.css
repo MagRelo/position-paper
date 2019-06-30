@@ -93,3 +93,33 @@ li {
 .pure-form fieldset {
   margin: 0 1.25rem;
 }
+
+
+/* payment line items */
+.line-item {
+  grid-template-columns: 1fr;
+  grid-gap: 0;
+}
+
+.line-item-filler {
+  display: none;
+}
+
+@media screen and (min-width: 400px) {
+
+  .line-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-gap: 1em;
+
+    margin: 0.5em 0;
+  }
+
+  .line-item-filler {
+    border-bottom: 1px dashed #cbcbcb;
+    display: block;
+  }
+
+}
+
+/* payment line items */

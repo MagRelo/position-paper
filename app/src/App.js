@@ -35,7 +35,7 @@ function App() {
     () => {
       const servesaCookie = Cookies.get('servesa');
       if (servesaCookie) {
-        console.log(servesaCookie);
+        // console.log(servesaCookie);
         setActiveSession(true);
       }
     },
