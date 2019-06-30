@@ -24,14 +24,11 @@ router.post('/user/signup', async function(req, res) {
   // }
 
   try {
-    debugger;
     // create a stripe customer
     const stripeAccount = await payments.createStripeAccount(req.body, req.ip);
 
     // merge stripe data with front-end form data
     const fullUserObject = Object.assign({}, { stripeAccount }, req.body);
-
-    console.log('user: ', fullUserObject);
 
     // create the user
     const user = new UserModel(fullUserObject);
@@ -41,7 +38,7 @@ router.post('/user/signup', async function(req, res) {
       res.status(200).send(user);
     });
   } catch (error) {
-    console.log('API Error:', error);
+    console.log(error);
     res.status(500).send(error);
   }
 });

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PlaidLink from 'components/loginPlaidLink';
 
+import SocialIcon from 'components/socialButton';
+
 class UserSignup extends Component {
   state = {
     formAlert: false,
@@ -91,19 +93,40 @@ class UserSignup extends Component {
           className="pure-form"
           onSubmit={this.handleSubmit.bind(this)}
         >
-          <legend>Link Social Accounts</legend>
-
+          <legend>Username and Password</legend>
           <fieldset>
             <div className="row row-2">
-              <div>Github</div>
-              <div>Twitter</div>
-              <div>LinkedIn</div>
-              <div>Google</div>
+              <div>
+                <label htmlFor="email">Email </label>
+                <input
+                  className="pure-input-1"
+                  type="text"
+                  id="email"
+                  name="email"
+                />
+              </div>
+              <div>
+                <label htmlFor="password">Password </label>
+                <input
+                  className="pure-input-1"
+                  type="password"
+                  id="password"
+                  name="password"
+                />
+              </div>
+            </div>
+          </fieldset>
+
+          <legend>Link Social Accounts</legend>
+          <fieldset>
+            <div className="row row-3">
+              <SocialIcon company="gmail" />
+              <SocialIcon company="twitter" />
+              <SocialIcon company="linkdin" />
             </div>
           </fieldset>
 
           <legend>Link Bank Account</legend>
-
           <fieldset>
             <div className="row row-2">
               <div>
@@ -115,7 +138,6 @@ class UserSignup extends Component {
                   name="first_name"
                 />
               </div>
-
               <div>
                 <label htmlFor="last_name">Last Name </label>
                 <input
@@ -136,7 +158,6 @@ class UserSignup extends Component {
                   name="dob"
                 />
               </div>
-
               <div>
                 <label htmlFor="ssn">Last 4 Digits of SSN </label>
                 <input
@@ -146,7 +167,6 @@ class UserSignup extends Component {
                   name="ssn"
                 />
               </div>
-
               <div>
                 <label htmlFor="bank">Bank Account</label>
                 {this.state.token ? (
@@ -174,7 +194,6 @@ class UserSignup extends Component {
               provided by Stripe.
             </small>
             <br />
-
             <label htmlFor="tos_agree">
               <input
                 style={{ marginRight: '0.667em' }}

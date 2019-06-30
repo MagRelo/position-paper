@@ -4,7 +4,6 @@ const clientId = '5d0cdd955a4c3e0012b14f6e';
 const secret = 'ac69552f4c2f146f9a8ee31686e7ec';
 const publicKey = '2b3f9221802f14178deef36cd7f168';
 const env = 'sandbox';
-
 var plaidClient = new plaid.Client(
   clientId,
   secret,
@@ -27,6 +26,10 @@ if (process.env.STRIPE_TEST_MODE) {
 }
 const stripe = require('stripe')(stripeApiKey);
 
+//
+// Methods
+//
+
 exports.createStripeCustomer = async function(token, account, userData) {
   // get stripe token from plaid
   const item = await plaidClient.exchangePublicToken(token);
@@ -46,15 +49,30 @@ exports.createStripeCustomer = async function(token, account, userData) {
   return customer;
 };
 
-exports.createCharge = async function(stripeCustomerId, amount_in_cents) {
+exports.createCharge = async function(
+  fromAccountId,
+  toAccountId,
+  amount_in_cents
+) {
   return stripe.charges.create({
     amount: amount_in_cents,
     currency: 'usd',
-    customer: stripeCustomerId
+    customer: fromAccountId,
+    transfer_data: {
+      destination: toAccountId
+    }
   });
 };
 
 exports.createStripeAccount = async function(userData, ipAddress) {
+  // exchange plaid token for stripe token
+  const accessToken = await plaidClient.exchangePublicToken(userData.token);
+  const bankToken = await plaidClient.createStripeToken(
+    accessToken.access_token,
+    userData.metaData.account_id
+  );
+
+  // create "Stripe Connect" account with bank account
   const dob_array = userData.dob.split('-'); // "2019-06-13"
   const account = await stripe.accounts.create({
     type: 'custom',
@@ -71,6 +89,11 @@ exports.createStripeAccount = async function(userData, ipAddress) {
       },
       ssn_last_4: userData.ssn
     },
+    business_profile: {
+      product_description:
+        'User refers information and/or applicants to platform customers'
+    },
+    external_account: bankToken.stripe_bank_account_token,
     tos_acceptance: {
       date: userData.tos.date,
       ip: ipAddress,
