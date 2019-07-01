@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import UserSocial from 'components/userSocial';
+import UserBankAccount from 'components/userBankAccount';
+
 import LinksList from './userLinksTable';
 import QueryList from './userQueryTable';
 
@@ -29,8 +32,15 @@ class Profile extends Component {
   render() {
     return (
       <div>
-        <h2>{this.state.name}</h2>
-        <p>{this.state.email}</p>
+        <div className="row row-2">
+          <div>
+            <h2>{this.state.name}</h2>
+            <p>Email: {this.state.email}</p>
+            <p>Balance: $452.00</p>
+            <p>Bank Account Status: Not Connected</p>
+          </div>
+          <UserSocial />
+        </div>
 
         <hr />
         <div className="row row-2">
