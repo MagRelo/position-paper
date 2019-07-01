@@ -118,7 +118,7 @@ li {
   display: none;
 }
 
-@media screen and (min-width: 400px) {
+@media screen and (min-width: 435px) {
 
   .line-item {
     display: grid;
@@ -139,18 +139,17 @@ li {
 
 /* social */
 .social-grid {
+  display: grid;
   grid-template-columns: 1fr;
   grid-gap: 0;
+  padding: 0 1em;
 }
 
-@media screen and (min-width: 400px) {
+@media screen and (min-width: 435px) {
 
   .social-grid {
-    display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-gap: 1em;
-
-    padding: 0 1em;
+    grid-gap: 0.5em;
   }
 }
 

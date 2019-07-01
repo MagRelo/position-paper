@@ -26,13 +26,13 @@ svg {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 1rem;
+  padding: 11px;
   float: left;
 }
 
 .icon-block {
-  height: 50px;
-  line-height: 50px;
+  height: 40px;
+  line-height: 40px;
   margin: 0.5em 0
 }
 

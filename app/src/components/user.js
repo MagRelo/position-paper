@@ -35,10 +35,13 @@ class Profile extends Component {
         <div className="row row-2">
           <div>
             <h3 className="section-header">Account Information</h3>
-            <p>Name: {this.state.name}</p>
-            <p>Email: {this.state.email}</p>
-            <p>Balance: $452.00</p>
-            <p>Bank Account Status: Not Connected</p>
+
+            <div style={{ margin: '0 1em' }}>
+              <p>Name: {this.state.name}</p>
+              <p>Email: {this.state.email}</p>
+              <p>Balance: $452.00</p>
+              <p>Bank Account Status: Not Connected</p>
+            </div>
           </div>
           <div>
             <h3 className="section-header">Social Accounts</h3>

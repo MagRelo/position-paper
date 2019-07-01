@@ -1,18 +1,19 @@
-import React, { useState, useEffect } from 'react';
-// import React from 'react';
+import React, { useState } from 'react';
 import PlaidLink from 'components/loginPlaidLink';
 
 function UserBankAccount(props) {
   const [token, setToken] = useState('');
   const [bankLabel, setBankLabel] = useState('');
-  const [metaData, setMetaData] = useState({});
+  const [tokenData, setTokenData] = useState({});
 
   function getToken(token, metaData) {
     const bankLabel =
       metaData.accounts[0].name + ' – ' + metaData.institution.name + ' ✔';
     setToken(token);
-    setMetaData(metaData);
+    setTokenData(tokenData);
     setBankLabel(bankLabel);
+
+    console.log({ token, tokenData, bankLabel });
   }
 
   return (
