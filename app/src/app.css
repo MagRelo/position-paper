@@ -94,6 +94,19 @@ li {
   margin: 0 1.25rem;
 }
 
+/*  */
+.section-header {
+  color: gray;
+  display: block;
+  width: 100%;
+  padding: .3em 0;
+  margin-bottom: .3em;
+  margin-top: 0;
+  border-bottom: 1px solid #e5e5e5;
+  font-weight: normal;
+  font-size: 1em;
+}
+
 
 /* payment line items */
 .line-item {

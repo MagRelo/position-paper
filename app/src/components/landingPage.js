@@ -31,8 +31,8 @@ class LandingPage extends Component {
         <section>
           <h2>Incentive Engine</h2>
           <p>Post a request and a completion bonus.</p>
-          <p>Watch as a network of referrals form.</p>{' '}
-          <p>Select the winner and distribute the completion bonus.</p>
+          <p>Watch as a network of referrals form.</p>
+          <p>Select the winner to distribute the completion bonus.</p>
         </section>
       </div>
     );
