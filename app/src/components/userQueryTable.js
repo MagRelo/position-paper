@@ -19,7 +19,6 @@ class UserQueryTable extends Component {
           <tr>
             <th>Query</th>
             <th>Bonus</th>
-            <th>Links</th>
             <th>Views</th>
           </tr>
         </thead>
@@ -33,7 +32,6 @@ class UserQueryTable extends Component {
                   </Link>
                 </td>
                 <td>{formatCurrency(query.bonus)}</td>
-                <td>{query.links.length}</td>
                 <td>{query.totalViews}</td>
               </tr>
             );

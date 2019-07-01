@@ -34,22 +34,33 @@ class Profile extends Component {
       <div>
         <div className="row row-2">
           <div>
-            <h2>{this.state.name}</h2>
+            <h3 className="section-header">Account Information</h3>
+            <p>Name: {this.state.name}</p>
             <p>Email: {this.state.email}</p>
             <p>Balance: $452.00</p>
             <p>Bank Account Status: Not Connected</p>
           </div>
-          <UserSocial />
+          <div>
+            <h3 className="section-header">Social Accounts</h3>
+            <UserSocial />
+          </div>
         </div>
 
-        <hr />
-        <div className="row row-2">
+        <div className="row row-3">
           <div>
-            <h3>Promoting</h3>
+            <h3 className="section-header">Stream</h3>
             <LinksList links={this.state.links} />
           </div>
 
           <div>
+            <h3 className="section-header">Active Links</h3>
+            <LinksList links={this.state.links} />
+          </div>
+
+          <div>
+            <h3 className="section-header">Active Requests</h3>
+
+            <QueryList queries={this.state.queries} />
             <Link
               to="/addquery"
               className="pure-button pure-button-primary"
@@ -57,9 +68,6 @@ class Profile extends Component {
             >
               Add Query
             </Link>
-            <h3>Requesting</h3>
-
-            <QueryList queries={this.state.queries} />
           </div>
         </div>
       </div>

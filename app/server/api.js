@@ -516,9 +516,9 @@ function calcLinkPayouts(bonus, generations) {
     }
   }
 
-  const total = payoffs.reduce((acc, item) => {
-    return acc + item;
-  }, 0);
+  // const total = payoffs.reduce((acc, item) => {
+  //   return acc + item;
+  // }, 0);
 
   // console.log(total);
 
@@ -527,6 +527,37 @@ function calcLinkPayouts(bonus, generations) {
 
 async function calcUserPayouts(link, respondant) {
   let payoutArray = [];
+  let recursionParents = [];
+  async function populateParent(parentLinkId, payoffs) {
+    // get parent
+    const link = await LinkModel.findOne({ _id: parentLinkId })
+      .populate('user', 'name email stripeAccount')
+      .lean();
+
+    if (link && !link.isQueryOwner) {
+      const distance = recursionParents.length;
+      const payoff = payoffs[distance + 1];
+      // console.log(distance, payoff);
+
+      // push into array
+      recursionParents.push(
+        Object.assign({
+          _id: link.user._id,
+          stripeAccount: {
+            id: link.user.stripeAccount.id
+          },
+          name: link.user.name,
+          payout: payoff
+        })
+      );
+
+      if (link.parentLink) {
+        return await populateParent(link.parentLink, payoffs);
+      }
+    }
+
+    return recursionParents;
+  }
 
   // first is always respondant
   payoutArray.push({
@@ -552,38 +583,6 @@ async function calcUserPayouts(link, respondant) {
   const parents = await populateParent(link.parentLink, link.payoffs);
   recursionParents = []; //cleanup
   return payoutArray.concat(parents);
-}
-
-let recursionParents = [];
-async function populateParent(parentLinkId, payoffs) {
-  // get parent
-  const link = await LinkModel.findOne({ _id: parentLinkId })
-    .populate('user', 'name email stripeAccount')
-    .lean();
-
-  if (link && !link.isQueryOwner) {
-    const distance = recursionParents.length;
-    const payoff = payoffs[distance + 1];
-    // console.log(distance, payoff);
-
-    // push into array
-    recursionParents.push(
-      Object.assign({
-        _id: link.user._id,
-        stripeAccount: {
-          id: link.user.stripeAccount.id
-        },
-        name: link.user.name,
-        payout: payoff
-      })
-    );
-
-    if (link.parentLink) {
-      return await populateParent(link.parentLink, payoffs);
-    }
-  }
-
-  return recursionParents;
 }
 
 async function createPayment(
