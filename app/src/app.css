@@ -136,3 +136,22 @@ li {
 }
 
 /* payment line items */
+
+/* social */
+.social-grid {
+  grid-template-columns: 1fr;
+  grid-gap: 0;
+}
+
+@media screen and (min-width: 400px) {
+
+  .social-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 1em;
+
+    padding: 0 1em;
+  }
+}
+
+/* social */
