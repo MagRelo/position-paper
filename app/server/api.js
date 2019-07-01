@@ -3,6 +3,7 @@ var router = express.Router();
 
 const passport = require('passport');
 const payments = require('./integrations/payments');
+const getStream = require('./integrations/getstream');
 
 const UserModel = require('./models').UserModel;
 const QueryModel = require('./models').QueryModel;
@@ -24,18 +25,20 @@ router.post('/user/signup', async function(req, res) {
   // }
 
   try {
-    // create a stripe customer
-    const stripeAccount = await payments.createStripeAccount(req.body, req.ip);
+    // create stripe customer
+    const stripeCustomer = await payments.createStripeCustomer(req.body);
 
     // merge stripe data with front-end form data
-    const fullUserObject = Object.assign({}, { stripeAccount }, req.body);
-
     // create the user
-    const user = new UserModel(fullUserObject);
+    const user = new UserModel(Object.assign({}, { stripeCustomer }, req.body));
     await user.save();
 
+    // create getStream feed for user
+    await getStream.addUser(user);
+    const stream = await getStream.getUser(user);
+
     req.login(user, function() {
-      res.status(200).send(user);
+      res.status(200).send({ user, stream });
     });
   } catch (error) {
     console.log(error);
@@ -125,6 +128,9 @@ router.get('/user', async function(req, res) {
     }, 0);
   });
 
+  // get user
+  userObject.stream = await getStream.getUser(req.user);
+
   try {
     res.status(200).send(userObject);
   } catch (error) {
@@ -172,6 +178,9 @@ router.post('/query/add', async function(req, res) {
     const updatedQuery = await QueryModel.findOne({ _id: newQuery._id })
       .lean()
       .populate('links');
+
+    // create getStream feed for user
+    await getStream.addQuery(req.user, updatedQuery);
 
     res.status(200).send(updatedQuery);
   } catch (error) {
@@ -333,6 +342,9 @@ router.post('/link/add', async function(req, res) {
       { $push: { links: newLink._id } }
     );
 
+    // add getStream activity "AddLink"
+    await getStream.addLink(req.user, { _id: req.body.queryId }, newLink);
+
     res.status(200).send(newLink);
   } catch (error) {
     console.log('API Error:', error);
@@ -371,6 +383,13 @@ router.post('/response/add', async function(req, res) {
     await QueryModel.updateOne(
       { _id: req.body.queryId },
       { $push: { responses: newResponse._id } }
+    );
+
+    // add getStream activity "addResponse"
+    await getStream.addResponse(
+      req.user,
+      { _id: req.body.queryId },
+      newResponse
     );
 
     res.status(200).send(newResponse);

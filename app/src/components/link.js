@@ -98,7 +98,11 @@ class Profile extends Component {
         {this.state.isLinkOwner ? (
           <LinkAdmin
             payoff={this.state.payoffs[0]}
-            userPayoff={this.state.payoffs[this.state.generation]}
+            userPayoff={
+              this.state.generation
+                ? this.state.payoffs[this.state.generation]
+                : 0
+            }
           />
         ) : (
           <React.Fragment>

@@ -3,13 +3,14 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import UserSocial from 'components/userSocial';
-import UserBankAccount from 'components/userBankAccount';
+// import UserBankAccount from 'components/userBankAccount';
 
 import LinksList from './userLinksTable';
 import QueryList from './userQueryTable';
+import StreamList from './userStream';
 
 class Profile extends Component {
-  state = { name: '', email: '', links: [], queries: [] };
+  state = { name: '', email: '', links: [], queries: [], stream: [] };
 
   async componentDidMount() {
     const response = await fetch('/api/user', {
@@ -22,7 +23,8 @@ class Profile extends Component {
         name: user.name,
         email: user.email,
         links: user.links,
-        queries: user.queries
+        queries: user.queries,
+        stream: user.stream.results
       });
     } else {
       console.log('not found', response.status);
@@ -52,7 +54,7 @@ class Profile extends Component {
         <div className="row row-3">
           <div>
             <h3 className="section-header">Stream</h3>
-            <LinksList links={this.state.links} />
+            <StreamList stream={this.state.stream} />
           </div>
 
           <div>

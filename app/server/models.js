@@ -8,6 +8,7 @@ const UserSchema = new mongoose.Schema(
   {
     metaData: Object,
     stripeAccount: Object,
+    stripeCustomer: Object,
     email: String,
     password: String,
     first_name: String,

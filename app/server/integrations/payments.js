@@ -30,40 +30,27 @@ const stripe = require('stripe')(stripeApiKey);
 // Methods
 //
 
-exports.createStripeCustomer = async function(token, account, userData) {
-  // get stripe token from plaid
-  const item = await plaidClient.exchangePublicToken(token);
-  const bankToken = await plaidClient.createStripeToken(
-    item.access_token,
-    account
-  );
+exports.createStripeCustomer = async function(userData) {
+  const userObject = {
+    name: userData.name,
+    email: userData.email,
+    description: '(' + (process.env.STRIPE_TEST_MODE ? 'TEST' : 'LIVE') + ')'
+  };
+
+  // if bank account token, then attach as "source"
+  if (userData.token) {
+    // get stripe token from plaid
+    const item = await plaidClient.exchangePublicToken(userData.token);
+    const bankToken = await plaidClient.createStripeToken(
+      item.access_token,
+      userData.account
+    );
+    // add bank account as "source" to userObject
+    userObject.source = bankToken.stripe_bank_account_token;
+  }
 
   // create stripe customer and attach
-  const customer = await stripe.customers.create({
-    source: bankToken.stripe_bank_account_token,
-    description: '(' + (process.env.STRIPE_TEST_MODE ? 'TEST' : 'LIVE') + ')',
-    email: userData.email,
-    name: userData.name
-  });
-
-  return customer;
-};
-
-exports.createCharge = async function(
-  fromAccountId,
-  toAccountId,
-  amount_in_cents
-) {
-  const response = await stripe.charges.create({
-    amount: amount_in_cents,
-    currency: 'usd',
-    customer: fromAccountId,
-    transfer_data: {
-      destination: toAccountId
-    }
-  });
-
-  return response;
+  return await stripe.customers.create(userObject);
 };
 
 exports.createStripeAccount = async function(userData, ipAddress) {
@@ -101,8 +88,25 @@ exports.createStripeAccount = async function(userData, ipAddress) {
       ip: ipAddress,
       user_agent: userData.tos.user_agent
     },
-    requested_capabilities: ['platform_payments', 'card_payments']
+    requested_capabilities: ['platform_payments']
   });
 
   return account;
+};
+
+exports.createStripeCharge = async function(
+  fromAccountId,
+  toAccountId,
+  amount_in_cents
+) {
+  const response = await stripe.charges.create({
+    amount: amount_in_cents,
+    currency: 'usd',
+    customer: fromAccountId,
+    transfer_data: {
+      destination: toAccountId
+    }
+  });
+
+  return response;
 };
