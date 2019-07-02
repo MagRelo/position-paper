@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const nanoid = require('nanoid');
+const bcrypt = require('bcrypt');
 
 //
 // User
@@ -10,7 +11,6 @@ const UserSchema = new mongoose.Schema(
     stripeAccount: Object,
     stripeCustomer: Object,
     email: String,
-    password: String,
     first_name: String,
     last_name: String,
     balance: Number
@@ -19,8 +19,12 @@ const UserSchema = new mongoose.Schema(
 );
 
 UserSchema.methods.validPassword = function(password) {
-  return true;
+  return bcrypt.compareSync(password, this.passwordHash);
 };
+
+UserSchema.virtual('password').set(function(value) {
+  this.passwordHash = bcrypt.hashSync(value, 12);
+});
 
 exports.UserModel = mongoose.model('User', UserSchema);
 

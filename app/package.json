@@ -5,6 +5,7 @@
   "proxy": "http://localhost:8080",
   "dependencies": {
     "@reach/dialog": "^0.2.8",
+    "bcrypt": "^3.0.6",
     "bignumber.js": "^8.1.1",
     "connect-mongo": "^2.0.3",
     "d3": "^5.9.2",
