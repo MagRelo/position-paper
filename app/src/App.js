@@ -21,7 +21,7 @@ import Query from 'components/query';
 import QueryLink from 'components/link';
 import Search from 'components/search';
 import Response from 'components/response';
-import Signup from 'components/createUser';
+// import Signup from 'components/createUser';
 
 // testing
 import createUser from 'components/createUser';

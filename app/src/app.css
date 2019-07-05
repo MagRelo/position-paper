@@ -55,7 +55,7 @@ li {
 
 .panel {
   margin-top: 1em;
-  padding: 0.1em 1em;
+  padding: 1em 1em 1em;
   box-shadow: 0px 2px 5px 0px rgba(117, 117, 117, 0.58);
 }
 
@@ -144,7 +144,24 @@ li {
 /* social */
 
 /* getstream activity */
-p.label {
+.label {
   text-transform: uppercase;
-  font-size: small;
+  font-size: smaller;
+}
+
+.stream {
+  padding: 1em;
+  box-shadow: 0px 2px 5px 0px rgba(117, 117, 117, 0.58);
+  color: gray;
+}
+
+.stream p {
+  margin-bottom: 0;
+  color: inherit;
+}
+
+.stream svg {
+  margin-bottom: -3px;
+  margin-right: 0.33em;
+  font-size: 1.2em;
 }

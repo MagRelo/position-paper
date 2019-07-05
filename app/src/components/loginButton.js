@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 
 import { Dialog } from '@reach/dialog';
 import '@reach/dialog/styles.css';
