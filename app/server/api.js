@@ -35,13 +35,13 @@ router.post('/user/signup', async function(req, res) {
 
     // create getStream feed for user
     await getStream.addUser(user);
-    const stream = await getStream.getUser(user);
+    // const stream = await getStream.getUser(user);
 
     req.login(user, function() {
-      res.status(200).send({ user, stream });
+      res.status(200).send(user);
     });
   } catch (error) {
-    console.log(error);
+    console.log(error.errors);
     res.status(500).send(error);
   }
 });

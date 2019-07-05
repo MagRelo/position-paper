@@ -151,7 +151,7 @@ async function hydrateStreamFeed(inputArray = []) {
 
   // get data
   const dataItems = await Promise.all(queries);
-  console.log(dataItems);
+  // console.log(dataItems);
 
   //
 

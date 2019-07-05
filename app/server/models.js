@@ -7,10 +7,25 @@ const bcrypt = require('bcrypt');
 //
 const UserSchema = new mongoose.Schema(
   {
+    email: {
+      type: String,
+      required: true,
+      validate: {
+        validator: async function(value) {
+          const available = !(await mongoose
+            .model('User')
+            .findOne({ email: value }));
+
+          console.log('email ', value, ' available ', available);
+          return available;
+        },
+        message: 'This email address is already in use'
+      }
+    },
+    passwordHash: { type: String, required: true },
+    stripeCustomer: Object,
     metaData: Object,
     stripeAccount: Object,
-    stripeCustomer: Object,
-    email: String,
     first_name: String,
     last_name: String,
     balance: Number
@@ -18,13 +33,13 @@ const UserSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-UserSchema.methods.validPassword = function(password) {
-  return bcrypt.compareSync(password, this.passwordHash);
-};
-
 UserSchema.virtual('password').set(function(value) {
   this.passwordHash = bcrypt.hashSync(value, 12);
 });
+
+UserSchema.methods.validPassword = function(password) {
+  return bcrypt.compareSync(password, this.passwordHash);
+};
 
 exports.UserModel = mongoose.model('User', UserSchema);
 

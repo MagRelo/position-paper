@@ -28,7 +28,7 @@ import createUser from 'components/createUser';
 import createQuery from 'components/createQuery';
 import createLink from 'components/createLink';
 
-function App() {
+function App(props) {
   const [activeSession, setActiveSession] = useState(false);
 
   useEffect(
@@ -44,11 +44,13 @@ function App() {
 
   function createSession() {
     setActiveSession(true);
+    props.history.push('/user');
   }
 
   function clearSession() {
     Cookies.remove('servesa');
     setActiveSession(false);
+    props.history.push('/');
   }
 
   return (
@@ -91,7 +93,6 @@ function App() {
         <Switch>
           <Route path="/link/:linkId" component={QueryLink} />
           <Route path="/search" component={Search} />
-          <Route path="/signup" component={Signup} />
           <Route component={LandingPage} />
         </Switch>
       )}

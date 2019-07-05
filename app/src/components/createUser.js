@@ -50,6 +50,8 @@ class UserSignup extends Component {
         formSubmitting: false,
         formMessage: 'Success!'
       });
+
+      this.props.createSession();
     } catch (error) {
       this.setState({
         formError: true,
@@ -75,13 +77,12 @@ class UserSignup extends Component {
   render() {
     return (
       <div>
-        <h1>Signup</h1>
         <form
           name="createForm"
           className="pure-form"
           onSubmit={this.handleSubmit.bind(this)}
         >
-          <legend>Username and Password</legend>
+          <legend>Create New User</legend>
           <fieldset>
             <div className="row row-2">
               <div>
@@ -104,6 +105,8 @@ class UserSignup extends Component {
               </div>
             </div>
           </fieldset>
+
+          <hr />
 
           <button className="pure-button pure-button-primary">Signup</button>
 
@@ -140,11 +143,12 @@ async function createUser(formData) {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(formData)
-  }).then(response => {
+  }).then(async response => {
+    const responseObj = await response.json();
     if (response.status === 200) {
-      return response.json();
+      return responseObj;
     }
 
-    throw new Error(response.status);
+    throw new Error(responseObj.message);
   });
 }
