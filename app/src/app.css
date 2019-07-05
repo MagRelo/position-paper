@@ -53,48 +53,12 @@ li {
   margin: 0 0.5em;
 }
 
-.inbox-message {
-  border: solid 1px #bbb;
-  margin-bottom: 1em;
-  padding: 0 1em;
-}
-
-.inbox-message button {
-  margin-bottom: 1em;
-}
-
-.inbox-message h3 {
-  margin-bottom: 0.67em;
-}
-
-.inbox-message .copy {
-  text-transform: uppercase;
-  font-size: 14px;
-  color: #676767;
-  margin-left: 0.5em;
-  line-height: 1em;
-}
-
-.inbox-message .fact-box p {
-  margin-top: 0;
-}
-
-
 .panel {
-  margin-top: 2em;
-  border: solid 1px #999;
-  padding: 0 1em;
+  margin-top: 1em;
+  padding: 0.1em 1em;
+  box-shadow: 0px 2px 5px 0px rgba(117, 117, 117, 0.58);
 }
 
-.pure-form label {
-  margin-top: 1rem;
-}
-
-.pure-form fieldset {
-  margin: 0 1.25rem;
-}
-
-/*  */
 .section-header {
   color: gray;
   display: block;
@@ -138,6 +102,30 @@ li {
 /* payment line items */
 
 /* social */
+
+
+.icon {
+  color: white;
+  height: 18px;
+  width: 18px;
+  border-radius: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 11px;
+  float: left;
+}
+
+.icon-block {
+  height: 40px;
+  line-height: 40px;
+}
+
+.icon-label {
+  padding-left: 1em;
+}
+
+
 .social-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -154,3 +142,9 @@ li {
 }
 
 /* social */
+
+/* getstream activity */
+p.label {
+  text-transform: uppercase;
+  font-size: small;
+}

@@ -24,7 +24,7 @@ class Profile extends Component {
         email: user.email,
         links: user.links,
         queries: user.queries,
-        stream: user.stream.results
+        stream: user.stream
       });
     } else {
       console.log('not found', response.status);
@@ -53,17 +53,17 @@ class Profile extends Component {
 
         <div className="row row-3">
           <div>
-            <h3 className="section-header">Stream</h3>
+            <h3 className="section-header">Activity</h3>
             <StreamList stream={this.state.stream} />
           </div>
 
           <div>
-            <h3 className="section-header">Active Links</h3>
+            <h3 className="section-header">Links</h3>
             <LinksList links={this.state.links} />
           </div>
 
           <div>
-            <h3 className="section-header">Active Requests</h3>
+            <h3 className="section-header">Requests</h3>
 
             <QueryList queries={this.state.queries} />
             <Link

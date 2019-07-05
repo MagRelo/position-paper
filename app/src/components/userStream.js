@@ -1,25 +1,50 @@
 import React from 'react';
 
+function activityTile(item) {
+  switch (item.verb) {
+    case 'addUser':
+      return (
+        <div className="panel">
+          <p className="label">New User</p>
+          <p>{item.data.email}</p>
+        </div>
+      );
+    case 'addQuery':
+      return (
+        <div className="panel">
+          <p className="label">New Query</p>
+          <p>{item.data.title}</p>
+        </div>
+      );
+    case 'addLink':
+      return (
+        <div className="panel">
+          <p className="label">New Link</p>
+          <p>{item.data.query.title}</p>
+        </div>
+      );
+    case 'addResponse':
+      return (
+        <div className="panel">
+          <p className="label">New Response</p>
+          <p>{item.data.respondingUser.name}</p>
+        </div>
+      );
+    default:
+      break;
+  }
+}
+
 function UserStream(props) {
-  // const [token, setToken] = useState('');
-  // const [bankLabel, setBankLabel] = useState('');
-  // const [tokenData, setTokenData] = useState({});
-
-  // function getToken(token, metaData) {
-  //   const bankLabel =
-  //     metaData.accounts[0].name + ' – ' + metaData.institution.name + ' ✔';
-  //   setToken(token);
-  //   setTokenData(tokenData);
-  //   setBankLabel(bankLabel);
-
-  //   console.log({ token, tokenData, bankLabel });
-  // }
-
   return (
-    <ul>
+    <ul style={{ padding: '0 1em' }}>
       {props.stream &&
         props.stream.map(item => {
-          return <li key={item.id}>{item.verb}</li>;
+          return (
+            <li style={{ listStyle: 'none' }} key={item.id}>
+              {activityTile(item)}
+            </li>
+          );
         })}
     </ul>
   );

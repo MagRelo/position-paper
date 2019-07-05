@@ -1,5 +1,10 @@
 const stream = require('getstream');
 
+const UserModel = require('../models').UserModel;
+const QueryModel = require('../models').QueryModel;
+const LinkModel = require('../models').LinkModel;
+const ResponseModel = require('../models').ResponseModel;
+
 const apiKey = 'hdm568bfbafw';
 const apiKeySecret =
   'egqcazdzd8ws8zue6srrvdbeypzfghxgm6hv99pbfgyzp5nauesb86qru69gjuxk';
@@ -18,11 +23,6 @@ exports.addUser = async function(user) {
     object: user._id,
     time: user.createdAt
   });
-};
-
-exports.getUser = async function(user) {
-  const streamUser = await streamClient.feed('User', user._id.toString());
-  return await streamUser.get({ limit: 15 });
 };
 
 exports.followUser = async function(user, userToFollowId) {
@@ -95,3 +95,65 @@ exports.addResponse = async function(user, query, response) {
     time: response.createdAt
   });
 };
+
+exports.getUser = async function(user) {
+  const streamUser = await streamClient.feed('User', user._id.toString());
+  const userFeed = await streamUser.get({ limit: 15 });
+  return await hydrateStreamFeed(userFeed.results);
+};
+
+async function hydrateStreamFeed(inputArray = []) {
+  // create array of queries
+  const queries = inputArray.map(item => {
+    // switch on type
+    switch (item.verb) {
+      case 'addUser':
+        return UserModel.findOne({ _id: item.object })
+          .lean()
+          .then(data => {
+            item.data = data;
+            return item;
+          });
+        break;
+
+      case 'addQuery':
+        return QueryModel.findOne({ _id: item.object })
+          .lean()
+          .then(data => {
+            item.data = data;
+            return item;
+          });
+        break;
+
+      case 'addLink':
+        return LinkModel.findOne({ _id: item.object })
+          .populate('query')
+          .lean()
+          .then(data => {
+            item.data = data;
+            return item;
+          });
+        break;
+
+      case 'addResponse':
+        return ResponseModel.findOne({ _id: item.object })
+          .populate('respondingUser')
+          .lean()
+          .then(data => {
+            item.data = data;
+            return item;
+          });
+        break;
+      default:
+        break;
+    }
+  });
+
+  // get data
+  const dataItems = await Promise.all(queries);
+  console.log(dataItems);
+
+  //
+
+  return dataItems;
+}
