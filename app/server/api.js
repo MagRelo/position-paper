@@ -99,7 +99,7 @@ router.get('/search', async function(req, res) {
 router.get('/user', async function(req, res) {
   // check auth
   if (!req.user) {
-    return res.status(401).send('no user');
+    return res.status(401).send({ error: 'no user' });
   }
 
   // get queries and links
@@ -214,7 +214,7 @@ router.get('/query/:linkId', async function(req, res) {
     // get link
     const link = await LinkModel.findOne({ linkId: req.params.linkId });
     if (!link) {
-      return res.status(404).send('link not found');
+      return res.status(404).send({ error: 'link not found' });
     }
 
     // get query
@@ -230,7 +230,7 @@ router.get('/query/:linkId', async function(req, res) {
         populate: { path: ' query' }
       });
     if (!query) {
-      return res.status(404).send('profile not found');
+      return res.status(404).send({ error: 'profile not found' });
     }
 
     // auth - only send to owner
@@ -251,7 +251,7 @@ router.get('/link/:linkId', async function(req, res) {
     // get link
     const link = await LinkModel.findOne({ linkId: req.params.linkId });
     if (!link) {
-      return res.status(404).send('link not found');
+      return res.status(404).send({ error: 'link not found' });
     }
 
     let isLinkOwner = false;
@@ -268,7 +268,7 @@ router.get('/link/:linkId', async function(req, res) {
     // get query
     const query = await QueryModel.findOne({ _id: link.query }).lean();
     if (!query) {
-      return res.status(404).send('query not found');
+      return res.status(404).send({ error: 'query not found' });
     }
 
     // check user
@@ -305,7 +305,7 @@ router.post('/link/add', async function(req, res) {
 
   // validate input
   if (!req.body.queryId) {
-    return res.status(400).send('must set query id');
+    return res.status(400).send({ error: 'must set query id' });
   }
 
   try {
@@ -316,7 +316,7 @@ router.post('/link/add', async function(req, res) {
       path: 'query'
     });
     if (!parentLink) {
-      return res.status(404).send('parent link not found');
+      return res.status(404).send({ error: 'parent link not found' });
     }
 
     // add new link
@@ -361,13 +361,13 @@ router.post('/response/add', async function(req, res) {
 
   // validate input
   if (!req.body.queryId) {
-    return res.status(400).send('must set query id');
+    return res.status(400).send({ error: 'must set query id' });
   }
 
   // get link
   const link = await LinkModel.findOne({ linkId: req.body.linkId });
   if (!link) {
-    return res.status(404).send('link not found');
+    return res.status(404).send({ error: 'link not found' });
   }
 
   try {
@@ -408,7 +408,7 @@ router.get('/response/:responseId', async function(req, res) {
 
   // validate input
   if (!req.params.responseId) {
-    return res.status(400).send('must set responseId');
+    return res.status(400).send({ error: 'must set responseId' });
   }
 
   try {
@@ -429,7 +429,7 @@ router.get('/response/:responseId', async function(req, res) {
     if (!response) {
       return res
         .status(404)
-        .send('response not found: ', req.params.responseId);
+        .send({ error: 'response not found: ' + req.params.responseId });
     }
 
     // populate with table of user payouts
@@ -453,7 +453,7 @@ router.post('/payment/:responseId', async function(req, res) {
   }
   // validate input
   if (!req.params.responseId) {
-    return res.status(400).send('must set responseId');
+    return res.status(400).send({ error: 'must set responseId' });
   }
 
   try {
@@ -479,7 +479,7 @@ router.post('/payment/:responseId', async function(req, res) {
     if (!response) {
       return res
         .status(404)
-        .send('response not found: ', req.params.responseId);
+        .send({ error: 'response not found: ' + req.params.responseId });
     }
 
     // auth - must be query owner
