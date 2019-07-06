@@ -34,45 +34,55 @@ class Profile extends Component {
   render() {
     return (
       <div>
-        <div className="row row-2">
+        <div className="row row-5-3">
           <div>
-            <h3 className="section-header">Account Information</h3>
+            <div className="row row-2">
+              <div>
+                <h3 className="section-header">Profile</h3>
+                <div style={{ margin: '0 1em' }}>
+                  <p>Name: {this.state.name}</p>
+                  <p>Email: {this.state.email}</p>
+                </div>
+              </div>
 
-            <div style={{ margin: '0 1em' }}>
-              <p>Name: {this.state.name}</p>
-              <p>Email: {this.state.email}</p>
-              <p>Balance: $452.00</p>
-              <p>Bank Account Status: Not Connected</p>
+              <div>
+                <h3 className="section-header">Account Information</h3>
+                <div style={{ margin: '0 1em' }}>
+                  <p>Balance: $452.00</p>
+                  <p>Bank Account Status: Not Connected</p>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="section-header">Social Accounts</h3>
+              <UserSocial />
+
+              <div>
+                <div>
+                  <h3 className="section-header">Links</h3>
+                  <LinksList links={this.state.links} />
+                </div>
+
+                <div>
+                  <h3 className="section-header">Requests</h3>
+
+                  <QueryList queries={this.state.queries} />
+                  <Link
+                    to="/addquery"
+                    className="pure-button pure-button-primary"
+                    style={{ float: 'right', marginTop: '0.8em' }}
+                  >
+                    Add Query
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
-          <div>
-            <h3 className="section-header">Social Accounts</h3>
-            <UserSocial />
-          </div>
-        </div>
 
-        <div className="row row-3">
           <div>
             <h3 className="section-header">Activity</h3>
             <StreamList stream={this.state.stream} />
-          </div>
-
-          <div>
-            <h3 className="section-header">Links</h3>
-            <LinksList links={this.state.links} />
-          </div>
-
-          <div>
-            <h3 className="section-header">Requests</h3>
-
-            <QueryList queries={this.state.queries} />
-            <Link
-              to="/addquery"
-              className="pure-button pure-button-primary"
-              style={{ float: 'right', marginTop: '0.8em' }}
-            >
-              Add Query
-            </Link>
           </div>
         </div>
       </div>

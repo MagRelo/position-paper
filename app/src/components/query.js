@@ -43,17 +43,17 @@ class Query extends Component {
   render() {
     return (
       <div>
-        <h2>Query</h2>
-        <div className="panel">
-          <h2>{this.state.title}</h2>
-          <p>Bonus: {this.formatCurrency(this.state.bonus)}</p>
-          <p>Description: {this.state.description}</p>
-        </div>
-
-        <div className="row row-2">
+        <div className="row row-5-3">
           <div>
+            <div className="panel">
+              <h2>{this.state.title}</h2>
+              <p>Bonus: {this.formatCurrency(this.state.bonus)}</p>
+              <p>Description: {this.state.description}</p>
+            </div>
+
             <h3>Links</h3>
             <LinksList links={this.state.links} />
+            <LinkGraph links={this.state.links} />
           </div>
 
           <div>
@@ -61,7 +61,6 @@ class Query extends Component {
             <ResponseList responses={this.state.responses} />
           </div>
         </div>
-        <LinkGraph links={this.state.links} />
       </div>
     );
   }

@@ -10,7 +10,7 @@ function activityTile(item) {
     case 'addUser':
       return (
         <div className="stream">
-          <div>
+          <div className="stream-label">
             <IoIosPerson />
             New User
           </div>
@@ -20,7 +20,7 @@ function activityTile(item) {
     case 'addQuery':
       return (
         <div className="stream">
-          <div>
+          <div className="stream-label">
             <GiInfo />
             New Query
           </div>
@@ -32,7 +32,7 @@ function activityTile(item) {
     case 'addLink':
       return (
         <div className="stream">
-          <div>
+          <div className="stream-label">
             <IoMdLink /> New Link
           </div>
           <Link to={'/link/' + item.data.linkId}>
@@ -48,7 +48,7 @@ function activityTile(item) {
     case 'addResponse':
       return (
         <div className="stream">
-          <div>
+          <div className="stream-label">
             <MdInput />
             New Response
           </div>

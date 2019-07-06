@@ -22,7 +22,7 @@ function SocialButton(props) {
       className="icon"
       name={props.company}
       style={{
-        background: config[props.company].background
+        background: props.connected ? config[props.company].background : '#bbb'
       }}
     >
       {/* gmail */
