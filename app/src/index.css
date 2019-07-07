@@ -29,6 +29,7 @@ svg {
 }
 
 .row-2,
+.row-x-2,
 .row-3,
 .row-4,
 .row-2-3,
@@ -46,6 +47,11 @@ svg {
 
   .row-2 {
     grid-template-columns: 1fr 1fr;
+    grid-gap: 2em;
+  }
+
+  .row-x-2 {
+    grid-template-columns: auto 1fr;
     grid-gap: 2em;
   }
 

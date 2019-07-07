@@ -3,19 +3,21 @@ import React, { Component } from 'react';
 import { Dialog } from '@reach/dialog';
 import '@reach/dialog/styles.css';
 
+import { formatCurrency } from 'components/util/random';
+
 import LinkForm from './createLink';
 import ResponseForm from './createResponse';
 import LinkAdmin from './linkAdmin';
 
-function formatCurrency(input) {
-  if (typeof input === 'number') {
-    return input.toLocaleString('en-US', {
-      style: 'currency',
-      currency: 'USD'
-    });
-  }
-  return '';
-}
+// function formatCurrency(input) {
+//   if (typeof input === 'number') {
+//     return input.toLocaleString('en-US', {
+//       style: 'currency',
+//       currency: 'USD'
+//     });
+//   }
+//   return '';
+// }
 
 class Profile extends Component {
   state = { contactOpen: false, linkOpen: false, name: '', payoffs: [] };

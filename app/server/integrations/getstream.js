@@ -96,6 +96,18 @@ exports.addResponse = async function(user, query, response) {
   });
 };
 
+exports.follow = async function(userId, feedType, targetId) {
+  console.log(userId, feedType, targetId);
+  const userFeed = await streamClient.feed('User', userId);
+  return await userFeed.follow(feedType, targetId);
+};
+
+exports.unFollow = async function(userId, feedType, targetId) {
+  console.log(userId, feedType, targetId);
+  const userFeed = await streamClient.feed(feedType, userId);
+  return await userFeed.unfollow('Query', targetId);
+};
+
 exports.getUser = async function(user) {
   const streamUser = await streamClient.feed('User', user._id.toString());
   const userFeed = await streamUser.get({ limit: 15 });
@@ -147,6 +159,8 @@ async function hydrateStreamFeed(inputArray = []) {
       default:
         break;
     }
+
+    return null;
   });
 
   // get data

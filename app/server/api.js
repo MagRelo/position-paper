@@ -77,7 +77,7 @@ router.get('/search', async function(req, res) {
           query: query._id,
           generation: query.latestGen
         }).populate({
-          path: 'query'
+          path: 'query user'
         })
       );
     });
@@ -135,6 +135,44 @@ router.get('/user', async function(req, res) {
     res.status(200).send(userObject);
   } catch (error) {
     console.log(req.path, error);
+    res.status(500).send(error);
+  }
+});
+
+router.post('/user/follow', async function(req, res) {
+  // check auth
+  if (!req.user) {
+    return res.status(401).send();
+  }
+
+  // get id & intent from query string
+  const intentToFollow = req.query.intent;
+  const feedType = req.query.type;
+  const targetId = req.query.target;
+
+  console.log('input: ', targetId, intentToFollow, feedType);
+
+  // call getstream methods
+
+  let getStreamResponse = '';
+  try {
+    if (intentToFollow) {
+      getStreamResponse = await getStream.follow(
+        req.user._id,
+        feedType,
+        targetId
+      );
+    } else {
+      getStreamResponse = await getStream.unFollow(
+        req.user._id,
+        feedType,
+        targetId
+      );
+    }
+
+    console.log(getStreamResponse);
+    res.status(200).send({ status: true });
+  } catch (error) {
     res.status(500).send(error);
   }
 });

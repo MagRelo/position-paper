@@ -57,7 +57,9 @@ function App(props) {
     <div className="container">
       <nav className="header">
         <div className="menu">
-          <Link to={'/search'}>Search</Link>
+          <Link to={'/dealflow'}>Deal Flow</Link>
+
+          {/* User account */}
           {activeSession ? <Link to={'/user'}>Account</Link> : null}
 
           <span>|</span>
@@ -82,7 +84,7 @@ function App(props) {
           <Route path="/addlink" component={createLink} />
           <Route path="/addquery" component={createQuery} />
 
-          <Route path="/search" component={Search} />
+          <Route path="/dealflow" component={Search} />
           <Route path="/link/:linkId" component={QueryLink} />
           <Route path="/query/:linkId" component={Query} />
           <Route path="/response/:responseId" component={Response} />
@@ -92,7 +94,7 @@ function App(props) {
       ) : (
         <Switch>
           <Route path="/link/:linkId" component={QueryLink} />
-          <Route path="/search" component={Search} />
+          <Route path="/dealflow" component={Search} />
           <Route component={LandingPage} />
         </Switch>
       )}
