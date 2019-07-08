@@ -8,6 +8,7 @@ import {
 } from 'components/util/random';
 import StreamList from './userStream';
 import FollowButton from 'components/followButton';
+import LinkButton from 'components/linkButton';
 
 // import { useTrail, animated } from 'react-spring';
 // const trail = useTrail(number, {opacity: 1})
@@ -118,10 +119,10 @@ function SearchFlow() {
           ) : null}
 
           <ul style={{ padding: '0' }}>
-            {results.map(item => {
+            {results.map(link => {
               return (
-                <li key={item._id} style={{ listStyle: 'none' }}>
-                  {QueryPanel(item)}
+                <li key={link._id} style={{ listStyle: 'none' }}>
+                  {QueryPanel(link, user._id)}
                 </li>
               );
             })}
@@ -138,7 +139,7 @@ function SearchFlow() {
 
 export default SearchFlow;
 
-function QueryPanel(link) {
+function QueryPanel(link, userId) {
   return (
     <div
       style={{
@@ -161,7 +162,11 @@ function QueryPanel(link) {
             {formatCurrency(link.query.bonus)}
           </span>
           <Link to={'/link/' + link.linkId}> {link.query.title}</Link>
-          <FollowButton type="Query" targetId={link.query._id} />
+          <FollowButton
+            type="Query"
+            targetId={link.query._id}
+            disable={!userId || link.user._id === userId}
+          />
         </p>
 
         {/* Description */}
@@ -171,7 +176,11 @@ function QueryPanel(link) {
           <p>Posted: {formatDate(link.createdAt)}</p>
           <p>
             Posted By: {link.user.email}
-            <FollowButton type="User" targetId={link.user._id} />
+            <FollowButton
+              type="User"
+              targetId={link.user._id}
+              disable={!userId || link.user._id === userId}
+            />
           </p>
         </div>
       </div>
@@ -182,15 +191,20 @@ function QueryPanel(link) {
           marginTop: '.76em'
         }}
       >
-        <button className="pure-button pure-button-primary">
-          Promote: {formatCurrency(link.potentialPayoffs[link.generation + 1])}
-        </button>
+        <LinkButton
+          disable={!userId || link.user._id === userId}
+          queryId={link.query._id}
+          parentLink={link.linkId}
+          label={`Promote: ${formatCurrency(
+            link.potentialPayoffs[link.generation + 1]
+          )}`}
+        />
 
         <button
           className="pure-button pure-button-primary"
           style={{ background: '#0fa51d' }}
         >
-          Respond: {formatCurrency(link.payoffs[link.generation])}
+          Respond: {formatCurrency(link.payoffs[0])}
         </button>
       </div>
     </div>

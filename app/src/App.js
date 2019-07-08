@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 
 // import { StripeProvider } from 'react-stripe-elements';
 import Cookies from 'js-cookie';
@@ -57,10 +57,14 @@ function App(props) {
     <div className="container">
       <nav className="header">
         <div className="menu">
-          <Link to={'/dealflow'}>Deal Flow</Link>
-
-          {/* User account */}
-          {activeSession ? <Link to={'/user'}>Account</Link> : null}
+          <NavLink exact={true} activeClassName="is-active" to={'/queries'}>
+            Queries
+          </NavLink>
+          {activeSession ? (
+            <NavLink activeClassName="is-active" to={'/user'}>
+              My Account
+            </NavLink>
+          ) : null}
 
           <span>|</span>
 
@@ -84,7 +88,7 @@ function App(props) {
           <Route path="/addlink" component={createLink} />
           <Route path="/addquery" component={createQuery} />
 
-          <Route path="/dealflow" component={Search} />
+          <Route path="/queries" component={Search} />
           <Route path="/link/:linkId" component={QueryLink} />
           <Route path="/query/:linkId" component={Query} />
           <Route path="/response/:responseId" component={Response} />
@@ -94,7 +98,7 @@ function App(props) {
       ) : (
         <Switch>
           <Route path="/link/:linkId" component={QueryLink} />
-          <Route path="/dealflow" component={Search} />
+          <Route path="/queries" component={Search} />
           <Route component={LandingPage} />
         </Switch>
       )}

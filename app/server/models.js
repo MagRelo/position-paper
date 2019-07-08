@@ -26,6 +26,7 @@ const UserSchema = new mongoose.Schema(
     stripeCustomer: Object,
     metaData: Object,
     stripeAccount: Object,
+    follows: [String],
     first_name: String,
     last_name: String,
     balance: Number

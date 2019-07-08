@@ -18,6 +18,10 @@
   line-height: 54px;
 }
 
+.menu>a.is-active {
+  border-bottom: solid 1px;
+}
+
 .menu>* {
   margin-left: 1em;
 }
@@ -145,7 +149,7 @@ li {
 
 /* getstream activity */
 .stream {
-  padding: 1em;
+  padding: 0.667em 1em 1em;
   box-shadow: 0px 2px 5px 0px rgba(117, 117, 117, 0.58);
   /* background-color: rgb(189, 216, 241); */
   /* border: solid gray 1px; */

@@ -18,7 +18,11 @@ function FollowButton(props) {
 
   return (
     <React.Fragment>
-      <button className="pure-button follow-button" onClick={handleClick}>
+      <button
+        className="pure-button follow-button"
+        onClick={handleClick}
+        disabled={props.disable}
+      >
         {isLoading ? (
           <div className="spinner">
             <div />

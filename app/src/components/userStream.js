@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+// icons
 import { IoMdLink, IoIosPerson } from 'react-icons/io';
 import { GiInfo } from 'react-icons/gi';
 import { GoGitMerge, GoBroadcast } from 'react-icons/go';
@@ -34,7 +35,7 @@ function getLabel(activityType, isUser, data) {
     case 'addLink':
       return isUser
         ? `You Linked to ${data.query.title}`
-        : `New Link for ${data.query.title}`;
+        : `New Link To Your Query`;
     case 'addResponse':
       return isUser
         ? `You responded to ${data.query.title}`
@@ -61,7 +62,7 @@ function getContent(activityType, isUser, data) {
     case 'addLink':
       return isUser
         ? `You Linked to ${data.query.title}`
-        : `New Link for ${data.query.title}`;
+        : `New Created Link for ${data.query.title}`;
     case 'addResponse':
       return isUser
         ? `You responded to ${data.query.title}`
@@ -81,8 +82,19 @@ function getContent(activityType, isUser, data) {
 
 function activityTile(item, user) {
   const isUser = user === item.actor;
+
+  const userHighlightColor = '#0279db';
+  const otherColor = 'rgb(14, 165, 29)';
+
   return (
-    <div className="stream">
+    <div
+      className="stream"
+      style={{
+        borderTop: isUser
+          ? `solid 2px ${userHighlightColor}`
+          : `solid 2px ${otherColor}`
+      }}
+    >
       <div className="stream-label">
         {getIcon(item.verb)}
         {getLabel(item.verb, isUser, item.data)}

@@ -106,7 +106,8 @@ router.get('/user', async function(req, res) {
   const userObject = {
     _id: req.user._id,
     name: req.user.name,
-    email: req.user.email
+    email: req.user.email,
+    follows: req.user.follows
   };
 
   userObject.queries = await QueryModel.find({ user: req.user._id })
@@ -158,16 +159,30 @@ router.post('/user/follow', async function(req, res) {
   let getStreamResponse = '';
   try {
     if (intentToFollow) {
+      // follow
       getStreamResponse = await getStream.follow(
         req.user._id,
         feedType,
         targetId
       );
+
+      // add to user follow array
+      await UserModel.update(
+        { _id: req.user._id },
+        { $push: { follows: targetId } }
+      );
     } else {
+      // unfollow
       getStreamResponse = await getStream.unFollow(
         req.user._id,
         feedType,
         targetId
+      );
+
+      // remove from user follow array
+      await UserModel.update(
+        { _id: req.user._id },
+        { $pull: { follows: targetId } }
       );
     }
 
