@@ -98,8 +98,20 @@ exports.addResponse = async function(user, query, response) {
 
 exports.follow = async function(userId, feedType, targetId) {
   console.log(userId, feedType, targetId);
+
+  // Follow target
   const userFeed = await streamClient.feed('User', userId);
-  return await userFeed.follow(feedType, targetId);
+  await userFeed.follow(feedType, targetId, { limit: 0 });
+
+  // Add activity with target
+  const timeStamp = new Date();
+  return await userFeed.addActivity({
+    actor: userId,
+    verb: `addFollow:${feedType}`,
+    object: targetId,
+    time: timeStamp,
+    target: `${feedType}:${targetId}`
+  });
 };
 
 exports.unFollow = async function(userId, feedType, targetId) {
@@ -130,6 +142,7 @@ async function hydrateStreamFeed(inputArray = []) {
 
       case 'addQuery':
         return QueryModel.findOne({ _id: item.object })
+          .populate('user')
           .lean()
           .then(data => {
             item.data = data;
@@ -156,11 +169,28 @@ async function hydrateStreamFeed(inputArray = []) {
             return item;
           });
         break;
+
+      case 'addFollow:User':
+        return UserModel.findOne({ _id: item.object })
+          .lean()
+          .then(data => {
+            item.data = data;
+            return item;
+          });
+
+      case 'addFollow:Query':
+        return QueryModel.findOne({ _id: item.object })
+          .lean()
+          .then(data => {
+            item.data = data;
+            return item;
+          });
+
       default:
         break;
     }
 
-    return null;
+    return {};
   });
 
   // get data

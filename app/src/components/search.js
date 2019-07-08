@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import { formatCurrency, formatDate } from 'components/util/random';
+import {
+  formatCurrency,
+  formatDate,
+  useDebounce
+} from 'components/util/random';
 import StreamList from './userStream';
 import FollowButton from 'components/followButton';
 
-import { useTrail, animated } from 'react-spring';
+// import { useTrail, animated } from 'react-spring';
 // const trail = useTrail(number, {opacity: 1})
-const config = { mass: 5, tension: 2000, friction: 200 };
+// const config = { mass: 5, tension: 2000, friction: 200 };
 // const trail = useTrail(results.length, {
 //   config,
 //   opacity: toggle ? 1 : 0,
@@ -19,8 +23,10 @@ const config = { mass: 5, tension: 2000, friction: 200 };
 function SearchFlow() {
   // stream data
   const [stream, setStream] = useState([]);
+  const [user, setUser] = useState({});
   useEffect(() => {
     getUser().then(user => {
+      setUser(user);
       setStream(user.stream);
     });
   }, []);
@@ -46,7 +52,7 @@ function SearchFlow() {
     <React.Fragment>
       <div className="row row-5-3">
         <div>
-          <h3 className="section-header">Deal Flow</h3>
+          <h3 className="section-header">Query Flow</h3>
 
           <div className="row row-2" style={{ paddingTop: '1em' }}>
             <div>
@@ -115,7 +121,7 @@ function SearchFlow() {
             {results.map(item => {
               return (
                 <li key={item._id} style={{ listStyle: 'none' }}>
-                  {DealPanel(item)}
+                  {QueryPanel(item)}
                 </li>
               );
             })}
@@ -123,7 +129,7 @@ function SearchFlow() {
         </div>
         <div>
           <h3 className="section-header">Your Activity</h3>
-          <StreamList stream={stream} />
+          <StreamList stream={stream} userId={user._id} />
         </div>
       </div>
     </React.Fragment>
@@ -132,12 +138,11 @@ function SearchFlow() {
 
 export default SearchFlow;
 
-function DealPanel(link) {
+function QueryPanel(link) {
   return (
     <div
       style={{
         background: 'rgb(196, 218, 248)',
-        borderRadius: '4px',
         padding: '0.677em',
         border: 'solid 1px #9cc0fb'
       }}
@@ -146,7 +151,8 @@ function DealPanel(link) {
         className="panel"
         style={{
           background: 'white',
-          boxShadow: '0px 1px 4px 0px rgba(87, 103, 115, 0.58)'
+          boxShadow: '0px 1px 4px 0px rgba(87, 103, 115, 0.58)',
+          paddingBottom: 0
         }}
       >
         {/* Title */}
@@ -168,22 +174,24 @@ function DealPanel(link) {
             <FollowButton type="User" targetId={link.user._id} />
           </p>
         </div>
+      </div>
 
-        <p>Bonus: {formatCurrency(link.query.bonus)} </p>
-        <p>Generation: {link.generation} </p>
-        <div
-          style={{
-            textAlign: 'right',
-            marginTop: '0.667em'
-          }}
+      <div
+        style={{
+          textAlign: 'right',
+          marginTop: '.76em'
+        }}
+      >
+        <button className="pure-button pure-button-primary">
+          Promote: {formatCurrency(link.potentialPayoffs[link.generation + 1])}
+        </button>
+
+        <button
+          className="pure-button pure-button-primary"
+          style={{ background: '#0fa51d' }}
         >
-          <button
-            className="pure-button pure-button-primary"
-            style={{ background: '#0fa51d' }}
-          >
-            Promote for {formatCurrency(link.payoffs[link.generation])}
-          </button>
-        </div>
+          Respond: {formatCurrency(link.payoffs[link.generation])}
+        </button>
       </div>
     </div>
   );
@@ -210,50 +218,4 @@ async function getUser() {
       console.error(error);
       return {};
     });
-}
-
-async function follow(type, id) {
-  const queryString = `?type=${type}&id=${id}`;
-
-  return await fetch('/api/user/follow' + queryString, {
-    method: 'GET'
-  })
-    .then(r => r.json())
-    .catch(error => {
-      console.error(error);
-      return {};
-    });
-}
-
-// Our hook
-function useDebounce(value, delay) {
-  // State and setters for debounced value
-  const [debouncedValue, setDebouncedValue] = useState(value);
-
-  useEffect(
-    () => {
-      // Set debouncedValue to value (passed in) after the specified delay
-      const handler = setTimeout(() => {
-        setDebouncedValue(value);
-      }, delay);
-
-      // Return a cleanup function that will be called every time ...
-      // ... useEffect is re-called. useEffect will only be re-called ...
-      // ... if value changes (see the inputs array below).
-      // This is how we prevent debouncedValue from changing if value is ...
-      // ... changed within the delay period. Timeout gets cleared and restarted.
-      // To put it in context, if the user is typing within our app's ...
-      // ... search box, we don't want the debouncedValue to update until ...
-      // ... they've stopped typing for more than 500ms.
-      return () => {
-        clearTimeout(handler);
-      };
-    },
-    // Only re-call effect if value changes
-    // You could also add the "delay" var to inputs array if you ...
-    // ... need to be able to change that dynamically.
-    [value]
-  );
-
-  return debouncedValue;
 }

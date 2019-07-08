@@ -22,6 +22,7 @@ class Profile extends Component {
       this.setState({
         name: user.name,
         email: user.email,
+        userId: user._id,
         links: user.links,
         queries: user.queries,
         stream: user.stream
@@ -82,7 +83,7 @@ class Profile extends Component {
 
           <div>
             <h3 className="section-header">Activity</h3>
-            <StreamList stream={this.state.stream} />
+            <StreamList stream={this.state.stream} userId={this.state.userId} />
           </div>
         </div>
       </div>

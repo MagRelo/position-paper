@@ -104,6 +104,7 @@ router.get('/user', async function(req, res) {
 
   // get queries and links
   const userObject = {
+    _id: req.user._id,
     name: req.user.name,
     email: req.user.email
   };
@@ -170,9 +171,9 @@ router.post('/user/follow', async function(req, res) {
       );
     }
 
-    console.log(getStreamResponse);
     res.status(200).send({ status: true });
   } catch (error) {
+    console.log(getStreamResponse);
     res.status(500).send(error);
   }
 });
@@ -203,7 +204,8 @@ router.post('/query/add', async function(req, res) {
       parentLink: null,
       isQueryOwner: true,
       generation: 0,
-      payoffs: calcLinkPayouts(query.bonus, 1)
+      payoffs: calcLinkPayouts(query.bonus, 1),
+      potentialPayoffs: calcLinkPayouts(query.bonus, 2)
     });
     await newLink.save();
 
@@ -324,6 +326,7 @@ router.get('/link/:linkId', async function(req, res) {
       link: {
         generation: link.generation,
         payoffs: link.payoffs,
+        potentialPayoffs: link.potentialPayoffs,
         isQueryOwner: isQueryOwner,
         isLinkOwner: isLinkOwner
       }
@@ -366,6 +369,10 @@ router.post('/link/add', async function(req, res) {
       payoffs: calcLinkPayouts(
         parentLink.query.bonus,
         parentLink.generation + 2
+      ),
+      potentialPayoffs: calcLinkPayouts(
+        parentLink.query.bonus,
+        parentLink.generation + 3
       )
     });
     await newLink.save();

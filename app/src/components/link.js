@@ -9,18 +9,14 @@ import LinkForm from './createLink';
 import ResponseForm from './createResponse';
 import LinkAdmin from './linkAdmin';
 
-// function formatCurrency(input) {
-//   if (typeof input === 'number') {
-//     return input.toLocaleString('en-US', {
-//       style: 'currency',
-//       currency: 'USD'
-//     });
-//   }
-//   return '';
-// }
-
 class Profile extends Component {
-  state = { contactOpen: false, linkOpen: false, name: '', payoffs: [] };
+  state = {
+    contactOpen: false,
+    linkOpen: false,
+    name: '',
+    potentialPayoffs: [],
+    payoffs: []
+  };
 
   async componentDidMount() {
     // get linkId from URL
@@ -39,6 +35,7 @@ class Profile extends Component {
         name: responseObj.query.title,
         description: responseObj.query.description,
         payoffs: responseObj.link.payoffs,
+        potentialPayoffs: responseObj.link.potentialPayoffs,
         isQueryOwner: responseObj.link.isQueryOwner,
         isLinkOwner: responseObj.link.isLinkOwner,
         generation: responseObj.link.generation
@@ -113,7 +110,10 @@ class Profile extends Component {
               style={{ marginTop: '1em' }}
               onClick={() => this.setState({ linkOpen: true })}
             >
-              Promote for {formatCurrency(this.state.nextUserPayoff)}
+              Promote for{' '}
+              {formatCurrency(
+                this.state.potentialPayoffs[this.state.generation + 1]
+              )}
             </button>
             <Dialog
               isOpen={this.state.linkOpen}
