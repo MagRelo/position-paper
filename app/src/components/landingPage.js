@@ -29,7 +29,70 @@ class LandingPage extends Component {
     return (
       <div>
         <section>
-          <h2>Incentive Engine</h2>
+          <h2>Friction</h2>
+          <div className="row row-3">
+            <div>
+              <h3>Pricipal/Agent Dilemma</h3>
+              <ul>
+                <li>Adverse Selection</li>
+                <li>Moral Hazard</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3>Transaction Costs</h3>
+              <ol>
+                <li>Search</li>
+                <li>Transactional</li>
+                <li>Direct</li>
+                <li>Assessment</li>
+                <li>Accountabiity & Recourse</li>
+              </ol>
+            </div>
+
+            <div>
+              <h3>Standardize Interactions: Protocol</h3>
+              <h3>Establish a marketplace</h3>
+            </div>
+          </div>
+        </section>
+        <section>
+          <h2>Incentive Exchange Platform</h2>
+          <p>Seperate ownership and custody</p>
+          <div className="row row-3">
+            <div>
+              <h3>1) Design a Protocol</h3>
+              <ul>
+                <li>Standardize terms</li>
+                <li>Incentive structure: Value(minus) vs. Price(plus)</li>
+                <li>Algorithmic pricing vs. free pricing</li>
+              </ul>
+            </div>
+            <div>
+              <h3>2) Create an Exchange</h3>
+              <ul>
+                <li>Membership: Public vs. Private</li>
+                <li>Actions: Public vs. Private</li>
+                <li>Powerful search features</li>
+              </ul>
+            </div>
+            <div>
+              <h3>3) Do Business</h3>
+              <ul>
+                <li>Instant, friction-free transactions</li>
+                <li>Powerful insights & analytics tools</li>
+                <li>
+                  Use familiar social tools to interact + integrate with popular
+                  products
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+        <section>
+          <h2>Examples</h2>
+
+          <h3>Incentive Query Network</h3>
           <p>Post a request and a completion bonus.</p>
           <p>Watch as a network of referrals form.</p>
           <p>Select the winner to distribute the completion bonus.</p>
