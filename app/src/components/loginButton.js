@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { Dialog } from '@reach/dialog';
-import '@reach/dialog/styles.css';
 
 import UserLogin from 'components/loginForm';
 import UserSignup from 'components/createUser';

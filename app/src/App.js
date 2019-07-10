@@ -7,6 +7,7 @@ import { NavLink, Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
 // CSS
+import '@reach/dialog/styles.css';
 import './css/open-sans.css';
 import './css/pure-min.css';
 import './index.css';
@@ -57,8 +58,8 @@ function App(props) {
     <div className="container">
       <nav className="header">
         <div className="menu">
-          <NavLink exact={true} activeClassName="is-active" to={'/queries'}>
-            Queries
+          <NavLink exact={true} activeClassName="is-active" to={'/search'}>
+            Search
           </NavLink>
           {activeSession ? (
             <NavLink activeClassName="is-active" to={'/user'}>
@@ -88,7 +89,7 @@ function App(props) {
           <Route path="/addlink" component={createLink} />
           <Route path="/addquery" component={createQuery} />
 
-          <Route path="/queries" component={Search} />
+          <Route path="/search" component={Search} />
           <Route path="/link/:linkId" component={QueryLink} />
           <Route path="/query/:linkId" component={Query} />
           <Route path="/response/:responseId" component={Response} />
@@ -98,7 +99,7 @@ function App(props) {
       ) : (
         <Switch>
           <Route path="/link/:linkId" component={QueryLink} />
-          <Route path="/queries" component={Search} />
+          <Route path="/search" component={Search} />
           <Route component={LandingPage} />
         </Switch>
       )}

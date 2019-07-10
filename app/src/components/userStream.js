@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 
 // icons
 import { IoMdLink, IoIosPerson } from 'react-icons/io';
@@ -37,9 +37,7 @@ function getLabel(activityType, isUser, data) {
     case 'addQuery':
       return isUser ? `You Added a Query` : `New Query From ${data.user.email}`;
     case 'addLink':
-      return isUser
-        ? `You Linked to ${data.query.title}`
-        : `New Link To Your Query`;
+      return isUser ? `You Added a Link` : `New Link To Your Query`;
     case 'addResponse':
       return isUser
         ? `You responded to ${data.query.title}`
@@ -88,7 +86,10 @@ function activityTile(item, user) {
   const isUser = user === item.actor;
 
   const userHighlightColor = '#0279db';
+  const userShadow = '0px 2px 5px 0px rgba(119, 137, 166, 0.58)';
+
   const otherColor = 'rgb(14, 165, 29)';
+  const otherShadow = '0px 2px 5px 0px rgba(112, 148, 116, 0.58)';
 
   return (
     <div
@@ -97,7 +98,8 @@ function activityTile(item, user) {
         marginTop: '1rem',
         borderTop: isUser
           ? `solid 2px ${userHighlightColor}`
-          : `solid 2px ${otherColor}`
+          : `solid 2px ${otherColor}`,
+        boxShadow: isUser ? `${userShadow}` : `${otherShadow}`
       }}
     >
       <div className="stream-label">
@@ -109,26 +111,25 @@ function activityTile(item, user) {
   );
 }
 
-function UserStream(props) {
-  // const config = { mass: 5, tension: 2000, friction: 200 };
-  // const trail = useTrail(props.stream.length, {opacity: 0});
+// function UserStream(props) {
+//   // const config = { mass: 5, tension: 2000, friction: 200 };
+//   // const trail = useTrail(props.stream.length, {opacity: 0});
 
-  return (
-    <ul style={{ padding: '0 1em' }}>
-      {props.stream &&
-        props.stream.map(item => {
-          return (
-            <li style={{ listStyle: 'none' }} key={item.id}>
-              {activityTile(item, props.userId)}
-            </li>
-          );
-        })}
-    </ul>
-  );
-}
+//   return (
+//     <ul style={{ padding: '0 1em' }}>
+//       {props.stream &&
+//         props.stream.map(item => {
+//           return (
+//             <li style={{ listStyle: 'none' }} key={item.id}>
+//               {activityTile(item, props.userId)}
+//             </li>
+//           );
+//         })}
+//     </ul>
+//   );
+// }
 
 function AnimatedUserStream(props) {
-  
   const config = { mass: 5, tension: 2000, friction: 200 };
   const trail = useTrail(props.stream.length, {
     config,

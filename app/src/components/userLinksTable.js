@@ -20,7 +20,7 @@ class Inbox extends Component {
           <table className="pure-table">
             <thead>
               <tr>
-                <th>Query</th>
+                <th>Link</th>
                 <th>Value</th>
                 <th>Views</th>
               </tr>

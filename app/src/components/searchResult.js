@@ -89,8 +89,7 @@ function Results(props) {
           <animated.div
             key={index}
             style={{
-              ...rest,
-              transform: x.interpolate(x => `translate3d(0,${x}px,0)`)
+              ...rest
             }}
           >
             {SearchResult(props.results[index], props.userId)}

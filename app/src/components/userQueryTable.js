@@ -19,7 +19,7 @@ class UserQueryTable extends Component {
           <table className="pure-table">
             <thead>
               <tr>
-                <th>Query</th>
+                <th>Request</th>
                 <th>Bonus</th>
                 <th>Views</th>
               </tr>

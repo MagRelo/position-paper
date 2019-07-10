@@ -185,3 +185,7 @@ li {
   border: solid 1px #cbcbcb;
 
 }
+
+button:focus {
+  outline: none;
+}
