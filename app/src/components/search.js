@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import {
-  formatCurrency,
-  formatDate,
-  useDebounce
-} from 'components/util/random';
-import StreamList from './userStream';
-import FollowButton from 'components/followButton';
-import LinkButton from 'components/linkButton';
+import { useDebounce } from 'components/util/random';
+
+import SearchResults from 'components/searchResult';
 
 // import { useTrail, animated } from 'react-spring';
 // const trail = useTrail(number, {opacity: 1})
@@ -51,165 +46,85 @@ function SearchFlow() {
 
   return (
     <React.Fragment>
-      <div className="row row-5-3">
-        <div>
-          <h3 className="section-header">Query Flow</h3>
+      <div className="">
+        <h3 className="section-header">Search</h3>
 
-          <div className="row row-2" style={{ paddingTop: '1em' }}>
-            <div>
-              <form action="" className="pure-form">
-                <input
-                  type="text"
-                  className="pure-input-1"
-                  placeholder="type to search"
-                  onChange={e => {
-                    setSearchTerm(e.target.value);
-                  }}
-                />
-              </form>
-            </div>
-
-            <div className="row row-3">
-              <div>
-                <button
-                  className="pure-button pure-button-primary"
-                  style={{
-                    textDecoration: days === '1' ? 'underline' : null
-                  }}
-                  onClick={() => {
-                    setDays('1');
-                  }}
-                >
-                  24 hours
-                </button>
-              </div>
-              <div>
-                <button
-                  className="pure-button pure-button-primary"
-                  style={{
-                    textDecoration: days === '7' ? 'underline' : null
-                  }}
-                  onClick={() => {
-                    setDays('7');
-                  }}
-                >
-                  This Week
-                </button>
-              </div>
-              <div>
-                <button
-                  className="pure-button pure-button-primary"
-                  style={{
-                    textDecoration: days === '30' ? 'underline' : null
-                  }}
-                  onClick={() => {
-                    setDays('30');
-                  }}
-                >
-                  This Month
-                </button>
-              </div>
-            </div>
+        {/* Seach Form */}
+        <div
+          className="row row-2"
+          style={{ paddingTop: '1em', marginBottom: '1em' }}
+        >
+          <div>
+            <form action="" className="pure-form">
+              <input
+                type="text"
+                className="pure-input-1"
+                placeholder="type to search"
+                onChange={e => {
+                  setSearchTerm(e.target.value);
+                }}
+              />
+            </form>
           </div>
 
+          <div className="row row-3">
+            <div>
+              <button
+                className="pure-button pure-button-primary"
+                style={{
+                  textDecoration: days === '1' ? 'underline' : null
+                }}
+                onClick={() => {
+                  setDays('1');
+                }}
+              >
+                24 hours
+              </button>
+            </div>
+            <div>
+              <button
+                className="pure-button pure-button-primary"
+                style={{
+                  textDecoration: days === '7' ? 'underline' : null
+                }}
+                onClick={() => {
+                  setDays('7');
+                }}
+              >
+                This Week
+              </button>
+            </div>
+            <div>
+              <button
+                className="pure-button pure-button-primary"
+                style={{
+                  textDecoration: days === '30' ? 'underline' : null
+                }}
+                onClick={() => {
+                  setDays('30');
+                }}
+              >
+                This Month
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div>
           {isSearching ? (
             <div style={{ textAlign: 'center', marginTop: '1em' }}>
               Loading...
             </div>
           ) : null}
+        </div>
 
-          <ul style={{ padding: '0' }}>
-            {results.map(link => {
-              return (
-                <li key={link._id} style={{ listStyle: 'none' }}>
-                  {QueryPanel(link, user._id)}
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-        <div>
-          <h3 className="section-header">Your Activity</h3>
-          <StreamList stream={stream} userId={user._id} />
-        </div>
+        <SearchResults results={results} userId={user._id} />
       </div>
     </React.Fragment>
   );
 }
 
 export default SearchFlow;
-
-function QueryPanel(link, userId) {
-  return (
-    <div
-      style={{
-        background: 'rgb(196, 218, 248)',
-        padding: '0.677em',
-        border: 'solid 1px #9cc0fb'
-      }}
-    >
-      <div
-        className="panel"
-        style={{
-          background: 'white',
-          boxShadow: '0px 1px 4px 0px rgba(87, 103, 115, 0.58)',
-          paddingBottom: 0
-        }}
-      >
-        {/* Title */}
-        <p style={{ fontSize: '20px', marginTop: '0' }}>
-          <span style={{ float: 'right', fontSize: 'smaller' }}>
-            {formatCurrency(link.query.bonus)}
-          </span>
-          <Link to={'/link/' + link.linkId}> {link.query.title}</Link>
-          <FollowButton
-            type="Query"
-            targetId={link.query._id}
-            disable={!userId || link.user._id === userId}
-          />
-        </p>
-
-        {/* Description */}
-        <p>{link.query.data.description}</p>
-
-        <div className="row row-x-2">
-          <p>Posted: {formatDate(link.createdAt)}</p>
-          <p>
-            Posted By: {link.user.email}
-            <FollowButton
-              type="User"
-              targetId={link.user._id}
-              disable={!userId || link.user._id === userId}
-            />
-          </p>
-        </div>
-      </div>
-
-      <div
-        style={{
-          textAlign: 'right',
-          marginTop: '.76em'
-        }}
-      >
-        <LinkButton
-          disable={!userId || link.user._id === userId}
-          queryId={link.query._id}
-          parentLink={link.linkId}
-          label={`Promote: ${formatCurrency(
-            link.potentialPayoffs[link.generation + 1]
-          )}`}
-        />
-
-        <button
-          className="pure-button pure-button-primary"
-          style={{ background: '#0fa51d' }}
-        >
-          Respond: {formatCurrency(link.payoffs[0])}
-        </button>
-      </div>
-    </div>
-  );
-}
 
 async function getSearchResults(searchTerm, days) {
   const queryString = `?searchTerm=${searchTerm}&days=${days}`;

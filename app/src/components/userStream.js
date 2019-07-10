@@ -7,6 +7,10 @@ import { GiInfo } from 'react-icons/gi';
 import { GoGitMerge, GoBroadcast } from 'react-icons/go';
 import { MdInput } from 'react-icons/md';
 
+//
+import { useTrail, animated } from 'react-spring';
+// const trail = useTrail(number, {opacity: 1})
+
 function getIcon(activityType) {
   switch (activityType) {
     case 'addUser':
@@ -90,6 +94,7 @@ function activityTile(item, user) {
     <div
       className="stream"
       style={{
+        marginTop: '1rem',
         borderTop: isUser
           ? `solid 2px ${userHighlightColor}`
           : `solid 2px ${otherColor}`
@@ -105,6 +110,9 @@ function activityTile(item, user) {
 }
 
 function UserStream(props) {
+  // const config = { mass: 5, tension: 2000, friction: 200 };
+  // const trail = useTrail(props.stream.length, {opacity: 0});
+
   return (
     <ul style={{ padding: '0 1em' }}>
       {props.stream &&
@@ -119,4 +127,34 @@ function UserStream(props) {
   );
 }
 
-export default UserStream;
+function AnimatedUserStream(props) {
+  
+  const config = { mass: 5, tension: 2000, friction: 200 };
+  const trail = useTrail(props.stream.length, {
+    config,
+    opacity: 1,
+    x: 0,
+    height: 80,
+    from: { opacity: 0, x: 20, height: 0 }
+  });
+
+  return (
+    <div>
+      {trail.map(({ x, height, ...rest }, index) => {
+        return (
+          <animated.div
+            key={index}
+            style={{
+              ...rest,
+              transform: x.interpolate(x => `translate3d(0,${x}px,0)`)
+            }}
+          >
+            {activityTile(props.stream[index], props.userId)}
+          </animated.div>
+        );
+      })}
+    </div>
+  );
+}
+
+export default AnimatedUserStream;
