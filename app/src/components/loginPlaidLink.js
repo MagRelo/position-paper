@@ -9,17 +9,6 @@ const products = ['auth'];
 const institution = null;
 
 function PlaidLinkWrapper(props) {
-  // setup plaid link
-  window.linkHandler = window.Plaid.create({
-    selectAccount: true,
-    env: env,
-    clientName: clientName,
-    key: publicKey,
-    product: products,
-    onExit: onExit,
-    onSuccess: onSuccess
-  });
-
   function onSuccess(token, metadata) {
     props.getToken(token, metadata);
   }
@@ -30,6 +19,18 @@ function PlaidLinkWrapper(props) {
 
   function handleOnClick(event) {
     event.preventDefault();
+
+    // setup plaid link
+    window.linkHandler = window.Plaid.create({
+      selectAccount: true,
+      env: env,
+      clientName: clientName,
+      key: publicKey,
+      product: products,
+      onExit: onExit,
+      onSuccess: onSuccess
+    });
+
     if (window.linkHandler) {
       window.linkHandler.open(institution);
     }
