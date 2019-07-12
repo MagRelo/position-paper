@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
 
 import { Dialog } from '@reach/dialog';
-import '@reach/dialog/styles.css';
+// import '@reach/dialog/styles.css';
 
 import { formatCurrency } from 'components/util/random';
 
 import LinkForm from './createLink';
-import ResponseForm from './createResponse';
 import LinkAdmin from './linkAdmin';
+import ResponseButton from 'components/responseButton';
 
 class Profile extends Component {
   state = {
-    contactOpen: false,
     linkOpen: false,
     name: '',
     potentialPayoffs: [],
@@ -45,53 +44,18 @@ class Profile extends Component {
     }
   }
 
-  async sendResponse(formData) {
-    console.log(formData);
-
-    // add params
-    formData.queryId = this.state.queryId;
-    formData.linkId = this.state.linkId;
-
-    const response = await fetch('/api/response/add', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(formData)
-    });
-    if (response.status === 200) {
-      const responseObj = await response.json();
-      console.log(responseObj);
-
-      // this.setState({
-      //   linkId: linkId,
-      // });
-    } else {
-      console.log('not found', response.status);
-    }
-  }
-
   render() {
     return (
       <div>
         <div className="panel">
           <h2>{this.state.name}</h2>
           <p>Description: {this.state.description}</p>
-
-          <button
-            className="pure-button pure-button-primary"
-            style={{ marginBottom: '1em' }}
-            disabled={this.state.isLinkOwner}
-            onClick={() => this.setState({ contactOpen: true })}
-          >
-            Apply – {formatCurrency(this.state.payoffs[0])}
-          </button>
-          <Dialog
-            isOpen={this.state.contactOpen}
-            onDismiss={() => this.setState({ contactOpen: false })}
-          >
-            <ResponseForm submit={this.sendResponse.bind(this)} />
-          </Dialog>
+          <ResponseButton
+            queryId={this.state.queryId}
+            linkId={this.state.linkId}
+            payoff={this.state.payoffs[0]}
+            disabled={this.state.isLinkOwner || this.state.isQueryOwner}
+          />
         </div>
 
         {this.state.isLinkOwner ? (

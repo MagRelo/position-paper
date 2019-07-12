@@ -11,9 +11,7 @@ function CreateResponse(props) {
       formObj[key] = value;
     });
 
-    console.log('formObj', formObj);
-
-    props.submit(formData);
+    props.submit(formObj);
   }
 
   return (

@@ -5,6 +5,7 @@ import { useTrail, animated } from 'react-spring';
 import { formatCurrency, formatDate } from 'components/util/random';
 import FollowButton from 'components/followButton';
 import LinkButton from 'components/linkButton';
+import ResponseButton from 'components/responseButton';
 
 function SearchResult(link, userId) {
   return (
@@ -61,12 +62,14 @@ function SearchResult(link, userId) {
           )}`}
         />
 
-        <button
-          className="pure-button pure-button-primary"
-          style={{ background: '#0fa51d' }}
-        >
-          Respond: {formatCurrency(link.payoffs[0])}
-        </button>
+        <ResponseButton
+          queryId={link.query._id}
+          linkId={link.linkId}
+          payoff={link.payoffs[0]}
+          disabled={
+            !userId || link.user._id === userId || link.query.user === userId
+          }
+        />
       </div>
     </div>
   );
