@@ -195,6 +195,12 @@ a.pure-button-primary:hover,
   color: white;
 }
 
+
+.pure-button+.pure-button {
+  margin: 0 0 0 0.5em;
+  ;
+}
+
 /* Table */
 
 .pure-table {

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Tabs, Tab, TabList, TabPanels, TabPanel } from '@reach/tabs';
+import { Tabs, TabList, TabPanels, TabPanel } from '@reach/tabs';
+import { CoolTab } from 'components/util/random';
 
 import UserSocial from 'components/userSocial';
 // import UserBankAccount from 'components/userBankAccount';
@@ -10,27 +11,6 @@ import LoginPlaidLink from './loginPlaidLink';
 import LinksList from './userLinksTable';
 import QueryList from './userQueryTable';
 import StreamList from './userStream';
-
-function CoolTab(props) {
-  // `isSelected` comes from `TabList` cloning the `CoolTab`.
-  const { isSelected, children } = props;
-
-  // make sure to forward *all* props received from TabList
-  return (
-    <Tab
-      {...props}
-      style={{
-        background: 'none',
-        border: 'none',
-        color: '#0279db',
-        borderBottom: isSelected ? 'solid 1px' : 'none',
-        marginRight: '1em'
-      }}
-    >
-      {children}
-    </Tab>
-  );
-}
 
 class Profile extends Component {
   state = { name: '', email: '', links: [], queries: [], stream: [] };

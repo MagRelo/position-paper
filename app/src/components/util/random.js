@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Tab } from '@reach/tabs';
 
 export function formatCurrency(input) {
   if (typeof input === 'number') {
@@ -50,4 +51,25 @@ export function useDebounce(value, delay) {
   );
 
   return debouncedValue;
+}
+
+export function CoolTab(props) {
+  // `isSelected` comes from `TabList` cloning the `CoolTab`.
+  const { isSelected, children } = props;
+
+  // make sure to forward *all* props received from TabList
+  return (
+    <Tab
+      {...props}
+      style={{
+        background: 'none',
+        border: 'none',
+        color: '#0279db',
+        borderBottom: isSelected ? 'solid 1px' : 'none',
+        marginRight: '1em'
+      }}
+    >
+      {children}
+    </Tab>
+  );
 }

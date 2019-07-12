@@ -13,22 +13,36 @@ class LandingPage extends Component {
     return (
       <React.Fragment>
         <section>
-          <h2>Incentive Exchange</h2>
-          <p>
-            Build private social networks around standarized transactions.
-            Establish community norms and practices to streamline negotiation.
-            Enable independent agents to coordinate to achieve your goals.
-          </p>
+          <div className="row row-2">
+            <div>
+              <h2>Incentive Exchange</h2>
+              <p>
+                Build private social networks around standarized transactions.
+                Create transperant incentives to enable independent agents to
+                coordinate to achieve your goals.
+              </p>
+            </div>
+            <div />
+          </div>
+
           <div className="row row-3">
             <div>
               <h3>1) Design the Deal</h3>
               <ul>
                 <li>Standardize Terms & Structure</li>
                 <li>
-                  Add <b>Network Incentives</b>: Value(minus) vs. Price(plus)
+                  Add <b>Network Incentives</b>
+                  <ul>
+                    <li>Value (minus)</li>
+                    <li>Price (plus)</li>
+                  </ul>
                 </li>
                 <li>
-                  Set <b>Incentive Pricing</b>: Algorithmic or Open
+                  Set <b>Incentive Pricing</b>
+                  <ul>
+                    <li>Algorithmic</li>
+                    <li>Open</li>
+                  </ul>
                 </li>
               </ul>
             </div>
@@ -45,25 +59,13 @@ class LandingPage extends Component {
               <ul>
                 <li>Instant, friction-free transactions</li>
                 <li>Powerful search, insights, and analytics tools</li>
-                <li>Use familiar social tools to interact</li>
-                <li>Integrate with popular enterprise products</li>
+                <li>Interact using exsiting social apps</li>
+                <li>
+                  Integrate with popular enterprise products (coming soon)
+                </li>
               </ul>
             </div>
           </div>
-        </section>
-
-        <section>
-          <h2>Incentive Query Networks</h2>
-
-          <h3>Reduce</h3>
-
-          <ol>
-            <li>Search</li>
-            <li>Transactional</li>
-            <li>Direct</li>
-            <li>Assessment</li>
-            <li>Accountability & Recourse</li>
-          </ol>
         </section>
 
         <section>
@@ -83,6 +85,20 @@ class LandingPage extends Component {
               <h3>Stagetime</h3>
             </div>
           </div>
+        </section>
+
+        <section>
+          <h2>Incentive Query Networks</h2>
+
+          <h3>Reduce</h3>
+
+          <ol>
+            <li>Search</li>
+            <li>Transactional</li>
+            <li>Direct</li>
+            <li>Assessment</li>
+            <li>Accountability & Recourse</li>
+          </ol>
         </section>
       </React.Fragment>
     );
