@@ -56,38 +56,43 @@ class Query extends Component {
           <UserSocial />
         </div>
 
-        <h2>Analytics</h2>
-        <Tabs style={{ marginTop: '0.5em' }}>
-          <TabList style={{ marginBottom: '0.5em' }}>
-            <CoolTab>Activity</CoolTab>
-            <CoolTab>Links</CoolTab>
-            <CoolTab>Responses</CoolTab>
-          </TabList>
+        <section>
+          <Tabs style={{ marginTop: '0.5em' }}>
+            <TabList style={{ marginBottom: '0.5em' }}>
+              <CoolTab>Analytics</CoolTab>
+              <CoolTab>Links</CoolTab>
+              <CoolTab>Responses</CoolTab>
+            </TabList>
 
-          <TabPanels>
-            <TabPanel style={{ outline: 'none' }}>stuff</TabPanel>
-
-            <TabPanel style={{ outline: 'none' }}>
-              <h3>Links</h3>
-
-              <div className="row row-2">
-                <div>
-                  <LinksList links={this.state.links} />
+            <TabPanels>
+              <TabPanel>
+                <div className="row row-5">
+                  <div>Links</div>
+                  <div>Views</div>
+                  <div>Top Referrers</div>
+                  <div>section</div>
+                  <div>country map</div>
                 </div>
-                <div>
-                  <LinkGraph links={this.state.links} />
+              </TabPanel>
+              <TabPanel style={{ outline: 'none' }}>
+                <div className="row row-2">
+                  <div>
+                    <LinksList links={this.state.links} />
+                  </div>
+                  <div>
+                    <LinkGraph links={this.state.links} />
+                  </div>
                 </div>
-              </div>
-            </TabPanel>
+              </TabPanel>
 
-            <TabPanel style={{ outline: 'none' }}>
-              <div>
-                <h3>Responses</h3>
-                <ResponseList responses={this.state.responses} />
-              </div>
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
+              <TabPanel style={{ outline: 'none' }}>
+                <div>
+                  <ResponseList responses={this.state.responses} />
+                </div>
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
+        </section>
       </div>
     );
   }

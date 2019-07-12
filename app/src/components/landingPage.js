@@ -29,7 +29,7 @@ class LandingPage extends Component {
             <div>
               <h3>1) Design the Deal</h3>
               <ul>
-                <li>Standardize Terms & Structure</li>
+                <li />
                 <li>
                   Add <b>Network Incentives</b>
                   <ul>

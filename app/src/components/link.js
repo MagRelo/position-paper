@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 
-import { Dialog } from '@reach/dialog';
-// import '@reach/dialog/styles.css';
-
 import { formatCurrency } from 'components/util/random';
 
-import LinkForm from './createLink';
 import LinkAdmin from './linkAdmin';
+
+import LinkButton from 'components/linkButton';
 import ResponseButton from 'components/responseButton';
 
 class Profile extends Component {
@@ -68,27 +66,14 @@ class Profile extends Component {
             }
           />
         ) : (
-          <React.Fragment>
-            <button
-              className="pure-button pure-button-primary"
-              style={{ marginTop: '1em' }}
-              onClick={() => this.setState({ linkOpen: true })}
-            >
-              Promote for{' '}
-              {formatCurrency(
-                this.state.potentialPayoffs[this.state.generation + 1]
-              )}
-            </button>
-            <Dialog
-              isOpen={this.state.linkOpen}
-              onDismiss={() => this.setState({ linkOpen: false })}
-            >
-              <LinkForm
-                queryId={this.state.queryId}
-                parentLink={this.state.linkId}
-              />
-            </Dialog>
-          </React.Fragment>
+          <LinkButton
+            queryId={this.state.queryId}
+            parentLink={this.state.linkId}
+            disabled={this.state.isLinkOwner || this.state.isQueryOwner}
+            label={`Promote: ${formatCurrency(
+              this.state.potentialPayoffs[this.state.generation + 1]
+            )}`}
+          />
         )}
       </div>
     );
