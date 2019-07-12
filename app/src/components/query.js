@@ -56,10 +56,11 @@ class Query extends Component {
           <UserSocial />
         </div>
 
-        <section>
+        <div>
+          <h3 className="section-header">Admin</h3>
           <Tabs style={{ marginTop: '0.5em' }}>
             <TabList style={{ marginBottom: '0.5em' }}>
-              <CoolTab>Analytics</CoolTab>
+              <CoolTab>Traffic</CoolTab>
               <CoolTab>Links</CoolTab>
               <CoolTab>Responses</CoolTab>
             </TabList>
@@ -92,7 +93,7 @@ class Query extends Component {
               </TabPanel>
             </TabPanels>
           </Tabs>
-        </section>
+        </div>
       </div>
     );
   }

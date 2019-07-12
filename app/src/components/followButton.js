@@ -21,7 +21,7 @@ function FollowButton(props) {
       <button
         className="pure-button follow-button"
         onClick={handleClick}
-        disabled={props.disable}
+        disabled={props.disabled}
       >
         {isLoading ? (
           <div className="spinner">

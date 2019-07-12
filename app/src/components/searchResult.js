@@ -25,9 +25,10 @@ function SearchResult(link, userId) {
           </span>
           <Link to={'/link/' + link.linkId}> {link.query.title}</Link>
           <FollowButton
-            type="Query"
-            targetId={link.query._id}
-            disable={!userId || link.user._id === userId}
+            type="Link"
+            targetId={link._id}
+            isFollowing={link.isFollowingLink}
+            disabled={!userId || link.isLinkOwner || link.isQueryOwner}
           />
         </p>
 
@@ -37,11 +38,12 @@ function SearchResult(link, userId) {
         <div className="row row-x-2">
           <p>Posted: {formatDate(link.createdAt)}</p>
           <p>
-            Posted By: {link.user.email}
+            Posted By: {link.postedBy}
             <FollowButton
               type="User"
-              targetId={link.user._id}
-              disable={!userId || link.user._id === userId}
+              targetId={link.userId}
+              isFollowing={link.isFollowingUser}
+              disabled={!userId || userId === link.userId}
             />
           </p>
         </div>
@@ -54,21 +56,17 @@ function SearchResult(link, userId) {
         }}
       >
         <LinkButton
-          disable={!userId || link.user._id === userId}
+          disable={!userId || link.isLinkOwner || link.isQueryOwner}
           queryId={link.query._id}
           parentLink={link.linkId}
-          label={`Promote: ${formatCurrency(
-            link.potentialPayoffs[link.generation + 1]
-          )}`}
+          label={`Promote: ${formatCurrency(link.promoteBonus)}`}
         />
 
         <ResponseButton
           queryId={link.query._id}
           linkId={link.linkId}
-          payoff={link.payoffs[0]}
-          disabled={
-            !userId || link.user._id === userId || link.query.user === userId
-          }
+          payoff={link.respondBonus}
+          disabled={!userId || link.isLinkOwner || link.isQueryOwner}
         />
       </div>
     </div>

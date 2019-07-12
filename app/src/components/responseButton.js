@@ -6,17 +6,17 @@ import { formatCurrency } from 'components/util/random';
 
 function ResponseButton(props) {
   const [responseOpen, setReponseOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
 
   function handleClick(formData) {
-    setIsLoading(true);
+    // setIsLoading(true);
 
     // add params
     formData.queryId = props.queryId;
     formData.linkId = props.linkId;
 
     sendResponse(formData).then(results => {
-      setIsLoading(false);
+      // setIsLoading(false);
       setReponseOpen(false);
     });
   }
@@ -29,7 +29,7 @@ function ResponseButton(props) {
         disabled={props.disabled}
         onClick={() => setReponseOpen(true)}
       >
-        Respond – {formatCurrency(props.payoff)}
+        Respond: {formatCurrency(props.payoff)}
       </button>
       <Dialog isOpen={responseOpen} onDismiss={() => setReponseOpen(false)}>
         <ResponseForm submit={handleClick} />

@@ -69,16 +69,44 @@ router.get('/search', async function(req, res) {
       }
     ]);
 
-    // selsct a link
     const promises = [];
     queryGenList.forEach(query => {
       return promises.push(
         LinkModel.findOne({
           query: query._id,
           generation: query.latestGen
-        }).populate({
-          path: 'query user'
         })
+          .populate('user query')
+          .then(link => {
+            // display indicators
+            const isFollowingLink =
+              req.user && req.user.follows.indexOf(link._id) > -1;
+            const isFollowingUser =
+              req.user && req.user.follows.indexOf(link.user._id) > -1;
+            const isLinkOwner = req.user._id.equals(link.user._id);
+            const isQueryOwner = req.user._id.equals(link.query.user);
+
+            return {
+              _id: link._id,
+              linkId: link.linkId,
+              isFollowingLink: isFollowingLink,
+              isFollowingUser: isFollowingUser,
+              isQueryOwner: isQueryOwner,
+              isLinkOwner: isLinkOwner,
+              postedBy: link.user.email,
+              userId: link.user._id,
+              createdAt: link.createdAt,
+              respondBonus: link.payoffs[0],
+              promoteBonus: link.potentialPayoffs[link.generation + 1],
+              query: {
+                _id: link.query._id,
+                title: link.query.title,
+                bonus: link.query.bonus,
+                type: link.query.type,
+                data: link.query.data
+              }
+            };
+          })
       );
     });
 
@@ -152,7 +180,7 @@ router.post('/user/follow', async function(req, res) {
   const feedType = req.query.type;
   const targetId = req.query.target;
 
-  console.log('input: ', targetId, intentToFollow, feedType);
+  // console.log('input: ', targetId, intentToFollow, feedType);
 
   // call getstream methods
 
