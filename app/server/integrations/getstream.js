@@ -5,8 +5,9 @@ const QueryModel = require('../models').QueryModel;
 const LinkModel = require('../models').LinkModel;
 const ResponseModel = require('../models').ResponseModel;
 
-const apiKey = 'hdm568bfbafw';
+const apiKey = process.env.STREAM_API_KEY || 'hdm568bfbafw';
 const apiKeySecret =
+  process.env.STREAM_API_SECRET ||
   'egqcazdzd8ws8zue6srrvdbeypzfghxgm6hv99pbfgyzp5nauesb86qru69gjuxk';
 
 // Instantiate a new client (server side)

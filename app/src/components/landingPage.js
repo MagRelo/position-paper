@@ -17,9 +17,9 @@ class LandingPage extends Component {
             <div>
               <h2>Incentive Exchange</h2>
               <p>
-                Build private social networks around standarized transactions.
-                Create transperant incentives to enable independent agents to
-                coordinate to achieve your goals.
+                Build private, ad-hoc networks around standarized deals. Create
+                transperant incentives to enable agents to independently achieve
+                your goals.
               </p>
             </div>
             <div />
@@ -29,7 +29,7 @@ class LandingPage extends Component {
             <div>
               <h3>1) Design the Deal</h3>
               <ul>
-                <li />
+                <li>Create a deal template</li>
                 <li>
                   Add <b>Network Incentives</b>
                   <ul>
@@ -71,18 +71,28 @@ class LandingPage extends Component {
         <section>
           <h2>Examples</h2>
 
-          <div className="row row-3">
+          <div
+            className="row row-2"
+            style={{ textAlign: 'center', padding: '1em' }}
+          >
             <div>
-              <h3>Talent</h3>
-              <p>Post a request and a completion bonus.</p>
-              <p>Watch as a network of referrals form.</p>
-              <p>Select the winner to distribute the completion bonus.</p>
+              <h3>Recruiting</h3>
+              <p>Post a candidate signing bonus and a network bonus.</p>
+              <p>
+                Watch as a network of referrals form to compete for the network
+                bonus.
+              </p>
+              <p>Select the winner and pay each of the participants.</p>
             </div>
+
             <div>
-              <h3>Commodities</h3>
-            </div>
-            <div>
-              <h3>Stagetime</h3>
+              <h3>Commodity Sales</h3>
+              <p>
+                Post a product for sale and set a minimum sale price. Allow
+                agents to inflate the price to cover their costs.
+              </p>
+              <p>Watch as a network of referrals form to sell your products.</p>
+              <p>Complete the sale and pay each of the sales agents.</p>
             </div>
           </div>
         </section>
@@ -90,8 +100,7 @@ class LandingPage extends Component {
         <section>
           <h2>Incentive Query Networks</h2>
 
-          <h3>Reduce</h3>
-
+          <h3>Total Cost</h3>
           <ol>
             <li>Search</li>
             <li>Transactional</li>

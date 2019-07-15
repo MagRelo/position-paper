@@ -1,3 +1,5 @@
 /node_modules
 /localnode
 /app/node_modules
+
+.env

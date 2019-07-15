@@ -1,9 +1,13 @@
 //  Plaid
 var plaid = require('plaid');
-const clientId = '5d0cdd955a4c3e0012b14f6e';
-const secret = 'ac69552f4c2f146f9a8ee31686e7ec';
-const publicKey = '2b3f9221802f14178deef36cd7f168';
-const env = 'sandbox';
+
+const clientAppName = process.env.PLAID_CLIENT_APP_NAME || 'Incentive Exchange';
+const clientId = process.env.PLAID_CLIENT_ID || '5d0cdd955a4c3e0012b14f6e';
+const secret = process.env.PLAID_SECRET || 'ac69552f4c2f146f9a8ee31686e7ec';
+const publicKey =
+  process.env.PLAID_PUBLIC_KEY || '2b3f9221802f14178deef36cd7f168';
+const env = process.env.PLAID_ENV || 'sandbox';
+
 var plaidClient = new plaid.Client(
   clientId,
   secret,
@@ -11,7 +15,7 @@ var plaidClient = new plaid.Client(
   plaid.environments[env],
   {
     version: '2019-05-29',
-    clientApp: 'Incentive Engine'
+    clientApp: clientAppName
   }
 );
 
