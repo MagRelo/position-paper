@@ -139,7 +139,6 @@ async function hydrateStreamFeed(inputArray = []) {
             item.data = data;
             return item;
           });
-        break;
 
       case 'addQuery':
         return QueryModel.findOne({ _id: item.object })
@@ -149,7 +148,6 @@ async function hydrateStreamFeed(inputArray = []) {
             item.data = data;
             return item;
           });
-        break;
 
       case 'addLink':
         return LinkModel.findOne({ _id: item.object })
@@ -159,7 +157,6 @@ async function hydrateStreamFeed(inputArray = []) {
             item.data = data;
             return item;
           });
-        break;
 
       case 'addResponse':
         return ResponseModel.findOne({ _id: item.object })
@@ -169,7 +166,6 @@ async function hydrateStreamFeed(inputArray = []) {
             item.data = data;
             return item;
           });
-        break;
 
       case 'addFollow:User':
         return UserModel.findOne({ _id: item.object })
