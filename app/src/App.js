@@ -18,8 +18,8 @@ import LoginButton from 'components/loginButton';
 
 import LandingPage from 'components/landingPage';
 import User from 'components/user';
-import Query from 'components/query';
-import QueryLink from 'components/link';
+// import Query from 'components/query';
+// import QueryLink from 'components/link';
 import Link2 from 'components/link2';
 import Search from 'components/search';
 import Response from 'components/response';

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Tabs, TabList, TabPanels, TabPanel } from '@reach/tabs';
-
-import { formatCurrency, CoolTab } from 'components/util/random';
+// import { Tabs, TabList, TabPanels, TabPanel } from '@reach/tabs';
+// import { formatCurrency, CoolTab } from 'components/util/random';
 
 import LinkAdmin from 'components/linkAdmin';
 
@@ -14,13 +13,13 @@ import ResponseButton from 'components/responseButton';
 function Link(props) {
   const [link, setLink] = useState({});
   const [query, setQuery] = useState({});
+
   const [traffic, setTraffic] = useState({});
   const [links, setLinks] = useState([]);
   const [responses, setResponses] = useState([]);
+
   useEffect(() => {
     getLink(props.match.params.linkId).then(body => {
-      console.log(body);
-
       setLink(body);
       setQuery(body.query);
       setTraffic(body.traffic);
@@ -32,8 +31,12 @@ function Link(props) {
   return (
     <div>
       <div className="panel">
-        <h2>{link.title}</h2>
-        <p>Description: {link.description}</p>
+        {query.data ? (
+          <React.Fragment>
+            <h2>{query.data.title}</h2>
+            <p>Description: {query.data.description}</p>
+          </React.Fragment>
+        ) : null}
 
         <ResponseButton
           queryId={query._id}
@@ -44,7 +47,12 @@ function Link(props) {
       </div>
 
       {link.isLinkOwner ? (
-        <LinkAdmin />
+        <LinkAdmin
+          link={link}
+          traffic={traffic}
+          childLinks={links}
+          responses={responses}
+        />
       ) : (
         <LinkButton
           queryId={query._id}
@@ -63,8 +71,8 @@ async function getLink(linkId) {
   return await fetch('/api/link/' + linkId).then(response => response.json());
 }
 
-{
-  /* <Tabs style={{ marginTop: '0.5em' }}>
+//{
+/* <Tabs style={{ marginTop: '0.5em' }}>
 <TabList style={{ marginBottom: '0.5em' }}>
   <CoolTab>Traffic</CoolTab>
   <CoolTab>Links</CoolTab>
@@ -99,7 +107,7 @@ async function getLink(linkId) {
   </TabPanel>
 </TabPanels>
 </Tabs> */
-}
+//}
 
 // class Link extends Component {
 //   state = {
