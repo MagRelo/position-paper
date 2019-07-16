@@ -332,47 +332,39 @@ router.get('/query/:linkId', async function(req, res) {
 router.get('/link/:linkId', async function(req, res) {
   try {
     // get link
-    const link = await LinkModel.findOne({ linkId: req.params.linkId });
-    if (!link) {
-      return res.status(404).send({ error: 'link not found' });
-    }
+    const link = await LinkModel.findOne({
+      linkId: req.params.linkId
+    }).populate('user query');
 
-    let isLinkOwner = false;
-    if (req.user) {
-      isLinkOwner = req.user._id.equals(link.user);
-    }
-
-    // increment link views
-    if (!isLinkOwner) {
-      link.views += 1;
-      link.save();
-    }
-
-    // get query
-    const query = await QueryModel.findOne({ _id: link.query }).lean();
-    if (!query) {
-      return res.status(404).send({ error: 'query not found' });
-    }
-
-    // check user
-    let isQueryOwner = false;
-    if (req.user) {
-      isQueryOwner = req.user._id.equals(query.user);
-    }
+    // display indicators
+    const isFollowingLink = req.user && req.user.follows.indexOf(link._id) > -1;
+    const isFollowingUser =
+      req.user && req.user.follows.indexOf(link.user._id) > -1;
+    const isLinkOwner = req.user._id.equals(link.user._id);
+    const isQueryOwner = req.user._id.equals(link.query.user);
 
     res.status(200).send({
+      _id: link._id,
+      linkId: link.linkId,
+      isFollowingLink: isFollowingLink,
+      isFollowingUser: isFollowingUser,
+      isQueryOwner: isQueryOwner,
+      isLinkOwner: isLinkOwner,
+      postedBy: link.user.email,
+      userId: link.user._id,
+      createdAt: link.createdAt,
+      respondBonus: link.payoffs[0],
+      promoteBonus: link.potentialPayoffs[link.generation + 1],
       query: {
-        _id: query._id,
-        title: query.title,
-        description: query.data.description
+        _id: link.query._id,
+        title: link.query.title,
+        bonus: link.query.bonus,
+        type: link.query.type,
+        data: link.query.data
       },
-      link: {
-        generation: link.generation,
-        payoffs: link.payoffs,
-        potentialPayoffs: link.potentialPayoffs,
-        isQueryOwner: isQueryOwner,
-        isLinkOwner: isLinkOwner
-      }
+      links: [],
+      responses: [],
+      traffic: {}
     });
   } catch (error) {
     console.log(error.message);

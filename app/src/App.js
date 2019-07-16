@@ -20,6 +20,7 @@ import LandingPage from 'components/landingPage';
 import User from 'components/user';
 import Query from 'components/query';
 import QueryLink from 'components/link';
+import Link2 from 'components/link2';
 import Search from 'components/search';
 import Response from 'components/response';
 // import Signup from 'components/createUser';
@@ -90,15 +91,15 @@ function App(props) {
           <Route path="/addquery" component={createQuery} />
 
           <Route path="/search" component={Search} />
-          <Route path="/link/:linkId" component={QueryLink} />
-          <Route path="/query/:linkId" component={Query} />
+          <Route path="/link/:linkId" component={Link2} />
+          {/* <Route path="/query/:linkId" component={Query} /> */}
           <Route path="/response/:responseId" component={Response} />
           <Route path="/user" component={User} />
           <Route component={LandingPage} />
         </Switch>
       ) : (
         <Switch>
-          <Route path="/link/:linkId" component={QueryLink} />
+          <Route path="/link/:linkId" component={Link2} />
           <Route path="/search" component={Search} />
           <Route component={LandingPage} />
         </Switch>
