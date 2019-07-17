@@ -54,11 +54,11 @@ li {
 }
 
 .section-header {
-  color: gray;
+  color: #1c4e78;
   display: block;
   width: 100%;
   padding: .3em 0;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid #8096ab;
   font-weight: normal;
 
 }
@@ -181,4 +181,23 @@ h3.section-header {
 
 button:focus {
   outline: none;
+}
+
+.traffic {
+  text-align: center;
+  height: 50px;
+}
+
+.traffic-wrapper {
+  /* margin: 1em; */
+}
+
+.traffic-value {
+  font-size: 28px;
+  /* padding: 1em 1em 0; */
+}
+
+.traffic-label {
+  text-transform: uppercase;
+  font-size: 14px;
 }

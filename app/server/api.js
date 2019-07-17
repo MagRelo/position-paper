@@ -4,6 +4,7 @@ var router = express.Router();
 const passport = require('passport');
 const payments = require('./integrations/payments');
 const getStream = require('./integrations/getstream');
+const elasticSearch = require('./integrations/elasticsearch');
 
 const UserModel = require('./models').UserModel;
 const QueryModel = require('./models').QueryModel;
@@ -335,6 +336,9 @@ router.get('/link/:linkId', async function(req, res) {
     const link = await LinkModel.findOne({
       linkId: req.params.linkId
     }).populate('user query');
+    if (!link) return res.status(401).send({ error: 'not found' });
+
+    const traffic = await elasticSearch.getLinkTraffic(req.params.linkId);
 
     // display indicators
     const isFollowingLink = req.user && req.user.follows.indexOf(link._id) > -1;
@@ -364,7 +368,7 @@ router.get('/link/:linkId', async function(req, res) {
       },
       links: [],
       responses: [],
-      traffic: {}
+      traffic: traffic
     });
   } catch (error) {
     console.log(error.message);

@@ -17,8 +17,8 @@ class LandingPage extends Component {
             <div>
               <h2>Incentive Exchange</h2>
               <p>
-                Build private, ad-hoc networks around standarized deals. Create
-                transperant incentives to enable agents to independently achieve
+                Build private, ad-hoc networks around standardized deals. Create
+                transparent incentives to enable agents to independently achieve
                 your goals.
               </p>
             </div>

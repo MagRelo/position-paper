@@ -15,7 +15,7 @@ function LinkButton(props) {
       <button
         className="pure-button pure-button-primary"
         onClick={handleClick}
-        disabled={props.disable}
+        disabled={props.disabled}
       >
         {isLoading ? (
           <div className="spinner">

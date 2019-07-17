@@ -64,12 +64,22 @@ export function CoolTab(props) {
       style={{
         background: 'none',
         border: 'none',
-        color: '#0279db',
-        borderBottom: isSelected ? 'solid 1px' : 'none',
+        color: isSelected ? '#1c4e78' : 'gray',
+        borderBottom: isSelected ? 'solid 1px #8096ab' : 'none',
         marginRight: '1em'
       }}
     >
       {children}
     </Tab>
+  );
+}
+
+export function lineItem(label, value) {
+  return (
+    <div className="line-item">
+      <div>{label}</div>
+      <div className="line-item-filler" />
+      <div>{value}</div>
+    </div>
   );
 }

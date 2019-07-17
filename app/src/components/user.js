@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Tabs, TabList, TabPanels, TabPanel } from '@reach/tabs';
-import { CoolTab } from 'components/util/random';
+
+import { lineItem } from 'components/util/random';
 
 import UserSocial from 'components/userSocial';
-// import UserBankAccount from 'components/userBankAccount';
-
-import LoginPlaidLink from './loginPlaidLink';
-import LinksList from './userLinksTable';
-import QueryList from './userQueryTable';
-import StreamList from './userStream';
+import LoginPlaidLink from 'components/loginPlaidLink';
+import LinksList from 'components/userLinksTable';
+import StreamList from 'components/userStream';
 
 class Profile extends Component {
   state = { name: '', email: '', links: [], queries: [], stream: [] };
@@ -42,10 +39,8 @@ class Profile extends Component {
           <div className="row row-2">
             <div>
               <h3 className="section-header">Profile</h3>
-              <div style={{ margin: '0 1em' }}>
-                <p>Name: {this.state.name}</p>
-                <p>Email: {this.state.email}</p>
-              </div>
+              {lineItem('Name', this.state.name)}
+              {lineItem('Email', this.state.email)}
             </div>
 
             <div>
@@ -71,30 +66,15 @@ class Profile extends Component {
 
           <div>
             <h3 className="section-header">Deal Flow</h3>
-            <Tabs style={{ marginTop: '0.5em' }}>
-              <TabList style={{ marginBottom: '0.5em' }}>
-                <CoolTab>Links</CoolTab>
-                <CoolTab>Requests</CoolTab>
-              </TabList>
+            <LinksList links={this.state.links} />
 
-              <TabPanels>
-                <TabPanel style={{ outline: 'none' }}>
-                  <LinksList links={this.state.links} />
-                </TabPanel>
-
-                <TabPanel style={{ outline: 'none' }}>
-                  <QueryList queries={this.state.queries} />
-
-                  <Link
-                    to="/addquery"
-                    className="pure-button pure-button-primary"
-                    style={{ float: 'right', marginTop: '0.8em' }}
-                  >
-                    Add Request
-                  </Link>
-                </TabPanel>
-              </TabPanels>
-            </Tabs>
+            <Link
+              to="/addquery"
+              className="pure-button pure-button-primary"
+              style={{ float: 'right', marginTop: '0.8em' }}
+            >
+              Add Request
+            </Link>
           </div>
         </div>
       </div>
