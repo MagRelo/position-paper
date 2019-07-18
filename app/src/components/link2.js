@@ -9,7 +9,6 @@ import ResponseButton from 'components/responseButton';
 function Link(props) {
   const [link, setLink] = useState({});
   const [query, setQuery] = useState({});
-
   const [traffic, setTraffic] = useState({});
   const [links, setLinks] = useState([]);
   const [responses, setResponses] = useState([]);
@@ -24,21 +23,63 @@ function Link(props) {
     });
   }, props.match.params.linkId);
 
+  // JOB DATA
+  const labelStyle = {
+    textTransform: 'uppercase',
+    fontSize: 'smaller',
+    marginTop: '2px',
+    textAlign: 'right'
+  };
+  function JobData(props) {
+    return (
+      <div style={{ padding: '0 1.5em 1em', border: 'solid 1px gray' }}>
+        <h2>{props.data.title}</h2>
+
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'auto 1fr',
+            gridGap: '1em'
+          }}
+        >
+          {jobDataItem('Employer', props.data.employer)}
+          {jobDataItem('Location', props.data.location)}
+          {jobDataItem('Salary', props.data.salary)}
+          {jobDataItem('Location', props.data.location)}
+
+          {/* Link */}
+          <React.Fragment>
+            <div style={labelStyle}>Link</div>
+            <div>
+              <a href={props.data.url}>Stack Overflow</a>
+            </div>
+          </React.Fragment>
+        </div>
+      </div>
+    );
+  }
+  function jobDataItem(label, value) {
+    return (
+      <React.Fragment>
+        <div style={Object.assign(labelStyle, { textAlign: 'right' })}>
+          {label}
+        </div>
+        <div>{value}</div>
+      </React.Fragment>
+    );
+  }
+  // JOB DATA
+
   return (
     <div>
       <div className="row row-5-3">
-        <div className="panel">
-          {query.data ? (
-            <React.Fragment>
-              <h2>{query.data.title}</h2>
-              <p>Description: {query.data.description}</p>
-            </React.Fragment>
-          ) : null}
+        <div className="">
+          {query.data ? <JobData data={query.data} /> : null}
         </div>
         <div>
           <h3 className="section-header">Query Information</h3>
 
-          {lineItem('Posted By', query.user)}
+          {lineItem('Posted By', link.postedBy)}
           {lineItem('Candidate Bonus', formatCurrency(link.respondBonus))}
           {lineItem('Network Bonus', formatCurrency(link.networkBonus))}
 
@@ -50,7 +91,7 @@ function Link(props) {
           />
           <LinkButton
             queryId={query._id}
-            linkId={link.linkId}
+            parentLink={link.linkId}
             disabled={link.isLinkOwner || link.isQueryOwner}
             label={'Promote:' + formatCurrency(link.promoteBonus)}
           />
@@ -59,6 +100,7 @@ function Link(props) {
 
       {link.isLinkOwner ? (
         <LinkAdmin
+          query={query}
           link={link}
           traffic={traffic}
           childLinks={links}

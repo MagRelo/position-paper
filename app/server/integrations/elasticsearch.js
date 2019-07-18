@@ -11,14 +11,10 @@ exports.getLinkTraffic = async function(linkId) {
   };
 
   // get dates & ISO strings
-  const now = new Date();
-  const nowString = now.toISOString();
-  const last24hoursDate = now.getDate() - 1;
-  const last24hours = last24hoursDate.toISOString();
-  const last7daysDate = now.getDate() - 7;
-  const last7days = last7daysDate.toISOString();
-  const last30daysDate = now.getDate() - 30;
-  const last30days = last30daysDate.toISOString();
+  const nowString = createDateString(0, 0, 0);
+  const last24hours = createDateString(-1, 0, 0);
+  const last7days = createDateString(-7, 0, 0);
+  const last30days = createDateString(-30, 0, 0);
 
   // run three queries (hack)
   const results = await Promise.all([
@@ -51,6 +47,14 @@ exports.getLinkTraffic = async function(linkId) {
     geoip: {}
   };
 };
+
+function createDateString(days, months, years) {
+  var date = new Date();
+  date.setDate(date.getDate() + days);
+  date.setMonth(date.getMonth() + months);
+  date.setFullYear(date.getFullYear() + years);
+  return date.toISOString();
+}
 
 function buildElasticQuery(linkId, startDateTime, endDateTime) {
   const string = `
@@ -92,7 +96,5 @@ function buildElasticQuery(linkId, startDateTime, endDateTime) {
       }
     }
   }`;
-
-  console.log(string);
   return string;
 }

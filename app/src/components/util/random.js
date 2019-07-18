@@ -76,10 +76,13 @@ export function CoolTab(props) {
 
 export function lineItem(label, value) {
   return (
-    <div className="line-item">
-      <div>{label}</div>
-      <div className="line-item-filler" />
-      <div>{value}</div>
-    </div>
+    <p
+      className="line-item"
+      style={{ paddingRight: '0.5em', paddingLeft: '0.5em' }}
+    >
+      <span>{label}</span>
+      <span className="line-item-filler" />
+      <span>{value}</span>
+    </p>
   );
 }

@@ -18,17 +18,16 @@ import LoginButton from 'components/loginButton';
 
 import LandingPage from 'components/landingPage';
 import User from 'components/user';
-// import Query from 'components/query';
-// import QueryLink from 'components/link';
 import Link2 from 'components/link2';
 import Search from 'components/search';
 import Response from 'components/response';
-// import Signup from 'components/createUser';
 
 // testing
 import createUser from 'components/createUser';
-import createQuery from 'components/createQuery';
 import createLink from 'components/createLink';
+
+// import createQuery from 'components/createQuery';
+import createQuery2 from 'components/createQuery-AL';
 
 function App(props) {
   const [activeSession, setActiveSession] = useState(false);
@@ -78,7 +77,7 @@ function App(props) {
         </div>
 
         <h1>
-          <Link to="/">Incentive Exchange</Link>
+          <Link to="/">incentive.exchange</Link>
         </h1>
 
         <h2>Business protocol layer</h2>
@@ -88,7 +87,7 @@ function App(props) {
         <Switch>
           <Route path="/adduser" component={createUser} />
           <Route path="/addlink" component={createLink} />
-          <Route path="/addquery" component={createQuery} />
+          <Route path="/addquery" component={createQuery2} />
 
           <Route path="/search" component={Search} />
           <Route path="/link/:linkId" component={Link2} />

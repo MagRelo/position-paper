@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 
 import { useDebounce } from 'components/util/random';
 
@@ -18,12 +18,12 @@ import SearchResults from 'components/searchResult';
 
 function SearchFlow() {
   // stream data
-  const [stream, setStream] = useState([]);
+  // const [stream, setStream] = useState([]);
   const [user, setUser] = useState({});
   useEffect(() => {
     getUser().then(user => {
       setUser(user);
-      setStream(user.stream);
+      // setStream(user.stream);
     });
   }, []);
 

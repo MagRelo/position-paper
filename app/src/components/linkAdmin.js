@@ -36,16 +36,22 @@ function LinkAdmin(props) {
 
           <Tabs>
             <TabList style={{ marginBottom: '0.5em' }}>
-              <CoolTab>Add Links</CoolTab>
-              <CoolTab>Active Links</CoolTab>
+              <CoolTab>Create a Link</CoolTab>
+              <CoolTab>Child Links</CoolTab>
               <CoolTab>Link Graph</CoolTab>
             </TabList>
 
             <TabPanels>
               <TabPanel style={{ outline: 'none' }}>
-                <h4 className="section-header">Create Link URL</h4>
-                <LinkButton label={'Create Link'} />
-                <h4 className="section-header">Create and Share</h4>
+                <h4 className="section-header">Create a New Link</h4>
+
+                <LinkButton
+                  queryId={props.query._id}
+                  parentLink={props.link.linkId}
+                  disabled={!props.link.isLinkOwner}
+                  label={'Create Link'}
+                />
+                <h4 className="section-header">Create a New Link and Share</h4>
                 <UserSocial />
               </TabPanel>
 

@@ -14,6 +14,7 @@
     "express-session": "^1.16.1",
     "faker": "^4.1.0",
     "getstream": "^4.2.3",
+    "html-metadata": "git://github.com/wikimedia/html-metadata.git",
     "js-cookie": "^2.2.0",
     "moment": "^2.24.0",
     "mongoose": "^5.4.5",
