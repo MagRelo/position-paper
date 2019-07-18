@@ -50,8 +50,9 @@ exports.UserModel = mongoose.model('User', UserSchema);
 const QuerySchema = new mongoose.Schema(
   {
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    target_bonus: Number,
+    network_bonus: Number,
     title: String,
-    bonus: Number,
     type: String,
     data: Object,
     links: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Link' }],

@@ -32,8 +32,9 @@ function SearchResult(link, userId) {
           />
         </p>
 
-        {/* Description */}
+        {/* Description 
         <p>{link.query.data.description}</p>
+        */}
 
         <div className="row row-x-2">
           <p>Posted: {formatDate(link.createdAt)}</p>

@@ -8,7 +8,7 @@ import LinksList from 'components/queryLinksTable';
 import LinkGraph from 'components/queryLinkGraph';
 import ResponseList from 'components/queryResponseTable';
 import UserSocial from 'components/userSocial';
-import StreamList from './userStream';
+import StreamList from 'components/userStream';
 
 function LinkAdmin(props) {
   return (

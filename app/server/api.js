@@ -160,7 +160,7 @@ router.get('/user', async function(req, res) {
   });
 
   // get user
-  userObject.stream = await getStream.getUser(req.user);
+  userObject.stream = await getStream.getFeed('User', req.user._id);
 
   try {
     res.status(200).send(userObject);
@@ -268,8 +268,9 @@ router.post('/query/add', async function(req, res) {
   try {
     // create query
     const newQuery = new QueryModel({
+      target_bonus: query.target_bonus,
+      network_bonus: query.network_bonus,
       title: query.title,
-      bonus: query.bonus,
       type: query.type,
       data: query.data,
       user: req.user._id
@@ -283,8 +284,8 @@ router.post('/query/add', async function(req, res) {
       parentLink: null,
       isQueryOwner: true,
       generation: 0,
-      payoffs: calcLinkPayouts(query.bonus, 1),
-      potentialPayoffs: calcLinkPayouts(query.bonus, 2)
+      payoffs: calcLinkPayouts(query.network_bonu, 1),
+      potentialPayoffs: calcLinkPayouts(query.network_bonu, 2)
     });
     await newLink.save();
 
@@ -294,75 +295,71 @@ router.post('/query/add', async function(req, res) {
       { $push: { links: newLink._id } }
     );
 
-    const updatedQuery = await QueryModel.findOne({ _id: newQuery._id })
-      .lean()
-      .populate('links');
-
     // create getStream feed for user
-    await getStream.addQuery(req.user, updatedQuery);
+    await getStream.addQuery(req.user, newQuery._id);
 
-    res.status(200).send(updatedQuery);
+    res.status(200).send(newLink);
   } catch (error) {
     console.log('API Error:', error);
     res.status(500).send(error);
   }
 });
 
-// list query
-router.get('/query/list', async function(req, res) {
-  // check auth
-  if (!req.user) {
-    return res.status(401).send();
-  }
+// // list query
+// router.get('/query/list', async function(req, res) {
+//   // check auth
+//   if (!req.user) {
+//     return res.status(401).send();
+//   }
 
-  try {
-    const queryList = await QueryModel.find()
-      .lean()
-      .populate({ path: 'links', populate: { path: 'parentLink' } });
+//   try {
+//     const queryList = await QueryModel.find()
+//       .lean()
+//       .populate({ path: 'links', populate: { path: 'parentLink' } });
 
-    res.status(200).send(queryList);
-  } catch (error) {
-    console.log('API Error:', error);
-    res.status(500).send(error);
-  }
-});
+//     res.status(200).send(queryList);
+//   } catch (error) {
+//     console.log('API Error:', error);
+//     res.status(500).send(error);
+//   }
+// });
 
-// get query by linkId
-router.get('/query/:linkId', async function(req, res) {
-  try {
-    // get link
-    const link = await LinkModel.findOne({ linkId: req.params.linkId });
-    if (!link) {
-      return res.status(404).send({ error: 'link not found' });
-    }
+// // get query by linkId
+// router.get('/query/:linkId', async function(req, res) {
+//   try {
+//     // get link
+//     const link = await LinkModel.findOne({ linkId: req.params.linkId });
+//     if (!link) {
+//       return res.status(404).send({ error: 'link not found' });
+//     }
 
-    // get query
-    const query = await QueryModel.findOne({ _id: link.query })
-      .lean()
-      .populate({
-        path: 'links',
-        populate: { path: 'parentLink query' },
-        options: { sort: { generation: 1 } }
-      })
-      .populate({
-        path: 'responses',
-        populate: { path: ' query' }
-      });
-    if (!query) {
-      return res.status(404).send({ error: 'profile not found' });
-    }
+//     // get query
+//     const query = await QueryModel.findOne({ _id: link.query })
+//       .lean()
+//       .populate({
+//         path: 'links',
+//         populate: { path: 'parentLink query' },
+//         options: { sort: { generation: 1 } }
+//       })
+//       .populate({
+//         path: 'responses',
+//         populate: { path: ' query' }
+//       });
+//     if (!query) {
+//       return res.status(404).send({ error: 'profile not found' });
+//     }
 
-    // auth - only send to owner
-    if (!req.user._id.equals(query.user)) {
-      return res.status(401).send();
-    }
+//     // auth - only send to owner
+//     if (!req.user._id.equals(query.user)) {
+//       return res.status(401).send();
+//     }
 
-    res.status(200).send(query);
-  } catch (error) {
-    console.log(error.message);
-    res.status(500).send(error.message);
-  }
-});
+//     res.status(200).send(query);
+//   } catch (error) {
+//     console.log(error.message);
+//     res.status(500).send(error.message);
+//   }
+// });
 
 // get link by linkId
 router.get('/link/:linkId', async function(req, res) {
@@ -373,7 +370,16 @@ router.get('/link/:linkId', async function(req, res) {
     }).populate('user query');
     if (!link) return res.status(401).send({ error: 'not found' });
 
+    const query = await QueryModel.findOne({ _id: link.query })
+      .lean()
+      .populate({
+        path: 'links',
+        populate: { path: 'parentLink query' },
+        options: { sort: { generation: 1 } }
+      });
+
     const traffic = await elasticSearch.getLinkTraffic(req.params.linkId);
+    const stream = await getStream.getFeed('Link', link._id);
 
     // display indicators
     const isFollowingLink = req.user && req.user.follows.indexOf(link._id) > -1;
@@ -383,27 +389,34 @@ router.get('/link/:linkId', async function(req, res) {
     const isQueryOwner = req.user._id.equals(link.query.user);
 
     res.status(200).send({
-      _id: link._id,
-      linkId: link.linkId,
-      isFollowingLink: isFollowingLink,
-      isFollowingUser: isFollowingUser,
-      isQueryOwner: isQueryOwner,
-      isLinkOwner: isLinkOwner,
-      postedBy: link.user.email,
-      userId: link.user._id,
-      createdAt: link.createdAt,
-      respondBonus: link.payoffs[0],
-      promoteBonus: link.potentialPayoffs[link.generation + 1],
+      user: {
+        _id: req.user._id
+      },
       query: {
         _id: link.query._id,
         title: link.query.title,
-        bonus: link.query.bonus,
         type: link.query.type,
-        data: link.query.data
+        data: link.query.data,
+        target_bonus: link.query.target_bonus,
+        network_bonus: link.query.network_bonus,
+        postedBy: link.user.email,
+        isQueryOwner: isQueryOwner,
+        isFollowingUser: isFollowingUser
       },
-      links: [],
+      link: {
+        _id: link._id,
+        linkId: link.linkId,
+        isLinkOwner: isLinkOwner,
+        isFollowingLink: isFollowingLink,
+        userId: link.user._id,
+        createdAt: link.createdAt,
+        generation: link.generation,
+        parentLink: link.parentLink
+      },
+      children: query.links,
       responses: [],
-      traffic: traffic
+      traffic: traffic,
+      stream: stream
     });
   } catch (error) {
     console.log(error.message);
@@ -462,7 +475,7 @@ router.post('/link/add', async function(req, res) {
     );
 
     // add getStream activity "AddLink"
-    await getStream.addLink(req.user, { _id: req.body.queryId }, newLink);
+    await getStream.addLink(req.user, parentLink._id);
 
     res.status(200).send(newLink);
   } catch (error) {

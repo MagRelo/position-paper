@@ -37,7 +37,7 @@ function getLabel(activityType, isUser, data) {
     case 'addQuery':
       return isUser ? `You Added a Query` : `New Query From ${data.user.email}`;
     case 'addLink':
-      return isUser ? `You Added a Link` : `New Link To Your Query`;
+      return isUser ? `You Added a Link` : `New Child Link Created`;
     case 'addResponse':
       return isUser
         ? `You responded to ${data.query.title}`
@@ -64,7 +64,7 @@ function getContent(activityType, isUser, data) {
     case 'addLink':
       return isUser
         ? `You Linked to ${data.query.title}`
-        : `New Created Link for ${data.query.title}`;
+        : `New Link Created for ${data.query.title}`;
     case 'addResponse':
       return isUser
         ? `You responded to ${data.query.title}`
@@ -83,11 +83,11 @@ function getContent(activityType, isUser, data) {
 }
 
 function activityTile(item, user) {
-  const isUser = user === item.actor;
+  if (!item.data) return <div>error: no data</div>;
 
+  const isUser = user === item.actor;
   const userHighlightColor = '#0279db';
   const userShadow = '0px 2px 5px 0px rgba(119, 137, 166, 0.58)';
-
   const otherColor = 'rgb(14, 165, 29)';
   const otherShadow = '0px 2px 5px 0px rgba(112, 148, 116, 0.58)';
 
@@ -110,24 +110,6 @@ function activityTile(item, user) {
     </div>
   );
 }
-
-// function UserStream(props) {
-//   // const config = { mass: 5, tension: 2000, friction: 200 };
-//   // const trail = useTrail(props.stream.length, {opacity: 0});
-
-//   return (
-//     <ul style={{ padding: '0 1em' }}>
-//       {props.stream &&
-//         props.stream.map(item => {
-//           return (
-//             <li style={{ listStyle: 'none' }} key={item.id}>
-//               {activityTile(item, props.userId)}
-//             </li>
-//           );
-//         })}
-//     </ul>
-//   );
-// }
 
 function AnimatedUserStream(props) {
   const config = { mass: 5, tension: 2000, friction: 200 };

@@ -54,14 +54,14 @@ function CreateJob(props) {
     });
 
     addQuery({
+      target_bonus: candidateBonus,
+      network_bonus: networkBonus,
       title: jobTitle,
-      completionBonus: candidateBonus,
-      networkBonus: networkBonus,
       type: 'Job',
       data: formObject
-    }).then(query => {
+    }).then(link => {
       // redirect
-      props.history.push('/link/' + query.links[0].linkId);
+      props.history.push('/link/' + link.linkId);
     });
   }
 

@@ -7,19 +7,23 @@ import LinkButton from 'components/linkButton';
 import ResponseButton from 'components/responseButton';
 
 function Link(props) {
+  const [user, setUser] = useState({});
   const [link, setLink] = useState({});
   const [query, setQuery] = useState({});
   const [traffic, setTraffic] = useState({});
-  const [links, setLinks] = useState([]);
+  const [children, setChildren] = useState([]);
   const [responses, setResponses] = useState([]);
+  const [stream, setStream] = useState([]);
 
   useEffect(() => {
     getLink(props.match.params.linkId).then(body => {
-      setLink(body);
+      setUser(body.user);
+      setLink(body.link);
       setQuery(body.query);
       setTraffic(body.traffic);
-      setLinks(body.links);
+      setChildren(body.children);
       setResponses(body.responses);
+      setStream(body.stream);
     });
   }, props.match.params.linkId);
 
@@ -61,7 +65,12 @@ function Link(props) {
   function jobDataItem(label, value) {
     return (
       <React.Fragment>
-        <div style={Object.assign(labelStyle, { textAlign: 'right' })}>
+        <div
+          style={Object.assign(labelStyle, {
+            textAlign: 'right',
+            color: 'gray'
+          })}
+        >
           {label}
         </div>
         <div>{value}</div>
@@ -79,20 +88,20 @@ function Link(props) {
         <div>
           <h3 className="section-header">Query Information</h3>
 
-          {lineItem('Posted By', link.postedBy)}
-          {lineItem('Candidate Bonus', formatCurrency(link.respondBonus))}
-          {lineItem('Network Bonus', formatCurrency(link.networkBonus))}
+          {lineItem('Posted By', query.postedBy)}
+          {lineItem('Candidate Bonus', formatCurrency(query.target_bonus))}
+          {lineItem('Network Bonus', formatCurrency(query.network_bonus))}
 
           <ResponseButton
             queryId={query._id}
             linkId={link.linkId}
-            payoff={link.respondBonus}
-            disabled={link.isLinkOwner || link.isQueryOwner}
+            payoff={query.target_bonus}
+            disabled={link.isLinkOwner || query.isQueryOwner}
           />
           <LinkButton
             queryId={query._id}
             parentLink={link.linkId}
-            disabled={link.isLinkOwner || link.isQueryOwner}
+            disabled={link.isLinkOwner || query.isQueryOwner}
             label={'Promote:' + formatCurrency(link.promoteBonus)}
           />
         </div>
@@ -100,12 +109,13 @@ function Link(props) {
 
       {link.isLinkOwner ? (
         <LinkAdmin
+          userId={user._id}
           query={query}
           link={link}
           traffic={traffic}
-          childLinks={links}
+          childLinks={children}
           responses={responses}
-          stream={[]}
+          stream={stream}
         />
       ) : null}
     </div>

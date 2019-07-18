@@ -26,22 +26,14 @@ exports.addUser = async function(user) {
   });
 };
 
-exports.followUser = async function(user, userToFollowId) {
-  // get stream 'User' feed for user
-  const streamFeed = await streamClient.feed('User', user._id);
-
-  // add follow
-  return await streamFeed.follow('User', userToFollowId);
-};
-
-exports.addQuery = async function(user, query) {
-  // get 'Query' feed for query and add "addQuery" activity
-  const queryFeed = await streamClient.feed('Query', query._id);
-  await queryFeed.addActivity({
+exports.addQuery = async function(user, link) {
+  // get 'Query' feed for link and add "addQuery" activity
+  const linkFeed = await streamClient.feed('Link', link._id);
+  await linkFeed.addActivity({
     actor: user._id,
     verb: 'addQuery',
-    object: query._id,
-    time: query.createdAt
+    object: link._id,
+    time: link.createdAt
   });
 
   // get 'User' feed for user and add "addQuery" activity
@@ -49,18 +41,18 @@ exports.addQuery = async function(user, query) {
   await userFeed.addActivity({
     actor: user._id,
     verb: 'addQuery',
-    object: query._id,
-    time: query.createdAt
+    object: link._id,
+    time: link.createdAt
   });
 
   // subscribe user to Query feed
-  return userFeed.follow('Query', query._id);
+  return userFeed.follow('Link', link._id);
 };
 
-exports.addLink = async function(user, query, link) {
-  // get 'Query' feed for query and add "addLink" activity
-  const queryFeed = await streamClient.feed('Query', query._id);
-  await queryFeed.addActivity({
+exports.addLink = async function(user, link) {
+  // get 'Query' feed for link and add "addLink" activity
+  const linkFeed = await streamClient.feed('Link', link._id);
+  await linkFeed.addActivity({
     actor: user._id,
     verb: 'addLink',
     object: link._id,
@@ -77,10 +69,10 @@ exports.addLink = async function(user, query, link) {
   });
 };
 
-exports.addResponse = async function(user, query, response) {
-  // get 'Query' feed for query and add "addLink" activity
-  const queryFeed = await streamClient.feed('Query', query._id);
-  await queryFeed.addActivity({
+exports.addResponse = async function(user, link, response) {
+  // get 'Query' feed for link and add "addLink" activity
+  const linkFeed = await streamClient.feed('Link', link._id);
+  await linkFeed.addActivity({
     actor: user._id,
     verb: 'addResponse',
     object: response._id,
@@ -121,8 +113,8 @@ exports.unFollow = async function(userId, feedType, targetId) {
   return await userFeed.unfollow('Query', targetId);
 };
 
-exports.getUser = async function(user) {
-  const streamUser = await streamClient.feed('User', user._id.toString());
+exports.getFeed = async function(feedType, id) {
+  const streamUser = await streamClient.feed(feedType, id);
   const userFeed = await streamUser.get({ limit: 15 });
   return await hydrateStreamFeed(userFeed.results);
 };
