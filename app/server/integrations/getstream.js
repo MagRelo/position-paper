@@ -1,7 +1,7 @@
 const stream = require('getstream');
 
 const UserModel = require('../models').UserModel;
-const QueryModel = require('../models').QueryModel;
+// const QueryModel = require('../models').QueryModel;
 const LinkModel = require('../models').LinkModel;
 const ResponseModel = require('../models').ResponseModel;
 
@@ -49,14 +49,15 @@ exports.addQuery = async function(user, link) {
   return userFeed.follow('Link', link._id);
 };
 
-exports.addLink = async function(user, link) {
-  // get 'Query' feed for link and add "addLink" activity
+exports.addLink = async function(user, link, parent) {
+  // add tream for new, notify parent link
   const linkFeed = await streamClient.feed('Link', link._id);
   await linkFeed.addActivity({
     actor: user._id,
     verb: 'addLink',
     object: link._id,
-    time: link.createdAt
+    time: link.createdAt,
+    target: 'Link:' + parent._id
   });
 
   // get 'User' feed for user and add "addLink" activity
@@ -110,7 +111,7 @@ exports.follow = async function(userId, feedType, targetId) {
 exports.unFollow = async function(userId, feedType, targetId) {
   console.log(userId, feedType, targetId);
   const userFeed = await streamClient.feed(feedType, userId);
-  return await userFeed.unfollow('Query', targetId);
+  return await userFeed.unfollow(feedType, targetId);
 };
 
 exports.getFeed = async function(feedType, id) {
@@ -133,11 +134,11 @@ async function hydrateStreamFeed(inputArray = []) {
           });
 
       case 'addQuery':
-        return QueryModel.findOne({ _id: item.object })
-          .populate('user')
+        return LinkModel.findOne({ _id: item.object })
+          .populate({ path: 'query', populate: 'user' })
           .lean()
           .then(data => {
-            item.data = data;
+            item.data = data.query;
             return item;
           });
 
@@ -167,8 +168,9 @@ async function hydrateStreamFeed(inputArray = []) {
             return item;
           });
 
-      case 'addFollow:Query':
-        return QueryModel.findOne({ _id: item.object })
+      case 'addFollow:Link':
+        return LinkModel.findOne({ _id: item.object })
+          .populate('query')
           .lean()
           .then(data => {
             item.data = data;

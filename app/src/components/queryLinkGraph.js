@@ -78,7 +78,7 @@ class LinkGraph extends Component {
   render() {
     return (
       <div>
-        {this.props.links.length ? (
+        {this.props.links ? (
           <Graph
             id="graph-id"
             data={buildGraphData(this.props.links)}

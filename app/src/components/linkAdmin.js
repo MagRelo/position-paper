@@ -3,7 +3,7 @@ import { Tabs, TabList, TabPanels, TabPanel } from '@reach/tabs';
 
 import { formatCurrency, lineItem, CoolTab } from 'components/util/random';
 
-import LinkButton from 'components/linkButton';
+import LinkDisplay from 'components/linkDisplayBar';
 import LinksList from 'components/queryLinksTable';
 import LinkGraph from 'components/queryLinkGraph';
 import ResponseList from 'components/queryResponseTable';
@@ -16,13 +16,25 @@ function LinkAdmin(props) {
       <div className="row row-2">
         <div>
           <h3 className="section-header">Link Information</h3>
-          {lineItem('Link ID', props.link.linkId)}
-          {lineItem('Link Generation', props.link.generation)}
-          {lineItem('Link Bonus', formatCurrency(props.link.promoteBonus))}
+          <p>
+            This link will pay{' '}
+            {formatCurrency(
+              props.link.payoffs && props.link.payoffs[props.link.generation]
+            )}{' '}
+            if the candidate responds through this link.
+          </p>
+          <div>
+            <LinkDisplay
+              payoffs={props.link.payoffs}
+              generation={props.link.generation}
+            />
+          </div>
+          <h4 className="section-header">Share Link</h4>
+          <UserSocial />
         </div>
 
         <div>
-          <h3 className="section-header">Traffic</h3>
+          <h3 className="section-header">Link Traffic</h3>
 
           {lineItem('Last 24 hours', props.traffic.last1days)}
           {lineItem('Last 7 days', props.traffic.last7days)}
@@ -43,15 +55,21 @@ function LinkAdmin(props) {
 
             <TabPanels>
               <TabPanel style={{ outline: 'none' }}>
-                <h4 className="section-header">Create a New Link</h4>
-
-                <LinkButton
-                  queryId={props.query._id}
-                  parentLink={props.link.linkId}
-                  disabled={!props.link.isLinkOwner}
-                  label={'Create Link'}
-                />
-                <h4 className="section-header">Create a New Link and Share</h4>
+                <div>
+                  <p>
+                    This link will pay{' '}
+                    {formatCurrency(
+                      props.link.potentialPayoffs &&
+                        props.link.potentialPayoffs[props.link.generation]
+                    )}{' '}
+                    if the candidate responds a through a child of this link.
+                  </p>
+                  <LinkDisplay
+                    payoffs={props.link.potentialPayoffs}
+                    generation={props.link.generation}
+                  />
+                </div>
+                <h4 className="section-header">Create Child and Share</h4>
                 <UserSocial />
               </TabPanel>
 

@@ -13,16 +13,17 @@ class QueryLinkTable extends Component {
           </tr>
         </thead>
         <tbody>
-          {this.props.links.map(link => {
-            return (
-              <tr key={link._id}>
-                <td>{link.generation}</td>
-                <td>{link.payoffs[0]}</td>
-                <td>{link.children.length}</td>
-                <td>{link.views}</td>
-              </tr>
-            );
-          })}
+          {this.props.links &&
+            this.props.links.map(link => {
+              return (
+                <tr key={link._id}>
+                  <td>{link.generation}</td>
+                  <td>{link.payoffs[0]}</td>
+                  <td>{link.children.length}</td>
+                  <td>{link.views}</td>
+                </tr>
+              );
+            })}
         </tbody>
       </table>
     );

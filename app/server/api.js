@@ -284,8 +284,8 @@ router.post('/query/add', async function(req, res) {
       parentLink: null,
       isQueryOwner: true,
       generation: 0,
-      payoffs: calcLinkPayouts(query.network_bonu, 1),
-      potentialPayoffs: calcLinkPayouts(query.network_bonu, 2)
+      payoffs: calcLinkPayouts(query.network_bonus, 0),
+      potentialPayoffs: calcLinkPayouts(query.network_bonus, 1)
     });
     await newLink.save();
 
@@ -296,7 +296,7 @@ router.post('/query/add', async function(req, res) {
     );
 
     // create getStream feed for user
-    await getStream.addQuery(req.user, newQuery._id);
+    await getStream.addQuery(req.user, newLink._id);
 
     res.status(200).send(newLink);
   } catch (error) {
@@ -370,16 +370,32 @@ router.get('/link/:linkId', async function(req, res) {
     }).populate('user query');
     if (!link) return res.status(401).send({ error: 'not found' });
 
-    const query = await QueryModel.findOne({ _id: link.query })
-      .lean()
-      .populate({
-        path: 'links',
-        populate: { path: 'parentLink query' },
-        options: { sort: { generation: 1 } }
-      });
+    // public info
+    let responseObj = {
+      query: {
+        _id: link.query._id,
+        title: link.query.title,
+        type: link.query.type,
+        data: link.query.data,
+        target_bonus: link.query.target_bonus,
+        network_bonus: link.query.network_bonus,
+        postedBy: link.user.email
+      },
+      link: {
+        _id: link._id,
+        linkId: link.linkId,
+        userId: link.user._id,
+        createdAt: link.createdAt,
+        generation: link.generation,
+        parentLink: link.parentLink,
+        payoffs: link.payoffs,
+        potentialPayoffs: link.potentialPayoffs
+      }
+    };
 
-    const traffic = await elasticSearch.getLinkTraffic(req.params.linkId);
-    const stream = await getStream.getFeed('Link', link._id);
+    if (!req.user) {
+      return res.status(200).send(responseObj);
+    }
 
     // display indicators
     const isFollowingLink = req.user && req.user.follows.indexOf(link._id) > -1;
@@ -388,36 +404,23 @@ router.get('/link/:linkId', async function(req, res) {
     const isLinkOwner = req.user._id.equals(link.user._id);
     const isQueryOwner = req.user._id.equals(link.query.user);
 
-    res.status(200).send({
-      user: {
-        _id: req.user._id
-      },
-      query: {
-        _id: link.query._id,
-        title: link.query.title,
-        type: link.query.type,
-        data: link.query.data,
-        target_bonus: link.query.target_bonus,
-        network_bonus: link.query.network_bonus,
-        postedBy: link.user.email,
-        isQueryOwner: isQueryOwner,
-        isFollowingUser: isFollowingUser
-      },
-      link: {
-        _id: link._id,
-        linkId: link.linkId,
-        isLinkOwner: isLinkOwner,
-        isFollowingLink: isFollowingLink,
-        userId: link.user._id,
-        createdAt: link.createdAt,
-        generation: link.generation,
-        parentLink: link.parentLink
-      },
-      children: query.links,
-      responses: [],
-      traffic: traffic,
-      stream: stream
-    });
+    // user
+    responseObj.user = {
+      _id: req.user._id,
+      isQueryOwner: isQueryOwner,
+      isFollowingUser: isFollowingUser,
+      isLinkOwner: isLinkOwner,
+      isFollowingLink: isFollowingLink
+    };
+
+    // traffic
+    responseObj.traffic = await elasticSearch.getLinkTraffic(link._id);
+    // activity
+    responseObj.stream = await getStream.getFeed('Link', link._id);
+    // responses
+    responseObj.responses = [];
+
+    res.status(200).send(responseObj);
   } catch (error) {
     console.log(error.message);
     res.status(500).send(error.message);
@@ -454,12 +457,12 @@ router.post('/link/add', async function(req, res) {
       parentLink: parentLink._id,
       generation: parentLink.generation + 1,
       payoffs: calcLinkPayouts(
-        parentLink.query.bonus,
-        parentLink.generation + 2
+        parentLink.query.network_bonus,
+        parentLink.generation + 1
       ),
       potentialPayoffs: calcLinkPayouts(
-        parentLink.query.bonus,
-        parentLink.generation + 3
+        parentLink.query.network_bonus,
+        parentLink.generation + 2
       )
     });
     await newLink.save();
@@ -475,7 +478,7 @@ router.post('/link/add', async function(req, res) {
     );
 
     // add getStream activity "AddLink"
-    await getStream.addLink(req.user, parentLink._id);
+    await getStream.addLink(req.user, newLink._id, parentLink._id);
 
     res.status(200).send(newLink);
   } catch (error) {
@@ -655,23 +658,26 @@ router.post('/payment/:responseId', async function(req, res) {
 
 module.exports = router;
 
-function calcLinkPayouts(bonus, generations) {
-  let payoffs = [];
+function calcLinkPayouts(bonus, generation) {
+  // take 10% of bonus per gerneration
+  const shareBite = 0.1;
   let remaining = bonus;
+  let payoffs = [];
 
-  for (let precision = 3; precision > 0; precision--) {
-    for (let i = 0; i < generations; i++) {
-      const share = Math.round(remaining * 0.7 * 100) / 100;
-      payoffs[i] = (payoffs[i] || 0) + share;
-      remaining = remaining - share;
-    }
+  // insert generation zero ($0)
+  payoffs.push(0);
+
+  // each generation *after* the first one. not 0 OR 1
+  for (let i = 1; i < generation; i++) {
+    const share = Math.round(bonus * shareBite * 10000) / 10000;
+    payoffs[i] = share;
+    remaining = remaining - share;
   }
 
-  // const total = payoffs.reduce((acc, item) => {
-  //   return acc + item;
-  // }, 0);
-
-  // console.log(total);
+  // insert remaining. not 0
+  if(generation > 0){
+    payoffs.push(remaining);
+  }
 
   return payoffs;
 }

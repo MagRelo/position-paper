@@ -73,10 +73,10 @@ function getContent(activityType, isUser, data) {
       return isUser
         ? `You Followed ${data.email}`
         : `${data.email} Followed You`;
-    case 'addFollow:Query':
+    case 'addFollow:Link':
       return isUser
-        ? `You Followed ${data.title}`
-        : `New Follower for ${data.title}`;
+        ? `You Followed ${data.query.title}`
+        : `New Follower for ${data.query.title}`;
     default:
       return 'New activity';
   }

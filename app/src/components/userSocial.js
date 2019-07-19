@@ -7,19 +7,19 @@ function SocialButton(props) {
     <div className="social-grid">
       <div className="icon-block">
         <SocialIcon company="gmail" />
-        <span className="icon-label">Not Connected</span>
+        <span className="icon-label" />
       </div>
       <div className="icon-block">
         <SocialIcon company="linkedin" />
-        <span className="icon-label">Not Connected</span>
+        <span className="icon-label" />
       </div>
       <div className="icon-block">
         <SocialIcon company="twitter" />
-        <span className="icon-label">Not Connected</span>
+        <span className="icon-label" />
       </div>
       <div className="icon-block">
         <SocialIcon company="instagram" />
-        <span className="icon-label">Not Connected</span>
+        <span className="icon-label" />
       </div>
     </div>
   );
