@@ -6,6 +6,7 @@ import { formatCurrency, lineItem, CoolTab } from 'components/util/random';
 import LinkDisplay from 'components/linkDisplayBar';
 import LinksList from 'components/queryLinksTable';
 import LinkGraph from 'components/queryLinkGraph';
+import LinkMap from 'components/linkMap';
 import ResponseList from 'components/queryResponseTable';
 import UserSocial from 'components/userSocial';
 import StreamList from 'components/userStream';
@@ -36,7 +37,7 @@ function LinkAdmin(props) {
 
         <div>
           <h3 className="section-header">Link Traffic</h3>
-
+          <LinkMap />
           {lineItem('Last 24 hours', props.traffic.last1days)}
           {lineItem('Last 7 days', props.traffic.last7days)}
           {lineItem('Last 30 days', props.traffic.last30days)}
