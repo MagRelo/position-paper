@@ -17,11 +17,12 @@ function LinkAdmin(props) {
         <div>
           <h3 className="section-header">Link Information</h3>
           <p>
-            This link will pay{' '}
+            You will be paid{' '}
             {formatCurrency(
               props.link.payoffs && props.link.payoffs[props.link.generation]
             )}{' '}
-            if the candidate responds through this link.
+            if the candidate responds through this link and the candidate bonus
+            is paid.
           </p>
           <div>
             <LinkDisplay
@@ -57,19 +58,20 @@ function LinkAdmin(props) {
               <TabPanel style={{ outline: 'none' }}>
                 <div>
                   <p>
-                    This link will pay{' '}
+                    You will be paid{' '}
                     {formatCurrency(
                       props.link.potentialPayoffs &&
                         props.link.potentialPayoffs[props.link.generation]
                     )}{' '}
-                    if the candidate responds a through a child of this link.
+                    if the candidate responds a through a child of this link and
+                    the candidate bonus is paid.
                   </p>
                   <LinkDisplay
                     payoffs={props.link.potentialPayoffs}
                     generation={props.link.generation}
                   />
                 </div>
-                <h4 className="section-header">Create Child and Share</h4>
+                <h4 className="section-header">Create Child Link and Share</h4>
                 <UserSocial />
               </TabPanel>
 

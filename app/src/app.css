@@ -129,19 +129,10 @@ h3.section-header {
 
 .social-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   padding: 0 1em;
   margin: 1em 0;
   grid-gap: 1em;
-
-  /* text-align: center; */
-}
-
-@media screen and (min-width: 435px) {
-
-  .social-grid {
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-  }
 }
 
 /* social */
@@ -212,6 +203,7 @@ button:focus {
 /* Link Display */
 .progressbar {
   counter-reset: step;
+  padding: 0;
 }
 
 .progressbar li {
@@ -221,7 +213,7 @@ button:focus {
   position: relative;
   text-align: center;
   text-transform: uppercase;
-  color: #7d7d7d;
+  color: #3a3a3a;
 
   margin: 2em 0;
 }

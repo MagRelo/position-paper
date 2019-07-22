@@ -8,6 +8,16 @@ export function formatCurrency(input) {
       currency: 'USD'
     });
   }
+
+  if (typeof input === 'string') {
+    const asNumber = parseInt(input, 10);
+    return asNumber.toLocaleString('en-US', {
+      style: 'currency',
+      currency: 'USD'
+    });
+  }
+
+  // console.log('bad input to formatCurrency:', input);
   return '';
 }
 

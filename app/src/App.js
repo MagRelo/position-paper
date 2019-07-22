@@ -36,8 +36,17 @@ function App(props) {
     () => {
       const servesaCookie = Cookies.get('servesa');
       if (servesaCookie) {
-        // console.log(servesaCookie);
-        setActiveSession(true);
+        console.log(servesaCookie);
+
+        // hit server and see if logged in
+        getUser().then(isLoggedIn => {
+          if (isLoggedIn) {
+            setActiveSession(true);
+          } else {
+            Cookies.remove('servesa');
+            setActiveSession(false);
+          }
+        });
       }
     },
     [activeSession]
@@ -108,3 +117,16 @@ function App(props) {
 }
 
 export default withRouter(App);
+
+async function getUser(queryId, parentLink) {
+  const apiEndpoint = '/api/user/';
+
+  return await fetch(apiEndpoint)
+    .then(r => {
+      return r.status === 200 ? true : false;
+    })
+    .catch(error => {
+      console.error(error);
+      return false;
+    });
+}

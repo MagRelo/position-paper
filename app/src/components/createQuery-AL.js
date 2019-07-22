@@ -23,11 +23,16 @@ function CreateJob(props) {
           // setJobData(result);
 
           setJobTitle(result.title);
-          setSalary(result.salary);
+          setSalary(
+            formatCurrency(result.minSalary) +
+              ' – ' +
+              formatCurrency(result.maxSalary)
+          );
           setEmployer(result.hiringOrganization);
           setLocation(result.location);
           setSkills(result.skills);
 
+          setRecruiterBonus(result.minSalary * 0.2);
           setCandidateBonus(result.minSalary * 0.2 * 0.75);
           setNetworkBonus(result.minSalary * 0.2 * 0.25);
 
@@ -39,6 +44,7 @@ function CreateJob(props) {
   );
 
   // Our State
+  const [recruiterBonus, setRecruiterBonus] = useState(0);
   const [candidateBonus, setCandidateBonus] = useState(0);
   const [networkBonus, setNetworkBonus] = useState(0);
 
@@ -69,32 +75,7 @@ function CreateJob(props) {
     <section>
       <h2>New Query</h2>
       <form name="addJobForm" onSubmit={createQuery} className="pure-form">
-        <legend>Query Data</legend>
-        <fieldset>
-          <div className="row row-5-3">
-            <div>
-              <label htmlFor="url">URL</label>
-              <input
-                type="text"
-                name="url"
-                className="pure-input-1"
-                onChange={e => {
-                  setUrl(e.target.value);
-                }}
-              />
-            </div>
-
-            <div style={{ marginTop: '40px' }}>
-              {isSearching ? (
-                <div className="spinner">
-                  <div className="bounce1" />
-                  <div className="bounce2" />
-                  <div className="bounce3" />
-                </div>
-              ) : null}
-            </div>
-          </div>
-        </fieldset>
+        <legend>Job Information</legend>
 
         <fieldset>
           <div className="row row-2 ">
@@ -174,21 +155,54 @@ function CreateJob(props) {
           </ul>
         </fieldset>
 
+        <fieldset>
+          <div className="row row-5-3">
+            <div>
+              <label htmlFor="url">URL</label>
+              <input
+                type="text"
+                name="url"
+                className="pure-input-1"
+                onChange={e => {
+                  setUrl(e.target.value);
+                }}
+              />
+            </div>
+
+            <div style={{ marginTop: '40px' }}>
+              {isSearching ? (
+                <div className="spinner">
+                  <div className="bounce1" />
+                  <div className="bounce2" />
+                  <div className="bounce3" />
+                </div>
+              ) : null}
+            </div>
+          </div>
+        </fieldset>
+
         <div className="row row-2">
           <div>
             <legend>Network Settings</legend>
             <fieldset>
               {lineItem('Incentive Type', 'Value (minus)')}
               {lineItem('Incentive Pricing', 'Algorithmic')}
-              {lineItem('Can create links', 'Yes')}
-              {lineItem('Can follow link', 'Yes')}
-              {lineItem('Can follow user', 'Yes')}
+              {lineItem('Can follow Links', 'Yes')}
+              {lineItem('Can follow Users', 'Yes')}
+              {lineItem('Can create Child Links', 'Yes')}
             </fieldset>
           </div>
           <div>
             <legend>Add Network Incentives</legend>
 
             <fieldset>
+              <i>
+                {lineItem(
+                  'Min Recruiter Fee (20%)',
+                  formatCurrency(recruiterBonus)
+                )}
+              </i>
+              <hr />
               <label htmlFor="candidate_bonus">Candidate Bonus</label>
               <input
                 type="number"

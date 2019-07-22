@@ -104,7 +104,10 @@ function Link(props) {
             disabled={user.isLinkOwner || user.isQueryOwner}
             label={
               'Promote: ' +
-              formatCurrency(link.payoffs && link.payoffs[link.generation + 1])
+              formatCurrency(
+                link.potentialPayoffs &&
+                  link.potentialPayoffs[link.generation + 1]
+              )
             }
           />
         </div>

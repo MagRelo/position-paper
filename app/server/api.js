@@ -394,6 +394,14 @@ router.get('/link/:linkId', async function(req, res) {
     };
 
     if (!req.user) {
+      responseObj.user = {
+        _id: 0,
+        isQueryOwner: false,
+        isFollowingUser: false,
+        isLinkOwner: false,
+        isFollowingLink: false
+      };
+
       return res.status(200).send(responseObj);
     }
 
@@ -675,7 +683,7 @@ function calcLinkPayouts(bonus, generation) {
   }
 
   // insert remaining. not 0
-  if(generation > 0){
+  if (generation > 0) {
     payoffs.push(remaining);
   }
 
