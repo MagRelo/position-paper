@@ -9,26 +9,39 @@ function linkDisplay(props) {
         props.payoffs.map((item, index) => {
           const width = 100 / props.payoffs.length;
 
-          const isActive = props.generation === index;
-          const isLastItem = index === props.payoffs.length - 1;
-          const borderStyle = isLastItem && !isActive ? 'dotted' : null;
+          const isFirstItem = index === 0;
+          const isCurrentLink = index === props.generation;
+          const isNextLink = index === props.generation + 1;
 
+          const circleBorderStyle = isNextLink ? 'dotted' : null;
           const circleStyle = {
-            borderColor: isActive ? '#55b776' : null,
-            borderStyle: borderStyle
+            borderColor: isCurrentLink ? '#55b776' : null,
+            borderStyle: circleBorderStyle
+          };
+
+          const lineStyle = {
+            background: isNextLink ? 'inherit' : null,
+            borderTop: isNextLink ? '1px dashed' : 'none'
           };
 
           return (
             <li
-              className={isActive ? 'active' : null}
+              className={isCurrentLink ? 'active' : null}
               key={index}
               style={{ width: width + '%' }}
             >
+              {/* Circle */}
               <span className="before" style={circleStyle}>
                 {index}
               </span>
-              <span>{index === 0 ? 'Origin' : formatCurrency(item)}</span>
-              {index === 0 ? null : <span className="after" />}
+
+              {/* Label */}
+              <span>{isFirstItem ? 'Origin' : formatCurrency(item)}</span>
+
+              {/* line to previous dot */}
+              {isFirstItem ? null : (
+                <span className="after" style={lineStyle} />
+              )}
             </li>
           );
         })}

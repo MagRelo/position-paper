@@ -86,38 +86,37 @@ function Link(props) {
         {/* Job */}
         <div>{query.data ? <JobData data={query.data} /> : null}</div>
 
-        {/* Responses */}
         <div>
-          <div>
-            <h4 className="section-header">Respond to this Query</h4>
-            <ResponseButton
-              queryId={query._id}
-              linkId={link.linkId}
-              payoff={query.target_bonus}
-              disabled={user.isLinkOwner || user.isQueryOwner}
-            />
-          </div>
+          <h4 className="section-header">Share Link</h4>
+          <UserSocial />
+        </div>
+      </div>
 
-          <div>
-            <h4 className="section-header">Promote this Query</h4>
-            <LinkButton
-              queryId={query._id}
-              parentLink={link.linkId}
-              disabled={user.isLinkOwner || user.isQueryOwner}
-              label={
-                'Promote: ' +
-                formatCurrency(
-                  link.potentialPayoffs &&
-                    link.potentialPayoffs[link.generation + 1]
-                )
-              }
-            />
-          </div>
+      <div className="row row-2">
+        <div>
+          <h4 className="section-header">Respond to this Query</h4>
+          <ResponseButton
+            queryId={query._id}
+            linkId={link.linkId}
+            payoff={query.target_bonus}
+            disabled={user.isLinkOwner || user.isQueryOwner}
+          />
+        </div>
 
-          <div>
-            <h4 className="section-header">Share Link</h4>
-            <UserSocial />
-          </div>
+        <div>
+          <h4 className="section-header">Promote this Query</h4>
+          <LinkButton
+            queryId={query._id}
+            parentLink={link.linkId}
+            disabled={user.isLinkOwner || user.isQueryOwner}
+            label={
+              'Promote: ' +
+              formatCurrency(
+                link.potentialPayoffs &&
+                  link.potentialPayoffs[link.generation + 1]
+              )
+            }
+          />
         </div>
       </div>
 

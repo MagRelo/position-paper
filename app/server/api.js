@@ -2,6 +2,9 @@ var express = require('express');
 var router = express.Router();
 
 const passport = require('passport');
+const scrape = require('html-metadata');
+
+
 const payments = require('./integrations/payments');
 const getStream = require('./integrations/getstream');
 const elasticSearch = require('./integrations/elasticsearch');
@@ -227,8 +230,6 @@ router.post('/query/metadata', async function(req, res) {
     return res.status(400).send({ error: 'bad request' });
   }
 
-  var scrape = require('html-metadata');
-
   try {
     const metadata = await scrape(req.body.url);
 
@@ -304,62 +305,6 @@ router.post('/query/add', async function(req, res) {
     res.status(500).send(error);
   }
 });
-
-// // list query
-// router.get('/query/list', async function(req, res) {
-//   // check auth
-//   if (!req.user) {
-//     return res.status(401).send();
-//   }
-
-//   try {
-//     const queryList = await QueryModel.find()
-//       .lean()
-//       .populate({ path: 'links', populate: { path: 'parentLink' } });
-
-//     res.status(200).send(queryList);
-//   } catch (error) {
-//     console.log('API Error:', error);
-//     res.status(500).send(error);
-//   }
-// });
-
-// // get query by linkId
-// router.get('/query/:linkId', async function(req, res) {
-//   try {
-//     // get link
-//     const link = await LinkModel.findOne({ linkId: req.params.linkId });
-//     if (!link) {
-//       return res.status(404).send({ error: 'link not found' });
-//     }
-
-//     // get query
-//     const query = await QueryModel.findOne({ _id: link.query })
-//       .lean()
-//       .populate({
-//         path: 'links',
-//         populate: { path: 'parentLink query' },
-//         options: { sort: { generation: 1 } }
-//       })
-//       .populate({
-//         path: 'responses',
-//         populate: { path: ' query' }
-//       });
-//     if (!query) {
-//       return res.status(404).send({ error: 'profile not found' });
-//     }
-
-//     // auth - only send to owner
-//     if (!req.user._id.equals(query.user)) {
-//       return res.status(401).send();
-//     }
-
-//     res.status(200).send(query);
-//   } catch (error) {
-//     console.log(error.message);
-//     res.status(500).send(error.message);
-//   }
-// });
 
 // get link by linkId
 router.get('/link/:linkId', async function(req, res) {

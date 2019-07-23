@@ -73,7 +73,7 @@ function LinkAdmin(props) {
         </div>
 
         <div>
-          <h3 className="section-header">Link Traffic</h3>
+          <h3 className="section-header">Link Traffic & Conversion</h3>
           <LinkMap />
           {lineItem('Last 24 hours', props.traffic.last1days)}
           {lineItem('Last 7 days', props.traffic.last7days)}
@@ -84,12 +84,17 @@ function LinkAdmin(props) {
           <Tabs>
             <TabList style={{ marginBottom: '0.5em' }}>
               <CoolTab>Activity</CoolTab>
+              <CoolTab>Insights</CoolTab>
               <CoolTab>Responses</CoolTab>
             </TabList>
 
             <TabPanels>
               <TabPanel style={{ outline: 'none' }}>
                 <StreamList stream={props.stream} userId={props.userId} />
+              </TabPanel>
+
+              <TabPanel style={{ outline: 'none' }}>
+                <p>Insights (Coming Soon)</p>
               </TabPanel>
 
               <TabPanel style={{ outline: 'none' }}>
