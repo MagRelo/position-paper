@@ -44,9 +44,9 @@ class LandingPage extends Component {
               <p>Post a product for sale and set a minimum sale price.</p>
               <p>
                 Allow agents to increase the price to cover their costs. Watch
-                as a network of referrals form to sell your products.
+                as a network of sales agents form to sell your products.
               </p>
-              <p>Complete the sale and pay each of the sales agents.</p>
+              <p>When a sale is completed each agent involved is paid.</p>
             </div>
 
             <div>
