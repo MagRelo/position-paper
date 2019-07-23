@@ -71,6 +71,7 @@ const LinkSchema = new mongoose.Schema(
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     query: { type: mongoose.Schema.Types.ObjectId, ref: 'Query' },
     parentLink: { type: mongoose.Schema.Types.ObjectId, ref: 'Link' },
+    parents: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Link' }],
     children: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Link' }],
     payoffs: [],
     potentialPayoffs: [],
@@ -89,6 +90,7 @@ const LinkSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
 exports.LinkModel = mongoose.model('Link', LinkSchema);
 
 //

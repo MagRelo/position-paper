@@ -36,8 +36,6 @@ function App(props) {
     () => {
       const servesaCookie = Cookies.get('servesa');
       if (servesaCookie) {
-        console.log(servesaCookie);
-
         // hit server and see if logged in
         getUser().then(isLoggedIn => {
           if (isLoggedIn) {

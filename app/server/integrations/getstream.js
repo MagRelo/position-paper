@@ -36,20 +36,12 @@ exports.addQuery = async function(user, link) {
     time: link.createdAt
   });
 
-  // get 'User' feed for user and add "addQuery" activity
+  // Subscribe user to feed
   const userFeed = await streamClient.feed('User', user._id);
-  await userFeed.addActivity({
-    actor: user._id,
-    verb: 'addQuery',
-    object: link._id,
-    time: link.createdAt
-  });
-
-  // subscribe user to Query feed
   return userFeed.follow('Link', link._id);
 };
 
-exports.addLink = async function(user, link, parent) {
+exports.addLink = async function(user, link) {
   // add tream for new, notify parent link
   const linkFeed = await streamClient.feed('Link', link._id);
   await linkFeed.addActivity({
@@ -57,17 +49,12 @@ exports.addLink = async function(user, link, parent) {
     verb: 'addLink',
     object: link._id,
     time: link.createdAt,
-    target: 'Link:' + parent._id
+    to: link.parents.map(parent => 'Link:' + parent)
   });
 
-  // get 'User' feed for user and add "addLink" activity
+  // Subscribe user to feed
   const userFeed = await streamClient.feed('User', user._id);
-  return await userFeed.addActivity({
-    actor: user._id,
-    verb: 'addLink',
-    object: link._id,
-    time: link.createdAt
-  });
+  return userFeed.follow('Link', link._id);
 };
 
 exports.addResponse = async function(user, link, response) {
@@ -80,14 +67,9 @@ exports.addResponse = async function(user, link, response) {
     time: response.createdAt
   });
 
-  // get 'User' feed for user and add "addLink" activity
-  const userFeed = await streamClient.feed('User', user._id);
-  return await userFeed.addActivity({
-    actor: user._id,
-    verb: 'addResponse',
-    object: response._id,
-    time: response.createdAt
-  });
+  // Subscribe user to feed
+  // const userFeed = await streamClient.feed('User', user._id);
+  // return userFeed.follow('Link', link._id);
 };
 
 exports.follow = async function(userId, feedType, targetId) {

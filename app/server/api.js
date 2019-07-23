@@ -4,7 +4,6 @@ var router = express.Router();
 const passport = require('passport');
 const scrape = require('html-metadata');
 
-
 const payments = require('./integrations/payments');
 const getStream = require('./integrations/getstream');
 const elasticSearch = require('./integrations/elasticsearch');
@@ -312,7 +311,7 @@ router.get('/link/:linkId', async function(req, res) {
     // get link
     const link = await LinkModel.findOne({
       linkId: req.params.linkId
-    }).populate('user query');
+    }).populate('user query children');
     if (!link) return res.status(401).send({ error: 'not found' });
 
     // public info
@@ -333,6 +332,7 @@ router.get('/link/:linkId', async function(req, res) {
         createdAt: link.createdAt,
         generation: link.generation,
         parentLink: link.parentLink,
+        children: link.children,
         payoffs: link.payoffs,
         potentialPayoffs: link.potentialPayoffs
       }
@@ -408,6 +408,7 @@ router.post('/link/add', async function(req, res) {
       user: req.user._id,
       query: req.body.queryId,
       parentLink: parentLink._id,
+      parents: [parentLink._id, ...parentLink.parents],
       generation: parentLink.generation + 1,
       payoffs: calcLinkPayouts(
         parentLink.query.network_bonus,
@@ -420,9 +421,12 @@ router.post('/link/add', async function(req, res) {
     });
     await newLink.save();
 
-    // add link ref to parent link
-    parentLink.children.push(newLink._id);
-    await parentLink.save();
+    // add child to to all parents 'children'
+    await LinkModel.updateMany(
+      { _id: { $in: [parentLink._id, ...parentLink.parents] } },
+      { $push: { children: newLink._id } },
+      { multi: true }
+    );
 
     // add link ref to query
     await QueryModel.updateOne(
@@ -431,7 +435,7 @@ router.post('/link/add', async function(req, res) {
     );
 
     // add getStream activity "AddLink"
-    await getStream.addLink(req.user, newLink._id, parentLink._id);
+    await getStream.addLink(req.user, newLink);
 
     res.status(200).send(newLink);
   } catch (error) {

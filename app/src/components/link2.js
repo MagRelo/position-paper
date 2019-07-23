@@ -126,7 +126,7 @@ function Link(props) {
           query={query}
           link={link}
           traffic={traffic}
-          childLinks={query.links}
+          childLinks={link.children}
           responses={responses}
           stream={stream}
         />

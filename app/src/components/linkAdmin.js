@@ -66,7 +66,7 @@ function LinkAdmin(props) {
               </TabPanel>
 
               <TabPanel style={{ outline: 'none' }}>
-                <LinkGraph links={props.childLinks} />
+                <LinkGraph parent={props.link} links={props.childLinks} />
               </TabPanel>
             </TabPanels>
           </Tabs>

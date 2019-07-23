@@ -38,11 +38,23 @@ function shadeColor(color, percent) {
   return '#' + RR + GG + BB;
 }
 
-function buildGraphData(links) {
+function buildGraphData(parent, links) {
   const graphData = {
     nodes: [],
     links: []
   };
+
+  // parent
+  const size = 200 + parent.views * 40;
+  const lighteningFactor = parent.generation * 20;
+  const color = shadeColor('#0079db', lighteningFactor);
+  graphData.nodes.push({
+    id: parent._id,
+    size: size,
+    color: color,
+    name: 'Views: ' + parent.views,
+    symbolType: 'square'
+  });
 
   // loop through links
   links.forEach(link => {
@@ -53,7 +65,7 @@ function buildGraphData(links) {
 
     // add link as node
     graphData.nodes.push({
-      id: link.linkId,
+      id: link._id,
       size: size,
       color: color,
       name: 'Views: ' + link.views,
@@ -63,8 +75,8 @@ function buildGraphData(links) {
     // link to parent
     if (link.parentLink) {
       graphData.links.push({
-        source: link.linkId,
-        target: link.parentLink.linkId
+        source: link._id,
+        target: link.parentLink
       });
     }
   });
@@ -81,7 +93,7 @@ class LinkGraph extends Component {
         {this.props.links ? (
           <Graph
             id="graph-id"
-            data={buildGraphData(this.props.links)}
+            data={buildGraphData(this.props.parent, this.props.links)}
             config={graphOptions}
             directed={true}
           />
