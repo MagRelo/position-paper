@@ -90,26 +90,35 @@ function App(props) {
         <h2>Business protocol layer</h2>
       </nav>
 
-      {activeSession ? (
-        <Switch>
-          <Route path="/adduser" component={createUser} />
-          <Route path="/addlink" component={createLink} />
-          <Route path="/addquery" component={createQuery2} />
+      <div className="content-wrapper">
+        {activeSession ? (
+          <Switch>
+            <Route path="/adduser" component={createUser} />
+            <Route path="/addlink" component={createLink} />
+            <Route path="/addquery" component={createQuery2} />
 
-          <Route path="/search" component={Search} />
-          <Route path="/link/:linkId" component={Link2} />
-          {/* <Route path="/query/:linkId" component={Query} /> */}
-          <Route path="/response/:responseId" component={Response} />
-          <Route path="/user" component={User} />
-          <Route component={LandingPage} />
-        </Switch>
-      ) : (
-        <Switch>
-          <Route path="/link/:linkId" component={Link2} />
-          <Route path="/search" component={Search} />
-          <Route component={LandingPage} />
-        </Switch>
-      )}
+            <Route path="/search" component={Search} />
+            <Route path="/link/:linkId" component={Link2} />
+            {/* <Route path="/query/:linkId" component={Query} /> */}
+            <Route path="/response/:responseId" component={Response} />
+            <Route path="/user" component={User} />
+            <Route component={LandingPage} />
+          </Switch>
+        ) : (
+          <Switch>
+            <Route path="/link/:linkId" component={Link2} />
+            <Route path="/search" component={Search} />
+            <Route component={LandingPage} />
+          </Switch>
+        )}
+      </div>
+
+      <footer>
+        <ul>
+          <li>incentive.exchange</li>
+          <li>2019</li>
+        </ul>
+      </footer>
     </div>
   );
 }

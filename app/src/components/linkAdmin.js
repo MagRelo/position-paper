@@ -13,9 +13,7 @@ import StreamList from 'components/userStream';
 
 function LinkAdmin(props) {
   return (
-    <div>
-      <h2>Link Admin</h2>
-
+    <div style={{ marginTop: '3em' }}>
       <Tabs>
         <TabList style={{ marginBottom: '0.5em' }}>
           <CoolTab>Link Information</CoolTab>

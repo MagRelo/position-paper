@@ -6,6 +6,7 @@ body,
   box-sizing: border-box;
 }
 
+
 body {
   margin: 0;
   font-family: "Open Sans", sans-serif;
@@ -19,7 +20,12 @@ svg {
 }
 
 .container {
-  padding: 1em 2em;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+.content-wrapper {
+  padding: 1em 2em 0;
 }
 
 .row {
@@ -42,9 +48,10 @@ svg {
 }
 
 @media screen and (min-width: 992px) {
-  .container {
-    max-width: 1200px;
+  .content-wrapper {
+    max-width: 992px;
     margin: 0 auto;
+    min-width: 992px;
   }
 
   .row-2 {
