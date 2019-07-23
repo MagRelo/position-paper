@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-import { lineItem, formatCurrency } from 'components/util/random';
+import { formatCurrency } from 'components/util/random';
 
+import UserSocial from 'components/userSocial';
 import LinkAdmin from 'components/linkAdmin';
 import LinkButton from 'components/linkButton';
 import ResponseButton from 'components/responseButton';
@@ -82,34 +83,41 @@ function Link(props) {
   return (
     <div>
       <div className="row row-5-3">
-        <div className="">
-          {query.data ? <JobData data={query.data} /> : null}
-        </div>
+        {/* Job */}
+        <div>{query.data ? <JobData data={query.data} /> : null}</div>
+
+        {/* Responses */}
         <div>
-          <h3 className="section-header">Query Information</h3>
+          <div>
+            <h4 className="section-header">Respond to this Query</h4>
+            <ResponseButton
+              queryId={query._id}
+              linkId={link.linkId}
+              payoff={query.target_bonus}
+              disabled={user.isLinkOwner || user.isQueryOwner}
+            />
+          </div>
 
-          {lineItem('Posted By', query.postedBy)}
-          {lineItem('Candidate Bonus', formatCurrency(query.target_bonus))}
-          {lineItem('Network Bonus', formatCurrency(query.network_bonus))}
+          <div>
+            <h4 className="section-header">Promote this Query</h4>
+            <LinkButton
+              queryId={query._id}
+              parentLink={link.linkId}
+              disabled={user.isLinkOwner || user.isQueryOwner}
+              label={
+                'Promote: ' +
+                formatCurrency(
+                  link.potentialPayoffs &&
+                    link.potentialPayoffs[link.generation + 1]
+                )
+              }
+            />
+          </div>
 
-          <ResponseButton
-            queryId={query._id}
-            linkId={link.linkId}
-            payoff={query.target_bonus}
-            disabled={user.isLinkOwner || user.isQueryOwner}
-          />
-          <LinkButton
-            queryId={query._id}
-            parentLink={link.linkId}
-            disabled={user.isLinkOwner || user.isQueryOwner}
-            label={
-              'Promote: ' +
-              formatCurrency(
-                link.potentialPayoffs &&
-                  link.potentialPayoffs[link.generation + 1]
-              )
-            }
-          />
+          <div>
+            <h4 className="section-header">Share Link</h4>
+            <UserSocial />
+          </div>
         </div>
       </div>
 

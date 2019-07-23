@@ -25,27 +25,14 @@ function LinkAdmin(props) {
             if the candidate responds through this link and the candidate bonus
             is paid.
           </p>
+
           <div>
             <LinkDisplay
               payoffs={props.link.payoffs}
               generation={props.link.generation}
             />
           </div>
-          <h4 className="section-header">Share Link</h4>
-          <UserSocial />
-        </div>
 
-        <div>
-          <h3 className="section-header">Link Traffic</h3>
-          <LinkMap />
-          {lineItem('Last 24 hours', props.traffic.last1days)}
-          {lineItem('Last 7 days', props.traffic.last7days)}
-          {lineItem('Last 30 days', props.traffic.last30days)}
-        </div>
-      </div>
-
-      <div className="row row-5-3">
-        <div>
           <h3 className="section-header">Child Links</h3>
 
           <Tabs>
@@ -57,21 +44,19 @@ function LinkAdmin(props) {
 
             <TabPanels>
               <TabPanel style={{ outline: 'none' }}>
-                <div>
-                  <p>
-                    You will be paid{' '}
-                    {formatCurrency(
-                      props.link.potentialPayoffs &&
-                        props.link.potentialPayoffs[props.link.generation]
-                    )}{' '}
-                    if the candidate responds a through a child of this link and
-                    the candidate bonus is paid.
-                  </p>
-                  <LinkDisplay
-                    payoffs={props.link.potentialPayoffs}
-                    generation={props.link.generation}
-                  />
-                </div>
+                <p>
+                  You will be paid{' '}
+                  {formatCurrency(
+                    props.link.potentialPayoffs &&
+                      props.link.potentialPayoffs[props.link.generation]
+                  )}{' '}
+                  if the candidate responds a through a child of this link and
+                  the candidate bonus is paid.
+                </p>
+                <LinkDisplay
+                  payoffs={props.link.potentialPayoffs}
+                  generation={props.link.generation}
+                />
                 <h4 className="section-header">Create Child Link and Share</h4>
                 <UserSocial />
               </TabPanel>
@@ -86,7 +71,14 @@ function LinkAdmin(props) {
             </TabPanels>
           </Tabs>
         </div>
+
         <div>
+          <h3 className="section-header">Link Traffic</h3>
+          <LinkMap />
+          {lineItem('Last 24 hours', props.traffic.last1days)}
+          {lineItem('Last 7 days', props.traffic.last7days)}
+          {lineItem('Last 30 days', props.traffic.last30days)}
+
           <h3 className="section-header">Activity & Responses</h3>
 
           <Tabs>
