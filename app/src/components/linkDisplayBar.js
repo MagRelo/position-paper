@@ -13,7 +13,7 @@ function linkDisplay(props) {
           const isCurrentLink = index === props.generation;
           const isNextLink = index === props.generation + 1;
 
-          const circleBorderStyle = isNextLink ? 'dotted' : null;
+          const circleBorderStyle = isNextLink ? 'dashed' : null;
           const circleStyle = {
             borderColor: isCurrentLink ? '#55b776' : null,
             borderStyle: circleBorderStyle
@@ -21,7 +21,7 @@ function linkDisplay(props) {
 
           const lineStyle = {
             background: isNextLink ? 'inherit' : null,
-            borderTop: isNextLink ? '1px dashed' : 'none'
+            borderTop: isNextLink ? '2px dashed #bdbdbd' : 'none'
           };
 
           return (
