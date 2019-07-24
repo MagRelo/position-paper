@@ -6,37 +6,41 @@ function Response(props) {
   const [response, setResponse] = useState({});
   const [payoffs, setPayoffs] = useState([]);
   const [respondant, setRespondant] = useState({});
+  const [query, setQuery] = useState({});
 
-  async function getResponse(responseId) {
-    // get position data
-    const response = await fetch('/api/response/' + responseId);
-    if (response.status === 200) {
-      const queryResponse = await response.json();
-      setResponse(queryResponse);
-      setPayoffs(queryResponse.payoutArray);
-      setRespondant(queryResponse.respondingUser);
-    } else {
-      console.log('not found', response.status);
-    }
-  }
   useEffect(() => {
-    getResponse(props.match.params.responseId);
+    getResponse(props.match.params.responseId).then(result => {
+      setResponse(result);
+      setPayoffs(result.payoutArray);
+      setRespondant(result.respondingUser);
+      setQuery(result.query);
+    });
   }, props.match.params.responseId);
 
   return (
     <div>
-      <h2>Response</h2>
-
-      <p>
-        {respondant.name} <small>{respondant.email}</small>
-      </p>
-
-      <p>{response.message}</p>
-      <hr />
-
-      <PaymentForm lineItems={payoffs}>Confirm and Pay</PaymentForm>
+      <div className="row row-2">
+        <div>
+          <h3 className="section-header">Response</h3>
+          <p>{response.message}</p>
+          <p style={{ textAlign: 'right' }}>{respondant.email}</p>
+        </div>
+        <div>
+          <h3 className="section-header">Confirm & Pay</h3>
+          <PaymentForm
+            network_bonus={query.network_bonus}
+            target_bonus={query.target_bonus}
+            target={respondant.email}
+            lineItems={payoffs}
+          />
+        </div>
+      </div>
     </div>
   );
 }
 
 export default Response;
+
+async function getResponse(id) {
+  return await fetch('/api/response/' + id).then(response => response.json());
+}

@@ -56,7 +56,7 @@ const QuerySchema = new mongoose.Schema(
     type: String,
     data: Object,
     links: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Link' }],
-    responses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Response' }],
+
     payments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Payment' }]
   },
   { timestamps: true }
@@ -73,6 +73,7 @@ const LinkSchema = new mongoose.Schema(
     parentLink: { type: mongoose.Schema.Types.ObjectId, ref: 'Link' },
     parents: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Link' }],
     children: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Link' }],
+    responses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Response' }],
     payoffs: [],
     potentialPayoffs: [],
     linkId: {
@@ -100,6 +101,10 @@ const ResponseSchema = new mongoose.Schema(
   {
     query: { type: mongoose.Schema.Types.ObjectId, ref: 'Query' },
     link: { type: mongoose.Schema.Types.ObjectId, ref: 'Link' },
+    parents: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Link' }],
+    payoffs: [],
+    target_bonus: Number,
+    network_bonus: Number,
     respondingUser: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     message: String
   },

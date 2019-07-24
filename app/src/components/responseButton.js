@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Dialog } from '@reach/dialog';
+import { withRouter } from 'react-router-dom';
 
 import ResponseForm from './createResponse';
 import { formatCurrency } from 'components/util/random';
@@ -16,8 +17,9 @@ function ResponseButton(props) {
     formData.linkId = props.linkId;
 
     sendResponse(formData).then(results => {
-      // setIsLoading(false);
       setReponseOpen(false);
+
+      props.history.push('/response/' + results._id);
     });
   }
 
@@ -38,7 +40,7 @@ function ResponseButton(props) {
   );
 }
 
-export default ResponseButton;
+export default withRouter(ResponseButton);
 
 async function sendResponse(formData) {
   // console.log(formData);
@@ -54,6 +56,7 @@ async function sendResponse(formData) {
   if (response.status === 200) {
     const responseObj = await response.json();
     console.log(responseObj);
+    return responseObj;
   } else {
     console.log('not found', response.status);
   }

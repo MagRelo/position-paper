@@ -35,21 +35,15 @@ function getLabel(activityType, isUser, data) {
     case 'addUser':
       return isUser ? `Welcome!` : `New User`;
     case 'addQuery':
-      return isUser ? `You Added a Query` : `New Query From ${data.user.email}`;
+      return isUser ? `You Added a Query` : `New Query`;
     case 'addLink':
       return isUser ? `You Added a Link` : `New Child Link Created`;
     case 'addResponse':
-      return isUser
-        ? `You responded to ${data.query.title}`
-        : `New response to ${data.query.title}`;
+      return isUser ? `You responded to a query` : `New response to your query`;
     case 'addFollow:User':
-      return isUser
-        ? `You Followed ${data.email}`
-        : `${data.email} Followed You`;
-    case 'addFollow:Query':
-      return isUser
-        ? `You Followed ${data.title}`
-        : `New Follower for ${data.title}`;
+      return isUser ? `New Follower Added` : `New Follower`;
+    case 'addFollow:Link':
+      return isUser ? `You Followed a query` : `New Follower for query`;
     default:
       return 'New activity';
   }

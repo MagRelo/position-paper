@@ -64,12 +64,13 @@ exports.addResponse = async function(user, link, response) {
     actor: user._id,
     verb: 'addResponse',
     object: response._id,
-    time: response.createdAt
+    time: response.createdAt,
+    to: link.parents.map(parent => 'Link:' + parent)
   });
 
   // Subscribe user to feed
-  // const userFeed = await streamClient.feed('User', user._id);
-  // return userFeed.follow('Link', link._id);
+  const userFeed = await streamClient.feed('User', user._id);
+  return userFeed.follow('Link', link._id);
 };
 
 exports.follow = async function(userId, feedType, targetId) {
@@ -135,7 +136,7 @@ async function hydrateStreamFeed(inputArray = []) {
 
       case 'addResponse':
         return ResponseModel.findOne({ _id: item.object })
-          .populate('respondingUser')
+          .populate('respondingUser query')
           .lean()
           .then(data => {
             item.data = data;

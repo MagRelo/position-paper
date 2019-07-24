@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import { formatCurrency, lineItem } from 'components/util/random';
+
 import { Elements } from 'react-stripe-elements';
 import { CardElement, injectStripe } from 'react-stripe-elements';
 
@@ -30,25 +32,26 @@ class CheckoutForm extends Component {
         tokenData
       };
 
+      console.log(paymentObj);
       // get position data
-      const paymentResponse = await fetch(
-        '/api/payment/' + this.props.match.params.responseId,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(paymentObj)
-        }
-      );
+      // const paymentResponse = await fetch(
+      //   '/api/payment/' + this.props.match.params.responseId,
+      //   {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/json'
+      //     },
+      //     body: JSON.stringify(paymentObj)
+      //   }
+      // );
 
-      if (paymentResponse.status === 200) {
-        const payment = await paymentResponse.json();
-        console.log(payment);
-        // setResponse(payment);
-      } else {
-        console.log('error', paymentResponse.status);
-      }
+      // if (paymentResponse.status === 200) {
+      //   const payment = await paymentResponse.json();
+      //   console.log(payment);
+      //   // setResponse(payment);
+      // } else {
+      //   console.log('error', paymentResponse.status);
+      // }
     } else {
       console.log("Stripe.js hasn't loaded yet.");
     }
@@ -57,26 +60,31 @@ class CheckoutForm extends Component {
   render() {
     return (
       <form className="pure-form" onSubmit={this.submit}>
-        <legend>Payment Details</legend>
+        <legend>Query Details</legend>
+        {lineItem('Target Bonus', formatCurrency(this.props.target_bonus))}
+        {lineItem('Network Bonus', formatCurrency(this.props.network_bonus))}
 
-        <fieldset>
-          {this.props.lineItems &&
-            this.props.lineItems.map(item => {
-              return (
-                <div key={item._id} className="line-item">
-                  <div>{item._id}</div>
-                  <div className="line-item-filler" />
-                  <div>{item.payout}</div>
-                </div>
-              );
-            })}
-        </fieldset>
+        <legend>Target Bonus Payments</legend>
+        {lineItem(this.props.target, formatCurrency(this.props.target_bonus))}
 
-        <legend>Payment Method</legend>
+        <legend>Network Bonus Payments</legend>
+        {this.props.lineItems &&
+          this.props.lineItems.map((item, index) => {
+            return (
+              <div key={index}>
+                {lineItem(item.email, formatCurrency(item.amount))}
+              </div>
+            );
+          })}
+
+        <legend>Card Information</legend>
         <fieldset>
           <label htmlFor="card-element">Credit or debit card</label>
           <div style={cardElementStyle()}>
             <CardElement />
+          </div>
+          <div className="alert">
+            {}
           </div>
         </fieldset>
 
@@ -94,10 +102,7 @@ const InjectedCheckoutForm = injectStripe(CheckoutForm);
 function ButtonWrapper(props) {
   return (
     <Elements>
-      <InjectedCheckoutForm
-        onSubmit={props.onSubmit}
-        lineItems={props.lineItems}
-      />
+      <InjectedCheckoutForm {...props} />
     </Elements>
   );
 }

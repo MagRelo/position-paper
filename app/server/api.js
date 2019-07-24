@@ -311,7 +311,7 @@ router.get('/link/:linkId', async function(req, res) {
     // get link
     const link = await LinkModel.findOne({
       linkId: req.params.linkId
-    }).populate('user query children');
+    }).populate('user query children responses');
     if (!link) return res.status(401).send({ error: 'not found' });
 
     // public info
@@ -371,7 +371,7 @@ router.get('/link/:linkId', async function(req, res) {
     // activity
     responseObj.stream = await getStream.getFeed('Link', link._id);
     // responses
-    responseObj.responses = [];
+    responseObj.responses = link.responses;
 
     res.status(200).send(responseObj);
   } catch (error) {
@@ -408,7 +408,7 @@ router.post('/link/add', async function(req, res) {
       user: req.user._id,
       query: req.body.queryId,
       parentLink: parentLink._id,
-      parents: [parentLink._id, ...parentLink.parents],
+      parents: [...parentLink.parents, parentLink._id],
       generation: parentLink.generation + 1,
       payoffs: calcLinkPayouts(
         parentLink.query.network_bonus,
@@ -423,7 +423,7 @@ router.post('/link/add', async function(req, res) {
 
     // add child to to all parents 'children'
     await LinkModel.updateMany(
-      { _id: { $in: [parentLink._id, ...parentLink.parents] } },
+      { _id: { $in: [...parentLink.parents, parentLink._id] } },
       { $push: { children: newLink._id } },
       { multi: true }
     );
@@ -452,37 +452,38 @@ router.post('/response/add', async function(req, res) {
   }
 
   // validate input
-  if (!req.body.queryId) {
-    return res.status(400).send({ error: 'must set query id' });
-  }
-
-  // get link
-  const link = await LinkModel.findOne({ linkId: req.body.linkId });
-  if (!link) {
-    return res.status(404).send({ error: 'link not found' });
+  if (!req.body.linkId) {
+    return res.status(400).send({ error: 'must set link id' });
   }
 
   try {
+    // get link
+    const link = await LinkModel.findOne({ linkId: req.body.linkId });
+    if (!link) {
+      return res.status(404).send({ error: 'link not found' });
+    }
+
     // add new response
     const newResponse = new ResponseModel({
-      query: req.body.queryId,
+      query: link.query,
       link: link._id,
-      respondingUser: req.user._id
+      target_bonus: link.target_bonus,
+      network_bonus: link.network_bonus,
+      parents: link.parents,
+      payoffs: link.payoffs,
+      respondingUser: req.user._id,
+      message: req.body.message
     });
     await newResponse.save();
 
-    // add link ref to query
-    await QueryModel.updateOne(
-      { _id: req.body.queryId },
+    // add ref to gen 0 link
+    await LinkModel.updateOne(
+      { _id: { $in: link.parents }, generation: 0 },
       { $push: { responses: newResponse._id } }
     );
 
     // add getStream activity "addResponse"
-    await getStream.addResponse(
-      req.user,
-      { _id: req.body.queryId },
-      newResponse
-    );
+    await getStream.addResponse(req.user, { _id: link._id }, newResponse);
 
     res.status(200).send(newResponse);
   } catch (error) {
@@ -508,7 +509,14 @@ router.get('/response/:responseId', async function(req, res) {
     const response = await ResponseModel.findOne({
       _id: req.params.responseId
     })
-      .populate('query')
+      .populate({
+        path: 'query',
+        populate: { path: 'user' }
+      })
+      .populate({
+        path: 'parents',
+        populate: { path: 'user' }
+      })
       .populate({
         path: 'link',
         populate: { path: 'user' }
@@ -527,7 +535,7 @@ router.get('/response/:responseId', async function(req, res) {
     // populate with table of user payouts
     response.payoutArray = await calcUserPayouts(
       response.link,
-      response.respondingUser
+      response.parents
     );
 
     res.status(200).send(response);
@@ -639,64 +647,23 @@ function calcLinkPayouts(bonus, generation) {
   return payoffs;
 }
 
-async function calcUserPayouts(link, respondant) {
-  let payoutArray = [];
-  let recursionParents = [];
-  async function populateParent(parentLinkId, payoffs) {
-    // get parent
-    const link = await LinkModel.findOne({ _id: parentLinkId })
-      .populate('user', 'name email stripeAccount')
-      .lean();
-
-    if (link && !link.isQueryOwner) {
-      const distance = recursionParents.length;
-      const payoff = payoffs[distance + 1];
-      // console.log(distance, payoff);
-
-      // push into array
-      recursionParents.push(
-        Object.assign({
-          _id: link.user._id,
-          stripeAccount: {
-            id: link.user.stripeAccount.id
-          },
-          name: link.user.name,
-          payout: payoff
-        })
-      );
-
-      if (link.parentLink) {
-        return await populateParent(link.parentLink, payoffs);
-      }
-    }
-
-    return recursionParents;
-  }
-
-  // first is always respondant
-  payoutArray.push({
-    _id: respondant._id,
-    stripeAccount: {
-      id: respondant.stripeAccount.id
-    },
-    name: respondant.name,
-    payout: link.payoffs[0]
+async function calcUserPayouts(link, parents) {
+  const payoutArray = parents.map(parent => {
+    console.log(parent);
+    return {
+      email: parent.user.email,
+      amount: link.payoffs[parent.generation]
+    };
   });
 
-  // second is link owner
+  // add link owner last
+
   payoutArray.push({
-    _id: link.user._id,
-    stripeAccount: {
-      id: link.user.stripeAccount.id
-    },
-    name: link.user.name,
-    payout: link.payoffs[1]
+    email: link.user && link.user.email,
+    amount: link.payoffs[link.generation]
   });
 
-  // if parents
-  const parents = await populateParent(link.parentLink, link.payoffs);
-  recursionParents = []; //cleanup
-  return payoutArray.concat(parents);
+  return payoutArray;
 }
 
 async function createPayment(
