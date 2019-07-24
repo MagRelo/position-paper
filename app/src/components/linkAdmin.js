@@ -1,64 +1,57 @@
 import React from 'react';
-import { Tabs, TabList, TabPanels, TabPanel } from '@reach/tabs';
 
-import { formatCurrency, lineItem, CoolTab } from 'components/util/random';
+import { formatCurrency, lineItem } from 'components/util/random';
 
+import UserSocial from 'components/userSocial';
 import LinkDisplay from 'components/linkDisplayBar';
 import LinksList from 'components/queryLinksTable';
 import LinkGraph from 'components/queryLinkGraph';
 import LinkMap from 'components/linkMap';
 import ResponseList from 'components/queryResponseTable';
-import UserSocial from 'components/userSocial';
-import StreamList from 'components/userStream';
 
 function LinkAdmin(props) {
   return (
-    <div style={{ marginTop: '3em' }}>
-      <Tabs>
-        <TabList style={{ marginBottom: '0.5em' }}>
-          <CoolTab>Link Information</CoolTab>
-          <CoolTab>Traffic & Insights</CoolTab>
-          <CoolTab>Responses</CoolTab>
-        </TabList>
+    <div className="row row-2">
+      <LinkInformation
+        link={props.link}
+        stream={props.stream}
+        userId={props.userId}
+      />
 
-        <TabPanels>
-          <TabPanel style={{ outline: 'none' }}>
-            <LinkInformation
-              link={props.link}
-              stream={props.stream}
-              userId={props.userId}
-            />
-          </TabPanel>
-
-          <TabPanel style={{ outline: 'none' }}>
-            <div className="row row-2">
-              <div>
-                <h3 className="section-header">Traffic</h3>
-                <LinkMap />
-                {lineItem('Last 24 hours', props.traffic.last1days)}
-                {lineItem('Last 7 days', props.traffic.last7days)}
-                {lineItem('Last 30 days', props.traffic.last30days)}
-              </div>
-              <div>
-                <h3 className="section-header">Insights</h3>
-              </div>
-            </div>
-          </TabPanel>
-
-          <TabPanel style={{ outline: 'none' }}>
-            <ResponseList responses={props.responses} />
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
+      <div>
+        <Traffic traffic={props.traffic} />
+        <h3 className="section-header">Responses</h3>
+        <ResponseList responses={props.responses} />
+      </div>
     </div>
   );
 }
 
 export default LinkAdmin;
 
+function Traffic(props) {
+  return (
+    <div>
+      <div>
+        <h3 className="section-header">Traffic</h3>
+        <LinkMap />
+        {lineItem('Last 24 hours', props.traffic.last1days)}
+        {lineItem('Last 7 days', props.traffic.last7days)}
+        {lineItem('Last 30 days', props.traffic.last30days)}
+      </div>
+      <div>
+        <h3 className="section-header">Insights</h3>
+        <div style={{ textAlign: 'center', margin: '1em 0' }}>
+          <i>No insights...</i>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function LinkInformation(props) {
   return (
-    <div className="row row-2">
+    <div>
       <div>
         <h3 className="section-header">Link Information</h3>
         <p>
@@ -77,47 +70,33 @@ function LinkInformation(props) {
           />
         </div>
 
-        <h3 className="section-header">Child Links</h3>
-        <Tabs>
-          <TabList style={{ marginBottom: '0.5em' }}>
-            <CoolTab>Create a Link</CoolTab>
-            <CoolTab>Child Links</CoolTab>
-            <CoolTab>Link Graph</CoolTab>
-          </TabList>
-
-          <TabPanels>
-            <TabPanel style={{ outline: 'none' }}>
-              <p>
-                You will be paid{' '}
-                {formatCurrency(
-                  props.link.potentialPayoffs &&
-                    props.link.potentialPayoffs[props.link.generation]
-                )}{' '}
-                if the candidate responds a through a child of this link and the
-                candidate bonus is paid.
-              </p>
-              <LinkDisplay
-                payoffs={props.link.potentialPayoffs}
-                generation={props.link.generation}
-              />
-              <h4 className="section-header">Create Child Link and Share</h4>
-              <UserSocial />
-            </TabPanel>
-
-            <TabPanel style={{ outline: 'none' }}>
-              <LinksList links={props.childLinks} />
-            </TabPanel>
-
-            <TabPanel style={{ outline: 'none' }}>
-              <LinkGraph parent={props.link} links={props.childLinks} />
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
+        <h4 className="section-header">Share Link</h4>
+        <UserSocial />
       </div>
 
       <div>
-        <h3 className="section-header">Activity</h3>
-        <StreamList stream={props.stream} userId={props.userId} />
+        <h3 className="section-header">Child Links</h3>
+        <p>
+          You will be paid{' '}
+          {formatCurrency(
+            props.link.potentialPayoffs &&
+              props.link.potentialPayoffs[props.link.generation]
+          )}{' '}
+          if the candidate responds a through a child of this link and the
+          candidate bonus is paid.
+        </p>
+        <LinkDisplay
+          payoffs={props.link.potentialPayoffs}
+          generation={props.link.generation}
+        />
+        <h4 className="section-header">Create Child Link and Share</h4>
+        <UserSocial />
+
+        <h4 className="section-header">Child Links</h4>
+        <LinksList links={props.link.children} />
+
+        <h4 className="section-header">Link Graph</h4>
+        <LinkGraph parent={props.link} links={props.childLinks} />
       </div>
     </div>
   );

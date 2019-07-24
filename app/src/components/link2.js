@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 
 import { formatCurrency } from 'components/util/random';
 
-import UserSocial from 'components/userSocial';
 import LinkAdmin from 'components/linkAdmin';
 import LinkButton from 'components/linkButton';
 import ResponseButton from 'components/responseButton';
+import StreamList from 'components/userStream';
 
 function Link(props) {
   const [isLoading, setIsLoading] = useState(true);
@@ -27,7 +27,6 @@ function Link(props) {
       setTraffic(body.traffic);
       setResponses(body.responses);
       setStream(body.stream);
-
       setIsLoading(false);
     });
   }, props.match.params.linkId);
@@ -101,20 +100,18 @@ function Link(props) {
             <div>{query.data ? <JobData data={query.data} /> : null}</div>
 
             <div>
-              <h4 className="section-header">Share Link</h4>
-              <UserSocial />
+              <h3 className="section-header">Activity</h3>
+              <StreamList stream={stream} userId={user._id} />
             </div>
           </div>
 
           {user.isLinkOwner ? (
             <LinkAdmin
-              userId={user._id}
               query={query}
               link={link}
               traffic={traffic}
               childLinks={link.children}
               responses={responses}
-              stream={stream}
             />
           ) : (
             <div className="row row-2">

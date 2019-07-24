@@ -21,7 +21,7 @@ function linkDisplay(props) {
 
           const lineStyle = {
             background: isNextLink ? 'inherit' : null,
-            borderTop: isNextLink ? '2px dashed #bdbdbd' : 'none'
+            borderTop: isNextLink ? '2px dashed #bdbdbd' : '2px solid #bdbdbd'
           };
 
           return (
