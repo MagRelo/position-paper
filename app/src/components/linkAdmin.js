@@ -9,6 +9,11 @@ import LinkGraph from 'components/queryLinkGraph';
 import LinkMap from 'components/linkMap';
 import ResponseList from 'components/queryResponseTable';
 
+// <div>
+// <h3 className="section-header">Activity</h3>
+// <StreamList stream={stream} userId={user._id} />
+// </div>
+
 function LinkAdmin(props) {
   return (
     <div className="row row-2">
@@ -33,6 +38,8 @@ function Traffic(props) {
   return (
     <div>
       <div>
+        <h3 className="section-header">Share Link</h3>
+        <UserSocial />
         <h3 className="section-header">Traffic</h3>
         <LinkMap />
         {lineItem('Last 24 hours', props.traffic.last1days)}
@@ -69,9 +76,6 @@ function LinkInformation(props) {
             generation={props.link.generation}
           />
         </div>
-
-        <h4 className="section-header">Share Link</h4>
-        <UserSocial />
       </div>
 
       <div>
