@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { useTrail, animated } from 'react-spring';
 
 import { formatCurrency, formatDate } from 'components/util/random';
-import FollowButton from 'components/followButton';
 import LinkButton from 'components/linkButton';
 import ResponseButton from 'components/responseButton';
 
@@ -24,12 +23,6 @@ function SearchResult(link, userId) {
             {formatCurrency(link.query.bonus)}
           </span>
           <Link to={'/link/' + link.linkId}> {link.query.title}</Link>
-          <FollowButton
-            type="Link"
-            targetId={link._id}
-            isFollowing={link.isFollowingLink}
-            disabled={!userId || link.isLinkOwner || link.isQueryOwner}
-          />
         </p>
 
         {/* Description 
@@ -38,15 +31,7 @@ function SearchResult(link, userId) {
 
         <div className="row row-x-2">
           <p>Posted: {formatDate(link.createdAt)}</p>
-          <p>
-            Posted By: {link.postedBy}
-            <FollowButton
-              type="User"
-              targetId={link.userId}
-              isFollowing={link.isFollowingUser}
-              disabled={!userId || userId === link.userId}
-            />
-          </p>
+          <p>Posted By: {link.postedBy}</p>
         </div>
       </div>
 
