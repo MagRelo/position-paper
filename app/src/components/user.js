@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { lineItem } from 'components/util/random';
+import { lineItem, formatCurrency } from 'components/util/random';
 
 import UserSocial from 'components/userSocial';
 import LoginPlaidLink from 'components/loginPlaidLink';
@@ -35,26 +35,24 @@ class Profile extends Component {
   render() {
     return (
       <div>
-        <div className="row row-5-3">
-          <div className="row row-2">
-            <div>
-              <h3 className="section-header">Profile</h3>
-              {lineItem('Name', this.state.name)}
-              {lineItem('Email', this.state.email)}
-            </div>
-
-            <div>
-              <h3 className="section-header">Account Information</h3>
-              <div style={{ margin: '0 1em' }} />
-              <p>
-                <LoginPlaidLink />
-              </p>
-            </div>
+        <div className="row row-3">
+          <div>
+            <h3 className="section-header">Profile</h3>
+            {lineItem('Name', this.state.name)}
+            {lineItem('Email', this.state.email)}
           </div>
 
           <div>
             <h3 className="section-header">Social Accounts</h3>
             <UserSocial />
+          </div>
+
+          <div>
+            <h3 className="section-header">Bank Account</h3>
+            {lineItem('Balance', formatCurrency(0))}
+            <p style={{ textAlign: 'center' }}>
+              <LoginPlaidLink />
+            </p>
           </div>
         </div>
 

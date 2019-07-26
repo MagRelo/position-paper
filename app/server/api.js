@@ -81,26 +81,16 @@ router.get('/search', async function(req, res) {
         })
           .populate('user query')
           .then(link => {
-            // display indicators
-            const isFollowingLink =
-              req.user && req.user.follows.indexOf(link._id) > -1;
-            const isFollowingUser =
-              req.user && req.user.follows.indexOf(link.user._id) > -1;
-            const isLinkOwner = req.user._id.equals(link.user._id);
-            const isQueryOwner = req.user._id.equals(link.query.user);
-
-            return {
-              _id: link._id,
-              linkId: link.linkId,
-              isFollowingLink: isFollowingLink,
-              isFollowingUser: isFollowingUser,
-              isQueryOwner: isQueryOwner,
-              isLinkOwner: isLinkOwner,
-              postedBy: link.user.email,
-              userId: link.user._id,
-              createdAt: link.createdAt,
-              respondBonus: link.payoffs[0],
-              promoteBonus: link.potentialPayoffs[link.generation + 1],
+            let responseObj = {
+              link: {
+                _id: link._id,
+                linkId: link.linkId,
+                postedBy: link.user.email,
+                userId: link.user._id,
+                createdAt: link.createdAt,
+                respondBonus: link.payoffs[0],
+                promoteBonus: link.potentialPayoffs[link.generation + 1]
+              },
               query: {
                 _id: link.query._id,
                 title: link.query.title,
@@ -109,6 +99,29 @@ router.get('/search', async function(req, res) {
                 data: link.query.data
               }
             };
+
+            // not logged in
+            if (!req.user) {
+              responseObj.user = {
+                isFollowingLink: false,
+                isFollowingUser: false,
+                isQueryOwner: false,
+                isLinkOwner: false
+              };
+              return responseObj;
+            }
+
+            // logged in
+            responseObj.user = {
+              isFollowingLink:
+                req.user && req.user.follows.indexOf(link._id) > -1,
+              isFollowingUser:
+                req.user && req.user.follows.indexOf(link.user._id) > -1,
+              isQueryOwner: req.user._id.equals(link.user._id),
+              isLinkOwner: req.user._id.equals(link.query.user)
+            };
+
+            return responseObj;
           })
       );
     });
@@ -125,6 +138,16 @@ router.get('/search', async function(req, res) {
 //
 // AUTH
 //
+
+// get user
+router.get('/user/status', async function(req, res) {
+  // check auth
+  if (!req.user) {
+    return res.status(401).send({ error: 'no user' });
+  }
+
+  return res.status(200).send({});
+});
 
 // get user
 router.get('/user', async function(req, res) {
@@ -155,14 +178,18 @@ router.get('/user', async function(req, res) {
     .lean();
 
   // hack to add total link views
-  userObject.queries.forEach((query, index) => {
-    userObject.queries[index].totalViews = query.links.reduce((acc, link) => {
-      return acc + link.views;
-    }, 0);
-  });
+  // userObject.queries.forEach((query, index) => {
+  //   userObject.queries[index].totalViews = query.links.reduce((acc, link) => {
+  //     return acc + link.views;
+  //   }, 0);
+  // });
 
   // get user
-  userObject.stream = await getStream.getFeed('User', req.user._id);
+  userObject.stream = await getStream.getFeed(
+    'User',
+    req.user._id,
+    req.user._id
+  );
 
   try {
     res.status(200).send(userObject);
@@ -311,7 +338,9 @@ router.get('/link/:linkId', async function(req, res) {
     // get link
     const link = await LinkModel.findOne({
       linkId: req.params.linkId
-    }).populate('user query children responses');
+    })
+      .populate('user query children')
+      .populate({ path: 'responses', populate: { path: 'respondingUser' } });
     if (!link) return res.status(401).send({ error: 'not found' });
 
     // public info
@@ -369,7 +398,11 @@ router.get('/link/:linkId', async function(req, res) {
     // traffic
     responseObj.traffic = await elasticSearch.getLinkTraffic(link._id);
     // activity
-    responseObj.stream = await getStream.getFeed('Link', link._id);
+    responseObj.stream = await getStream.getFeed(
+      'Link',
+      link._id,
+      req.user._id
+    );
     // responses
     responseObj.responses = link.responses;
 
@@ -483,7 +516,7 @@ router.post('/response/add', async function(req, res) {
     );
 
     // add getStream activity "addResponse"
-    await getStream.addResponse(req.user, { _id: link._id }, newResponse);
+    await getStream.addResponse(req.user, link, newResponse);
 
     res.status(200).send(newResponse);
   } catch (error) {
@@ -649,7 +682,7 @@ function calcLinkPayouts(bonus, generation) {
 
 async function calcUserPayouts(link, parents) {
   const payoutArray = parents.map(parent => {
-    console.log(parent);
+    // console.log(parent);
     return {
       email: parent.user.email,
       amount: link.payoffs[parent.generation]

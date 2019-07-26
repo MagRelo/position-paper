@@ -18,7 +18,7 @@ import LoginButton from 'components/loginButton';
 
 import LandingPage from 'components/landingPage';
 import User from 'components/user';
-import Link2 from 'components/link2';
+import Link2 from 'components/link';
 import Search from 'components/search';
 import Response from 'components/response';
 
@@ -99,7 +99,6 @@ function App(props) {
 
             <Route path="/search" component={Search} />
             <Route path="/link/:linkId" component={Link2} />
-            {/* <Route path="/query/:linkId" component={Query} /> */}
             <Route path="/response/:responseId" component={Response} />
             <Route path="/user" component={User} />
             <Route component={LandingPage} />
@@ -126,7 +125,7 @@ function App(props) {
 export default withRouter(App);
 
 async function getUser(queryId, parentLink) {
-  const apiEndpoint = '/api/user/';
+  const apiEndpoint = '/api/user/status';
 
   return await fetch(apiEndpoint)
     .then(r => {

@@ -1,83 +1,85 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 
-import { formatCurrency } from 'components/util/random';
+import LinkAdmin from 'components/linkAdmin';
+import LinkDisplay from 'components/linkDisplay';
 
-import LinkAdmin from './linkAdmin';
+function Link(props) {
+  const [isLoading, setIsLoading] = useState(true);
 
-import LinkButton from 'components/linkButton';
-import ResponseButton from 'components/responseButton';
+  const [user, setUser] = useState({});
+  const [link, setLink] = useState({});
+  const [query, setQuery] = useState({});
+  const [queryData, setQueryData] = useState({});
+  const [traffic, setTraffic] = useState({});
+  const [responses, setResponses] = useState([]);
+  const [stream, setStream] = useState([]);
 
-class Profile extends Component {
-  state = {
-    linkOpen: false,
-    name: '',
-    potentialPayoffs: [],
-    payoffs: []
-  };
+  useEffect(() => {
+    setIsLoading(true);
 
-  async componentDidMount() {
-    // get linkId from URL
-    const linkId = this.props.match.params.linkId;
+    getLink(props.match.params.linkId).then(body => {
+      setUser(body.user);
+      setLink(body.link);
+      setQuery(body.query);
+      setQueryData(body.query.data);
+      setTraffic(body.traffic);
+      setResponses(body.responses);
+      setStream(body.stream);
+      setIsLoading(false);
+    });
+  }, props.match.params.linkId);
 
-    // get position data
-    const response = await fetch('/api/link/' + linkId);
-    if (response.status === 200) {
-      const responseObj = await response.json();
-
-      // console.log(responseObj);
-
-      this.setState({
-        linkId: linkId,
-        queryId: responseObj.query._id,
-        name: responseObj.query.title,
-        description: responseObj.query.description,
-        payoffs: responseObj.link.payoffs,
-        potentialPayoffs: responseObj.link.potentialPayoffs,
-        isQueryOwner: responseObj.link.isQueryOwner,
-        isLinkOwner: responseObj.link.isLinkOwner,
-        generation: responseObj.link.generation
-      });
-    } else {
-      console.log('not found', response.status);
-    }
-  }
-
-  render() {
-    return (
-      <div>
-        <div className="panel">
-          <h2>{this.state.name}</h2>
-          <p>Description: {this.state.description}</p>
-          <ResponseButton
-            queryId={this.state.queryId}
-            linkId={this.state.linkId}
-            payoff={this.state.payoffs[0]}
-            disabled={this.state.isLinkOwner || this.state.isQueryOwner}
-          />
+  return (
+    <div>
+      {isLoading ? (
+        <div>
+          <div className="spinner" style={{ margin: '0 auto' }}>
+            <div className="bounce1" />
+            <div className="bounce2" />
+            <div className="bounce3" />
+          </div>
         </div>
-
-        {this.state.isLinkOwner ? (
-          <LinkAdmin
-            payoff={this.state.payoffs[0]}
-            userPayoff={
-              this.state.generation
-                ? this.state.payoffs[this.state.generation]
-                : 0
-            }
-          />
-        ) : (
-          <LinkButton
-            queryId={this.state.queryId}
-            parentLink={this.state.linkId}
-            disabled={this.state.isLinkOwner || this.state.isQueryOwner}
-            label={`Promote: ${formatCurrency(
-              this.state.potentialPayoffs[this.state.generation + 1]
-            )}`}
-          />
-        )}
-      </div>
-    );
-  }
+      ) : (
+        <React.Fragment>
+          {user.isLinkOwner ? (
+            <React.Fragment>
+              <LinkDisplay
+                query={query}
+                link={link}
+                traffic={traffic}
+                childLinks={link.children}
+                responses={responses}
+                user={user}
+                queryData={queryData}
+              />
+              <LinkAdmin
+                query={query}
+                link={link}
+                traffic={traffic}
+                childLinks={link.children}
+                responses={responses}
+                stream={stream}
+              />
+            </React.Fragment>
+          ) : (
+            <LinkDisplay
+              query={query}
+              link={link}
+              traffic={traffic}
+              childLinks={link.children}
+              responses={responses}
+              user={user}
+              queryData={queryData}
+            />
+          )}
+        </React.Fragment>
+      )}
+    </div>
+  );
 }
 
-export default Profile;
+export default Link;
+
+async function getLink(linkId) {
+  return await fetch('/api/link/' + linkId).then(response => response.json());
+}

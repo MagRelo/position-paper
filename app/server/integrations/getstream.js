@@ -97,13 +97,13 @@ exports.unFollow = async function(userId, feedType, targetId) {
   return await userFeed.unfollow(feedType, targetId);
 };
 
-exports.getFeed = async function(feedType, id) {
+exports.getFeed = async function(feedType, id, userId) {
   const streamUser = await streamClient.feed(feedType, id);
   const userFeed = await streamUser.get({ limit: 15 });
-  return await hydrateStreamFeed(userFeed.results);
+  return await hydrateStreamFeed(userFeed.results, userId);
 };
 
-async function hydrateStreamFeed(inputArray = []) {
+async function hydrateStreamFeed(inputArray = [], userId) {
   // create array of queries
   const queries = inputArray.map(item => {
     // switch on type
@@ -118,15 +118,18 @@ async function hydrateStreamFeed(inputArray = []) {
 
       case 'addQuery':
         return LinkModel.findOne({ _id: item.object })
-          .populate({ path: 'query', populate: 'user' })
+          .populate({ path: 'query' })
           .lean()
           .then(data => {
-            item.data = data.query;
+            item.data = data;
             return item;
           });
 
       case 'addLink':
-        return LinkModel.findOne({ _id: item.object })
+        return LinkModel.findOne({
+          user: userId,
+          $or: [{ children: item.object }, { _id: item.object }]
+        })
           .populate('query')
           .lean()
           .then(data => {

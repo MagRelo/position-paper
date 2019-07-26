@@ -3,7 +3,7 @@ import { Dialog } from '@reach/dialog';
 import { withRouter } from 'react-router-dom';
 
 import ResponseForm from './createResponse';
-import { formatCurrency } from 'components/util/random';
+// import { formatCurrency } from 'components/util/random';
 
 function ResponseButton(props) {
   const [responseOpen, setReponseOpen] = useState(false);
@@ -31,7 +31,7 @@ function ResponseButton(props) {
         disabled={props.disabled}
         onClick={() => setReponseOpen(true)}
       >
-        Respond: {formatCurrency(props.payoff)}
+        {props.label}
       </button>
       <Dialog isOpen={responseOpen} onDismiss={() => setReponseOpen(false)}>
         <ResponseForm submit={handleClick} />

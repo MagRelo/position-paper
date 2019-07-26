@@ -37,7 +37,7 @@ function SearchFlow() {
     () => {
       setIsSearching(true);
       getSearchResults(debouncedSearchTerm, days).then(results => {
-        setResults(results.slice(0, 19));
+        setResults(results);
         setIsSearching(false);
       });
     },

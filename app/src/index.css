@@ -204,6 +204,7 @@ a.pure-button-primary,
 
 a.pure-button-primary:hover,
 .pure-button-primary:hover {
+  cursor: pointer;
   background-color: #007adb;
   color: white;
 }

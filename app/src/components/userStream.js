@@ -1,5 +1,5 @@
 import React from 'react';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 // icons
 import { IoMdLink, IoIosPerson } from 'react-icons/io';
@@ -35,11 +35,11 @@ function getLabel(activityType, isUser, data) {
     case 'addUser':
       return isUser ? `Welcome!` : `New User`;
     case 'addQuery':
-      return isUser ? `You Added a Query` : `New Query`;
+      return isUser ? `You Added a Query` : `Query Added`;
     case 'addLink':
-      return isUser ? `You Added a Link` : `New Child Link Created`;
+      return isUser ? `You Added a Link` : `Child Link Created`;
     case 'addResponse':
-      return isUser ? `You responded to a query` : `New response to your query`;
+      return isUser ? `You responded to a query` : `Response to your query`;
     case 'addFollow:User':
       return isUser ? `New Follower Added` : `New Follower`;
     case 'addFollow:Link':
@@ -50,30 +50,59 @@ function getLabel(activityType, isUser, data) {
 }
 
 function getContent(activityType, isUser, data) {
+  let urlPath = '';
+  let label = '';
+  let id = '';
+
   switch (activityType) {
     case 'addUser':
-      return isUser ? `Welcome!` : `New User`;
-    case 'addQuery':
-      return isUser ? `You Added a Query` : `New Query From ${data.user.email}`;
-    case 'addLink':
-      return isUser
-        ? `You Linked to ${data.query.title}`
-        : `New Link Created for ${data.query.title}`;
-    case 'addResponse':
-      return isUser
-        ? `You responded to ${data.query.title}`
-        : `New response to ${data.query.title}`;
+      urlPath = '';
+      label = isUser ? `Welcome!` : `New User`;
+      break;
     case 'addFollow:User':
-      return isUser
+      urlPath = '';
+      label = isUser
         ? `You Followed ${data.email}`
         : `${data.email} Followed You`;
+      break;
+
+    case 'addQuery':
+      urlPath = '/link';
+      label = isUser ? `${data.query.title}` : `${data.query.title}`;
+      id = `/${data.linkId}`;
+      break;
+    case 'addLink':
+      urlPath = '/link';
+      label = isUser ? `${data.query.title}` : `${data.query.title}`;
+      id = `/${data.linkId}`;
+      break;
     case 'addFollow:Link':
-      return isUser
-        ? `You Followed ${data.query.title}`
-        : `New Follower for ${data.query.title}`;
+      urlPath = '/link';
+      label = isUser ? `${data.query.title}` : `${data.query.title}`;
+      id = `/${data.linkId}`;
+      break;
+
+    case 'addResponse':
+      urlPath = '/response';
+      label = isUser ? `${data.query.title}` : `${data.query.title}`;
+      id = `/${data._id}`;
+      break;
+
     default:
       return 'New activity';
   }
+
+  return (
+    <div>
+      {urlPath ? (
+        <Link to={urlPath + id}>
+          <p>{label}</p>
+        </Link>
+      ) : (
+        <p>{label}</p>
+      )}
+    </div>
+  );
 }
 
 function activityTile(item, user) {
@@ -100,7 +129,7 @@ function activityTile(item, user) {
         {getIcon(item.verb)}
         {getLabel(item.verb, isUser, item.data)}
       </div>
-      <p>{getContent(item.verb, isUser, item.data)}</p>
+      {getContent(item.verb, isUser, item.data)}
     </div>
   );
 }

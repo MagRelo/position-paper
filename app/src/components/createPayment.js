@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
-import { formatCurrency, lineItem } from 'components/util/random';
-
 import { Elements } from 'react-stripe-elements';
 import { CardElement, injectStripe } from 'react-stripe-elements';
+
+import { formatCurrency, lineItem } from 'components/util/random';
 
 const cardElementStyle = () => {
   return {
@@ -15,10 +15,19 @@ const cardElementStyle = () => {
   };
 };
 
+function calcNetworkFee(total, feeInBasis) {
+  return total * feeInBasis;
+}
+
+function calcTotal(total, feeInBasis) {
+  return total + total * feeInBasis;
+}
+
 class CheckoutForm extends Component {
   constructor(props) {
     super(props);
     this.submit = this.submit.bind(this);
+    this.state = { formError: false, errorMessage: '' };
   }
 
   async submit(event) {
@@ -26,6 +35,12 @@ class CheckoutForm extends Component {
 
     if (this.props.stripe) {
       const tokenData = await this.props.stripe.createToken();
+
+      if (tokenData.error) {
+        this.setState({
+          formError: true
+        });
+      }
 
       const paymentObj = {
         amount_in_cents: 0,
@@ -60,22 +75,32 @@ class CheckoutForm extends Component {
   render() {
     return (
       <form className="pure-form" onSubmit={this.submit}>
-        <legend>Query Details</legend>
+        <legend>Totals</legend>
         {lineItem('Target Bonus', formatCurrency(this.props.target_bonus))}
         {lineItem('Network Bonus', formatCurrency(this.props.network_bonus))}
-
-        <legend>Target Bonus Payments</legend>
-        {lineItem(this.props.target, formatCurrency(this.props.target_bonus))}
-
-        <legend>Network Bonus Payments</legend>
-        {this.props.lineItems &&
-          this.props.lineItems.map((item, index) => {
-            return (
-              <div key={index}>
-                {lineItem(item.email, formatCurrency(item.amount))}
-              </div>
-            );
-          })}
+        {lineItem(
+          'Platform Fee (7.5%)',
+          formatCurrency(
+            calcNetworkFee(
+              this.props.target_bonus + this.props.network_bonus,
+              0.075
+            )
+          )
+        )}
+        {lineItem(
+          'Total',
+          formatCurrency(
+            calcTotal(
+              this.props.target_bonus +
+                this.props.network_bonus +
+                calcNetworkFee(
+                  this.props.network_bonus + this.props.network_bonus,
+                  0.075
+                ),
+              0.075
+            )
+          )
+        )}
 
         <legend>Card Information</legend>
         <fieldset>
@@ -83,12 +108,9 @@ class CheckoutForm extends Component {
           <div style={cardElementStyle()}>
             <CardElement />
           </div>
-          <div className="alert">
-            {}
-          </div>
         </fieldset>
 
-        <legend>Make Payment</legend>
+        <hr />
         <button className="pure-button pure-button-primary">
           Submit Payment
         </button>
@@ -98,7 +120,6 @@ class CheckoutForm extends Component {
 }
 
 const InjectedCheckoutForm = injectStripe(CheckoutForm);
-
 function ButtonWrapper(props) {
   return (
     <Elements>
