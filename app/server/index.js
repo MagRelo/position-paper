@@ -35,7 +35,7 @@ const httpApi = require('./api');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 mongoose.connect(
-  process.env.MONGODB_URL_INT || 'mongodb://127.0.0.1:27017/referral',
+  process.env.MONGODB_URL_INT || 'mongodb://127.0.0.1:27017/ie-app',
   { useNewUrlParser: true }
 );
 mongoose.connection.on('error', function(err) {

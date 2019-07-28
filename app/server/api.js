@@ -491,7 +491,17 @@ router.post('/response/add', async function(req, res) {
 
   try {
     // get link
-    const link = await LinkModel.findOne({ linkId: req.body.linkId });
+    const link = await LinkModel.findOne({ linkId: req.body.linkId })
+      .populate({
+        path: 'user'
+      })
+      .populate({
+        path: 'query'
+      })
+      .populate({
+        path: 'parents',
+        populate: {path: 'user'}
+      });
     if (!link) {
       return res.status(404).send({ error: 'link not found' });
     }
@@ -501,9 +511,15 @@ router.post('/response/add', async function(req, res) {
       query: link.query,
       link: link._id,
       target_bonus: link.target_bonus,
-      targetPayouts: [],
+      targetPayouts: [
+        {
+          _id: req.user._id,
+          email: req.user.email,
+          amount: link.query.target_bonus
+        }
+      ],
       network_bonus: link.network_bonus,
-      networkPayouts: [],
+      networkPayouts: calcUserPayouts(link, link.parents),
       user: req.user._id,
       message: req.body.message
     });
@@ -566,11 +582,11 @@ router.get('/response/:responseId', async function(req, res) {
     }
 
     // populate with table of user payouts
-    response.payoutArray = await calcUserPayouts(
-      response.link,
-      response.parents,
-      req.user
-    );
+    // response.payoutArray = await calcUserPayouts(
+    //   response.link,
+    //   response.parents,
+    //   req.user
+    // );
 
     // display indicators
     const isParent = response.parents.some(parent => {
@@ -703,7 +719,7 @@ function calcLinkPayouts(bonus, generation) {
   return payoffs;
 }
 
-function calcUserPayouts(link, parents, user) {
+function calcUserPayouts(link, parents) {
   const payoutArray = [];
   parents.forEach(parent => {
     if (parent.generation > 0) {
@@ -719,7 +735,7 @@ function calcUserPayouts(link, parents, user) {
   if (link.generation > 0) {
     payoutArray.push({
       _id: link.user._id,
-      email: link.user && link.user.email,
+      email: link.user.email,
       amount: link.payoffs[link.generation]
     });
   }

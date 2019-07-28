@@ -15,12 +15,14 @@ const cardElementStyle = () => {
   };
 };
 
-function calcNetworkFee(total, feeInBasis) {
-  return total * feeInBasis;
+const fee = 0.075;
+
+function calcNetworkFee(total) {
+  return total * fee;
 }
 
-function calcTotal(total, feeInBasis) {
-  return total + total * feeInBasis;
+function calcTotal(total) {
+  return total + total * fee;
 }
 
 class CheckoutForm extends Component {
@@ -43,16 +45,7 @@ class CheckoutForm extends Component {
         });
       }
 
-      const total = calcTotal(
-        this.props.target_bonus +
-          this.props.network_bonus +
-          calcNetworkFee(
-            this.props.network_bonus + this.props.network_bonus,
-            0.075
-          ),
-        0.075
-      );
-
+      const total = calcTotal(this.props.lineItems);
       const paymentObj = {
         amount_in_cents: parseInt(total * 100),
         tokenData
@@ -86,18 +79,23 @@ class CheckoutForm extends Component {
   render() {
     return (
       <form className="pure-form" onSubmit={this.submit}>
-        <legend>Incentives</legend>
-        {lineItem('Target Bonus', formatCurrency(this.props.target_bonus))}
-        {lineItem('Network Bonus', formatCurrency(this.props.network_bonus))}
         {lineItem(
-          'Platform Fee',
-          formatCurrency(
-            calcNetworkFee(
-              this.props.target_bonus + this.props.network_bonus,
-              0.075
-            )
-          )
+          'Platform Fees',
+          formatCurrency(calcNetworkFee(this.props.total_incentives))
         )}
+        {lineItem(
+          'Total',
+          formatCurrency(calcTotal(this.props.total_incentives))
+        )}
+
+        {/* CARDS */}
+        <legend>Card Information</legend>
+        <fieldset>
+          <label htmlFor="card-element">Credit or debit card</label>
+          <div style={cardElementStyle()}>
+            <CardElement />
+          </div>
+        </fieldset>
 
         <legend>Terms of Service</legend>
         <fieldset>
@@ -107,29 +105,7 @@ class CheckoutForm extends Component {
           </label>
         </fieldset>
 
-        <legend>Card Information</legend>
-        <fieldset>
-          <label htmlFor="card-element">Credit or debit card</label>
-          <div style={cardElementStyle()}>
-            <CardElement />
-          </div>
-        </fieldset>
-
         <legend>Submit Payment</legend>
-        {lineItem(
-          'Total',
-          formatCurrency(
-            calcTotal(
-              this.props.target_bonus +
-                this.props.network_bonus +
-                calcNetworkFee(
-                  this.props.network_bonus + this.props.network_bonus,
-                  0.075
-                ),
-              0.075
-            )
-          )
-        )}
 
         <button
           className="pure-button pure-button-primary"

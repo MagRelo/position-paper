@@ -4,20 +4,34 @@ import PaymentForm from 'components/createPayment';
 
 import { formatCurrency, lineItem } from 'components/util/random';
 
+function getTotal(targetPayouts, networkPayouts) {
+  const targetTotal = targetPayouts.reduce((acc, payout) => {
+    return acc + payout.amount;
+  }, 0);
+
+  const networkTotal = networkPayouts.reduce((acc, payout) => {
+    return acc + payout.amount;
+  }, 0);
+
+  return targetTotal + networkTotal;
+}
+
 function Response(props) {
   const [user, setUser] = useState({});
   const [response, setResponse] = useState({});
-  const [payoffs, setPayoffs] = useState([]);
+  const [networkPayouts, setNetworkPayouts] = useState([]);
+  const [targetPayouts, setTargetPayouts] = useState([]);
   const [respondant, setRespondant] = useState({});
-  const [query, setQuery] = useState({});
+  // const [query, setQuery] = useState({});
 
   useEffect(() => {
     getResponse(props.match.params.responseId).then(result => {
       setResponse(result);
       setUser(result.user);
-      setPayoffs(result.payoutArray);
+      setNetworkPayouts(result.networkPayouts);
+      setTargetPayouts(result.targetPayouts);
       setRespondant(result.user);
-      setQuery(result.query);
+      // setQuery(result.query);
     });
   }, props.match.params.responseId);
 
@@ -45,27 +59,30 @@ function Response(props) {
 
         {/* target */}
         <h4 className="section-header">Target Incentives</h4>
-        {lineItem(respondant.email, formatCurrency(query.target_bonus))}
+        {targetPayouts.map((item, index) => {
+          return (
+            <div key={index}>
+              {lineItem(item.email, formatCurrency(item.amount))}
+            </div>
+          );
+        })}
 
         {/* network */}
         <h4 className="section-header">Network Incentives</h4>
-        {payoffs &&
-          payoffs.map((item, index) => {
-            return (
-              <div key={index}>
-                {lineItem(item.email, formatCurrency(item.amount))}
-              </div>
-            );
-          })}
+        {networkPayouts.map((item, index) => {
+          return (
+            <div key={index}>
+              {lineItem(item.email, formatCurrency(item.amount))}
+            </div>
+          );
+        })}
+
         {user.isQueryOwner ? (
           <React.Fragment>
             <h3 className="section-header">Confirm & Pay</h3>
             <PaymentForm
               responseId={response._id}
-              network_bonus={query.network_bonus}
-              networkLineItems={payoffs}
-              target_bonus={query.target_bonus}
-              targetLineItems={payoffs}
+              total_incentives={getTotal(targetPayouts, networkPayouts)}
             />
           </React.Fragment>
         ) : null}
