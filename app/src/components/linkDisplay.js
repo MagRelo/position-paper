@@ -22,7 +22,7 @@ function LinkDisplay(props) {
         <div>
           <h4 className="section-header">Apply</h4>
           <p>
-            Apply for this position. If hired, this position includes a{' '}
+            Apply for this position. This position comes with a{' '}
             {formatCurrency(props.query.target_bonus)} signing bonus.
           </p>
           <ResponseButton
@@ -37,7 +37,7 @@ function LinkDisplay(props) {
         <div>
           <h4 className="section-header">Promote</h4>
           <p>
-            Create a child link and promote this query to collect up to{' '}
+            Create a child link. Collect up to{' '}
             {formatCurrency(
               props.link.potentialPayoffs &&
                 props.link.potentialPayoffs[props.link.generation + 1]

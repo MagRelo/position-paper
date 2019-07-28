@@ -38,7 +38,7 @@ exports.addQuery = async function(user, link) {
 
   // Subscribe user to feed
   const userFeed = await streamClient.feed('User', user._id);
-  return userFeed.follow('Link', link._id);
+  return userFeed.follow('Link', link._id, { limit: 0 });
 };
 
 exports.addLink = async function(user, link) {
@@ -54,7 +54,7 @@ exports.addLink = async function(user, link) {
 
   // Subscribe user to feed
   const userFeed = await streamClient.feed('User', user._id);
-  return userFeed.follow('Link', link._id);
+  return userFeed.follow('Link', link._id, { limit: 0 });
 };
 
 exports.addResponse = async function(user, link, response) {
@@ -70,7 +70,7 @@ exports.addResponse = async function(user, link, response) {
 
   // Subscribe user to feed
   const userFeed = await streamClient.feed('User', user._id);
-  return userFeed.follow('Link', link._id);
+  return userFeed.follow('Link', link._id, { limit: 0 });
 };
 
 exports.follow = async function(userId, feedType, targetId) {
@@ -139,7 +139,7 @@ async function hydrateStreamFeed(inputArray = [], userId) {
 
       case 'addResponse':
         return ResponseModel.findOne({ _id: item.object })
-          .populate('respondingUser query')
+          .populate('user query')
           .lean()
           .then(data => {
             item.data = data;

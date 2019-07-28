@@ -88,7 +88,7 @@ router.get('/search', async function(req, res) {
                 postedBy: link.user.email,
                 userId: link.user._id,
                 createdAt: link.createdAt,
-                respondBonus: link.payoffs[0],
+                respondBonus: link.query.target_bonus,
                 promoteBonus: link.potentialPayoffs[link.generation + 1]
               },
               query: {
@@ -340,7 +340,7 @@ router.get('/link/:linkId', async function(req, res) {
       linkId: req.params.linkId
     })
       .populate('user query children')
-      .populate({ path: 'responses', populate: { path: 'respondingUser' } });
+      .populate({ path: 'responses', populate: { path: 'user' } });
     if (!link) return res.status(401).send({ error: 'not found' });
 
     // public info
@@ -501,15 +501,15 @@ router.post('/response/add', async function(req, res) {
       query: link.query,
       link: link._id,
       target_bonus: link.target_bonus,
+      targetPayouts: [],
       network_bonus: link.network_bonus,
-      parents: link.parents,
-      payoffs: link.payoffs,
-      respondingUser: req.user._id,
+      networkPayouts: [],
+      user: req.user._id,
       message: req.body.message
     });
     await newResponse.save();
 
-    // add ref to gen 0 link
+    // add response to gen-0 link
     await LinkModel.updateOne(
       { _id: { $in: link.parents }, generation: 0 },
       { $push: { responses: newResponse._id } }
@@ -555,8 +555,8 @@ router.get('/response/:responseId', async function(req, res) {
         populate: { path: 'user' }
       })
       .populate({
-        path: 'respondingUser',
-        select: 'name email stripeAccount'
+        path: 'user',
+        select: 'name email'
       })
       .lean();
     if (!response) {
@@ -568,8 +568,21 @@ router.get('/response/:responseId', async function(req, res) {
     // populate with table of user payouts
     response.payoutArray = await calcUserPayouts(
       response.link,
-      response.parents
+      response.parents,
+      req.user
     );
+
+    // display indicators
+    const isParent = response.parents.some(parent => {
+      return req.user._id.equals(parent.user._id);
+    });
+    const isQueryOwner = req.user._id.equals(response.query.user._id);
+    const isResponseOwner = req.user._id.equals(response.user._id);
+    const isLinkOwner = req.user._id.equals(response.link._id);
+    response.user.isQueryOwner = isQueryOwner;
+    response.user.isResponseOwner = isResponseOwner;
+    response.user.isParent = isParent;
+    response.user.isLinkOwner = isLinkOwner;
 
     res.status(200).send(response);
   } catch (error) {
@@ -584,6 +597,7 @@ router.post('/payment/:responseId', async function(req, res) {
   if (!req.user) {
     return res.status(401).send();
   }
+
   // validate input
   if (!req.params.responseId) {
     return res.status(400).send({ error: 'must set responseId' });
@@ -595,6 +609,9 @@ router.post('/payment/:responseId', async function(req, res) {
       _id: req.params.responseId
     })
       .populate({
+        path: 'user'
+      })
+      .populate({
         path: 'query',
         populate: { path: 'user' }
       })
@@ -603,8 +620,8 @@ router.post('/payment/:responseId', async function(req, res) {
         populate: { path: 'user' }
       })
       .populate({
-        path: 'respondingUser',
-        select: 'name email stripeAccount'
+        path: 'parents',
+        populate: { path: 'user' }
       })
       .lean();
 
@@ -620,34 +637,40 @@ router.post('/payment/:responseId', async function(req, res) {
       return res.status(401).send();
     }
 
-    // create child payments
-    const payouts = await calcUserPayouts(
-      response.link,
-      response.respondingUser
+    // make stripe payment from principal
+    const paymentResponse = await payments.createStripeCharge(
+      req.body.tokenData,
+      req.body.amount_in_cents,
+      response._id.toString()
     );
 
-    const paymentPromises = [];
-    payouts.forEach(payout => {
-      paymentPromises.push(
-        createPayment(
+    // update query with payment detail
+    await QueryModel.updateOne(
+      { _id: response.query._id },
+      { payment: paymentResponse, status: 'closed' }
+    );
+
+    // update links to 'closed' status
+    await LinkModel.updateMany(
+      { _id: { $in: response.parents } },
+      { status: 'closed' }
+    );
+
+    // create payouts to users
+    const payouts = calcUserPayouts(response.link, response.parents, req.user);
+    await Promise.all(
+      payouts.map(userPayout => {
+        return createPayment(
           response.query._id,
           response.link._id,
-          response.query.user._id,
-          response.query.user.stripeAccount.id,
-          payout._id,
-          payout.stripeAccount.id,
-          payout.amount
-        )
-      );
-    });
+          userPayout._id,
+          response._id,
+          userPayout.amount * 100
+        );
+      })
+    );
 
-    console.log(paymentPromises);
-
-    const payments = await Promise.all(paymentPromises);
-
-    console.log(payments);
-
-    res.status(200).send(payments);
+    res.status(200).send(paymentResponse);
   } catch (error) {
     console.log('API Error:', error);
     res.status(500).send(error);
@@ -665,7 +688,7 @@ function calcLinkPayouts(bonus, generation) {
   // insert generation zero ($0)
   payoffs.push(0);
 
-  // each generation *after* the first one. not 0 OR 1
+  // each generation *after* the first one. not 0 OR 1 => gen-1 will get "remaining" below
   for (let i = 1; i < generation; i++) {
     const share = Math.round(bonus * shareBite * 10000) / 10000;
     payoffs[i] = share;
@@ -680,21 +703,26 @@ function calcLinkPayouts(bonus, generation) {
   return payoffs;
 }
 
-async function calcUserPayouts(link, parents) {
-  const payoutArray = parents.map(parent => {
-    // console.log(parent);
-    return {
-      email: parent.user.email,
-      amount: link.payoffs[parent.generation]
-    };
+function calcUserPayouts(link, parents, user) {
+  const payoutArray = [];
+  parents.forEach(parent => {
+    if (parent.generation > 0) {
+      payoutArray.push({
+        _id: parent.user._id,
+        email: parent.user.email,
+        amount: link.payoffs[parent.generation]
+      });
+    }
   });
 
   // add link owner last
-
-  payoutArray.push({
-    email: link.user && link.user.email,
-    amount: link.payoffs[link.generation]
-  });
+  if (link.generation > 0) {
+    payoutArray.push({
+      _id: link.user._id,
+      email: link.user && link.user.email,
+      amount: link.payoffs[link.generation]
+    });
+  }
 
   return payoutArray;
 }
@@ -702,37 +730,22 @@ async function calcUserPayouts(link, parents) {
 async function createPayment(
   queryId,
   linkId,
-  fromUserId,
-  fromAccountId,
-  toUserId,
-  toAccountId,
+  userId,
+  responseId,
   amount_in_cents
 ) {
   // create payment record
   const newPayment = new PaymentModel({
-    from: fromUserId,
-    to: toUserId,
     query: queryId,
     link: linkId,
-    amount: amount_in_cents,
-    stripeData: { fromAccountId, toAccountId, amount_in_cents }
+    user: userId,
+    response: responseId,
+    amount: amount_in_cents
   });
-  await newPayment.save();
-
-  // create account-to-account payments through stripe
-  const payment = await payments.createCharge(
-    fromAccountId,
-    toAccountId,
-    amount_in_cents
-  );
-
-  console.log('payment', payment);
-
-  // save stripe response
-  newPayment.stripeResponse = payment;
-  await newPayment.save(err => {
-    if (err) throw new Error(err);
+  return newPayment.save().then(paymentDoc => {
+    return UserModel.updateOne(
+      { _id: userId },
+      { $push: { payments: paymentDoc._id } }
+    );
   });
-
-  return newPayment;
 }

@@ -5,6 +5,7 @@ import PaymentForm from 'components/createPayment';
 import { formatCurrency, lineItem } from 'components/util/random';
 
 function Response(props) {
+  const [user, setUser] = useState({});
   const [response, setResponse] = useState({});
   const [payoffs, setPayoffs] = useState([]);
   const [respondant, setRespondant] = useState({});
@@ -13,14 +14,15 @@ function Response(props) {
   useEffect(() => {
     getResponse(props.match.params.responseId).then(result => {
       setResponse(result);
+      setUser(result.user);
       setPayoffs(result.payoutArray);
-      setRespondant(result.respondingUser);
+      setRespondant(result.user);
       setQuery(result.query);
     });
   }, props.match.params.responseId);
 
   return (
-    <div className="row row-2">
+    <div className="row row-5-3">
       <div>
         <h3 className="section-header">Response</h3>
         <div className="testimonial-quote group ">
@@ -39,14 +41,14 @@ function Response(props) {
       </div>
 
       <div>
-        <h3 className="section-header">Network Incentives</h3>
+        <h3 className="section-header">Incentives</h3>
 
-        <h4 className="section-header">Target Bonus Payments</h4>
-
+        {/* target */}
+        <h4 className="section-header">Target Incentives</h4>
         {lineItem(respondant.email, formatCurrency(query.target_bonus))}
 
-        <h4 className="section-header">Network Bonus Payments</h4>
-
+        {/* network */}
+        <h4 className="section-header">Network Incentives</h4>
         {payoffs &&
           payoffs.map((item, index) => {
             return (
@@ -55,14 +57,18 @@ function Response(props) {
               </div>
             );
           })}
-
-        <h3 className="section-header">Confirm & Pay</h3>
-        <PaymentForm
-          network_bonus={query.network_bonus}
-          target_bonus={query.target_bonus}
-          target={respondant.email}
-          lineItems={payoffs}
-        />
+        {user.isQueryOwner ? (
+          <React.Fragment>
+            <h3 className="section-header">Confirm & Pay</h3>
+            <PaymentForm
+              responseId={response._id}
+              network_bonus={query.network_bonus}
+              networkLineItems={payoffs}
+              target_bonus={query.target_bonus}
+              targetLineItems={payoffs}
+            />
+          </React.Fragment>
+        ) : null}
       </div>
     </div>
   );

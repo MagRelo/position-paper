@@ -12,7 +12,7 @@ export function QueryList(props) {
             return (
               <li key={response._id}>
                 <div className="panel">
-                  {response.respondingUser.email}
+                  {response.user.email}
                   <Link to={'/response/' + response._id}>View</Link>
                 </div>
               </li>

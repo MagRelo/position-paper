@@ -37,36 +37,47 @@ class CheckoutForm extends Component {
       const tokenData = await this.props.stripe.createToken();
 
       if (tokenData.error) {
-        this.setState({
-          formError: true
+        return this.setState({
+          formError: true,
+          errorMessage: tokenData.error.messsage
         });
       }
 
+      const total = calcTotal(
+        this.props.target_bonus +
+          this.props.network_bonus +
+          calcNetworkFee(
+            this.props.network_bonus + this.props.network_bonus,
+            0.075
+          ),
+        0.075
+      );
+
       const paymentObj = {
-        amount_in_cents: 0,
+        amount_in_cents: parseInt(total * 100),
         tokenData
       };
 
       console.log(paymentObj);
-      // get position data
-      // const paymentResponse = await fetch(
-      //   '/api/payment/' + this.props.match.params.responseId,
-      //   {
-      //     method: 'POST',
-      //     headers: {
-      //       'Content-Type': 'application/json'
-      //     },
-      //     body: JSON.stringify(paymentObj)
-      //   }
-      // );
 
-      // if (paymentResponse.status === 200) {
-      //   const payment = await paymentResponse.json();
-      //   console.log(payment);
-      //   // setResponse(payment);
-      // } else {
-      //   console.log('error', paymentResponse.status);
-      // }
+      const paymentResponse = await fetch(
+        '/api/payment/' + this.props.responseId,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(paymentObj)
+        }
+      );
+
+      if (paymentResponse.status === 200) {
+        const payment = await paymentResponse.json();
+        console.log(payment);
+        // setResponse(payment);
+      } else {
+        console.log('error', paymentResponse.status);
+      }
     } else {
       console.log("Stripe.js hasn't loaded yet.");
     }
@@ -75,11 +86,11 @@ class CheckoutForm extends Component {
   render() {
     return (
       <form className="pure-form" onSubmit={this.submit}>
-        <legend>Totals</legend>
+        <legend>Incentives</legend>
         {lineItem('Target Bonus', formatCurrency(this.props.target_bonus))}
         {lineItem('Network Bonus', formatCurrency(this.props.network_bonus))}
         {lineItem(
-          'Platform Fee (7.5%)',
+          'Platform Fee',
           formatCurrency(
             calcNetworkFee(
               this.props.target_bonus + this.props.network_bonus,
@@ -87,6 +98,24 @@ class CheckoutForm extends Component {
             )
           )
         )}
+
+        <legend>Terms of Service</legend>
+        <fieldset>
+          <label>
+            <input type="checkbox" className="pure-input" />
+            <span style={{ marginLeft: '0.5em' }}>Accept Blindly</span>
+          </label>
+        </fieldset>
+
+        <legend>Card Information</legend>
+        <fieldset>
+          <label htmlFor="card-element">Credit or debit card</label>
+          <div style={cardElementStyle()}>
+            <CardElement />
+          </div>
+        </fieldset>
+
+        <legend>Submit Payment</legend>
         {lineItem(
           'Total',
           formatCurrency(
@@ -102,16 +131,10 @@ class CheckoutForm extends Component {
           )
         )}
 
-        <legend>Card Information</legend>
-        <fieldset>
-          <label htmlFor="card-element">Credit or debit card</label>
-          <div style={cardElementStyle()}>
-            <CardElement />
-          </div>
-        </fieldset>
-
-        <hr />
-        <button className="pure-button pure-button-primary">
+        <button
+          className="pure-button pure-button-primary"
+          style={{ float: 'right', marginTop: '1.5em' }}
+        >
           Submit Payment
         </button>
       </form>

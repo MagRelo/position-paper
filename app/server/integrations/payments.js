@@ -99,18 +99,17 @@ exports.createStripeAccount = async function(userData, ipAddress) {
 };
 
 exports.createStripeCharge = async function(
-  fromAccountId,
-  toAccountId,
-  amount_in_cents
+  tokenData,
+  amount_in_cents,
+  responseId
 ) {
-  const response = await stripe.charges.create({
+  return stripe.charges.create({
     amount: amount_in_cents,
     currency: 'usd',
-    customer: fromAccountId,
-    transfer_data: {
-      destination: toAccountId
+    description: 'Test payment',
+    source: tokenData.token.id,
+    metadata: {
+      responseId: responseId
     }
   });
-
-  return response;
 };

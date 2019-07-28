@@ -6,7 +6,7 @@ import { formatCurrency, formatDate } from 'components/util/random';
 import LinkButton from 'components/linkButton';
 import ResponseButton from 'components/responseButton';
 
-function SearchResult(link, userId) {
+function SearchResult(link, query, userId) {
   return (
     <div>
       <div
@@ -20,9 +20,9 @@ function SearchResult(link, userId) {
         {/* Title */}
         <p style={{ fontSize: '20px', marginTop: '0' }}>
           <span style={{ float: 'right', fontSize: 'smaller' }}>
-            {formatCurrency(link.query.bonus)}
+            {formatCurrency(query.bonus)}
           </span>
-          <Link to={'/link/' + link.linkId}> {link.query.title}</Link>
+          <Link to={'/link/' + link.linkId}> {query.title}</Link>
         </p>
 
         {/* Description 
@@ -43,16 +43,17 @@ function SearchResult(link, userId) {
       >
         <LinkButton
           disable={!userId || link.isLinkOwner || link.isQueryOwner}
-          queryId={link.query._id}
+          queryId={query._id}
           parentLink={link.linkId}
-          label={`Promote: ${formatCurrency(link.promoteBonus)}`}
+          label={`Promote – ${formatCurrency(link.promoteBonus)}`}
         />
 
         <ResponseButton
-          queryId={link.query._id}
+          queryId={query._id}
           linkId={link.linkId}
           payoff={link.respondBonus}
           disabled={!userId || link.isLinkOwner || link.isQueryOwner}
+          label={`Apply – ${formatCurrency(link.respondBonus)}`}
         />
       </div>
     </div>
@@ -79,7 +80,11 @@ function Results(props) {
               ...rest
             }}
           >
-            {SearchResult(props.results[index], props.userId)}
+            {SearchResult(
+              props.results[index].link,
+              props.results[index].query,
+              props.userId
+            )}
           </animated.div>
         );
       })}

@@ -29,7 +29,8 @@ const UserSchema = new mongoose.Schema(
     follows: [String],
     first_name: String,
     last_name: String,
-    balance: Number
+    balance: Number,
+    payments: { type: mongoose.Schema.Types.ObjectId, ref: 'Payment' }
   },
   { timestamps: true }
 );
@@ -56,8 +57,12 @@ const QuerySchema = new mongoose.Schema(
     type: String,
     data: Object,
     links: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Link' }],
-
-    payments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Payment' }]
+    payment: Object,
+    status: {
+      type: String,
+      enum: ['open', 'pending', 'closed'],
+      default: 'open'
+    }
   },
   { timestamps: true }
 );
@@ -87,6 +92,11 @@ const LinkSchema = new mongoose.Schema(
     isQueryOwner: {
       type: Boolean,
       default: false
+    },
+    status: {
+      type: String,
+      enum: ['open', 'pending', 'closed'],
+      default: 'open'
     }
   },
   { timestamps: true }
@@ -99,14 +109,16 @@ exports.LinkModel = mongoose.model('Link', LinkSchema);
 //
 const ResponseSchema = new mongoose.Schema(
   {
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     query: { type: mongoose.Schema.Types.ObjectId, ref: 'Query' },
     link: { type: mongoose.Schema.Types.ObjectId, ref: 'Link' },
     parents: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Link' }],
-    payoffs: [],
+    message: String,
+
     target_bonus: Number,
+    targetPayouts: [],
     network_bonus: Number,
-    respondingUser: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    message: String
+    networkPayouts: []
   },
   { timestamps: true }
 );
@@ -117,13 +129,20 @@ exports.ResponseModel = mongoose.model('Response', ResponseSchema);
 //
 const PaymentSchema = new mongoose.Schema(
   {
-    from: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    to: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     query: { type: mongoose.Schema.Types.ObjectId, ref: 'Query' },
     link: { type: mongoose.Schema.Types.ObjectId, ref: 'Link' },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    response: { type: mongoose.Schema.Types.ObjectId, ref: 'Response' },
     amount: {
       type: Number,
       default: 0
+    },
+    stripeData: Object,
+    stripeResponse: Object,
+    status: {
+      type: String,
+      enum: ['created', 'pending', 'closed'],
+      default: 'created'
     },
     isPaid: {
       type: Boolean,
@@ -132,9 +151,7 @@ const PaymentSchema = new mongoose.Schema(
     isInError: {
       type: Boolean,
       default: false
-    },
-    stripeData: Object,
-    stripeResponse: Object
+    }
   },
   { timestamps: true }
 );

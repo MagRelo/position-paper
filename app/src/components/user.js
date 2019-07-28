@@ -69,7 +69,7 @@ class Profile extends Component {
             <Link
               to="/addquery"
               className="pure-button pure-button-primary"
-              style={{ float: 'right', marginTop: '0.8em' }}
+              style={{ float: 'right', marginTop: '1.5em' }}
             >
               Add Request
             </Link>
