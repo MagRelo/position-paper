@@ -16,32 +16,29 @@ class Inbox extends Component {
   render() {
     return (
       <React.Fragment>
-        {this.props.links.length ? (
-          <table className="pure-table">
-            <thead>
-              <tr>
-                <th>Link</th>
-                <th>Value</th>
-                <th>Views</th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.props.links.map(link => {
-                return (
-                  <tr key={link._id}>
-                    <td>
-                      <Link to={'/link/' + link.linkId}>
-                        {link.query.title}
-                      </Link>
-                    </td>
-                    <td>{formatCurrency(link.payoffs[link.generation])}</td>
-                    <td>{link.views}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        ) : (
+        <table className="pure-table">
+          <thead>
+            <tr>
+              <th>Link</th>
+              <th>Value</th>
+              <th>Views</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.props.links.map(link => {
+              return (
+                <tr key={link._id}>
+                  <td>
+                    <Link to={'/link/' + link.linkId}>{link.title}</Link>
+                  </td>
+                  <td>{formatCurrency(link.payoffs[link.generation])}</td>
+                  <td>{link.views}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+        {this.props.links.length ? null : (
           <div style={{ textAlign: 'center', margin: '1em 0' }}>
             <i>No active links...</i>
           </div>

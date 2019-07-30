@@ -118,7 +118,6 @@ async function hydrateStreamFeed(inputArray = [], userId) {
 
       case 'addQuery':
         return LinkModel.findOne({ _id: item.object })
-          .populate({ path: 'query' })
           .lean()
           .then(data => {
             item.data = data;
@@ -130,7 +129,6 @@ async function hydrateStreamFeed(inputArray = [], userId) {
           user: userId,
           $or: [{ children: item.object }, { _id: item.object }]
         })
-          .populate('query')
           .lean()
           .then(data => {
             item.data = data;
@@ -139,7 +137,7 @@ async function hydrateStreamFeed(inputArray = [], userId) {
 
       case 'addResponse':
         return ResponseModel.findOne({ _id: item.object })
-          .populate('user query')
+          .populate('user link')
           .lean()
           .then(data => {
             item.data = data;

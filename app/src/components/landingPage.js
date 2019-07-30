@@ -108,19 +108,6 @@ class LandingPage extends Component {
             </div>
           </div>
         </section>
-
-        <section>
-          <h2>Incentive Query Networks</h2>
-
-          <h3>Total Cost</h3>
-          <ol>
-            <li>Search</li>
-            <li>Transactional</li>
-            <li>Direct</li>
-            <li>Assessment</li>
-            <li>Accountability & Recourse</li>
-          </ol>
-        </section>
       </React.Fragment>
     );
   }

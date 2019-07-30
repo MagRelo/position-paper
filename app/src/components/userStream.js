@@ -68,23 +68,23 @@ function getContent(activityType, isUser, data) {
 
     case 'addQuery':
       urlPath = '/link';
-      label = isUser ? `${data.query.title}` : `${data.query.title}`;
+      label = isUser ? `${data.title}` : `${data.title}`;
       id = `/${data.linkId}`;
       break;
     case 'addLink':
       urlPath = '/link';
-      label = isUser ? `${data.query.title}` : `${data.query.title}`;
+      label = isUser ? `${data.title}` : `${data.title}`;
       id = `/${data.linkId}`;
       break;
     case 'addFollow:Link':
       urlPath = '/link';
-      label = isUser ? `${data.query.title}` : `${data.query.title}`;
+      label = isUser ? `${data.title}` : `${data.title}`;
       id = `/${data.linkId}`;
       break;
 
     case 'addResponse':
       urlPath = '/response';
-      label = isUser ? `${data.query.title}` : `${data.query.title}`;
+      label = isUser ? `${data.link.title}` : `${data.link.title}`;
       id = `/${data._id}`;
       break;
 

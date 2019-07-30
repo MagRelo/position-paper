@@ -57,9 +57,9 @@ function Response(props) {
       <div>
         <h3 className="section-header">Incentives</h3>
 
-        {/* target */}
-        <h4 className="section-header">Target Incentives</h4>
-        {targetPayouts.map((item, index) => {
+        {/* network */}
+        <h4 className="section-header">Network Incentives</h4>
+        {networkPayouts.map((item, index) => {
           return (
             <div key={index}>
               {lineItem(item.email, formatCurrency(item.amount))}
@@ -67,9 +67,9 @@ function Response(props) {
           );
         })}
 
-        {/* network */}
-        <h4 className="section-header">Network Incentives</h4>
-        {networkPayouts.map((item, index) => {
+        {/* target */}
+        <h4 className="section-header">Target Incentives</h4>
+        {targetPayouts.map((item, index) => {
           return (
             <div key={index}>
               {lineItem(item.email, formatCurrency(item.amount))}

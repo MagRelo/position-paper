@@ -47,9 +47,6 @@ mongoose.connection.on('error', function(err) {
 // Server
 // *
 
-// load stripe api
-// require('./integrations/stripe');
-
 // configure express middleware
 app.use(express.static('build'));
 app.use(bodyParser.urlencoded({ extended: true }));

@@ -74,8 +74,8 @@ export function CoolTab(props) {
       style={{
         background: 'none',
         border: 'none',
-        color: isSelected ? '#1c4e78' : 'gray',
-        borderBottom: isSelected ? 'solid 1px #8096ab' : 'none',
+        color: 'gray',
+        borderBottom: isSelected ? 'solid 1px #cbcbcb' : 'none',
         marginRight: '1em'
       }}
     >

@@ -55,7 +55,7 @@ async function sendResponse(formData) {
 
   if (response.status === 200) {
     const responseObj = await response.json();
-    console.log(responseObj);
+    // console.log(responseObj);
     return responseObj;
   } else {
     console.log('not found', response.status);

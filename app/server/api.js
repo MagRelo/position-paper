@@ -9,16 +9,128 @@ const getStream = require('./integrations/getstream');
 const elasticSearch = require('./integrations/elasticsearch');
 
 const UserModel = require('./models').UserModel;
-const QueryModel = require('./models').QueryModel;
 const LinkModel = require('./models').LinkModel;
 const ResponseModel = require('./models').ResponseModel;
 const PaymentModel = require('./models').PaymentModel;
 
 //
-// PUBLIC
+// MISC
 //
 
-// plaid signup
+// search
+router.get('/search', async function(req, res) {
+  try {
+    // get the max gen for each link
+    const queryGenList = await LinkModel.aggregate([
+      {
+        $group: {
+          _id: '$query',
+          latestGen: { $max: '$generation' }
+        }
+      }
+    ]);
+
+    const promises = [];
+    queryGenList.forEach(query => {
+      return promises.push(
+        LinkModel.findOne({
+          query: query._id,
+          generation: query.latestGen
+        })
+          .populate('user')
+          .then(link => {
+            let responseObj = {
+              link: {
+                _id: link._id,
+                linkId: link.linkId,
+                postedBy: link.user.email,
+                userId: link.user._id,
+                createdAt: link.createdAt,
+                respondBonus: link.target_bonus,
+                promoteBonus: link.potentialPayoffs[link.generation + 1]
+              },
+              query: {
+                _id: null,
+                title: link.title,
+                bonus: link.bonus,
+                type: link.type,
+                data: link.data
+              }
+            };
+
+            // not logged in
+            if (!req.user) {
+              responseObj.user = {
+                isFollowingLink: false,
+                isFollowingUser: false,
+                isQueryOwner: false,
+                isLinkOwner: false
+              };
+              return responseObj;
+            }
+
+            // logged in
+            responseObj.user = {
+              isFollowingLink:
+                req.user && req.user.follows.indexOf(link._id) > -1,
+              isFollowingUser:
+                req.user && req.user.follows.indexOf(link.user._id) > -1,
+              isQueryOwner: false,
+              isLinkOwner: req.user._id.equals(link.user._id)
+            };
+
+            return responseObj;
+          })
+      );
+    });
+
+    const hydrated = await Promise.all(promises);
+
+    res.status(200).send(hydrated);
+  } catch (error) {
+    console.log(req.path, error);
+    res.status(500).send(error);
+  }
+});
+
+router.post('/query/metadata', async function(req, res) {
+  if (!req.body.url) {
+    return res.status(400).send({ error: 'bad request' });
+  }
+
+  try {
+    const metadata = await scrape(req.body.url);
+
+    const salary = `$${metadata.jsonLd.baseSalary.value.minValue} – $${
+      metadata.jsonLd.baseSalary.value.maxValue
+    }`;
+    const location = `${
+      metadata.jsonLd.jobLocation[0].address.addressLocality
+    }, ${metadata.jsonLd.jobLocation[0].address.addressRegion}`;
+    // const description = `$${metadata.jsonLd.description}`;
+
+    const formatted = {
+      title: metadata.jsonLd.title,
+      salary: salary,
+      location: location,
+      hiringOrganization: metadata.jsonLd.hiringOrganization.name,
+      skills: metadata.jsonLd.skills,
+      maxSalary: metadata.jsonLd.baseSalary.value.maxValue,
+      minSalary: metadata.jsonLd.baseSalary.value.minValue
+    };
+
+    res.status(200).send(formatted);
+  } catch (error) {
+    console.log('API Error:', error);
+    res.status(500).send(error);
+  }
+});
+
+//
+// USER
+//
+
+// signup
 router.post('/user/signup', async function(req, res) {
   // required
   // const plaid_publicToken = req.body.token;
@@ -59,87 +171,7 @@ router.post('/user/login', passport.authenticate('local'), function(req, res) {
   }
 });
 
-// search
-router.get('/search', async function(req, res) {
-  try {
-    // get the max gen for each query
-    const queryGenList = await LinkModel.aggregate([
-      {
-        $group: {
-          _id: '$query',
-          latestGen: { $max: '$generation' }
-        }
-      }
-    ]);
-
-    const promises = [];
-    queryGenList.forEach(query => {
-      return promises.push(
-        LinkModel.findOne({
-          query: query._id,
-          generation: query.latestGen
-        })
-          .populate('user query')
-          .then(link => {
-            let responseObj = {
-              link: {
-                _id: link._id,
-                linkId: link.linkId,
-                postedBy: link.user.email,
-                userId: link.user._id,
-                createdAt: link.createdAt,
-                respondBonus: link.query.target_bonus,
-                promoteBonus: link.potentialPayoffs[link.generation + 1]
-              },
-              query: {
-                _id: link.query._id,
-                title: link.query.title,
-                bonus: link.query.bonus,
-                type: link.query.type,
-                data: link.query.data
-              }
-            };
-
-            // not logged in
-            if (!req.user) {
-              responseObj.user = {
-                isFollowingLink: false,
-                isFollowingUser: false,
-                isQueryOwner: false,
-                isLinkOwner: false
-              };
-              return responseObj;
-            }
-
-            // logged in
-            responseObj.user = {
-              isFollowingLink:
-                req.user && req.user.follows.indexOf(link._id) > -1,
-              isFollowingUser:
-                req.user && req.user.follows.indexOf(link.user._id) > -1,
-              isQueryOwner: req.user._id.equals(link.user._id),
-              isLinkOwner: req.user._id.equals(link.query.user)
-            };
-
-            return responseObj;
-          })
-      );
-    });
-
-    const hydrated = await Promise.all(promises);
-
-    res.status(200).send(hydrated);
-  } catch (error) {
-    console.log(req.path, error);
-    res.status(500).send(error);
-  }
-});
-
-//
-// AUTH
-//
-
-// get user
+// get user session status (loggedin)
 router.get('/user/status', async function(req, res) {
   // check auth
   if (!req.user) {
@@ -161,28 +193,19 @@ router.get('/user', async function(req, res) {
     _id: req.user._id,
     name: req.user.name,
     email: req.user.email,
-    follows: req.user.follows
+    follows: req.user.follows,
+    links: [],
+    responses: [],
+    payments: []
   };
 
-  userObject.queries = await QueryModel.find({ user: req.user._id })
-    .populate({
-      path: 'links',
-      populate: { path: 'parentLink query' },
-      options: { sort: { generation: 1 } }
-    })
+  userObject.links = await LinkModel.find({ user: req.user._id }).lean();
+  userObject.payments = await PaymentModel.find({ user: req.user._id })
+    .populate('link')
     .lean();
-  userObject.links = await LinkModel.find({ user: req.user._id })
-    .populate({
-      path: 'query'
-    })
-    .lean();
-
-  // hack to add total link views
-  // userObject.queries.forEach((query, index) => {
-  //   userObject.queries[index].totalViews = query.links.reduce((acc, link) => {
-  //     return acc + link.views;
-  //   }, 0);
-  // });
+  userObject.responses = await ResponseModel.find({
+    user: req.user._id
+  }).lean();
 
   // get user
   userObject.stream = await getStream.getFeed(
@@ -251,38 +274,9 @@ router.post('/user/follow', async function(req, res) {
   }
 });
 
-router.post('/query/metadata', async function(req, res) {
-  if (!req.body.url) {
-    return res.status(400).send({ error: 'bad request' });
-  }
-
-  try {
-    const metadata = await scrape(req.body.url);
-
-    const salary = `$${metadata.jsonLd.baseSalary.value.minValue} – $${
-      metadata.jsonLd.baseSalary.value.maxValue
-    }`;
-    const location = `${
-      metadata.jsonLd.jobLocation[0].address.addressLocality
-    }, ${metadata.jsonLd.jobLocation[0].address.addressRegion}`;
-    // const description = `$${metadata.jsonLd.description}`;
-
-    const formatted = {
-      title: metadata.jsonLd.title,
-      salary: salary,
-      location: location,
-      hiringOrganization: metadata.jsonLd.hiringOrganization.name,
-      skills: metadata.jsonLd.skills,
-      maxSalary: metadata.jsonLd.baseSalary.value.maxValue,
-      minSalary: metadata.jsonLd.baseSalary.value.minValue
-    };
-
-    res.status(200).send(formatted);
-  } catch (error) {
-    console.log('API Error:', error);
-    res.status(500).send(error);
-  }
-});
+//
+// LINK
+//
 
 // add query
 router.post('/query/add', async function(req, res) {
@@ -293,34 +287,21 @@ router.post('/query/add', async function(req, res) {
   const query = req.body;
 
   try {
-    // create query
-    const newQuery = new QueryModel({
+    // create link
+    const newLink = new LinkModel({
+      user: req.user._id,
+      parentLink: null,
+      isQueryOwner: true,
+      generation: 0,
       target_bonus: query.target_bonus,
       network_bonus: query.network_bonus,
       title: query.title,
       type: query.type,
       data: query.data,
-      user: req.user._id
-    });
-    await newQuery.save();
-
-    // create link
-    const newLink = new LinkModel({
-      user: req.user._id,
-      query: newQuery._id,
-      parentLink: null,
-      isQueryOwner: true,
-      generation: 0,
       payoffs: calcLinkPayouts(query.network_bonus, 0),
       potentialPayoffs: calcLinkPayouts(query.network_bonus, 1)
     });
     await newLink.save();
-
-    // push link back into query
-    await QueryModel.updateOne(
-      { _id: newQuery._id },
-      { $push: { links: newLink._id } }
-    );
 
     // create getStream feed for user
     await getStream.addQuery(req.user, newLink._id);
@@ -339,19 +320,19 @@ router.get('/link/:linkId', async function(req, res) {
     const link = await LinkModel.findOne({
       linkId: req.params.linkId
     })
-      .populate('user query children')
+      .populate('user children')
       .populate({ path: 'responses', populate: { path: 'user' } });
     if (!link) return res.status(401).send({ error: 'not found' });
 
     // public info
     let responseObj = {
       query: {
-        _id: link.query._id,
-        title: link.query.title,
-        type: link.query.type,
-        data: link.query.data,
-        target_bonus: link.query.target_bonus,
-        network_bonus: link.query.network_bonus,
+        _id: null,
+        title: link.title,
+        type: link.type,
+        data: link.data,
+        target_bonus: link.target_bonus,
+        network_bonus: link.network_bonus,
         postedBy: link.user.email
       },
       link: {
@@ -384,7 +365,7 @@ router.get('/link/:linkId', async function(req, res) {
     const isFollowingUser =
       req.user && req.user.follows.indexOf(link.user._id) > -1;
     const isLinkOwner = req.user._id.equals(link.user._id);
-    const isQueryOwner = req.user._id.equals(link.query.user);
+    const isQueryOwner = link.generation === 0;
 
     // user
     responseObj.user = {
@@ -420,51 +401,44 @@ router.post('/link/add', async function(req, res) {
     return res.status(401).send();
   }
 
-  // validate input
-  if (!req.body.queryId) {
-    return res.status(400).send({ error: 'must set query id' });
-  }
-
   try {
     // get parent link
     const parentLink = await LinkModel.findOne({
       linkId: req.body.parentLink
-    }).populate({
-      path: 'query'
     });
     if (!parentLink) {
       return res.status(404).send({ error: 'parent link not found' });
     }
 
+    // set up generation
+    const thisGen = parentLink.generation + 1;
+    const nextGen = parentLink.generation + 2;
+
     // add new link
     const newLink = new LinkModel({
       user: req.user._id,
-      query: req.body.queryId,
       parentLink: parentLink._id,
       parents: [...parentLink.parents, parentLink._id],
-      generation: parentLink.generation + 1,
-      payoffs: calcLinkPayouts(
-        parentLink.query.network_bonus,
-        parentLink.generation + 1
-      ),
-      potentialPayoffs: calcLinkPayouts(
-        parentLink.query.network_bonus,
-        parentLink.generation + 2
-      )
+      originLink: parentLink.originLink
+        ? parentLink.originLink
+        : parentLink._id,
+      generation: thisGen,
+      target_bonus: parentLink.target_bonus,
+      network_bonus: parentLink.network_bonus,
+      title: parentLink.title,
+      type: parentLink.type,
+      data: parentLink.data,
+      payoffs: calcLinkPayouts(parentLink.network_bonus, thisGen),
+      potentialPayoffs: calcLinkPayouts(parentLink.network_bonus, nextGen)
     });
     await newLink.save();
 
-    // add child to to all parents 'children'
+    // add child to to all parent's 'children' array &
+    // set IsBuried = true to exclude parents from search
     await LinkModel.updateMany(
       { _id: { $in: [...parentLink.parents, parentLink._id] } },
-      { $push: { children: newLink._id } },
+      { $push: { children: newLink._id }, $set: { isBuried: true } },
       { multi: true }
-    );
-
-    // add link ref to query
-    await QueryModel.updateOne(
-      { _id: req.body.queryId },
-      { $push: { links: newLink._id } }
     );
 
     // add getStream activity "AddLink"
@@ -476,6 +450,10 @@ router.post('/link/add', async function(req, res) {
     res.status(500).send(error);
   }
 });
+
+//
+// RESPONSE
+//
 
 // create response
 router.post('/response/add', async function(req, res) {
@@ -496,11 +474,8 @@ router.post('/response/add', async function(req, res) {
         path: 'user'
       })
       .populate({
-        path: 'query'
-      })
-      .populate({
         path: 'parents',
-        populate: {path: 'user'}
+        populate: { path: 'user' }
       });
     if (!link) {
       return res.status(404).send({ error: 'link not found' });
@@ -508,14 +483,15 @@ router.post('/response/add', async function(req, res) {
 
     // add new response
     const newResponse = new ResponseModel({
-      query: link.query,
       link: link._id,
+      originLink: link.originLink,
       target_bonus: link.target_bonus,
       targetPayouts: [
         {
           _id: req.user._id,
           email: req.user.email,
-          amount: link.query.target_bonus
+          amount: link.target_bonus,
+          linkId: link._id
         }
       ],
       network_bonus: link.network_bonus,
@@ -559,15 +535,11 @@ router.get('/response/:responseId', async function(req, res) {
       _id: req.params.responseId
     })
       .populate({
-        path: 'query',
-        populate: { path: 'user' }
-      })
-      .populate({
-        path: 'parents',
-        populate: { path: 'user' }
-      })
-      .populate({
         path: 'link',
+        populate: { path: 'user' }
+      })
+      .populate({
+        path: 'originLink',
         populate: { path: 'user' }
       })
       .populate({
@@ -581,24 +553,17 @@ router.get('/response/:responseId', async function(req, res) {
         .send({ error: 'response not found: ' + req.params.responseId });
     }
 
-    // populate with table of user payouts
-    // response.payoutArray = await calcUserPayouts(
-    //   response.link,
-    //   response.parents,
-    //   req.user
-    // );
-
     // display indicators
-    const isParent = response.parents.some(parent => {
-      return req.user._id.equals(parent.user._id);
+    response.user.isQueryOwner = req.user._id.equals(
+      response.originLink.user._id
+    );
+    response.user.isParent = response.parents.some(parent => {
+      return req.user._id.equals(parent);
     });
-    const isQueryOwner = req.user._id.equals(response.query.user._id);
-    const isResponseOwner = req.user._id.equals(response.user._id);
-    const isLinkOwner = req.user._id.equals(response.link._id);
-    response.user.isQueryOwner = isQueryOwner;
-    response.user.isResponseOwner = isResponseOwner;
-    response.user.isParent = isParent;
-    response.user.isLinkOwner = isLinkOwner;
+    response.user.isResponseOwner = req.user._id.equals(response.user._id);
+
+    // const isLinkOwner = req.user._id.equals(response.link._id);
+    // response.user.isLinkOwner = isLinkOwner;
 
     res.status(200).send(response);
   } catch (error) {
@@ -607,8 +572,8 @@ router.get('/response/:responseId', async function(req, res) {
   }
 });
 
-// create payment
-router.post('/payment/:responseId', async function(req, res) {
+// close response (create payment)
+router.put('/response/:responseId', async function(req, res) {
   // auth-only
   if (!req.user) {
     return res.status(401).send();
@@ -628,10 +593,6 @@ router.post('/payment/:responseId', async function(req, res) {
         path: 'user'
       })
       .populate({
-        path: 'query',
-        populate: { path: 'user' }
-      })
-      .populate({
         path: 'link',
         populate: { path: 'user' }
       })
@@ -649,9 +610,9 @@ router.post('/payment/:responseId', async function(req, res) {
     }
 
     // auth - must be query owner
-    if (!req.user._id.equals(response.query.user._id)) {
-      return res.status(401).send();
-    }
+    // if (!req.user._id.equals(response.query.user._id)) {
+    //   return res.status(401).send();
+    // }
 
     // make stripe payment from principal
     const paymentResponse = await payments.createStripeCharge(
@@ -660,25 +621,45 @@ router.post('/payment/:responseId', async function(req, res) {
       response._id.toString()
     );
 
-    // update query with payment detail
-    await QueryModel.updateOne(
-      { _id: response.query._id },
+    // create payment record
+    await createPayment(
+      response.link._id,
+      req.user._id,
+      response._id,
+      req.body.amount_in_cents * -1,
+      paymentResponse,
+      'closed'
+    );
+
+    // update link with payment detail
+    await ResponseModel.updateOne(
+      { _id: response._id },
       { payment: paymentResponse, status: 'closed' }
     );
 
     // update links to 'closed' status
     await LinkModel.updateMany(
-      { _id: { $in: response.parents } },
+      { _id: { $in: [...response.link.parents, response.link._id] } },
       { status: 'closed' }
     );
 
-    // create payouts to users
-    const payouts = calcUserPayouts(response.link, response.parents, req.user);
+    // create target payouts to users
     await Promise.all(
-      payouts.map(userPayout => {
+      response.targetPayouts.map(userPayout => {
         return createPayment(
-          response.query._id,
-          response.link._id,
+          userPayout.linkId,
+          userPayout._id,
+          response._id,
+          userPayout.amount * 100
+        );
+      })
+    );
+
+    // create network payouts to users
+    await Promise.all(
+      response.networkPayouts.map(userPayout => {
+        return createPayment(
+          userPayout.linkId,
           userPayout._id,
           response._id,
           userPayout.amount * 100
@@ -695,6 +676,7 @@ router.post('/payment/:responseId', async function(req, res) {
 
 module.exports = router;
 
+// used when adding a link
 function calcLinkPayouts(bonus, generation) {
   // take 10% of bonus per gerneration
   const shareBite = 0.1;
@@ -719,6 +701,7 @@ function calcLinkPayouts(bonus, generation) {
   return payoffs;
 }
 
+// used when adding a response
 function calcUserPayouts(link, parents) {
   const payoutArray = [];
   parents.forEach(parent => {
@@ -726,7 +709,8 @@ function calcUserPayouts(link, parents) {
       payoutArray.push({
         _id: parent.user._id,
         email: parent.user.email,
-        amount: link.payoffs[parent.generation]
+        amount: link.payoffs[parent.generation],
+        linkId: link._id
       });
     }
   });
@@ -736,27 +720,31 @@ function calcUserPayouts(link, parents) {
     payoutArray.push({
       _id: link.user._id,
       email: link.user.email,
-      amount: link.payoffs[link.generation]
+      amount: link.payoffs[link.generation],
+      linkId: link._id
     });
   }
 
   return payoutArray;
 }
 
+// used when closing a response
 async function createPayment(
-  queryId,
   linkId,
   userId,
   responseId,
-  amount_in_cents
+  amount_in_cents,
+  stripeResponse,
+  status
 ) {
   // create payment record
   const newPayment = new PaymentModel({
-    query: queryId,
     link: linkId,
     user: userId,
     response: responseId,
-    amount: amount_in_cents
+    amount: amount_in_cents,
+    stripeResponse: stripeResponse,
+    status: status
   });
   return newPayment.save().then(paymentDoc => {
     return UserModel.updateOne(

@@ -46,41 +46,15 @@ UserSchema.methods.validPassword = function(password) {
 exports.UserModel = mongoose.model('User', UserSchema);
 
 //
-// Query
-//
-const QuerySchema = new mongoose.Schema(
-  {
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    target_bonus: Number,
-    network_bonus: Number,
-    title: String,
-    type: String,
-    data: Object,
-    links: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Link' }],
-    payment: Object,
-    status: {
-      type: String,
-      enum: ['open', 'pending', 'closed'],
-      default: 'open'
-    }
-  },
-  { timestamps: true }
-);
-exports.QueryModel = mongoose.model('Query', QuerySchema);
-
-//
 // Link
 //
 const LinkSchema = new mongoose.Schema(
   {
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    query: { type: mongoose.Schema.Types.ObjectId, ref: 'Query' },
     parentLink: { type: mongoose.Schema.Types.ObjectId, ref: 'Link' },
+    originLink: { type: mongoose.Schema.Types.ObjectId, ref: 'Link' },
     parents: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Link' }],
     children: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Link' }],
-    responses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Response' }],
-    payoffs: [],
-    potentialPayoffs: [],
     linkId: {
       type: String,
       default: () => nanoid()
@@ -89,10 +63,24 @@ const LinkSchema = new mongoose.Schema(
       type: Number,
       default: 0
     },
-    isQueryOwner: {
+
+    isBuried: {
       type: Boolean,
       default: false
     },
+
+    target_bonus: Number,
+    network_bonus: Number,
+    payoffs: [],
+    potentialPayoffs: [],
+    payment: Object,
+
+    title: String,
+    type: String,
+    data: Object,
+
+    responses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Response' }],
+
     status: {
       type: String,
       enum: ['open', 'pending', 'closed'],
@@ -110,15 +98,22 @@ exports.LinkModel = mongoose.model('Link', LinkSchema);
 const ResponseSchema = new mongoose.Schema(
   {
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    query: { type: mongoose.Schema.Types.ObjectId, ref: 'Query' },
     link: { type: mongoose.Schema.Types.ObjectId, ref: 'Link' },
+    originLink: { type: mongoose.Schema.Types.ObjectId, ref: 'Link' },
     parents: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Link' }],
     message: String,
 
     target_bonus: Number,
     targetPayouts: [],
     network_bonus: Number,
-    networkPayouts: []
+    networkPayouts: [],
+
+    payment: Object,
+    status: {
+      type: String,
+      enum: ['open', 'pending', 'closed'],
+      default: 'open'
+    }
   },
   { timestamps: true }
 );
@@ -129,7 +124,6 @@ exports.ResponseModel = mongoose.model('Response', ResponseSchema);
 //
 const PaymentSchema = new mongoose.Schema(
   {
-    query: { type: mongoose.Schema.Types.ObjectId, ref: 'Query' },
     link: { type: mongoose.Schema.Types.ObjectId, ref: 'Link' },
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     response: { type: mongoose.Schema.Types.ObjectId, ref: 'Response' },

@@ -2,15 +2,27 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { lineItem, formatCurrency } from 'components/util/random';
+import { Tabs, TabList, TabPanels, TabPanel } from '@reach/tabs';
+import { lineItem, formatCurrency, CoolTab } from 'components/util/random';
 
+import QueryTable from 'components/userQueryTable';
+import PaymentsTable from 'components/userPaymentsTable';
+import ResponseList from 'components/queryResponseTable';
 import UserSocial from 'components/userSocial';
 import LoginPlaidLink from 'components/loginPlaidLink';
 import LinksList from 'components/userLinksTable';
 import StreamList from 'components/userStream';
 
 class Profile extends Component {
-  state = { name: '', email: '', links: [], queries: [], stream: [] };
+  state = {
+    name: '',
+    email: '',
+    links: [],
+    queries: [],
+    stream: [],
+    responses: [],
+    payments: []
+  };
 
   async componentDidMount() {
     const response = await fetch('/api/user', {
@@ -23,9 +35,11 @@ class Profile extends Component {
         name: user.name,
         email: user.email,
         userId: user._id,
-        links: user.links,
-        queries: user.queries,
-        stream: user.stream
+        queries: user.links.filter(link => link.generation === 0),
+        links: user.links.filter(link => link.generation !== 0),
+        stream: user.stream,
+        responses: user.responses,
+        payments: user.payments
       });
     } else {
       console.log('not found', response.status);
@@ -63,16 +77,43 @@ class Profile extends Component {
           </div>
 
           <div>
-            <h3 className="section-header">Deal Flow</h3>
-            <LinksList links={this.state.links} />
+            <h3 className="section-header">Stuff</h3>
 
-            <Link
-              to="/addquery"
-              className="pure-button pure-button-primary"
-              style={{ float: 'right', marginTop: '1.5em' }}
-            >
-              Add Request
-            </Link>
+            <Tabs style={{ marginTop: '0.5em' }}>
+              <TabList style={{ marginBottom: '0.5em' }}>
+                <CoolTab>Queries</CoolTab>
+                <CoolTab>Links</CoolTab>
+                <CoolTab>Responses</CoolTab>
+                <CoolTab>Payments</CoolTab>
+              </TabList>
+
+              <TabPanels>
+                <TabPanel style={{ outline: 'none' }}>
+                  <QueryTable queries={this.state.queries} />
+                  <Link
+                    to="/addquery"
+                    className="pure-button pure-button-primary"
+                    style={{ float: 'right', marginTop: '1.5em' }}
+                  >
+                    Add Query
+                  </Link>
+                </TabPanel>
+
+                <TabPanel style={{ outline: 'none' }}>
+                  <LinksList links={this.state.links} />
+                </TabPanel>
+
+                <TabPanel style={{ outline: 'none' }}>
+                  <div>
+                    <ResponseList responses={this.state.responses} />
+                  </div>
+                </TabPanel>
+
+                <TabPanel>
+                  <PaymentsTable payments={this.state.payments} />
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
           </div>
         </div>
       </div>

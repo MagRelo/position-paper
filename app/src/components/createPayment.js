@@ -45,7 +45,8 @@ class CheckoutForm extends Component {
         });
       }
 
-      const total = calcTotal(this.props.lineItems);
+      const total = calcTotal(this.props.total_incentives);
+
       const paymentObj = {
         amount_in_cents: parseInt(total * 100),
         tokenData
@@ -54,9 +55,9 @@ class CheckoutForm extends Component {
       console.log(paymentObj);
 
       const paymentResponse = await fetch(
-        '/api/payment/' + this.props.responseId,
+        '/api/response/' + this.props.responseId,
         {
-          method: 'POST',
+          method: 'PUT',
           headers: {
             'Content-Type': 'application/json'
           },
