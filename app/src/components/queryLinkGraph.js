@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Graph } from 'react-d3-graph';
 
 const graphOptions = {
-  width: 640,
+  width: 400,
+  height: 200,
   nodeHighlightBehavior: true,
   node: {
     color: '#0079db',
@@ -44,6 +45,10 @@ function buildGraphData(parent, links) {
     links: []
   };
 
+  if (!parent || !links) {
+    return graphData;
+  }
+
   // parent
   const size = 200 + parent.views * 40;
   const lighteningFactor = parent.generation * 20;
@@ -52,7 +57,7 @@ function buildGraphData(parent, links) {
     id: parent._id,
     size: size,
     color: color,
-    name: 'Views: ' + parent.views,
+    name: 'Origin',
     symbolType: 'square'
   });
 
@@ -68,8 +73,7 @@ function buildGraphData(parent, links) {
       id: link._id,
       size: size,
       color: color,
-      name: 'Views: ' + link.views,
-      symbolType: link.parentLink ? null : 'square'
+      name: link.user.email
     });
 
     // link to parent
@@ -81,7 +85,7 @@ function buildGraphData(parent, links) {
     }
   });
 
-  // console.log(graphData);
+  console.log(graphData);
 
   return graphData;
 }

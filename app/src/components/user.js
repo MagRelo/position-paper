@@ -5,9 +5,8 @@ import { Link } from 'react-router-dom';
 import { Tabs, TabList, TabPanels, TabPanel } from '@reach/tabs';
 import { lineItem, formatCurrency, CoolTab } from 'components/util/random';
 
-import QueryTable from 'components/userQueryTable';
 import PaymentsTable from 'components/userPaymentsTable';
-import ResponseList from 'components/queryResponseTable';
+import ResponseList from 'components/userResponseTable';
 import UserSocial from 'components/userSocial';
 import LoginPlaidLink from 'components/loginPlaidLink';
 import LinksList from 'components/userLinksTable';
@@ -35,8 +34,7 @@ class Profile extends Component {
         name: user.name,
         email: user.email,
         userId: user._id,
-        queries: user.links.filter(link => link.generation === 0),
-        links: user.links.filter(link => link.generation !== 0),
+        links: user.links,
         stream: user.stream,
         responses: user.responses,
         payments: user.payments
@@ -81,7 +79,6 @@ class Profile extends Component {
 
             <Tabs style={{ marginTop: '0.5em' }}>
               <TabList style={{ marginBottom: '0.5em' }}>
-                <CoolTab>Queries</CoolTab>
                 <CoolTab>Links</CoolTab>
                 <CoolTab>Responses</CoolTab>
                 <CoolTab>Payments</CoolTab>
@@ -89,18 +86,14 @@ class Profile extends Component {
 
               <TabPanels>
                 <TabPanel style={{ outline: 'none' }}>
-                  <QueryTable queries={this.state.queries} />
+                  <LinksList links={this.state.links} />
                   <Link
                     to="/addquery"
                     className="pure-button pure-button-primary"
                     style={{ float: 'right', marginTop: '1.5em' }}
                   >
-                    Add Query
+                    Add Job
                   </Link>
-                </TabPanel>
-
-                <TabPanel style={{ outline: 'none' }}>
-                  <LinksList links={this.state.links} />
                 </TabPanel>
 
                 <TabPanel style={{ outline: 'none' }}>

@@ -1,11 +1,5 @@
 import React, { Component } from 'react';
 
-// icons
-// import { IoIosGlobe } from 'react-icons/io';
-// import { GiInfo } from 'react-icons/gi';
-// import { GoGitMerge, GoBroadcast } from 'react-icons/go';
-// import { MdInsertDriveFile } from 'react-icons/md';
-
 class LandingPage extends Component {
   state = { accounts: null };
 
@@ -50,7 +44,7 @@ class LandingPage extends Component {
             </div>
 
             <div>
-              <h3>Curated Subscription Bundles</h3>
+              <h3>Content Subscriptions</h3>
               <p>
                 Content-creators can make access to their content available for
                 subscription.

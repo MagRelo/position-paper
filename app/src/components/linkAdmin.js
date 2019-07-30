@@ -100,7 +100,7 @@ function LinkInformation(props) {
         <LinksList links={props.link.children} />
 
         <h4 className="section-header">Link Graph</h4>
-        <LinkGraph parent={props.link} links={props.childLinks} />
+        <LinkGraph parent={props.link} links={props.link.children} />
       </div>
     </div>
   );

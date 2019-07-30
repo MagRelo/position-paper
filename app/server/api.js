@@ -199,22 +199,25 @@ router.get('/user', async function(req, res) {
     payments: []
   };
 
-  userObject.links = await LinkModel.find({ user: req.user._id }).lean();
-  userObject.payments = await PaymentModel.find({ user: req.user._id })
-    .populate('link')
-    .lean();
-  userObject.responses = await ResponseModel.find({
-    user: req.user._id
-  }).lean();
+  try {    
+    userObject.links = await LinkModel.find({ user: req.user._id })      
+      .lean();
 
-  // get user
-  userObject.stream = await getStream.getFeed(
-    'User',
-    req.user._id,
-    req.user._id
-  );
+    userObject.payments = await PaymentModel.find({ user: req.user._id })
+      .populate('link')
+      .lean();
+    userObject.responses = await ResponseModel.find({
+      user: req.user._id
+    }).populate('originLink').lean();
 
-  try {
+    // get user
+    userObject.stream = await getStream.getFeed(
+      'User',
+      req.user._id,
+      req.user._id
+    );
+
+  
     res.status(200).send(userObject);
   } catch (error) {
     console.log(req.path, error);
@@ -320,7 +323,8 @@ router.get('/link/:linkId', async function(req, res) {
     const link = await LinkModel.findOne({
       linkId: req.params.linkId
     })
-      .populate('user children')
+      .populate('user')
+      .populate({ path: 'children', populate: { path: 'user' } })
       .populate({ path: 'responses', populate: { path: 'user' } });
     if (!link) return res.status(401).send({ error: 'not found' });
 

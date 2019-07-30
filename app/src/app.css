@@ -168,9 +168,6 @@ h3.section-header {
 .stream {
   padding: 0.667em 1em 1em;
   box-shadow: 0px 2px 5px 0px rgba(117, 117, 117, 0.58);
-  /* background-color: rgb(189, 216, 241); */
-  /* border: solid gray 1px; */
-  /* color: gray; */
 }
 
 .stream-label {
@@ -389,3 +386,11 @@ button:focus {
 }
 
 /* REsponse Qutoe */
+
+.examples>div {
+  padding: 0 1em;
+}
+
+.examples>div>h3 {
+  text-align: center
+}
