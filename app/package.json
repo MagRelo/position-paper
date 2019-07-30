@@ -52,7 +52,7 @@
     "dev": "NODE_ENV=development nodemon --inspect server/index.js",
     "docker-build": "docker build . -t magrelo/ie-app",
     "docker-push": "docker push magrelo/ie-app",
-    "ssh": "ssh root@209.97.154.109",
+    "ssh": "ssh root@174.138.40.226",
     "dump-db": "mongodump  --db ie-app",
     "restore-db": "mongorestore --db ie-app dump/ie-app",
     "seed-db": "node server/utils/seedDb.js"
