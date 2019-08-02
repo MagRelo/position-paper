@@ -13,27 +13,29 @@ import './css/pure-min.css';
 import './index.css';
 import './app.css';
 
-// Header
-import LoginButton from 'components/loginButton';
+import LandingPage from 'pages/landingPage';
+import TOS_and_Privacy from 'pages/TOS_and_Privacy';
+import About from 'pages/about';
 
-import LandingPage from 'components/landingPage';
 import User from 'components/user';
 import LinkPage from 'components/link';
 import Search from 'components/search';
 import Response from 'components/response';
 
+// Header
+import LoginButton from 'components/loginButton';
+
 // testing
-import createUser from 'components/createUser';
-import createLink from 'components/createLink';
+// import createUser from 'components/createUser';
+// import createLink from 'components/createLink';
+// <Route path="/adduser" component={createUser} />
+// <Route path="/addlink" component={createLink} />
 
 // import createQuery from 'components/createQuery';
 import createQuery2 from 'components/createQuery-AL';
 
-export const UserContext = React.createContext();
-
 function App(props) {
   const [activeSession, setActiveSession] = useState(false);
-  const [user, setUser] = useState({ test: 'test' });
 
   useEffect(
     () => {
@@ -55,84 +57,88 @@ function App(props) {
 
   function createSession(user) {
     Cookies.set('servesa-auth-token', user.token);
-    setUser(user);
     setActiveSession(true);
-    props.history.push('/search');
+    props.history.push('/user');
   }
 
   function clearSession() {
     Cookies.remove('servesa-auth-token');
-    setUser({});
     setActiveSession(false);
     props.history.push('/');
   }
 
   return (
-    <UserContext.Provider value={user}>
-      <div className="container">
-        <nav className="header">
-          <div className="menu">
-            <NavLink exact={true} activeClassName="is-active" to={'/search'}>
-              Search
-            </NavLink>
-            {activeSession ? (
-              <NavLink activeClassName="is-active" to={'/user'}>
-                My Account
-              </NavLink>
-            ) : null}
-
-            <span>|</span>
-
-            <LoginButton
-              activeSession={activeSession}
-              createSession={createSession}
-              clearSession={clearSession}
-            />
-          </div>
-
-          <h1>
-            <Link to="/">incentive.exchange</Link>
-          </h1>
-
-          <h2>Business protocol layer</h2>
-        </nav>
-
-        <div className="content-wrapper">
+    <div className="container">
+      <nav className="header">
+        <div className="menu">
+          <NavLink exact={true} activeClassName="is-active" to={'/search'}>
+            Search
+          </NavLink>
           {activeSession ? (
-            <Switch>
-              <Route path="/adduser" component={createUser} />
-              <Route path="/addlink" component={createLink} />
-              <Route path="/addquery" component={createQuery2} />
+            <NavLink activeClassName="is-active" to={'/user'}>
+              My Account
+            </NavLink>
+          ) : null}
 
-              <Route path="/search" component={Search} />
-              <Route path="/link/:linkId" component={LinkPage} />
-              <Route path="/response/:responseId" component={Response} />
-              <Route path="/user" component={User} />
-              <Route component={LandingPage} />
-            </Switch>
-          ) : (
-            <Switch>
-              <Route path="/link/:linkId" component={LinkPage} />
-              <Route path="/search" component={Search} />
-              <Route component={LandingPage} />
-            </Switch>
-          )}
+          <span>|</span>
+
+          <LoginButton
+            activeSession={activeSession}
+            createSession={createSession}
+            clearSession={clearSession}
+          />
         </div>
 
-        <footer>
-          <ul>
-            <li>incentive.exchange</li>
-            <li>2019</li>
-          </ul>
-        </footer>
+        <h1>
+          <Link to="/">incentive.exchange</Link>
+        </h1>
+
+        <h2>Business protocol layer</h2>
+      </nav>
+
+      <div className="content-wrapper">
+        {activeSession ? (
+          <Switch>
+            {/* Auth required */}
+            <Route path="/addquery" component={createQuery2} />
+            <Route path="/response/:responseId" component={Response} />
+            <Route path="/user" component={User} />
+
+            <Route path="/search" component={Search} />
+            <Route path="/link/:linkId" component={LinkPage} />
+            <Route path="/terms" component={TOS_and_Privacy} />
+            <Route path="/about" component={About} />
+            <Route component={LandingPage} />
+          </Switch>
+        ) : (
+          <Switch>
+            <Route path="/search" component={Search} />
+            <Route path="/link/:linkId" component={LinkPage} />
+            <Route path="/terms" component={TOS_and_Privacy} />
+            <Route path="/about" component={About} />
+            <Route component={LandingPage} />
+          </Switch>
+        )}
       </div>
-    </UserContext.Provider>
+
+      <footer>
+        <ul>
+          <li>incentive.exchange</li>
+          <li>
+            <Link to="/terms">Terms of Service & Privacy</Link>
+          </li>
+          <li>
+            <Link to="/about">About</Link>
+          </li>
+        </ul>
+      </footer>
+    </div>
   );
 }
 
 export default withRouter(App);
 
-async function getUser(queryId, parentLink) {
+async function getUser() {
   const apiEndpoint = '/api/user/status';
 
   return await fetch(apiEndpoint)

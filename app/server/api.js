@@ -286,9 +286,6 @@ router.get('/user/status', authenticate, getUser, async function(req, res) {
   if (!req.user) {
     return res.status(401).send({ error: 'no user' });
   }
-
-  console.log('status', req.auth);
-
   return res.status(200).send({});
 });
 
@@ -298,8 +295,6 @@ router.get('/user', authenticate, getUser, async function(req, res) {
   if (!req.user) {
     return res.status(401).send({ error: 'no user' });
   }
-
-  console.log('req.user', req.user);
 
   // get queries and links
   const userObject = {
