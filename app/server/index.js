@@ -17,11 +17,14 @@ const app = require('express')();
 const server = require('http').Server(app);
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
-const session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
+// const session = require('express-session');
+// const MongoStore = require('connect-mongo')(session);
+// require('./auth/local');
 const passport = require('passport');
-require('./auth/local');
+require('./auth/twitter');
 
 // all routes
 const httpApi = require('./api');
@@ -51,24 +54,36 @@ mongoose.connection.on('error', function(err) {
 app.use(express.static('build'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ limit: '1mb' }));
+app.use(cookieParser());
 app.set('trust proxy', true);
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET || 'pasta',
-    store: new MongoStore({ mongooseConnection: mongoose.connection }),
-    resave: false,
-    saveUninitialized: true,
-    name: 'servesa',
-    cookie: {
-      path: '/',
-      httpOnly: false,
-      secure: false,
-      maxAge: 1000 * 60 * 60 * 24 * 14
-    }
-  })
-);
+
+var corsOption = {
+  origin: true,
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+  exposedHeaders: ['x-auth-token']
+};
+app.use(cors(corsOption));
+
+// app.use(
+//   session({
+//     secret: process.env.SESSION_SECRET || 'pasta',
+//     store: new MongoStore({ mongooseConnection: mongoose.connection }),
+//     resave: false,
+//     saveUninitialized: true,
+//     name: 'servesa',
+//     cookie: {
+//       path: '/',
+//       httpOnly: false,
+//       secure: false,
+//       maxAge: 1000 * 60 * 60 * 24 * 14
+//     }
+//   })
+// );
+
 app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.session());
+
 app.use(
   morgan('dev', {
     skip: function(req, res) {

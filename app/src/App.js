@@ -18,7 +18,7 @@ import LoginButton from 'components/loginButton';
 
 import LandingPage from 'components/landingPage';
 import User from 'components/user';
-import Link2 from 'components/link';
+import LinkPage from 'components/link';
 import Search from 'components/search';
 import Response from 'components/response';
 
@@ -29,19 +29,22 @@ import createLink from 'components/createLink';
 // import createQuery from 'components/createQuery';
 import createQuery2 from 'components/createQuery-AL';
 
+export const UserContext = React.createContext();
+
 function App(props) {
   const [activeSession, setActiveSession] = useState(false);
+  const [user, setUser] = useState({ test: 'test' });
 
   useEffect(
     () => {
-      const servesaCookie = Cookies.get('servesa');
+      const servesaCookie = Cookies.get('servesa-auth-token');
       if (servesaCookie) {
         // hit server and see if logged in
         getUser().then(isLoggedIn => {
           if (isLoggedIn) {
             setActiveSession(true);
           } else {
-            Cookies.remove('servesa');
+            Cookies.remove('servesa-auth-token');
             setActiveSession(false);
           }
         });
@@ -50,75 +53,80 @@ function App(props) {
     [activeSession]
   );
 
-  function createSession() {
+  function createSession(user) {
+    Cookies.set('servesa-auth-token', user.token);
+    setUser(user);
     setActiveSession(true);
-    props.history.push('/user');
+    props.history.push('/search');
   }
 
   function clearSession() {
-    Cookies.remove('servesa');
+    Cookies.remove('servesa-auth-token');
+    setUser({});
     setActiveSession(false);
     props.history.push('/');
   }
 
   return (
-    <div className="container">
-      <nav className="header">
-        <div className="menu">
-          <NavLink exact={true} activeClassName="is-active" to={'/search'}>
-            Search
-          </NavLink>
-          {activeSession ? (
-            <NavLink activeClassName="is-active" to={'/user'}>
-              My Account
+    <UserContext.Provider value={user}>
+      <div className="container">
+        <nav className="header">
+          <div className="menu">
+            <NavLink exact={true} activeClassName="is-active" to={'/search'}>
+              Search
             </NavLink>
-          ) : null}
+            {activeSession ? (
+              <NavLink activeClassName="is-active" to={'/user'}>
+                My Account
+              </NavLink>
+            ) : null}
 
-          <span>|</span>
+            <span>|</span>
 
-          <LoginButton
-            activeSession={activeSession}
-            createSession={createSession}
-            clearSession={clearSession}
-          />
+            <LoginButton
+              activeSession={activeSession}
+              createSession={createSession}
+              clearSession={clearSession}
+            />
+          </div>
+
+          <h1>
+            <Link to="/">incentive.exchange</Link>
+          </h1>
+
+          <h2>Business protocol layer</h2>
+        </nav>
+
+        <div className="content-wrapper">
+          {activeSession ? (
+            <Switch>
+              <Route path="/adduser" component={createUser} />
+              <Route path="/addlink" component={createLink} />
+              <Route path="/addquery" component={createQuery2} />
+
+              <Route path="/search" component={Search} />
+              <Route path="/link/:linkId" component={LinkPage} />
+              <Route path="/response/:responseId" component={Response} />
+              <Route path="/user" component={User} />
+              <Route component={LandingPage} />
+            </Switch>
+          ) : (
+            <Switch>
+              <Route path="/link/:linkId" component={LinkPage} />
+              <Route path="/search" component={Search} />
+              <Route component={LandingPage} />
+            </Switch>
+          )}
         </div>
 
-        <h1>
-          <Link to="/">incentive.exchange</Link>
-        </h1>
-
-        <h2>Business protocol layer</h2>
-      </nav>
-
-      <div className="content-wrapper">
-        {activeSession ? (
-          <Switch>
-            <Route path="/adduser" component={createUser} />
-            <Route path="/addlink" component={createLink} />
-            <Route path="/addquery" component={createQuery2} />
-
-            <Route path="/search" component={Search} />
-            <Route path="/link/:linkId" component={Link2} />
-            <Route path="/response/:responseId" component={Response} />
-            <Route path="/user" component={User} />
-            <Route component={LandingPage} />
-          </Switch>
-        ) : (
-          <Switch>
-            <Route path="/link/:linkId" component={Link2} />
-            <Route path="/search" component={Search} />
-            <Route component={LandingPage} />
-          </Switch>
-        )}
+        <footer>
+          <ul>
+            <li>incentive.exchange</li>
+            <li>2019</li>
+          </ul>
+        </footer>
       </div>
-
-      <footer>
-        <ul>
-          <li>incentive.exchange</li>
-          <li>2019</li>
-        </ul>
-      </footer>
-    </div>
+    </UserContext.Provider>
   );
 }
 

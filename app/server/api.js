@@ -3,6 +3,9 @@ var router = express.Router();
 
 const passport = require('passport');
 const scrape = require('html-metadata');
+const request = require('request');
+const jwt = require('jsonwebtoken');
+const expressJwt = require('express-jwt');
 
 const payments = require('./integrations/payments');
 const getStream = require('./integrations/getstream');
@@ -131,62 +134,172 @@ router.post('/query/metadata', async function(req, res) {
 //
 
 // signup
-router.post('/user/signup', async function(req, res) {
-  // required
-  // const plaid_publicToken = req.body.token;
-  // const plaid_account = req.body.account;
-  // if (!plaid_publicToken || !plaid_account) {
-  //   return res.status(400).send('no token or account');
-  // }
+// router.post('/user/signup', async function(req, res) {
+//   // required
+//   // const plaid_publicToken = req.body.token;
+//   // const plaid_account = req.body.account;
+//   // if (!plaid_publicToken || !plaid_account) {
+//   //   return res.status(400).send('no token or account');
+//   // }
 
-  try {
-    // create stripe customer
-    const stripeCustomer = await payments.createStripeCustomer(req.body);
+//   try {
+//     // create stripe customer
+//     const stripeCustomer = await payments.createStripeCustomer(req.body);
 
-    // merge stripe data with front-end form data
-    // create the user
-    const user = new UserModel(Object.assign({}, { stripeCustomer }, req.body));
-    await user.save();
+//     // merge stripe data with front-end form data
+//     // create the user
+//     const user = new UserModel(Object.assign({}, { stripeCustomer }, req.body));
+//     await user.save();
 
-    // create getStream feed for user
-    await getStream.addUser(user);
-    // const stream = await getStream.getUser(user);
+//     // create getStream feed for user
+//     await getStream.addUser(user);
+//     // const stream = await getStream.getUser(user);
 
-    req.login(user, function() {
-      res.status(200).send(user);
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).send(error);
+//     req.login(user, function() {
+//       res.status(200).send(user);
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).send(error);
+//   }
+// });
+
+// // login
+// router.post('/user/login', passport.authenticate('local'), function(req, res) {
+//   try {
+//     res.status(200).send(req.user);
+//   } catch (error) {
+//     console.log(req.path, error);
+//     res.status(500).send(error);
+//   }
+// });
+
+// router.get('/login/twitter', passport.authenticate('twitter'));
+
+// router.get(
+//   '/oauth/callback',
+//   passport.authenticate('twitter', { failureRedirect: '/login' }),
+//   function(req, res) {
+//     res.status(200).send(req.user);
+//   }
+// );
+
+router.route('/auth/twitter/reverse').post(function(req, res) {
+  request.post(
+    {
+      url: 'https://api.twitter.com/oauth/request_token',
+      oauth: {
+        callback: 'http://localhost:3000/twitter-callback',
+        consumer_key: process.env['TWITTER_CONSUMER_KEY'],
+        consumer_secret: process.env['TWITTER_CONSUMER_SECRET']
+      }
+    },
+    function(err, r, body) {
+      if (err) {
+        return res.send(500, { message: err.message });
+      }
+
+      var jsonStr =
+        '{ "' + body.replace(/&/g, '", "').replace(/=/g, '": "') + '"}';
+      res.send(JSON.parse(jsonStr));
+    }
+  );
+});
+
+router.route('/auth/twitter').post(
+  (req, res, next) => {
+    request.post(
+      {
+        url: `https://api.twitter.com/oauth/access_token?oauth_verifier`,
+        oauth: {
+          consumer_key: process.env['TWITTER_CONSUMER_KEY'],
+          consumer_secret: process.env['TWITTER_CONSUMER_SECRET'],
+          token: req.query.oauth_token
+        },
+        form: { oauth_verifier: req.query.oauth_verifier }
+      },
+      function(err, r, body) {
+        if (err) {
+          return res.send(500, { message: err.message });
+        }
+
+        // console.log(body);
+        const bodyString =
+          '{ "' + body.replace(/&/g, '", "').replace(/=/g, '": "') + '"}';
+        const parsedBody = JSON.parse(bodyString);
+
+        req.body['oauth_token'] = parsedBody.oauth_token;
+        req.body['oauth_token_secret'] = parsedBody.oauth_token_secret;
+        req.body['user_id'] = parsedBody.user_id;
+
+        return next();
+      }
+    );
+  },
+  passport.authenticate('twitter-token'),
+  function(req, res, next) {
+    if (!req.user) {
+      return res.send(401, 'User Not Authenticated');
+    }
+
+    // create token
+    const token = jwt.sign(
+      {
+        id: req.user.id
+      },
+      process.env['JWT_SECRET'],
+      {
+        expiresIn: 60 * 120
+      }
+    );
+
+    return res.status(200).send({ token, ...req.user });
+  }
+);
+
+var authenticate = expressJwt({
+  secret: process.env['JWT_SECRET'],
+  getToken: function(req) {
+    if (req.headers['servesa-auth-token']) {
+      return req.headers['servesa-auth-token'];
+    }
+    if (req.cookies['servesa-auth-token']) {
+      return req.cookies['servesa-auth-token'];
+    }
+    return null;
   }
 });
 
-// login
-router.post('/user/login', passport.authenticate('local'), function(req, res) {
-  try {
-    res.status(200).send(req.user);
-  } catch (error) {
-    console.log(req.path, error);
-    res.status(500).send(error);
+async function getUser(req, res, next) {
+  if (!req.user.id) {
+    console.log('getUser - no user id');
+    return res.status(401).send({ error: 'getUser - no user id' });
   }
-});
+  const user = await UserModel.findOne({ _id: req.user.id }).lean();
+  req.user = { ...user, ...req.user };
+  next();
+}
 
 // get user session status (loggedin)
-router.get('/user/status', async function(req, res) {
+router.get('/user/status', authenticate, getUser, async function(req, res) {
   // check auth
   if (!req.user) {
     return res.status(401).send({ error: 'no user' });
   }
+
+  console.log('status', req.auth);
 
   return res.status(200).send({});
 });
 
 // get user
-router.get('/user', async function(req, res) {
+router.get('/user', authenticate, getUser, async function(req, res) {
   // check auth
   if (!req.user) {
     return res.status(401).send({ error: 'no user' });
   }
+
+  console.log('req.user', req.user);
 
   // get queries and links
   const userObject = {
@@ -199,16 +312,17 @@ router.get('/user', async function(req, res) {
     payments: []
   };
 
-  try {    
-    userObject.links = await LinkModel.find({ user: req.user._id })      
-      .lean();
+  try {
+    userObject.links = await LinkModel.find({ user: req.user._id }).lean();
 
     userObject.payments = await PaymentModel.find({ user: req.user._id })
       .populate('link')
       .lean();
     userObject.responses = await ResponseModel.find({
       user: req.user._id
-    }).populate('originLink').lean();
+    })
+      .populate('originLink')
+      .lean();
 
     // get user
     userObject.stream = await getStream.getFeed(
@@ -217,7 +331,6 @@ router.get('/user', async function(req, res) {
       req.user._id
     );
 
-  
     res.status(200).send(userObject);
   } catch (error) {
     console.log(req.path, error);
@@ -225,7 +338,7 @@ router.get('/user', async function(req, res) {
   }
 });
 
-router.post('/user/follow', async function(req, res) {
+router.post('/user/follow', authenticate, getUser, async function(req, res) {
   // check auth
   if (!req.user) {
     return res.status(401).send();
@@ -282,7 +395,7 @@ router.post('/user/follow', async function(req, res) {
 //
 
 // add query
-router.post('/query/add', async function(req, res) {
+router.post('/query/add', authenticate, getUser, async function(req, res) {
   // check auth
   if (!req.user) {
     return res.status(401).send({ error: 'no user' });
@@ -317,7 +430,7 @@ router.post('/query/add', async function(req, res) {
 });
 
 // get link by linkId
-router.get('/link/:linkId', async function(req, res) {
+router.get('/link/:linkId', authenticate, getUser, async function(req, res) {
   try {
     // get link
     const link = await LinkModel.findOne({
@@ -399,7 +512,7 @@ router.get('/link/:linkId', async function(req, res) {
 });
 
 // create link
-router.post('/link/add', async function(req, res) {
+router.post('/link/add', authenticate, getUser, async function(req, res) {
   // auth-only
   if (!req.user) {
     return res.status(401).send();
@@ -460,7 +573,7 @@ router.post('/link/add', async function(req, res) {
 //
 
 // create response
-router.post('/response/add', async function(req, res) {
+router.post('/response/add', authenticate, getUser, async function(req, res) {
   // auth-only
   if (!req.user) {
     return res.status(401).send();
@@ -522,7 +635,10 @@ router.post('/response/add', async function(req, res) {
 });
 
 // get response
-router.get('/response/:responseId', async function(req, res) {
+router.get('/response/:responseId', authenticate, getUser, async function(
+  req,
+  res
+) {
   // auth-only
   if (!req.user) {
     return res.status(401).send();
@@ -577,7 +693,10 @@ router.get('/response/:responseId', async function(req, res) {
 });
 
 // close response (create payment)
-router.put('/response/:responseId', async function(req, res) {
+router.put('/response/:responseId', authenticate, getUser, async function(
+  req,
+  res
+) {
   // auth-only
   if (!req.user) {
     return res.status(401).send();

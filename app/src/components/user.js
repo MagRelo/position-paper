@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { Tabs, TabList, TabPanels, TabPanel } from '@reach/tabs';
@@ -114,17 +113,4 @@ class Profile extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    selectedAccount: state.account.selectedAccount,
-    activeSession: !!state.account.expires
-  };
-};
-const mapDispatchToProps = dispatch => {
-  return {};
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Profile);
+export default Profile;

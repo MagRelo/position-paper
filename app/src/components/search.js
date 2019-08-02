@@ -1,29 +1,17 @@
 import React, { useState, useEffect } from 'react';
-// import { Link } from 'react-router-dom';
 
 import { useDebounce } from 'components/util/random';
 
 import SearchResults from 'components/searchResult';
-
-// import { useTrail, animated } from 'react-spring';
-// const trail = useTrail(number, {opacity: 1})
-// const config = { mass: 5, tension: 2000, friction: 200 };
-// const trail = useTrail(results.length, {
-//   config,
-//   opacity: toggle ? 1 : 0,
-//   x: toggle ? 0 : 20,
-//   height: toggle ? 80 : 0,
-//   from: { opacity: 0, x: 20, height: 0 }
-// });
+// import { UserContext } from 'App';
 
 function SearchFlow() {
-  // stream data
-  // const [stream, setStream] = useState([]);
+  // get user data
+  // const auth = useContext(UserContext);
   const [user, setUser] = useState({});
   useEffect(() => {
     getUser().then(user => {
       setUser(user);
-      // setStream(user.stream);
     });
   }, []);
 

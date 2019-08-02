@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 
 import { Dialog } from '@reach/dialog';
 
+import TwitterLogin from 'react-twitter-auth';
+
 import UserLogin from 'components/loginForm';
 import UserSignup from 'components/createUser';
 
@@ -14,6 +16,20 @@ function LoginButton(props) {
     setLoginOpen(false);
     setSignupOpen(false);
     props.createSession();
+  }
+
+  function onSuccess(response) {
+    response.json().then(user => {
+      // console.log(user);
+      if (user.token) {
+        props.createSession(user);
+      }
+    });
+  }
+
+  function onFailed(error) {
+    // debugger;
+    alert(error);
   }
 
   return (
@@ -48,6 +64,14 @@ function LoginButton(props) {
           <Dialog isOpen={loginOpen} onDismiss={() => setLoginOpen(false)}>
             <UserLogin createSession={closeAndCreateSession} />
           </Dialog>
+
+          {/* Twitter */}
+          <TwitterLogin
+            loginUrl="http://localhost:8080/api/auth/twitter"
+            onFailure={onFailed}
+            onSuccess={onSuccess}
+            requestTokenUrl="http://localhost:8080/api/auth/twitter/reverse"
+          />
         </React.Fragment>
       )}
     </React.Fragment>
