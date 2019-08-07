@@ -6,7 +6,7 @@ import { lineItem, formatCurrency, CoolTab } from 'components/util/random';
 
 import PaymentsTable from 'components/userPaymentsTable';
 import ResponseList from 'components/userResponseTable';
-import UserSocial from 'components/userSocial';
+import SocialIcon from 'components/socialButton';
 import LoginPlaidLink from 'components/loginPlaidLink';
 import LinksList from 'components/userLinksTable';
 import StreamList from 'components/userStream';
@@ -23,24 +23,40 @@ class Profile extends Component {
   };
 
   async componentDidMount() {
-    const response = await fetch('/api/user', {
+    // get user
+    await fetch('/api/user', {
       method: 'GET'
+    }).then(async response => {
+      if (response.status === 200) {
+        const user = await response.json();
+
+        this.setState({
+          name: user.name,
+          email: user.email,
+          avatar: user.avatar,
+          location: user.location,
+          userId: user._id,
+          links: user.links,
+          stream: user.stream,
+          responses: user.responses,
+          payments: user.payments
+        });
+      } else {
+        console.log('user not found', response.status);
+      }
     });
 
-    if (response.status === 200) {
-      const user = await response.json();
-      this.setState({
-        name: user.name,
-        email: user.email,
-        userId: user._id,
-        links: user.links,
-        stream: user.stream,
-        responses: user.responses,
-        payments: user.payments
-      });
-    } else {
-      console.log('not found', response.status);
-    }
+    // const friends = await fetch('/api/user/friends', {
+    //   method: 'GET'
+    // }).then(response => {
+    //   if (response.status === 200) {
+    //     return response.json();
+    //   }
+
+    //   return response.status;
+    // });
+
+    // console.log(friends);
   }
 
   render() {
@@ -49,13 +65,26 @@ class Profile extends Component {
         <div className="row row-3">
           <div>
             <h3 className="section-header">Profile</h3>
-            {lineItem('Name', this.state.name)}
-            {lineItem('Email', this.state.email)}
+
+            <div className="user-profile">
+              <img
+                src={this.state.avatar}
+                alt="avatar"
+                className="user-avatar"
+              />
+              <span className="user-name">{this.state.name}</span>
+              <span className="user-location">{this.state.location}</span>
+            </div>
           </div>
 
           <div>
             <h3 className="section-header">Social Accounts</h3>
-            <UserSocial />
+            <div className="social-grid">
+              <SocialIcon company="gmail" />
+              <SocialIcon company="linkedin" />
+              <SocialIcon company="twitter" enabled="true" />
+              <SocialIcon company="instagram" />
+            </div>
           </div>
 
           <div>

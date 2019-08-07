@@ -85,7 +85,7 @@ function buildGraphData(parent, links) {
     }
   });
 
-  console.log(graphData);
+  // console.log(graphData);
 
   return graphData;
 }

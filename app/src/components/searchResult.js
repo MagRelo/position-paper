@@ -6,7 +6,7 @@ import { formatCurrency, formatDate } from 'components/util/random';
 import LinkButton from 'components/linkButton';
 import ResponseButton from 'components/responseButton';
 
-function SearchResult(link, query, userId) {
+function SearchResult(link, query, user) {
   return (
     <div>
       <div
@@ -42,7 +42,7 @@ function SearchResult(link, query, userId) {
         }}
       >
         <LinkButton
-          disable={!userId || link.isLinkOwner || link.isQueryOwner}
+          disabled={!user.isLoggedIn || link.isLinkOwner || link.isQueryOwner}
           queryId={query._id}
           parentLink={link.linkId}
           label={`Promote – ${formatCurrency(link.promoteBonus)}`}
@@ -52,7 +52,7 @@ function SearchResult(link, query, userId) {
           queryId={query._id}
           linkId={link.linkId}
           payoff={link.respondBonus}
-          disabled={!userId || link.isLinkOwner || link.isQueryOwner}
+          disabled={!user.isLoggedIn || link.isLinkOwner || link.isQueryOwner}
           label={`Apply – ${formatCurrency(link.respondBonus)}`}
         />
       </div>
@@ -83,7 +83,7 @@ function Results(props) {
             {SearchResult(
               props.results[index].link,
               props.results[index].query,
-              props.userId
+              props.results[index].user
             )}
           </animated.div>
         );

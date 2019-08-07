@@ -2,12 +2,12 @@ import React from 'react';
 
 import { formatCurrency, lineItem } from 'components/util/random';
 
-import UserSocial from 'components/userSocial';
 import LinkDisplay from 'components/linkDisplayBar';
 import LinksList from 'components/queryLinksTable';
 import LinkGraph from 'components/queryLinkGraph';
 import LinkMap from 'components/linkMap';
 import ResponseList from 'components/queryResponseTable';
+import SocialIcon from 'components/socialButton';
 
 // <div>
 // <h3 className="section-header">Activity</h3>
@@ -24,6 +24,21 @@ function LinkAdmin(props) {
       />
 
       <div>
+        <h3 className="section-header">Share Link</h3>
+
+        <div className="social-grid">
+          <SocialIcon company="gmail" />
+          <SocialIcon company="linkedin" />
+          <SocialIcon
+            company="twitter"
+            enabled="true"
+            message={`Check out my link on Incentive Exchange: https://incentive.exchange/link/${
+              props.link.linkId
+            }`}
+          />
+          <SocialIcon company="instagram" />
+        </div>
+
         <Traffic traffic={props.traffic} />
         <h3 className="section-header">Responses</h3>
         <ResponseList responses={props.responses} />
@@ -38,8 +53,6 @@ function Traffic(props) {
   return (
     <div>
       <div>
-        <h3 className="section-header">Share Link</h3>
-        <UserSocial />
         <h3 className="section-header">Traffic</h3>
         <LinkMap />
         {lineItem('Last 24 hours', props.traffic.last1days)}
@@ -94,7 +107,18 @@ function LinkInformation(props) {
           generation={props.link.generation}
         />
         <h4 className="section-header">Create Child Link and Share</h4>
-        <UserSocial />
+        <div className="social-grid">
+          <SocialIcon company="gmail" />
+          <SocialIcon company="linkedin" />
+          <SocialIcon
+            company="twitter"
+            enabled="true"
+            message={`Check out my link on Incentive Exchange: https://incentive.exchange/link/${
+              props.link.linkId
+            }`}
+          />
+          <SocialIcon company="instagram" />
+        </div>
 
         <h4 className="section-header">Child Links</h4>
         <LinksList links={props.link.children} />

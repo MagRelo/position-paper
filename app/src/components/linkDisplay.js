@@ -29,7 +29,7 @@ function LinkDisplay(props) {
             queryId={props.query._id}
             linkId={props.link.linkId}
             payoff={props.query.target_bonus}
-            disabled={props.user.isLinkOwner || props.user.isQueryOwner}
+            disabled={props.user._id === 0 || props.user.isLinkOwner}
             label={'Respond @ ' + formatCurrency(props.query.target_bonus)}
           />
         </div>
@@ -47,7 +47,7 @@ function LinkDisplay(props) {
           <LinkButton
             queryId={props.query._id}
             parentLink={props.link.linkId}
-            disabled={props.user.isLinkOwner || props.user.isQueryOwner}
+            disabled={props.user._id === 0 || props.user.isLinkOwner}
             label={
               'Promote @ ' +
               formatCurrency(
@@ -64,19 +64,13 @@ function LinkDisplay(props) {
             type="Link"
             targetId={props.link._id}
             isFollowing={props.user.isFollowingLink}
-            disabled={
-              !props.user.userId ||
-              props.user.isLinkOwner ||
-              props.user.isQueryOwner
-            }
+            disabled={props.user._id === 0 || props.user.isLinkOwner}
           />
           <FollowButton
             type="User"
             targetId={props.link.userId}
             isFollowing={props.user.isFollowingUser}
-            disabled={
-              !props.user.userId || props.user.userId === props.link.user
-            }
+            disabled={props.user._id === 0 || props.user.isLinkOwner}
           />
         </div>
       </div>

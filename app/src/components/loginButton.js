@@ -1,8 +1,13 @@
 import React from 'react';
-
 import TwitterLogin from 'react-twitter-auth';
 
+const domain = window.location.origin || 'http://localhost:3000';
+const loginPath = '/api/auth/twitter';
+const requestPath = '/api/auth/twitter/reverse';
+
 function LoginButton(props) {
+  // console.log(window.location.origin);
+
   function onSuccess(response) {
     response.json().then(user => {
       props.createSession(user);
@@ -24,10 +29,12 @@ function LoginButton(props) {
         </button>
       ) : (
         <TwitterLogin
-          loginUrl="http://localhost:8080/api/auth/twitter"
+          loginUrl={domain + loginPath}
+          requestTokenUrl={domain + requestPath}
           onFailure={onFailed}
           onSuccess={onSuccess}
-          requestTokenUrl="http://localhost:8080/api/auth/twitter/reverse"
+          text="Login / Sign Up"
+          className="pure-button"
         />
       )}
     </React.Fragment>

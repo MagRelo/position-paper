@@ -3,15 +3,11 @@ import { Dialog } from '@reach/dialog';
 import { withRouter } from 'react-router-dom';
 
 import ResponseForm from './createResponse';
-// import { formatCurrency } from 'components/util/random';
 
 function ResponseButton(props) {
   const [responseOpen, setReponseOpen] = useState(false);
-  // const [isLoading, setIsLoading] = useState(false);
 
   function handleClick(formData) {
-    // setIsLoading(true);
-
     // add params
     formData.queryId = props.queryId;
     formData.linkId = props.linkId;

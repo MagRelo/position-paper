@@ -3,18 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { useDebounce } from 'components/util/random';
 
 import SearchResults from 'components/searchResult';
-// import { UserContext } from 'App';
 
 function SearchFlow() {
-  // get user data
-  // const auth = useContext(UserContext);
-  const [user, setUser] = useState({});
-  useEffect(() => {
-    getUser().then(user => {
-      setUser(user);
-    });
-  }, []);
-
   // search data
   const [days, setDays] = useState('1');
   const [searchTerm, setSearchTerm] = useState('');
@@ -105,7 +95,7 @@ function SearchFlow() {
         ) : null}
       </div>
 
-      <SearchResults results={results} userId={user._id} />
+      <SearchResults results={results} />
     </div>
   );
 }
@@ -121,16 +111,5 @@ async function getSearchResults(searchTerm, days) {
     .catch(error => {
       console.error(error);
       return [];
-    });
-}
-
-async function getUser() {
-  return await fetch('/api/user', {
-    method: 'GET'
-  })
-    .then(r => r.json())
-    .catch(error => {
-      console.error(error);
-      return {};
     });
 }

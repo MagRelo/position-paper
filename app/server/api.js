@@ -10,6 +10,7 @@ const expressJwt = require('express-jwt');
 const payments = require('./integrations/payments');
 const getStream = require('./integrations/getstream');
 const elasticSearch = require('./integrations/elasticsearch');
+const twitter = require('./integrations/twitter');
 
 const UserModel = require('./models').UserModel;
 const LinkModel = require('./models').LinkModel;
@@ -17,11 +18,45 @@ const ResponseModel = require('./models').ResponseModel;
 const PaymentModel = require('./models').PaymentModel;
 
 //
+// MIDDLEWARE
+//
+
+var getToken = expressJwt({
+  secret: process.env['JWT_SECRET'],
+  getToken: function(req) {
+    if (req.headers['servesa-auth-token']) {
+      return req.headers['servesa-auth-token'];
+    }
+    if (req.cookies['servesa-auth-token']) {
+      return req.cookies['servesa-auth-token'];
+    }
+    return null;
+  },
+  credentialsRequired: false
+});
+
+function authenticate(req, res, next) {
+  if (req.user && !req.user.id) {
+    console.log('getUser - no user id');
+    return res.status(401).send({ error: 'getUser - no user id' });
+  }
+  next();
+}
+
+async function getUser(req, res, next) {
+  if (req.user && req.user.id) {
+    const user = await UserModel.findOne({ _id: req.user.id }).lean();
+    req.user = { ...user, ...req.user };
+  }
+  next();
+}
+
+//
 // MISC
 //
 
 // search
-router.get('/search', async function(req, res) {
+router.get('/search', getToken, getUser, async function(req, res) {
   try {
     // get the max gen for each link
     const queryGenList = await LinkModel.aggregate([
@@ -46,7 +81,7 @@ router.get('/search', async function(req, res) {
               link: {
                 _id: link._id,
                 linkId: link.linkId,
-                postedBy: link.user.email,
+                postedBy: link.user.name,
                 userId: link.user._id,
                 createdAt: link.createdAt,
                 respondBonus: link.target_bonus,
@@ -67,7 +102,8 @@ router.get('/search', async function(req, res) {
                 isFollowingLink: false,
                 isFollowingUser: false,
                 isQueryOwner: false,
-                isLinkOwner: false
+                isLinkOwner: false,
+                isLoggedIn: false
               };
               return responseObj;
             }
@@ -79,7 +115,8 @@ router.get('/search', async function(req, res) {
               isFollowingUser:
                 req.user && req.user.follows.indexOf(link.user._id) > -1,
               isQueryOwner: false,
-              isLinkOwner: req.user._id.equals(link.user._id)
+              isLinkOwner: req.user._id.equals(link.user._id),
+              isLoggedIn: true
             };
 
             return responseObj;
@@ -133,63 +170,12 @@ router.post('/query/metadata', async function(req, res) {
 // USER
 //
 
-// signup
-// router.post('/user/signup', async function(req, res) {
-//   // required
-//   // const plaid_publicToken = req.body.token;
-//   // const plaid_account = req.body.account;
-//   // if (!plaid_publicToken || !plaid_account) {
-//   //   return res.status(400).send('no token or account');
-//   // }
-
-//   try {
-//     // create stripe customer
-//     const stripeCustomer = await payments.createStripeCustomer(req.body);
-
-//     // merge stripe data with front-end form data
-//     // create the user
-//     const user = new UserModel(Object.assign({}, { stripeCustomer }, req.body));
-//     await user.save();
-
-//     // create getStream feed for user
-//     await getStream.addUser(user);
-//     // const stream = await getStream.getUser(user);
-
-//     req.login(user, function() {
-//       res.status(200).send(user);
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).send(error);
-//   }
-// });
-
-// // login
-// router.post('/user/login', passport.authenticate('local'), function(req, res) {
-//   try {
-//     res.status(200).send(req.user);
-//   } catch (error) {
-//     console.log(req.path, error);
-//     res.status(500).send(error);
-//   }
-// });
-
-// router.get('/login/twitter', passport.authenticate('twitter'));
-
-// router.get(
-//   '/oauth/callback',
-//   passport.authenticate('twitter', { failureRedirect: '/login' }),
-//   function(req, res) {
-//     res.status(200).send(req.user);
-//   }
-// );
-
 router.route('/auth/twitter/reverse').post(function(req, res) {
   request.post(
     {
       url: 'https://api.twitter.com/oauth/request_token',
       oauth: {
-        callback: 'http://localhost:3000/twitter-callback',
+        callback: process.env['TWITTER_CALLBACK'],
         consumer_key: process.env['TWITTER_CONSUMER_KEY'],
         consumer_secret: process.env['TWITTER_CONSUMER_SECRET']
       }
@@ -237,7 +223,7 @@ router.route('/auth/twitter').post(
     );
   },
   passport.authenticate('twitter-token'),
-  function(req, res, next) {
+  function(req, res) {
     if (!req.user) {
       return res.send(401, 'User Not Authenticated');
     }
@@ -257,31 +243,11 @@ router.route('/auth/twitter').post(
   }
 );
 
-var authenticate = expressJwt({
-  secret: process.env['JWT_SECRET'],
-  getToken: function(req) {
-    if (req.headers['servesa-auth-token']) {
-      return req.headers['servesa-auth-token'];
-    }
-    if (req.cookies['servesa-auth-token']) {
-      return req.cookies['servesa-auth-token'];
-    }
-    return null;
-  }
-});
-
-async function getUser(req, res, next) {
-  if (!req.user.id) {
-    console.log('getUser - no user id');
-    return res.status(401).send({ error: 'getUser - no user id' });
-  }
-  const user = await UserModel.findOne({ _id: req.user.id }).lean();
-  req.user = { ...user, ...req.user };
-  next();
-}
-
 // get user session status (loggedin)
-router.get('/user/status', authenticate, getUser, async function(req, res) {
+router.get('/user/status', getToken, authenticate, getUser, async function(
+  req,
+  res
+) {
   // check auth
   if (!req.user) {
     return res.status(401).send({ error: 'no user' });
@@ -290,7 +256,7 @@ router.get('/user/status', authenticate, getUser, async function(req, res) {
 });
 
 // get user
-router.get('/user', authenticate, getUser, async function(req, res) {
+router.get('/user', getToken, authenticate, getUser, async function(req, res) {
   // check auth
   if (!req.user) {
     return res.status(401).send({ error: 'no user' });
@@ -301,6 +267,8 @@ router.get('/user', authenticate, getUser, async function(req, res) {
     _id: req.user._id,
     name: req.user.name,
     email: req.user.email,
+    avatar: req.user.avatar,
+    location: req.user.location,
     follows: req.user.follows,
     links: [],
     responses: [],
@@ -333,7 +301,10 @@ router.get('/user', authenticate, getUser, async function(req, res) {
   }
 });
 
-router.post('/user/follow', authenticate, getUser, async function(req, res) {
+router.post('/user/follow', getToken, authenticate, getUser, async function(
+  req,
+  res
+) {
   // check auth
   if (!req.user) {
     return res.status(401).send();
@@ -385,12 +356,54 @@ router.post('/user/follow', authenticate, getUser, async function(req, res) {
   }
 });
 
+// get user session status (loggedin)
+router.get('/user/friends', getToken, authenticate, getUser, async function(
+  req,
+  res
+) {
+  try {
+    const twitterCreds = req.user.twitterProvider;
+
+    const friends = await twitter.getFriends(
+      twitterCreds.token,
+      twitterCreds.tokenSecret
+    );
+    return res.status(200).send(friends);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send(error);
+  }
+});
+
+router.post('/user/tweet', getToken, authenticate, getUser, async function(
+  req,
+  res
+) {
+  const message = req.body.message;
+
+  try {
+    const twitterCreds = req.user.twitterProvider;
+    const tweet = await twitter.postTweet(
+      twitterCreds.token,
+      twitterCreds.tokenSecret,
+      message
+    );
+    return res.status(200).send(tweet);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send(error);
+  }
+});
+
 //
 // LINK
 //
 
 // add query
-router.post('/query/add', authenticate, getUser, async function(req, res) {
+router.post('/query/add', getToken, authenticate, getUser, async function(
+  req,
+  res
+) {
   // check auth
   if (!req.user) {
     return res.status(401).send({ error: 'no user' });
@@ -425,7 +438,7 @@ router.post('/query/add', authenticate, getUser, async function(req, res) {
 });
 
 // get link by linkId
-router.get('/link/:linkId', authenticate, getUser, async function(req, res) {
+router.get('/link/:linkId', getToken, getUser, async function(req, res) {
   try {
     // get link
     const link = await LinkModel.findOne({
@@ -473,16 +486,16 @@ router.get('/link/:linkId', authenticate, getUser, async function(req, res) {
     }
 
     // display indicators
-    const isFollowingLink = req.user && req.user.follows.indexOf(link._id) > -1;
+    const isFollowingLink =
+      req.user && req.user.follows.indexOf(link._id.toString()) > -1;
     const isFollowingUser =
-      req.user && req.user.follows.indexOf(link.user._id) > -1;
+      req.user && req.user.follows.indexOf(link.user._id.toString()) > -1;
     const isLinkOwner = req.user._id.equals(link.user._id);
-    const isQueryOwner = link.generation === 0;
+    // const isQueryOwner = link.generation === 0;
 
     // user
     responseObj.user = {
       _id: req.user._id,
-      isQueryOwner: isQueryOwner,
       isFollowingUser: isFollowingUser,
       isLinkOwner: isLinkOwner,
       isFollowingLink: isFollowingLink
@@ -507,7 +520,10 @@ router.get('/link/:linkId', authenticate, getUser, async function(req, res) {
 });
 
 // create link
-router.post('/link/add', authenticate, getUser, async function(req, res) {
+router.post('/link/add', getToken, authenticate, getUser, async function(
+  req,
+  res
+) {
   // auth-only
   if (!req.user) {
     return res.status(401).send();
@@ -568,7 +584,10 @@ router.post('/link/add', authenticate, getUser, async function(req, res) {
 //
 
 // create response
-router.post('/response/add', authenticate, getUser, async function(req, res) {
+router.post('/response/add', getToken, authenticate, getUser, async function(
+  req,
+  res
+) {
   // auth-only
   if (!req.user) {
     return res.status(401).send();
@@ -630,167 +649,173 @@ router.post('/response/add', authenticate, getUser, async function(req, res) {
 });
 
 // get response
-router.get('/response/:responseId', authenticate, getUser, async function(
-  req,
-  res
-) {
-  // auth-only
-  if (!req.user) {
-    return res.status(401).send();
-  }
-
-  // validate input
-  if (!req.params.responseId) {
-    return res.status(400).send({ error: 'must set responseId' });
-  }
-
-  try {
-    // get response
-    const response = await ResponseModel.findOne({
-      _id: req.params.responseId
-    })
-      .populate({
-        path: 'link',
-        populate: { path: 'user' }
-      })
-      .populate({
-        path: 'originLink',
-        populate: { path: 'user' }
-      })
-      .populate({
-        path: 'user',
-        select: 'name email'
-      })
-      .lean();
-    if (!response) {
-      return res
-        .status(404)
-        .send({ error: 'response not found: ' + req.params.responseId });
+router.get(
+  '/response/:responseId',
+  getToken,
+  authenticate,
+  getUser,
+  async function(req, res) {
+    // auth-only
+    if (!req.user) {
+      return res.status(401).send();
     }
 
-    // display indicators
-    response.user.isQueryOwner = req.user._id.equals(
-      response.originLink.user._id
-    );
-    response.user.isParent = response.parents.some(parent => {
-      return req.user._id.equals(parent);
-    });
-    response.user.isResponseOwner = req.user._id.equals(response.user._id);
+    // validate input
+    if (!req.params.responseId) {
+      return res.status(400).send({ error: 'must set responseId' });
+    }
 
-    // const isLinkOwner = req.user._id.equals(response.link._id);
-    // response.user.isLinkOwner = isLinkOwner;
+    try {
+      // get response
+      const response = await ResponseModel.findOne({
+        _id: req.params.responseId
+      })
+        .populate({
+          path: 'link',
+          populate: { path: 'user' }
+        })
+        .populate({
+          path: 'originLink',
+          populate: { path: 'user' }
+        })
+        .populate({
+          path: 'user',
+          select: 'name email'
+        })
+        .lean();
+      if (!response) {
+        return res
+          .status(404)
+          .send({ error: 'response not found: ' + req.params.responseId });
+      }
 
-    res.status(200).send(response);
-  } catch (error) {
-    console.log('API Error:', error);
-    res.status(500).send(error);
+      // display indicators
+      response.user.isQueryOwner = req.user._id.equals(
+        response.originLink.user._id
+      );
+      response.user.isParent = response.parents.some(parent => {
+        return req.user._id.equals(parent);
+      });
+      response.user.isResponseOwner = req.user._id.equals(response.user._id);
+
+      // const isLinkOwner = req.user._id.equals(response.link._id);
+      // response.user.isLinkOwner = isLinkOwner;
+
+      res.status(200).send(response);
+    } catch (error) {
+      console.log('API Error:', error);
+      res.status(500).send(error);
+    }
   }
-});
+);
 
 // close response (create payment)
-router.put('/response/:responseId', authenticate, getUser, async function(
-  req,
-  res
-) {
-  // auth-only
-  if (!req.user) {
-    return res.status(401).send();
-  }
-
-  // validate input
-  if (!req.params.responseId) {
-    return res.status(400).send({ error: 'must set responseId' });
-  }
-
-  try {
-    // get response
-    const response = await ResponseModel.findOne({
-      _id: req.params.responseId
-    })
-      .populate({
-        path: 'user'
-      })
-      .populate({
-        path: 'link',
-        populate: { path: 'user' }
-      })
-      .populate({
-        path: 'parents',
-        populate: { path: 'user' }
-      })
-      .lean();
-
-    // must have response
-    if (!response) {
-      return res
-        .status(404)
-        .send({ error: 'response not found: ' + req.params.responseId });
+router.put(
+  '/response/:responseId',
+  getToken,
+  authenticate,
+  getUser,
+  async function(req, res) {
+    // auth-only
+    if (!req.user) {
+      return res.status(401).send();
     }
 
-    // auth - must be query owner
-    // if (!req.user._id.equals(response.query.user._id)) {
-    //   return res.status(401).send();
-    // }
+    // validate input
+    if (!req.params.responseId) {
+      return res.status(400).send({ error: 'must set responseId' });
+    }
 
-    // make stripe payment from principal
-    const paymentResponse = await payments.createStripeCharge(
-      req.body.tokenData,
-      req.body.amount_in_cents,
-      response._id.toString()
-    );
-
-    // create payment record
-    await createPayment(
-      response.link._id,
-      req.user._id,
-      response._id,
-      req.body.amount_in_cents * -1,
-      paymentResponse,
-      'closed'
-    );
-
-    // update link with payment detail
-    await ResponseModel.updateOne(
-      { _id: response._id },
-      { payment: paymentResponse, status: 'closed' }
-    );
-
-    // update links to 'closed' status
-    await LinkModel.updateMany(
-      { _id: { $in: [...response.link.parents, response.link._id] } },
-      { status: 'closed' }
-    );
-
-    // create target payouts to users
-    await Promise.all(
-      response.targetPayouts.map(userPayout => {
-        return createPayment(
-          userPayout.linkId,
-          userPayout._id,
-          response._id,
-          userPayout.amount * 100
-        );
+    try {
+      // get response
+      const response = await ResponseModel.findOne({
+        _id: req.params.responseId
       })
-    );
+        .populate({
+          path: 'user'
+        })
+        .populate({
+          path: 'link',
+          populate: { path: 'user' }
+        })
+        .populate({
+          path: 'parents',
+          populate: { path: 'user' }
+        })
+        .lean();
 
-    // create network payouts to users
-    await Promise.all(
-      response.networkPayouts.map(userPayout => {
-        return createPayment(
-          userPayout.linkId,
-          userPayout._id,
-          response._id,
-          userPayout.amount * 100
-        );
-      })
-    );
+      // must have response
+      if (!response) {
+        return res
+          .status(404)
+          .send({ error: 'response not found: ' + req.params.responseId });
+      }
 
-    res.status(200).send(paymentResponse);
-  } catch (error) {
-    console.log('API Error:', error);
-    res.status(500).send(error);
+      // auth - must be query owner
+      // if (!req.user._id.equals(response.query.user._id)) {
+      //   return res.status(401).send();
+      // }
+
+      // make stripe payment from principal
+      const paymentResponse = await payments.createStripeCharge(
+        req.body.tokenData,
+        req.body.amount_in_cents,
+        response._id.toString()
+      );
+
+      // create payment record
+      await createPayment(
+        response.link._id,
+        req.user._id,
+        response._id,
+        req.body.amount_in_cents * -1,
+        paymentResponse,
+        'closed'
+      );
+
+      // update link with payment detail
+      await ResponseModel.updateOne(
+        { _id: response._id },
+        { payment: paymentResponse, status: 'closed' }
+      );
+
+      // update links to 'closed' status
+      await LinkModel.updateMany(
+        { _id: { $in: [...response.link.parents, response.link._id] } },
+        { status: 'closed' }
+      );
+
+      // create target payouts to users
+      await Promise.all(
+        response.targetPayouts.map(userPayout => {
+          return createPayment(
+            userPayout.linkId,
+            userPayout._id,
+            response._id,
+            userPayout.amount * 100
+          );
+        })
+      );
+
+      // create network payouts to users
+      await Promise.all(
+        response.networkPayouts.map(userPayout => {
+          return createPayment(
+            userPayout.linkId,
+            userPayout._id,
+            response._id,
+            userPayout.amount * 100
+          );
+        })
+      );
+
+      res.status(200).send(paymentResponse);
+    } catch (error) {
+      console.log('API Error:', error);
+      res.status(500).send(error);
+    }
   }
-});
+);
 
 module.exports = router;
 

@@ -5,18 +5,10 @@ import SocialIcon from 'components/socialButton';
 function SocialButton(props) {
   return (
     <div className="social-grid">
-      <div className="icon-block">
-        <SocialIcon company="gmail" />
-      </div>
-      <div className="icon-block">
-        <SocialIcon company="linkedin" />
-      </div>
-      <div className="icon-block">
-        <SocialIcon company="twitter" />
-      </div>
-      <div className="icon-block">
-        <SocialIcon company="instagram" />
-      </div>
+      <SocialIcon company="gmail" />
+      <SocialIcon company="linkedin" />
+      <SocialIcon company="twitter" />
+      <SocialIcon company="instagram" />
     </div>
   );
 }

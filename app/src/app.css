@@ -162,6 +162,14 @@ h3.section-header {
   grid-gap: 1em;
 }
 
+.button-unstyled {
+  border: none;
+}
+
+.button-unstyled>* {
+  pointer-events: none;
+}
+
 /* social */
 
 /* getstream activity */
@@ -393,4 +401,21 @@ button:focus {
 
 .examples>div>h3 {
   text-align: center
+}
+
+/* user display */
+/* .user-profile {} */
+
+.user-avatar {
+  border-radius: 50%;
+  float: left;
+}
+
+.user-name {
+  margin-left: 0.5em;
+  font-size: 20px;
+}
+
+.user-location {
+  margin-left: 0.5em;
 }

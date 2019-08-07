@@ -30,8 +30,7 @@ const UserSchema = new mongoose.Schema(
       type: {
         id: String,
         token: String
-      },
-      select: false
+      }
     },
     stripeCustomer: Object,
     metaData: Object,
