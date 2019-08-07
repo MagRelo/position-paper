@@ -34,7 +34,7 @@ function LoginButton(props) {
           onFailure={onFailed}
           onSuccess={onSuccess}
           text="Login / Sign Up"
-          className="pure-button"
+          className="pure-button login-button"
         />
       )}
     </React.Fragment>

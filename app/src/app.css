@@ -419,3 +419,10 @@ button:focus {
 .user-location {
   margin-left: 0.5em;
 }
+
+.login-button {
+  background: none;
+  border: solid 1px #a4c4de;
+  border-radius: 4px;
+  box-shadow: 0 2px 3px #a4c4de;
+}
