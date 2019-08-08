@@ -20,13 +20,11 @@ const morgan = require('morgan');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
-// const session = require('express-session');
-// const MongoStore = require('connect-mongo')(session);
-// require('./auth/local');
+// auth
 const passport = require('passport');
 require('./auth/twitter');
 
-// all routes
+// routes
 const httpApi = require('./api');
 
 // require('./utils/seedDb');
@@ -56,34 +54,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ limit: '1mb' }));
 app.use(cookieParser());
 app.set('trust proxy', true);
-
-var corsOption = {
-  origin: true,
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true,
-  exposedHeaders: ['x-auth-token']
-};
-app.use(cors(corsOption));
-
-// app.use(
-//   session({
-//     secret: process.env.SESSION_SECRET || 'pasta',
-//     store: new MongoStore({ mongooseConnection: mongoose.connection }),
-//     resave: false,
-//     saveUninitialized: true,
-//     name: 'servesa',
-//     cookie: {
-//       path: '/',
-//       httpOnly: false,
-//       secure: false,
-//       maxAge: 1000 * 60 * 60 * 24 * 14
-//     }
-//   })
-// );
-
+app.use(
+  cors({
+    origin: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    exposedHeaders: ['x-auth-token']
+  })
+);
 app.use(passport.initialize());
-// app.use(passport.session());
-
 app.use(
   morgan('dev', {
     skip: function(req, res) {
