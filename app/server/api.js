@@ -58,126 +58,56 @@ async function getUser(req, res, next) {
 // search
 router.get('/search', getToken, getUser, async function(req, res) {
   try {
-    // get the max gen for each link
-    // const queryGenList = await LinkModel.aggregate([
-    //   {
-    //     $group: {
-    //       _id: '$query',
-    //       latestGen: { $max: '$generation' }
-    //     }
-    //   }
-    // ]);
-    // const promises = [];
-    // queryGenList.forEach(query => {
-    //   return promises.push(
-    //     LinkModel.findOne({
-    //       query: query._id,
-    //       generation: query.latestGen
-    //     })
-    //       .populate('user')
-    //       .then(link => {
-    //         let responseObj = {
-    //           link: {
-    //             _id: link._id,
-    //             linkId: link.linkId,
-    //             postedBy: link.user.name,
-    //             userId: link.user._id,
-    //             createdAt: link.createdAt,
-    //             respondBonus: link.target_bonus,
-    //             promoteBonus: link.potentialPayoffs[link.generation + 1]
-    //           },
-    //           query: {
-    //             _id: null,
-    //             title: link.title,
-    //             bonus: link.bonus,
-    //             type: link.type,
-    //             data: link.data
-    //           }
-    //         };
-
-    //         // not logged in
-    //         if (!req.user) {
-    //           responseObj.user = {
-    //             isFollowingLink: false,
-    //             isFollowingUser: false,
-    //             isQueryOwner: false,
-    //             isLinkOwner: false,
-    //             isLoggedIn: false
-    //           };
-    //           return responseObj;
-    //         }
-
-    //         // logged in
-    //         responseObj.user = {
-    //           isFollowingLink:
-    //             req.user && req.user.follows.indexOf(link._id) > -1,
-    //           isFollowingUser:
-    //             req.user && req.user.follows.indexOf(link.user._id) > -1,
-    //           isQueryOwner: false,
-    //           isLinkOwner: req.user._id.equals(link.user._id),
-    //           isLoggedIn: true
-    //         };
-
-    //         return responseObj;
-    //       })
-    //   );
-    // });
-    // const hydrated = await Promise.all(promises);
-
     const results = await LinkModel.find({
       isBuried: false
     })
       .populate('user')
       .then(linkArray => {
-
-        return linkArray.map( link => {
-
-        let responseObj = {
-          link: {
-            _id: link._id,
-            linkId: link.linkId,
-            postedBy: link.user.name,
-            userId: link.user._id,
-            createdAt: link.createdAt,
-            respondBonus: link.target_bonus,
-            promoteBonus: link.potentialPayoffs[link.generation + 1]
-          },
-          query: {
-            _id: null,
-            title: link.title,
-            bonus: link.bonus,
-            type: link.type,
-            data: link.data
-          }
-        };
-
-        // not logged in
-        if (!req.user) {
-          responseObj.user = {
-            isFollowingLink: false,
-            isFollowingUser: false,
-            isQueryOwner: false,
-            isLinkOwner: false,
-            isLoggedIn: false
+        return linkArray.map(link => {
+          let responseObj = {
+            link: {
+              _id: link._id,
+              linkId: link.linkId,
+              postedBy: link.user.name,
+              userId: link.user._id,
+              createdAt: link.createdAt,
+              respondBonus: link.target_bonus,
+              promoteBonus: link.potentialPayoffs[link.generation + 1]
+            },
+            query: {
+              _id: null,
+              title: link.title,
+              bonus: link.bonus,
+              type: link.type,
+              data: link.data
+            }
           };
+
+          // not logged in
+          if (!req.user) {
+            responseObj.user = {
+              isFollowingLink: false,
+              isFollowingUser: false,
+              isQueryOwner: false,
+              isLinkOwner: false,
+              isLoggedIn: false
+            };
+            return responseObj;
+          }
+
+          // logged in
+          responseObj.user = {
+            isFollowingLink:
+              req.user && req.user.follows.indexOf(link._id) > -1,
+            isFollowingUser:
+              req.user && req.user.follows.indexOf(link.user._id) > -1,
+            isQueryOwner: false,
+            isLinkOwner: req.user._id.equals(link.user._id),
+            isLoggedIn: true
+          };
+
           return responseObj;
-        }
-
-        // logged in
-        responseObj.user = {
-          isFollowingLink: req.user && req.user.follows.indexOf(link._id) > -1,
-          isFollowingUser:
-            req.user && req.user.follows.indexOf(link.user._id) > -1,
-          isQueryOwner: false,
-          isLinkOwner: req.user._id.equals(link.user._id),
-          isLoggedIn: true
-        };
-
-        return responseObj;
-
-        })
-
-
+        });
       });
 
     res.status(200).send(results);
