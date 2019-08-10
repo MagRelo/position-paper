@@ -46,9 +46,9 @@ function Response(props) {
               <p>{response.message}</p>
             </blockquote>
             <cite>
-              <span>{`Your Name Here`}</span>
-              <br /> {respondant.email}
-              <br /> American College of Chest Physicians
+              <span>{respondant.name}</span>
+              <br /> {respondant.location}
+              {/* <br /> American College of Chest Physicians */}
             </cite>
           </div>
         </div>

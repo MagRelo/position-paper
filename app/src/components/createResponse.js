@@ -1,6 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 function CreateResponse(props) {
+  const [message, setMessage] = useState(
+    'Thanks for your time. Looking forward to working with you soon!'
+  );
+
+  // const message = 'asdf';
+
   function submit(event) {
     event.preventDefault();
 
@@ -12,6 +18,10 @@ function CreateResponse(props) {
     });
 
     props.submit(formObj);
+  }
+
+  function onChange(event) {
+    setMessage(event.target.value);
   }
 
   return (
@@ -26,6 +36,8 @@ function CreateResponse(props) {
             type="text"
             id="message"
             name="message"
+            value={message}
+            onChange={onChange}
           />
         </fieldset>
 

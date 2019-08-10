@@ -73,7 +73,7 @@ function buildGraphData(parent, links) {
       id: link._id,
       size: size,
       color: color,
-      name: link.user.email
+      name: link.user.name
     });
 
     // link to parent

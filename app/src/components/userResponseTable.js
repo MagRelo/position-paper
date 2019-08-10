@@ -20,7 +20,7 @@ export function PaymentTable(props) {
               <tr key={response._id}>
                 <td>
                   <Link to={'/response/' + response._id}>
-                    {response.originLink.title}
+                    {response.link.title}
                   </Link>
                 </td>
                 <td>{response.message}</td>

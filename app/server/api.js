@@ -268,7 +268,7 @@ router.get('/user', getToken, authenticate, getUser, async function(req, res) {
     userObject.responses = await ResponseModel.find({
       user: req.user._id
     })
-      .populate('originLink')
+      .populate('link')
       .lean();
 
     // get user
@@ -604,7 +604,7 @@ router.post('/response/add', getToken, authenticate, getUser, async function(
       targetPayouts: [
         {
           _id: req.user._id,
-          email: req.user.email,
+          email: req.user.name,
           amount: link.target_bonus,
           linkId: link._id
         }
@@ -674,9 +674,18 @@ router.get(
       }
 
       // display indicators
-      response.user.isQueryOwner = req.user._id.equals(
-        response.originLink.user._id
-      );
+      if (response.originLink) {
+        // this is a secondary link
+        response.user.isQueryOwner = req.user._id.equals(
+          response.originLink.user._id
+        );
+      } else {
+        // this is a primary link
+        response.user.isQueryOwner = req.user._id.equals(
+          response.link.user._id
+        );
+      }
+
       response.user.isParent = response.parents.some(parent => {
         return req.user._id.equals(parent);
       });
@@ -835,7 +844,7 @@ function calcUserPayouts(link, parents) {
     if (parent.generation > 0) {
       payoutArray.push({
         _id: parent.user._id,
-        email: parent.user.email,
+        email: parent.user.name,
         amount: link.payoffs[parent.generation],
         linkId: link._id
       });
@@ -846,7 +855,7 @@ function calcUserPayouts(link, parents) {
   if (link.generation > 0) {
     payoutArray.push({
       _id: link.user._id,
-      email: link.user.email,
+      email: link.user.name,
       amount: link.payoffs[link.generation],
       linkId: link._id
     });
