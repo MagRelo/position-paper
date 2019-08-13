@@ -664,7 +664,7 @@ router.get(
         })
         .populate({
           path: 'user',
-          select: 'name email'
+          select: 'name email avatar'
         })
         .lean();
       if (!response) {
@@ -766,7 +766,7 @@ router.put(
         'closed'
       );
 
-      // update link with payment detail
+      // update response with payment detail
       await ResponseModel.updateOne(
         { _id: response._id },
         { payment: paymentResponse, status: 'closed' }
@@ -814,7 +814,8 @@ module.exports = router;
 
 // used when adding a link
 function calcLinkPayouts(bonus, generation) {
-  // take 10% of bonus per gerneration
+    
+  // take 10% of bonus per generation
   const shareBite = 0.1;
   let remaining = bonus;
   let payoffs = [];

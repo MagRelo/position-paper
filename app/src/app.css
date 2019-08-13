@@ -344,12 +344,12 @@ button:focus {
 }
 
 .testimonial-quote img {
-  border: 2px solid #007adb;
+  /* border: 2px solid #007adb; */
   opacity: .5;
   border-radius: 50%;
   display: block;
-  width: 120px;
-  height: 120px;
+  width: 60px;
+  height: 60px;
   position: absolute;
   top: -.2em;
   left: 0;
@@ -376,12 +376,12 @@ button:focus {
 }
 
 .testimonial-quote .quote-container {
-  padding-left: 160px;
+  padding-left: 120px;
 }
 
 .testimonial-quote.right .quote-container {
   padding-left: 0;
-  padding-right: 160px;
+  padding-right: 120px;
 }
 
 .testimonial-quote.right img {
@@ -411,8 +411,12 @@ button:focus {
   float: left;
 }
 
-.user-name {
+.user-info {
   margin-left: 0.5em;
+
+}
+
+.user-name {
   font-size: 20px;
 }
 

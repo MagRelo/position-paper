@@ -72,8 +72,10 @@ class Profile extends Component {
                 alt="avatar"
                 className="user-avatar"
               />
-              <span className="user-name">{this.state.name}</span>
-              <span className="user-location">{this.state.location}</span>
+              <div className="user-info">
+                <div className="user-name">{this.state.name}</div>
+                <div className="user-location">{this.state.location}</div>
+              </div>
             </div>
           </div>
 

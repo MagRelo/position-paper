@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import PaymentForm from 'components/createPayment';
+import ResponseStatus from 'components/responseStatus';
 
 import { formatCurrency, lineItem } from 'components/util/random';
 
@@ -40,7 +41,7 @@ function Response(props) {
       <div>
         <h3 className="section-header">Response</h3>
         <div className="testimonial-quote group ">
-          <img src="http://placehold.it/120x120" alt="avatar" />
+          <img src={respondant.avatar} alt="avatar" />
           <div className="quote-container">
             <blockquote>
               <p>{response.message}</p>
@@ -86,6 +87,11 @@ function Response(props) {
             />
           </React.Fragment>
         ) : null}
+      </div>
+
+      <div>
+        <h3 className="section-header">Response Status</h3>
+        <ResponseStatus status={response.status} />
       </div>
     </div>
   );
