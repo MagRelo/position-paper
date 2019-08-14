@@ -99,7 +99,7 @@ function LinkInformation(props) {
             props.link.potentialPayoffs &&
               props.link.potentialPayoffs[props.link.generation]
           )}{' '}
-          if the candidate responds a through a child of this link and the
+          if the candidate responds through a child of this link and the
           candidate bonus is paid.
         </p>
         <LinkDisplay
