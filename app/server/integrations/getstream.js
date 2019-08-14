@@ -58,6 +58,10 @@ exports.addLink = async function(user, link) {
 };
 
 exports.addResponse = async function(user, link, response) {
+  // Subscribe user to feed
+  const userFeed = await streamClient.feed('User', user._id);
+  await userFeed.follow('Link', link._id, { limit: 0 });
+
   // get 'Query' feed for link and add "addLink" activity
   const linkFeed = await streamClient.feed('Link', link._id);
   await linkFeed.addActivity({
@@ -67,22 +71,20 @@ exports.addResponse = async function(user, link, response) {
     time: response.createdAt,
     to: link.parents.map(parent => 'Link:' + parent._id)
   });
-
-  // Subscribe user to feed
-  const userFeed = await streamClient.feed('User', user._id);
-  return userFeed.follow('Link', link._id, { limit: 0 });
 };
 
 exports.follow = async function(userId, feedType, targetId) {
-  console.log(userId, feedType, targetId);
+  // console.log(userId, feedType, targetId);
+
+  // get user feed
+  const userFeed = await streamClient.feed('User', userId);
 
   // Follow target
-  const userFeed = await streamClient.feed('User', userId);
   await userFeed.follow(feedType, targetId, { limit: 0 });
 
   // Add activity with target
   const timeStamp = new Date();
-  return await userFeed.addActivity({
+  return userFeed.addActivity({
     actor: userId,
     verb: `addFollow:${feedType}`,
     object: targetId,
@@ -92,8 +94,8 @@ exports.follow = async function(userId, feedType, targetId) {
 };
 
 exports.unFollow = async function(userId, feedType, targetId) {
-  console.log(userId, feedType, targetId);
-  const userFeed = await streamClient.feed(feedType, userId);
+  // console.log(userId, feedType, targetId);
+  const userFeed = await streamClient.feed('User', userId);
   return await userFeed.unfollow(feedType, targetId);
 };
 

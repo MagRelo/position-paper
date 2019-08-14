@@ -248,11 +248,13 @@ router.get('/user', getToken, authenticate, getUser, async function(req, res) {
 
   // get queries and links
   const userObject = {
-    _id: req.user._id,
-    name: req.user.name,
-    email: req.user.email,
-    avatar: req.user.avatar,
-    location: req.user.location,
+    user: {
+      _id: req.user._id,
+      name: req.user.name,
+      email: req.user.email,
+      avatar: req.user.avatar,
+      location: req.user.location
+    },
     follows: req.user.follows,
     links: [],
     responses: [],
@@ -814,7 +816,6 @@ module.exports = router;
 
 // used when adding a link
 function calcLinkPayouts(bonus, generation) {
-    
   // take 10% of bonus per generation
   const shareBite = 0.1;
   let remaining = bonus;

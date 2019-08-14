@@ -1,18 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class LandingPage extends Component {
-  state = { accounts: null };
-
-  render() {
-    return (
-      <React.Fragment>
-        <section>
-          <h1>About</h1>
-          <p>Servesa, Inc. 2019</p>
-        </section>
-      </React.Fragment>
-    );
-  }
+function AboutPage(props) {
+  return (
+    <section>
+      <h1>About</h1>
+      <p>Servesa, Inc. 2019</p>
+    </section>
+  );
 }
 
-export default LandingPage;
+export default AboutPage;

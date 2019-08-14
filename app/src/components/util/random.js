@@ -93,3 +93,23 @@ export function lineItem(label, value) {
     </p>
   );
 }
+
+export async function callAPI(method, endpoint, data) {
+  const response = await fetch(endpoint, {
+    method: method,
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  });
+
+  if (response.status === 200) {
+    return response.json();
+  }
+
+  if (response.status === 401) {
+    // redirect
+  }
+
+  throw new Error(response.message);
+}

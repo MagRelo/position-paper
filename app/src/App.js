@@ -13,25 +13,23 @@ import './css/pure-min.css';
 import './index.css';
 import './app.css';
 
-import LandingPage from 'pages/landingPage';
-import TOS_and_Privacy from 'pages/TOS_and_Privacy';
-import About from 'pages/about';
-
-import User from 'components/user';
-import LinkPage from 'components/link';
-import Search from 'components/search';
-import Response from 'components/response';
-
 // Header
 import LoginButton from 'components/loginButton';
 
-// testing
-// import createUser from 'components/createUser';
-// import createLink from 'components/createLink';
-// <Route path="/adduser" component={createUser} />
-// <Route path="/addlink" component={createLink} />
+// Routes
+import LandingPage from 'pages/landingPage';
+import TOS_and_Privacy from 'pages/legal';
+import About from 'pages/about';
 
-// import createQuery from 'components/createQuery';
+// Maybe Auth
+import Search from 'pages/search';
+import LinkPage from 'pages/link';
+
+// Auth
+import User from 'pages/user';
+import Response from 'pages/response';
+
+// test? rename?
 import createQuery2 from 'components/createQuery-AL';
 
 function App(props) {
