@@ -145,7 +145,6 @@ router.post('/query/metadata', async function(req, res) {
     };
 
     res.status(200).send(formatted);
-
   } catch (error) {
     console.log('API Error:', error);
     res.status(500).send(error);
@@ -255,7 +254,9 @@ router.get('/user', getToken, authenticate, getUser, async function(req, res) {
       name: req.user.name,
       email: req.user.email,
       avatar: req.user.avatar,
-      location: req.user.location
+      location: req.user.location,
+      hasAccount: !!req.user.stripeAccount,
+      stripeAccountLabel: req.user.stripeAccountLabel
     },
     follows: req.user.follows,
     links: [],
@@ -383,7 +384,6 @@ router.post('/user/tweet', getToken, authenticate, getUser, async function(
   }
 });
 
-
 // add bank account to stripe
 router.post('/user/account', getToken, authenticate, getUser, async function(
   req,
@@ -396,10 +396,16 @@ router.post('/user/account', getToken, authenticate, getUser, async function(
     const stripeAccount = await payments.createStripeAccount(userData, req.ip);
 
     // update user
-    await UserModel.updateOne({_id: req.user._id}, {stripeAccount: stripeAccount})
+    await UserModel.updateOne(
+      { _id: req.user._id },
+      {
+        stripeAccount: stripeAccount,
+        stripeAccountLabel: userData.bankAccountLabel
+      }
+    );
 
     // send user
-    return res.status(200).send({connected: true});
+    return res.status(200).send({ connected: true });
   } catch (error) {
     console.log(error);
     return res.status(500).send(error);

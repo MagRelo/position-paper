@@ -78,10 +78,15 @@ function User(props) {
 
             <div>
               <h3 className="section-header">Bank Account</h3>
-              {lineItem('Balance', formatCurrency(0))}
-              <p style={{ textAlign: 'center' }}>
-                <Link to="/user/account">Link Bank Account</Link>
-              </p>
+              {lineItem('Pending Balance', formatCurrency(0))}
+
+              {userData.hasAccount ? (
+                lineItem('Account', userData.stripeAccountLabel)
+              ) : (
+                <p style={{ textAlign: 'center' }}>
+                  <Link to="/user/account">Link Bank Account</Link>
+                </p>
+              )}
             </div>
           </div>
 

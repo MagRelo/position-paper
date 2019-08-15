@@ -409,6 +409,7 @@ button:focus {
 .user-avatar {
   border-radius: 50%;
   float: left;
+  border: solid 1px gray;
 }
 
 .user-info {

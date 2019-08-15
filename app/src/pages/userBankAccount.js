@@ -14,9 +14,7 @@ function UserBankAccount(props) {
   function getToken(token, metaData) {
     setToken(token);
     setMetaData(metaData);
-    setBankLabel(
-      metaData.accounts[0].name + ' – ' + metaData.institution.name + ' ✔'
-    );
+    setBankLabel(metaData.accounts[0].name + ' – ' + metaData.institution.name);
 
     console.log({ token, bankLabel });
   }
@@ -36,6 +34,7 @@ function UserBankAccount(props) {
     // add token stuff
     formObj.token = token;
     formObj.metaData = metaData;
+    formObj.bankAccountLabel = bankLabel;
     formObj.tos = {
       date: Math.floor(Date.now() / 1000),
       user_agent: window.navigator.userAgent

@@ -18,7 +18,7 @@ function abbreviateNumber(number) {
   var scaled = number / scale;
 
   // format number and add suffix
-  return scaled.toFixed(1) + suffix;
+  return scaled + suffix;
 }
 
 export function formatCurrency(input, isShorthand) {
