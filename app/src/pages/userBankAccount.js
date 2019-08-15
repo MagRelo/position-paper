@@ -3,21 +3,60 @@ import PlaidLink from 'components/loginPlaidLink';
 
 function UserBankAccount(props) {
   const [token, setToken] = useState('');
+  const [metaData, setMetaData] = useState('');
   const [bankLabel, setBankLabel] = useState('');
-  const [tokenData, setTokenData] = useState({});
+
+  // status
+  const [loading, setLoading] = useState(false);
+  const [complete, setComplete] = useState(false);
+  const [isSuccess, setSuccess] = useState(false);
 
   function getToken(token, metaData) {
-    const bankLabel =
-      metaData.accounts[0].name + ' – ' + metaData.institution.name + ' ✔';
     setToken(token);
-    setTokenData(tokenData);
-    setBankLabel(bankLabel);
+    setMetaData(metaData);
+    setBankLabel(
+      metaData.accounts[0].name + ' – ' + metaData.institution.name + ' ✔'
+    );
 
-    console.log({ token, tokenData, bankLabel });
+    console.log({ token, bankLabel });
+  }
+
+  function onSubmit(event) {
+    event.preventDefault();
+
+    setLoading(true);
+
+    // format form data
+    const formData = new FormData(event.target);
+    const formObj = {};
+    formData.forEach((value, key) => {
+      formObj[key] = value;
+    });
+
+    // add token stuff
+    formObj.token = token;
+    formObj.metaData = metaData;
+    formObj.tos = {
+      date: Math.floor(Date.now() / 1000),
+      user_agent: window.navigator.userAgent
+    };
+
+    try {
+      // send
+      addBankAccount(formObj).then(response => {
+        setSuccess(true);
+        setComplete(true);
+        setLoading(false);
+      });
+    } catch (error) {
+      setSuccess(false);
+      setComplete(true);
+      setLoading(false);
+    }
   }
 
   return (
-    <form className="pure-form">
+    <form className="pure-form" name="userBankAccount" onSubmit={onSubmit}>
       <legend>Link Bank Account</legend>
       <fieldset>
         <div className="row row-2">
@@ -80,8 +119,36 @@ function UserBankAccount(props) {
           I Agree
         </label>
       </fieldset>
+
+      {loading ? (
+        <div className="spinner" style={{ margin: '0 auto' }}>
+          <div className="bounce1" />
+          <div className="bounce2" />
+          <div className="bounce3" />
+        </div>
+      ) : (
+        <div>
+          {complete ? (
+            <div>{isSuccess ? <p>Success!</p> : <p>Error</p>}</div>
+          ) : (
+            <button type="submit" className="pure-button pure-button-primary">
+              Submit
+            </button>
+          )}
+        </div>
+      )}
     </form>
   );
 }
 
 export default UserBankAccount;
+
+async function addBankAccount(formObject) {
+  return fetch('/api/user/account', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(formObject)
+  }).then(response => response.json());
+}

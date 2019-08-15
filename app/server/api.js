@@ -381,6 +381,29 @@ router.post('/user/tweet', getToken, authenticate, getUser, async function(
   }
 });
 
+
+// add bank account to stripe
+router.post('/user/account', getToken, authenticate, getUser, async function(
+  req,
+  res
+) {
+  const userData = req.body;
+
+  try {
+    // register with plaid
+    const stripeAccount = await payments.createStripeAccount(userData, req.ip);
+
+    // update user
+    await UserModel.updateOne({_id: req.user._id}, {stripeAccount: stripeAccount})
+
+    // send user
+    return res.status(200).send({connected: true});
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send(error);
+  }
+});
+
 //
 // LINK
 //

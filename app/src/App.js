@@ -27,6 +27,7 @@ import LinkPage from 'pages/link';
 
 // Auth
 import User from 'pages/user';
+import UserBankAccount from 'pages/userBankAccount';
 import Response from 'pages/response';
 
 // test? rename?
@@ -100,6 +101,7 @@ function App(props) {
             {/* Auth required */}
             <Route path="/addquery" component={createQuery2} />
             <Route path="/response/:responseId" component={Response} />
+            <Route path="/user/account" component={UserBankAccount} />
             <Route path="/user" component={User} />
 
             <Route path="/search" component={Search} />

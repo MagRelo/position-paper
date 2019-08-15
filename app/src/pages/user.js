@@ -7,7 +7,6 @@ import { lineItem, formatCurrency, CoolTab } from 'components/util/random';
 import PaymentsTable from 'components/userPaymentsTable';
 import ResponseList from 'components/userResponseTable';
 import SocialIcon from 'components/socialButton';
-import LoginPlaidLink from 'components/loginPlaidLink';
 import LinksList from 'components/userLinksTable';
 import StreamList from 'components/userStream';
 
@@ -81,7 +80,7 @@ function User(props) {
               <h3 className="section-header">Bank Account</h3>
               {lineItem('Balance', formatCurrency(0))}
               <p style={{ textAlign: 'center' }}>
-                <LoginPlaidLink />
+                <Link to="/user/account">Link Bank Account</Link>
               </p>
             </div>
           </div>

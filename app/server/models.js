@@ -7,22 +7,6 @@ const nanoid = require('nanoid');
 //
 const UserSchema = new mongoose.Schema(
   {
-    // email: {
-    //   type: String,
-    //   required: true,
-    //   validate: {
-    //     validator: async function(value) {
-    //       const available = !(await mongoose
-    //         .model('User')
-    //         .findOne({ email: value }));
-
-    //       console.log('email ', value, ' available ', available);
-    //       return available;
-    //     },
-    //     message: 'This email address is already in use'
-    //   }
-    // },
-    // passwordHash: { type: String, required: true },
     name: String,
     avatar: String,
     location: String,
@@ -33,8 +17,8 @@ const UserSchema = new mongoose.Schema(
       }
     },
     stripeCustomer: Object,
-    metaData: Object,
     stripeAccount: Object,
+    metaData: Object,
     follows: [String],
     balance: Number,
     payments: { type: mongoose.Schema.Types.ObjectId, ref: 'Payment' }

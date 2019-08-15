@@ -41,6 +41,7 @@ function PlaidLinkWrapper(props) {
       <button
         className="pure-button pure-button-primary"
         onClick={handleOnClick}
+        type="button"
       >
         Connect Bank Account
       </button>
