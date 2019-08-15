@@ -2,61 +2,25 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTrail, animated } from 'react-spring';
 
-import { formatCurrency, formatDate } from 'components/util/random';
-import LinkButton from 'components/linkButton';
-import ResponseButton from 'components/responseButton';
+import { formatCurrency } from 'components/util/random';
+// import LinkButton from 'components/linkButton';
+// import ResponseButton from 'components/responseButton';
 
 function SearchResult(link, query, user) {
   return (
-    <div>
-      <div
-        className="panel"
-        style={{
-          background: 'white',
-          boxShadow: '0px 1px 4px 0px rgba(87, 103, 115, 0.58)',
-          paddingBottom: 0
-        }}
-      >
-        {/* Title */}
-        <p style={{ fontSize: '20px', marginTop: '0' }}>
-          <span style={{ float: 'right', fontSize: 'smaller' }}>
-            {formatCurrency(query.bonus)}
-          </span>
-          <Link to={'/link/' + link.linkId}> {query.title}</Link>
-        </p>
-
-        {/* Description 
-        <p>{link.query.data.description}</p>
-        */}
-
-        <div className="row row-x-2">
-          <p>Posted: {formatDate(link.createdAt)}</p>
-          <p>Posted By: {link.postedBy}</p>
-        </div>
-      </div>
-
-      <div
-        style={{
-          textAlign: 'right',
-          marginTop: '.76em'
-        }}
-      >
-        <LinkButton
-          disabled={!user.isLoggedIn || link.isLinkOwner || link.isQueryOwner}
-          queryId={query._id}
-          parentLink={link.linkId}
-          label={`Promote – ${formatCurrency(link.promoteBonus)}`}
-        />
-
-        <ResponseButton
-          queryId={query._id}
-          linkId={link.linkId}
-          payoff={link.respondBonus}
-          disabled={!user.isLoggedIn || link.isLinkOwner || link.isQueryOwner}
-          label={`Apply – ${formatCurrency(link.respondBonus)}`}
-        />
-      </div>
-    </div>
+    <React.Fragment>
+      <td>
+        <Link to={'/link/' + link.linkId}>{query.title}</Link>
+      </td>
+      <td>{query.data.employer}</td>
+      <td>
+        {formatCurrency(query.data.baseSalary.value.minValue, true) +
+          ' – ' +
+          formatCurrency(query.data.baseSalary.value.maxValue, true)}
+      </td>
+      <td>{formatCurrency(link.respondBonus)}</td>
+      <td>{formatCurrency(link.promoteBonus)}</td>
+    </React.Fragment>
   );
 }
 
@@ -71,24 +35,36 @@ function Results(props) {
   });
 
   return (
-    <div className="row row-2">
-      {trail.map(({ x, height, ...rest }, index) => {
-        return (
-          <animated.div
-            key={index}
-            style={{
-              ...rest
-            }}
-          >
-            {SearchResult(
-              props.results[index].link,
-              props.results[index].query,
-              props.results[index].user
-            )}
-          </animated.div>
-        );
-      })}
-    </div>
+    <table className="pure-table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Employer</th>
+          <th>Salary</th>
+          <th>Apply</th>
+          <th>Promote</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {trail.map(({ x, height, ...rest }, index) => {
+          return (
+            <animated.tr
+              key={index}
+              style={{
+                ...rest
+              }}
+            >
+              {SearchResult(
+                props.results[index].link,
+                props.results[index].query,
+                props.results[index].user
+              )}
+            </animated.tr>
+          );
+        })}
+      </tbody>
+    </table>
   );
 }
 

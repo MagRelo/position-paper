@@ -6,20 +6,20 @@ import SearchResults from 'components/searchResult';
 
 function SearchFlow() {
   // search data
-  const [days, setDays] = useState('1');
+  // const [days, setDays] = useState('1');
   const [searchTerm, setSearchTerm] = useState('');
   const [results, setResults] = useState([]);
-  const [isSearching, setIsSearching] = useState(false);
+  // const [isSearching, setIsSearching] = useState(false);
   const debouncedSearchTerm = useDebounce(searchTerm, 333);
   useEffect(
     () => {
-      setIsSearching(true);
-      getSearchResults(debouncedSearchTerm, days).then(results => {
+      // setIsSearching(true);
+      getSearchResults(debouncedSearchTerm).then(results => {
         setResults(results);
-        setIsSearching(false);
+        // setIsSearching(false);
       });
     },
-    [debouncedSearchTerm, days]
+    [debouncedSearchTerm]
   );
 
   return (
@@ -44,7 +44,7 @@ function SearchFlow() {
           </form>
         </div>
 
-        <div className="row row-3">
+        {/* <div className="row row-3">
           <div>
             <button
               className="pure-button pure-button-primary"
@@ -84,15 +84,7 @@ function SearchFlow() {
               This Month
             </button>
           </div>
-        </div>
-      </div>
-
-      <div>
-        {isSearching ? (
-          <div style={{ textAlign: 'center', marginTop: '1em' }}>
-            Loading...
-          </div>
-        ) : null}
+        </div>*/}
       </div>
 
       <SearchResults results={results} />

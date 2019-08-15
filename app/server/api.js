@@ -140,10 +140,12 @@ router.post('/query/metadata', async function(req, res) {
       hiringOrganization: metadata.jsonLd.hiringOrganization.name,
       skills: metadata.jsonLd.skills,
       maxSalary: metadata.jsonLd.baseSalary.value.maxValue,
-      minSalary: metadata.jsonLd.baseSalary.value.minValue
+      minSalary: metadata.jsonLd.baseSalary.value.minValue,
+      jobData: metadata.jsonLd
     };
 
     res.status(200).send(formatted);
+
   } catch (error) {
     console.log('API Error:', error);
     res.status(500).send(error);

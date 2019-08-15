@@ -12,6 +12,7 @@ function CreateJob(props) {
   const [employer, setEmployer] = useState('');
   const [location, setLocation] = useState('');
   const [skills, setSkills] = useState([]);
+  const [jobData, setJobData] = useState([]);
 
   const [isSearching, setIsSearching] = useState(false);
   useEffect(
@@ -36,6 +37,8 @@ function CreateJob(props) {
           setCandidateBonus(result.minSalary * 0.2 * 0.75);
           setNetworkBonus(result.minSalary * 0.2 * 0.25);
 
+          setJobData(result.jobData);
+
           setIsSearching(false);
         });
       }
@@ -51,7 +54,7 @@ function CreateJob(props) {
   function createQuery(event) {
     event.preventDefault();
 
-    var formObject = { jobTitle, salary, employer, location };
+    var formObject = { jobTitle, salary, employer, location, ...jobData };
 
     // get and format form data
     const formData = new FormData(event.target);

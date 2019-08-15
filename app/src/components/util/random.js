@@ -1,24 +1,44 @@
 import React, { useState, useEffect } from 'react';
 import { Tab } from '@reach/tabs';
 
-export function formatCurrency(input) {
-  if (typeof input === 'number') {
-    return input.toLocaleString('en-US', {
-      style: 'currency',
-      currency: 'USD'
-    });
-  }
+var SI_SYMBOL = ['', 'k', 'M', 'G', 'T', 'P', 'E'];
 
+function abbreviateNumber(number) {
+  // what tier? (determines SI symbol)
+  var tier = (Math.log10(number) / 3) | 0;
+
+  // if zero, we don't need a suffix
+  if (tier === 0) return number;
+
+  // get suffix and determine scale
+  var suffix = SI_SYMBOL[tier];
+  var scale = Math.pow(10, tier * 3);
+
+  // scale the number
+  var scaled = number / scale;
+
+  // format number and add suffix
+  return scaled.toFixed(1) + suffix;
+}
+
+export function formatCurrency(input, isShorthand) {
+  // type checks
+  let inputNum = null;
   if (typeof input === 'string') {
-    const asNumber = parseInt(input, 10);
-    return asNumber.toLocaleString('en-US', {
+    inputNum = parseInt(input, 10);
+  } else {
+    inputNum = input;
+  }
+
+  // output style
+  if (isShorthand) {
+    return abbreviateNumber(inputNum);
+  } else {
+    return inputNum.toLocaleString('en-US', {
       style: 'currency',
       currency: 'USD'
     });
   }
-
-  // console.log('bad input to formatCurrency:', input);
-  return '';
 }
 
 export function formatDate(input) {
