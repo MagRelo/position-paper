@@ -14,8 +14,8 @@ function LandingPage(props) {
             <h3>1. Post a Job</h3>
             <img src={post} alt="" className="landing-image" />
             <p>
-              Post a job ad. Set network incentives to encourge people help you
-              find qualified candidates.
+              Post a job ad. Set bonuses to encourage your network to find and
+              refer qualified candidates.
             </p>
           </div>
 
@@ -24,7 +24,7 @@ function LandingPage(props) {
             <img src={network} alt="" className="landing-image" />
             <p>
               Watch as your employees and their friends form a network to find
-              candidates for the postition
+              candidates for the position
             </p>
           </div>
 
@@ -75,7 +75,7 @@ function LandingPage(props) {
             <ul>
               <li>Instant, friction-free transactions</li>
               <li>Powerful search, insights, and analytics tools</li>
-              <li>Interact using exsiting social apps</li>
+              <li>Interact using existing social apps</li>
               <li>Integrate with popular enterprise products (coming soon)</li>
             </ul>
           </div>
