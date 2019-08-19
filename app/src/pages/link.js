@@ -1,9 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 import LinkAdmin from 'components/linkAdmin';
 import LinkDisplay from 'components/linkDisplay';
 
+import { AuthContext } from 'App';
+
 function Link(props) {
+  const authContext = useContext(AuthContext);
+  // console.log(authContext);
+
   const [isLoading, setIsLoading] = useState(true);
 
   const [user, setUser] = useState({});
@@ -17,7 +22,7 @@ function Link(props) {
   useEffect(() => {
     setIsLoading(true);
 
-    getLink(props.match.params.linkId).then(body => {
+    getLink(props.match.params.linkId, authContext.clearSession).then(body => {
       // display & admin
       setUser(body.user);
       setLink(body.link);
@@ -70,6 +75,20 @@ function Link(props) {
 
 export default Link;
 
-async function getLink(linkId) {
-  return await fetch('/api/link/' + linkId).then(response => response.json());
+async function getLink(linkId, clearSession) {
+  return await fetch('/api/link/' + linkId).then(response => {
+    if (response.status === 200) {
+      return response.json();
+    }
+
+    // some type of error has occured...
+    console.log(response.status, response.message);
+
+    if (response.status === 401) {
+      console.log('logging out...');
+
+      // logout with context function
+      clearSession();
+    }
+  });
 }

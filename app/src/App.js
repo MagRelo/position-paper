@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 import { NavLink, Link } from 'react-router-dom';
-
-// import { StripeProvider } from 'react-stripe-elements';
 import Cookies from 'js-cookie';
 
 // CSS
@@ -32,6 +30,9 @@ import Response from 'pages/response';
 
 // test? rename?
 import createQuery2 from 'components/createQuery-AL';
+
+// Setup Auth context
+export const AuthContext = React.createContext({});
 
 function App(props) {
   const [activeSession, setActiveSession] = useState(false);
@@ -67,72 +68,76 @@ function App(props) {
   }
 
   return (
-    <div className="container">
-      <nav className="header">
-        <div className="menu">
-          <NavLink exact={true} activeClassName="is-active" to={'/search'}>
-            Search
-          </NavLink>
-          {activeSession ? (
-            <NavLink activeClassName="is-active" to={'/user'}>
-              My Account
+    <AuthContext.Provider
+      value={{ activeSession: activeSession, clearSession: clearSession }}
+    >
+      <div className="container">
+        <nav className="header">
+          <div className="menu">
+            <NavLink exact={true} activeClassName="is-active" to={'/search'}>
+              Search
             </NavLink>
-          ) : null}
+            {activeSession ? (
+              <NavLink activeClassName="is-active" to={'/user'}>
+                My Account
+              </NavLink>
+            ) : null}
 
-          <span>|</span>
+            <span>|</span>
 
-          <LoginButton
-            activeSession={activeSession}
-            createSession={createSession}
-            clearSession={clearSession}
-          />
+            <LoginButton
+              activeSession={activeSession}
+              createSession={createSession}
+              clearSession={clearSession}
+            />
+          </div>
+
+          <h1>
+            <Link to="/">talent</Link>
+          </h1>
+
+          <h2>incentive.exchange</h2>
+        </nav>
+
+        <div className="content-wrapper">
+          {activeSession ? (
+            <Switch>
+              {/* Auth required */}
+              <Route path="/addquery" component={createQuery2} />
+              <Route path="/response/:responseId" component={Response} />
+              <Route path="/user/account" component={UserBankAccount} />
+              <Route path="/user" component={User} />
+
+              <Route path="/search" component={Search} />
+              <Route path="/link/:linkId" component={LinkPage} />
+              <Route path="/terms" component={TOS_and_Privacy} />
+              <Route path="/about" component={About} />
+              <Route component={LandingPage} />
+            </Switch>
+          ) : (
+            <Switch>
+              <Route path="/search" component={Search} />
+              <Route path="/link/:linkId" component={LinkPage} />
+              <Route path="/terms" component={TOS_and_Privacy} />
+              <Route path="/about" component={About} />
+              <Route component={LandingPage} />
+            </Switch>
+          )}
         </div>
 
-        <h1>
-          <Link to="/">talent</Link>
-        </h1>
-
-        <h2>incentive.exchange</h2>
-      </nav>
-
-      <div className="content-wrapper">
-        {activeSession ? (
-          <Switch>
-            {/* Auth required */}
-            <Route path="/addquery" component={createQuery2} />
-            <Route path="/response/:responseId" component={Response} />
-            <Route path="/user/account" component={UserBankAccount} />
-            <Route path="/user" component={User} />
-
-            <Route path="/search" component={Search} />
-            <Route path="/link/:linkId" component={LinkPage} />
-            <Route path="/terms" component={TOS_and_Privacy} />
-            <Route path="/about" component={About} />
-            <Route component={LandingPage} />
-          </Switch>
-        ) : (
-          <Switch>
-            <Route path="/search" component={Search} />
-            <Route path="/link/:linkId" component={LinkPage} />
-            <Route path="/terms" component={TOS_and_Privacy} />
-            <Route path="/about" component={About} />
-            <Route component={LandingPage} />
-          </Switch>
-        )}
+        <footer>
+          <ul>
+            <li>incentive.exchange</li>
+            <li>
+              <Link to="/terms">Terms of Service & Privacy</Link>
+            </li>
+            <li>
+              <Link to="/about">About</Link>
+            </li>
+          </ul>
+        </footer>
       </div>
-
-      <footer>
-        <ul>
-          <li>incentive.exchange</li>
-          <li>
-            <Link to="/terms">Terms of Service & Privacy</Link>
-          </li>
-          <li>
-            <Link to="/about">About</Link>
-          </li>
-        </ul>
-      </footer>
-    </div>
+    </AuthContext.Provider>
   );
 }
 

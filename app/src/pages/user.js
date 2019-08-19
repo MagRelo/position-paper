@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Tabs, TabList, TabPanels, TabPanel } from '@reach/tabs';
@@ -10,7 +10,11 @@ import SocialIcon from 'components/socialButton';
 import LinksList from 'components/userLinksTable';
 import StreamList from 'components/userStream';
 
+import { AuthContext } from 'App';
+
 function User(props) {
+  const authContext = useContext(AuthContext);
+
   const [isLoading, setIsLoading] = useState(true);
   const [userData, setUserData] = useState({});
   const [links, setLinks] = useState({});
@@ -21,20 +25,24 @@ function User(props) {
   useEffect(() => {
     setIsLoading(true);
 
-    try {
-      // hit user API route, get all data
-      getUser().then(body => {
+    let isSubscribed = true;
+
+    // hit user API route, get all data
+    getUser(authContext.clearSession).then(body => {
+      if (isSubscribed) {
         setUserData(body.user);
         setLinks(body.links);
         setStream(body.stream);
         setResponses(body.responses);
         setPayments(body.payments);
         setIsLoading(false);
-      });
-    } catch (error) {
-      console.log('401 - redirecting...');
-      props.history.push('/');
-    }
+      }
+    });
+
+    // cleanup
+    return () => {
+      isSubscribed = false;
+    };
   }, []);
 
   return (
@@ -139,43 +147,19 @@ function User(props) {
 
 export default User;
 
-async function getUser() {
-  return await fetch('/api/user').then(response => response.json());
+async function getUser(clearSession) {
+  return await fetch('/api/user').then(response => {
+    if (response.status === 200) {
+      return response.json();
+    }
+
+    // some type of error has occured...
+    if (response.status === 401) {
+      // logout with context function
+      console.log(response.status, 'logging out...');
+      clearSession();
+    }
+
+    console.log(response.status);
+  });
 }
-
-// async componentDidMount() {
-//   // get user
-//   await fetch('/api/user', {
-//     method: 'GET'
-//   }).then(async response => {
-//     if (response.status === 200) {
-//       const user = await response.json();
-
-//       this.setState({
-//         name: user.name,
-//         email: user.email,
-//         avatar: user.avatar,
-//         location: user.location,
-//         userId: user._id,
-//         links: user.links,
-//         stream: user.stream,
-//         responses: user.responses,
-//         payments: user.payments
-//       });
-//     } else {
-//       console.log('user not found', response.status);
-//     }
-//   });
-
-//   // const friends = await fetch('/api/user/friends', {
-//   //   method: 'GET'
-//   // }).then(response => {
-//   //   if (response.status === 200) {
-//   //     return response.json();
-//   //   }
-
-//   //   return response.status;
-//   // });
-
-//   // console.log(friends);
-// }
