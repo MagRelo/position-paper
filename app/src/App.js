@@ -96,7 +96,7 @@ function App(props) {
             <Link to="/">talent</Link>
           </h1>
 
-          <h2>incentive.exchange</h2>
+          <h2>@ incentive ( dot ) exchange</h2>
         </nav>
 
         <div className="content-wrapper">

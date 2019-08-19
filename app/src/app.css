@@ -10,7 +10,7 @@
 .header h2 {
   margin-top: 0;
   font-size: 14px;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   color: grey;
 }
 
@@ -430,4 +430,13 @@ button:focus {
   border: solid 1px #a4c4de;
   border-radius: 4px;
   box-shadow: 0 2px 3px #a4c4de;
+}
+
+.landing-image-container {
+  text-align: center;
+}
+
+.landing-image {
+  height: 200px;
+  margin-top: 1em;
 }

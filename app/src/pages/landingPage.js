@@ -1,62 +1,46 @@
 import React from 'react';
 
+import post from 'images/1_doc.svg';
+import network from 'images/2_network.svg';
+import reward from 'images/3_reward.svg';
+
 function LandingPage(props) {
   return (
     <React.Fragment>
       <section>
-        <div className="row row-2">
-          <div>
-            <h2>Incentive Exchange</h2>
-            <p>
-              Build private, ad-hoc networks around transparent incentives to
-              enable agents to independently achieve your goals.
-            </p>
-          </div>
-          <div />
-        </div>
-      </section>
-
-      <section>
-        <h2>Incentive Network Examples</h2>
-
+        <h2>How does it work?</h2>
         <div className="row row-3">
-          <div>
-            <h3>Recruiting</h3>
-            <p>Post a candidate signing bonus and a network bonus.</p>
+          <div className="landing-image-container">
+            <h3>1. Post a Job</h3>
+            <img src={post} alt="" className="landing-image" />
             <p>
-              Watch as a network of referrals form to compete for the network
-              bonus.
+              Post a job ad. Set network incentives to encourge people help you
+              find qualified candidates.
             </p>
-            <p>Select the winner and pay each of the participants.</p>
           </div>
 
-          <div>
-            <h3>Commodity Sales</h3>
-            <p>Post a product for sale and set a minimum sale price.</p>
+          <div className="landing-image-container">
+            <h3>2. Grow the network</h3>
+            <img src={network} alt="" className="landing-image" />
             <p>
-              Allow agents to increase the price to cover their costs. Watch as
-              a network of sales agents form to sell your products.
+              Watch as your employees and their friends form a network to find
+              candidates for the postition
             </p>
-            <p>When a sale is completed each agent involved is paid.</p>
           </div>
 
-          <div>
-            <h3>Content Subscriptions</h3>
+          <div className="landing-image-container">
+            <h3>3. Reward the winners</h3>
+            <img src={reward} alt="" className="landing-image" />
             <p>
-              Content-creators can make access to their content available for
-              subscription.
+              After you hire a candidate select the winner and reward each
+              participant in the chain
             </p>
-            <p>
-              Independant curators can collect content from various creators
-              into curated bundles.
-            </p>
-            <p>All participants can participate in the revenue.</p>
           </div>
         </div>
       </section>
 
       <section>
-        <h2>Design Your Own Network</h2>
+        <h2>Incentive Networks: A new way to do business</h2>
         <div className="row row-3">
           <div>
             <h3>1) Design the Deal</h3>

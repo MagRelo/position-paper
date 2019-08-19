@@ -94,14 +94,18 @@ class LinkGraph extends Component {
   render() {
     return (
       <div>
-        {this.props.links ? (
+        {this.props.links.length ? (
           <Graph
             id="graph-id"
             data={buildGraphData(this.props.parent, this.props.links)}
             config={graphOptions}
             directed={true}
           />
-        ) : null}
+        ) : (
+          <div style={{ textAlign: 'center', margin: '1em 0' }}>
+            <i>No child links...</i>
+          </div>
+        )}
       </div>
     );
   }
