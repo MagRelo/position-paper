@@ -9,15 +9,17 @@ const UserSchema = new mongoose.Schema(
   {
     name: String,
     avatar: String,
+    email: String,
     location: String,
     twitterProvider: {
       type: {
         id: String,
         token: String
-      }
+      },
+      select: false
     },
-    stripeCustomer: Object,
-    stripeAccount: Object,
+    stripeCustomer: { type: Object, select: false },
+    stripeAccount: { type: Object, select: false },
     stripeAccountLabel: String,
     metaData: Object,
     follows: [String],
@@ -68,7 +70,18 @@ UserSchema.statics.upsertTwitterUser = function(
           return cb(error, savedUser);
         });
       } else {
-        return cb(err, user);
+        // update
+        user.name = profile.displayName;
+        user.email = profile.emails[0].value;
+        user.avatar = profile._json.profile_image_url_https;
+        user.location = profile._json.location;
+
+        user.save(function(error, savedUser) {
+          if (error) {
+            console.log(error);
+          }
+          return cb(error, savedUser);
+        });
       }
     }
   );

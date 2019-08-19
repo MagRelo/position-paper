@@ -33,7 +33,7 @@ function LoginButton(props) {
           requestTokenUrl={domain + requestPath}
           onFailure={onFailed}
           onSuccess={onSuccess}
-          text="Login / Sign Up"
+          text="Login"
           className="pure-button login-button"
         />
       )}

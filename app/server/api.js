@@ -351,7 +351,11 @@ router.get('/user/friends', getToken, authenticate, getUser, async function(
   res
 ) {
   try {
-    const twitterCreds = req.user.twitterProvider;
+    // get twitter creds
+    const user = await UserModel.findOne({ _id: req.user._id }).select(
+      'twitterProvider'
+    );
+    const twitterCreds = user.twitterProvider;
 
     const friends = await twitter.getFriends(
       twitterCreds.token,
@@ -371,7 +375,12 @@ router.post('/user/tweet', getToken, authenticate, getUser, async function(
   const message = req.body.message;
 
   try {
-    const twitterCreds = req.user.twitterProvider;
+    // get twitter creds
+    const user = await UserModel.findOne({ _id: req.user._id }).select(
+      'twitterProvider'
+    );
+    const twitterCreds = user.twitterProvider;
+
     const tweet = await twitter.postTweet(
       twitterCreds.token,
       twitterCreds.tokenSecret,

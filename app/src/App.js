@@ -89,10 +89,10 @@ function App(props) {
         </div>
 
         <h1>
-          <Link to="/">incentive.exchange</Link>
+          <Link to="/">talent</Link>
         </h1>
 
-        <h2>Business protocol layer</h2>
+        <h2>incentive.exchange</h2>
       </nav>
 
       <div className="content-wrapper">
