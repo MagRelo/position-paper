@@ -255,7 +255,7 @@ router.get('/user', getToken, authenticate, getUser, async function(req, res) {
       email: req.user.email,
       avatar: req.user.avatar,
       location: req.user.location,
-      hasAccount: !!req.user.stripeAccount,
+      hasAccount: !!req.user.stripeAccountLabel,
       stripeAccountLabel: req.user.stripeAccountLabel
     },
     follows: req.user.follows,
