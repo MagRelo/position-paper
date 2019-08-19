@@ -18,13 +18,17 @@ function Link(props) {
     setIsLoading(true);
 
     getLink(props.match.params.linkId).then(body => {
+      // display & admin
       setUser(body.user);
       setLink(body.link);
       setQuery(body.query);
+
+      // admin only
       setQueryData(body.query.data);
       setTraffic(body.traffic);
       setResponses(body.responses);
       setStream(body.stream);
+
       setIsLoading(false);
     });
   }, props.match.params.linkId);
@@ -41,37 +45,23 @@ function Link(props) {
         </div>
       ) : (
         <React.Fragment>
+          <LinkDisplay
+            query={query}
+            link={link}
+            user={user}
+            queryData={queryData}
+          />
+
           {user.isLinkOwner ? (
-            <React.Fragment>
-              <LinkDisplay
-                query={query}
-                link={link}
-                traffic={traffic}
-                childLinks={link.children}
-                responses={responses}
-                user={user}
-                queryData={queryData}
-              />
-              <LinkAdmin
-                query={query}
-                link={link}
-                traffic={traffic}
-                childLinks={link.children}
-                responses={responses}
-                stream={stream}
-              />
-            </React.Fragment>
-          ) : (
-            <LinkDisplay
+            <LinkAdmin
               query={query}
               link={link}
               traffic={traffic}
               childLinks={link.children}
               responses={responses}
-              user={user}
-              queryData={queryData}
+              stream={stream}
             />
-          )}
+          ) : null}
         </React.Fragment>
       )}
     </div>
