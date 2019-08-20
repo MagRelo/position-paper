@@ -21,15 +21,15 @@ import About from 'pages/about';
 
 // Maybe Auth
 import Search from 'pages/search';
-import LinkPage from 'pages/link';
+import LinkPage from 'pages/link/link';
 
 // Auth
-import User from 'pages/user';
-import UserBankAccount from 'pages/userBankAccount';
-import Response from 'pages/response';
+import User from 'pages/user/user';
+import UserBankAccount from 'pages/user/userBankAccount';
+import Response from 'pages/response/response';
 
 // test? rename?
-import createQuery2 from 'components/createQuery-AL';
+import createQuery2 from 'components/networkData/createJob';
 
 // Setup Auth context
 export const AuthContext = React.createContext({});

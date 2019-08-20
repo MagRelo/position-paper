@@ -40,49 +40,93 @@ function LandingPage(props) {
       </section>
 
       <section>
-        <h2>Incentive Networks: A new way to do business</h2>
-        <div className="row row-3">
-          <div>
-            <h3>1) Design the Deal</h3>
-            <ul>
-              <li>Create a deal template</li>
-              <li>
-                Add <b>Network Incentives</b>
-                <ul>
-                  <li>Value (minus)</li>
-                  <li>Price (plus)</li>
-                </ul>
-              </li>
-              <li>
-                Set <b>Incentive Pricing</b>
-                <ul>
-                  <li>Algorithmic</li>
-                  <li>Open</li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h3>2) Design your Network</h3>
-            <ul>
-              <li>Membership: Open vs. Private</li>
-              <li>Connections: Public vs. Private</li>
-              <li>Actions: Public vs. Private</li>
-            </ul>
-          </div>
-          <div>
-            <h3>3) Do Business</h3>
-            <ul>
-              <li>Instant, friction-free transactions</li>
-              <li>Powerful search, insights, and analytics tools</li>
-              <li>Interact using existing social apps</li>
-              <li>Integrate with popular enterprise products (coming soon)</li>
-            </ul>
-          </div>
-        </div>
+        <h2>Better (and cheaper!) than recruiters</h2>
+        <table className="pure-table">
+          <thead>
+            <tr>
+              <th> </th>
+              <th>Incentive Network</th>
+              <th>Recruiters</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>How mush does it cost? </td>
+              <td>
+                Free to post, then you choose the appropriate network incentives
+                to power your search{' '}
+              </td>
+              <td> 20% of annual salary</td>
+            </tr>
+            <tr>
+              <td>Where does the money go?</td>
+              <td>
+                To your employees, your friends, your investors, your favorite
+                charities
+              </td>
+              <td>Anonymous corporation</td>
+            </tr>
+            <tr>
+              <td>Who does the work?</td>
+              <td>
+                Independent agents cooperate and/or compete for the network
+                incentives you offer
+              </td>
+              <td>✘</td>
+            </tr>
+            <tr>
+              <td>Cheap</td>
+              <td>✔</td>
+              <td>✘</td>
+            </tr>
+          </tbody>
+        </table>
       </section>
     </React.Fragment>
   );
 }
 
 export default LandingPage;
+
+// <section>
+// <h2>Incentive Networks: A new way to do business</h2>
+// <div className="row row-3">
+//   <div>
+//     <h3>1) Design the Deal</h3>
+//     <ul>
+//       <li>Create a deal template</li>
+//       <li>
+//         Add <b>Network Incentives</b>
+//         <ul>
+//           <li>Value (minus)</li>
+//           <li>Price (plus)</li>
+//         </ul>
+//       </li>
+//       <li>
+//         Set <b>Incentive Pricing</b>
+//         <ul>
+//           <li>Algorithmic</li>
+//           <li>Open</li>
+//         </ul>
+//       </li>
+//     </ul>
+//   </div>
+//   <div>
+//     <h3>2) Design your Network</h3>
+//     <ul>
+//       <li>Membership: Open vs. Private</li>
+//       <li>Connections: Public vs. Private</li>
+//       <li>Actions: Public vs. Private</li>
+//     </ul>
+//   </div>
+//   <div>
+//     <h3>3) Do Business</h3>
+//     <ul>
+//       <li>Instant, friction-free transactions</li>
+//       <li>Powerful search, insights, and analytics tools</li>
+//       <li>Interact using existing social apps</li>
+//       <li>Integrate with popular enterprise products (coming soon)</li>
+//     </ul>
+//   </div>
+// </div>
+// </section>

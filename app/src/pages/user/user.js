@@ -4,11 +4,12 @@ import { Link } from 'react-router-dom';
 import { Tabs, TabList, TabPanels, TabPanel } from '@reach/tabs';
 import { lineItem, formatCurrency, CoolTab } from 'components/util/random';
 
-import PaymentsTable from 'components/userPaymentsTable';
-import ResponseList from 'components/userResponseTable';
 import SocialIcon from 'components/socialButton';
-import LinksList from 'components/userLinksTable';
-import StreamList from 'components/userStream';
+
+import PaymentsTable from './userPaymentsTable';
+import ResponseList from './userResponseTable';
+import LinksList from './userLinksTable';
+import StreamList from './userStream';
 
 import { AuthContext } from 'App';
 
@@ -77,7 +78,7 @@ function User(props) {
             <div>
               <h3 className="section-header">Social Accounts</h3>
               <div className="social-grid">
-                <SocialIcon company="gmail" />
+                <SocialIcon company="gmail" enabled="true" />
                 <SocialIcon company="linkedin" />
                 <SocialIcon company="twitter" enabled="true" />
                 <SocialIcon company="instagram" />

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import PlaidLink from 'components/loginPlaidLink';
+import PlaidLink from './plaidButton';
 
 function UserBankAccount(props) {
   const [token, setToken] = useState('');

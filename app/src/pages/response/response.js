@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
-import PaymentForm from 'components/createPayment';
-import ResponseStatus from 'components/responseStatus';
+import PaymentForm from './createPayment';
+import ResponseStatus from './responseStatus';
 
 import { formatCurrency, lineItem } from 'components/util/random';
 

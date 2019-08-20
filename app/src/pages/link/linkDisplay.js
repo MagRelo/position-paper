@@ -4,10 +4,10 @@ import { formatCurrency } from 'components/util/random';
 
 import FollowButton from 'components/followButton';
 import LinkButton from 'components/linkButton';
-import ResponseButton from 'components/responseButton';
+import ResponseButton from 'pages/response/responseButton';
 
 // network Data
-import { LinkDisplay as JobDisplay } from 'components/networkData/talent.js';
+import { LinkDisplay as JobDisplay } from 'components/networkData/jobDisplay.js';
 
 function LinkDisplay(props) {
   return (
@@ -30,14 +30,14 @@ function LinkDisplay(props) {
             linkId={props.link.linkId}
             payoff={props.query.target_bonus}
             disabled={props.user._id === 0 || props.user.isLinkOwner}
-            label={'Respond @ ' + formatCurrency(props.query.target_bonus)}
+            label={'Apply @ ' + formatCurrency(props.query.target_bonus)}
           />
         </div>
 
         <div>
           <h4 className="section-header">Promote</h4>
           <p>
-            Create a child link. Collect up to{' '}
+            Create your own link to this position and collect up to{' '}
             {formatCurrency(
               props.link.potentialPayoffs &&
                 props.link.potentialPayoffs[props.link.generation + 1]
@@ -58,8 +58,8 @@ function LinkDisplay(props) {
           />
         </div>
 
-        <h4 className="section-header">Follow</h4>
-        <div className="row row-2" style={{ textAlign: 'center' }}>
+        <div>
+          <h4 className="section-header">Follow</h4>
           <FollowButton
             type="Link"
             targetId={props.link._id}

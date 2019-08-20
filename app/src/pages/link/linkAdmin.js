@@ -2,17 +2,17 @@ import React from 'react';
 
 import { formatCurrency, lineItem } from 'components/util/random';
 
-import LinkDisplay from 'components/linkDisplayBar';
-import LinksList from 'components/queryLinksTable';
-import LinkGraph from 'components/queryLinkGraph';
-import LinkMap from 'components/linkMap';
-import ResponseList from 'components/queryResponseTable';
-import SocialIcon from 'components/socialButton';
+import LinkMap from './linkMap';
+import LinkPayoutDisplay from './linkDisplayBar';
+import LinksList from './childLinksTable';
+import LinkGraph from './childLinksGraph';
+import ResponseList from './linkResponseTable';
 
-// <div>
-// <h3 className="section-header">Activity</h3>
-// <StreamList stream={stream} userId={user._id} />
-// </div>
+import EmailButton from 'components/social/emailButton';
+import TwitterButton from 'components/social/twitterButton';
+import LinkedinButton from 'components/social/linkedinButton';
+
+import InstaButton from 'components/social/instagramButton';
 
 function LinkAdmin(props) {
   return (
@@ -25,21 +25,26 @@ function LinkAdmin(props) {
 
       <div>
         <h3 className="section-header">Share Link</h3>
-
         <div className="social-grid">
-          <SocialIcon company="gmail" />
-          <SocialIcon company="linkedin" />
-          <SocialIcon
-            company="twitter"
-            enabled="true"
-            message={`Check out my link on Incentive Exchange: https://incentive.exchange/link/${
-              props.link.linkId
-            }`}
-          />
-          <SocialIcon company="instagram" />
+          <EmailButton enabled={true} link={props.link} />
+          <LinkedinButton enabled={false} link={props.link} />
+          <TwitterButton enabled={true} link={props.link} />
+          <InstaButton enabled={false} link={props.link} />
         </div>
 
-        <Traffic traffic={props.traffic} />
+        <h3 className="section-header">Traffic</h3>
+        <div>
+          <LinkMap />
+          {lineItem('Last 24 hours', props.traffic.last1days)}
+          {lineItem('Last 7 days', props.traffic.last7days)}
+          {lineItem('Last 30 days', props.traffic.last30days)}
+        </div>
+
+        <h3 className="section-header">Insights</h3>
+        <div style={{ textAlign: 'center', margin: '1em 0' }}>
+          <i>No insights...</i>
+        </div>
+
         <h3 className="section-header">Responses</h3>
         <ResponseList responses={props.responses} />
       </div>
@@ -48,26 +53,6 @@ function LinkAdmin(props) {
 }
 
 export default LinkAdmin;
-
-function Traffic(props) {
-  return (
-    <div>
-      <div>
-        <h3 className="section-header">Traffic</h3>
-        <LinkMap />
-        {lineItem('Last 24 hours', props.traffic.last1days)}
-        {lineItem('Last 7 days', props.traffic.last7days)}
-        {lineItem('Last 30 days', props.traffic.last30days)}
-      </div>
-      <div>
-        <h3 className="section-header">Insights</h3>
-        <div style={{ textAlign: 'center', margin: '1em 0' }}>
-          <i>No insights...</i>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 function LinkInformation(props) {
   return (
@@ -83,12 +68,10 @@ function LinkInformation(props) {
           paid.
         </p>
 
-        <div>
-          <LinkDisplay
-            payoffs={props.link.payoffs}
-            generation={props.link.generation}
-          />
-        </div>
+        <LinkPayoutDisplay
+          payoffs={props.link.payoffs}
+          generation={props.link.generation}
+        />
       </div>
 
       <div>
@@ -102,22 +85,17 @@ function LinkInformation(props) {
           if the candidate responds through a child of this link and the
           candidate bonus is paid.
         </p>
-        <LinkDisplay
+        <LinkPayoutDisplay
           payoffs={props.link.potentialPayoffs}
           generation={props.link.generation}
         />
+
         <h4 className="section-header">Create Child Link and Share</h4>
         <div className="social-grid">
-          <SocialIcon company="gmail" />
-          <SocialIcon company="linkedin" />
-          <SocialIcon
-            company="twitter"
-            enabled="true"
-            message={`Check out my link on Incentive Exchange: https://incentive.exchange/link/${
-              props.link.linkId
-            }`}
-          />
-          <SocialIcon company="instagram" />
+          <EmailButton enabled={true} link={props.link} />
+          <LinkedinButton enabled={false} link={props.link} />
+          <TwitterButton enabled={true} link={props.link} />
+          <InstaButton enabled={false} link={props.link} />
         </div>
 
         <h4 className="section-header">Child Links</h4>

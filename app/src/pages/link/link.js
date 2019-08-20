@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 
-import LinkAdmin from 'components/linkAdmin';
-import LinkDisplay from 'components/linkDisplay';
+import LinkAdmin from './linkAdmin';
+import LinkDisplay from './linkDisplay';
 
 import { AuthContext } from 'App';
 
@@ -84,10 +84,9 @@ async function getLink(linkId, clearSession) {
     // some type of error has occured...
     console.log(response.status, response.message);
 
+    // clearSession if 401
     if (response.status === 401) {
       console.log('logging out...');
-
-      // logout with context function
       clearSession();
     }
   });

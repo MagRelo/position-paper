@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Dialog } from '@reach/dialog';
 
-import TweetForm from 'components/createTweet';
+// import TweetForm from 'components/social/twitterForm';
+// import EmailForm from 'components/social/emailForm';
 
 const config = {
   gmail: {
@@ -21,15 +22,15 @@ const config = {
 function SocialButton(props) {
   const [socialFormOpen, setSocialFormOpen] = useState(false);
 
-  function handleClick(formData) {
-    // add params
-    // formData.queryId = props.queryId;
-    // formData.linkId = props.linkId;
+  // function handleClick(formData) {
+  //   // add params
+  //   // formData.queryId = props.queryId;
+  //   // formData.linkId = props.linkId;
 
-    createTweet(formData).then(results => {
-      setSocialFormOpen(false);
-    });
-  }
+  //   createTweet(formData).then(results => {
+  //     setSocialFormOpen(false);
+  //   });
+  // }
 
   return (
     <div className="icon-block">
@@ -101,9 +102,7 @@ function SocialButton(props) {
         isOpen={socialFormOpen}
         onDismiss={() => setSocialFormOpen(false)}
       >
-        {props.company === 'twitter' ? (
-          <TweetForm submit={handleClick} message={props.message} />
-        ) : null}
+        <p>error</p>
       </Dialog>
     </div>
   );
