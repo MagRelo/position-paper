@@ -43,6 +43,33 @@ export function LinkDisplay(props) {
             <a href={props.data.url}>Stack Overflow</a>
           </div>
         </React.Fragment>
+
+        <React.Fragment>
+          <div style={labelStyle}>Skills</div>
+          <div>
+            <ul style={{ padding: 0, margin: 0 }}>
+              {props.data.skills.length &&
+                props.data.skills.map(skill => {
+                  return (
+                    <li
+                      key={skill}
+                      style={{
+                        display: 'inline',
+                        marginRight: '1em',
+                        padding: '0.15em 0.5em 0.3em',
+                        border: 'solid 1px #ccc',
+                        color: '#666',
+                        borderRadius: '4px',
+                        fontSize: 'smaller'
+                      }}
+                    >
+                      {skill}
+                    </li>
+                  );
+                })}
+            </ul>
+          </div>
+        </React.Fragment>
       </div>
     </div>
   );
