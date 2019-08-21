@@ -101,11 +101,7 @@ class LinkGraph extends Component {
             config={graphOptions}
             directed={true}
           />
-        ) : (
-          <div style={{ textAlign: 'center', margin: '1em 0' }}>
-            <i>No child links...</i>
-          </div>
-        )}
+        ) : null}
       </div>
     );
   }

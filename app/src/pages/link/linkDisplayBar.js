@@ -36,7 +36,7 @@ function linkDisplay(props) {
               </span>
 
               {/* Label */}
-              <span>{isFirstItem ? 'Origin' : formatCurrency(item)}</span>
+              <span>{isFirstItem ? 'Job' : formatCurrency(item)}</span>
 
               {/* line to previous dot */}
               {isFirstItem ? null : (
