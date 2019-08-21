@@ -8,8 +8,8 @@ class QueryLinkTable extends Component {
           <table className="pure-table">
             <thead>
               <tr>
+                <th>Owner</th>
                 <th>Generation</th>
-                <th>Bonus</th>
                 <th>Children</th>
                 <th>Views</th>
               </tr>
@@ -19,8 +19,8 @@ class QueryLinkTable extends Component {
                 this.props.links.map(link => {
                   return (
                     <tr key={link._id}>
+                      <td>{link.user.name}</td>
                       <td>{link.generation}</td>
-                      <td>{link.payoffs[0]}</td>
                       <td>{link.children.length}</td>
                       <td>{link.views}</td>
                     </tr>

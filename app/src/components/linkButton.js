@@ -5,7 +5,7 @@ function LinkButton(props) {
   const [isLoading, setIsLoading] = useState(false);
   function handleClick() {
     setIsLoading(true);
-    createLink(props.queryId, props.parentLink).then(link => {
+    createLink(props.parentLink).then(link => {
       setIsLoading(false);
 
       props.history.push('/link/' + link.linkId);
@@ -35,7 +35,7 @@ function LinkButton(props) {
 
 export default withRouter(LinkButton);
 
-async function createLink(queryId, parentLink) {
+async function createLink(parentLink) {
   const apiEndpoint = '/api/link/add';
 
   return await fetch(apiEndpoint, {
@@ -44,7 +44,6 @@ async function createLink(queryId, parentLink) {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      queryId: queryId,
       parentLink: parentLink
     })
   })

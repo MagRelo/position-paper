@@ -9,7 +9,6 @@ function ResponseButton(props) {
 
   function handleClick(formData) {
     // add params
-    formData.queryId = props.queryId;
     formData.linkId = props.linkId;
 
     sendResponse(formData).then(results => {

@@ -477,20 +477,17 @@ router.get('/link/:linkId', getToken, getUser, async function(req, res) {
 
     // public info
     let responseObj = {
-      query: {
-        _id: null,
+      link: {
+        _id: link._id,
+        postedBy: link.user.email,
+        linkId: link.linkId,
+        userId: link.user._id,
+        createdAt: link.createdAt,
         title: link.title,
         type: link.type,
         data: link.data,
         target_bonus: link.target_bonus,
         network_bonus: link.network_bonus,
-        postedBy: link.user.email
-      },
-      link: {
-        _id: link._id,
-        linkId: link.linkId,
-        userId: link.user._id,
-        createdAt: link.createdAt,
         generation: link.generation,
         parentLink: link.parentLink,
         children: link.children,
@@ -517,7 +514,6 @@ router.get('/link/:linkId', getToken, getUser, async function(req, res) {
     const isFollowingUser =
       req.user && req.user.follows.indexOf(link.user._id.toString()) > -1;
     const isLinkOwner = req.user._id.equals(link.user._id);
-    // const isQueryOwner = link.generation === 0;
 
     // user
     responseObj.user = {

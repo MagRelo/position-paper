@@ -4,7 +4,7 @@ import { formatCurrency, lineItem } from 'components/util/random';
 
 import LinkMap from './linkMap';
 import LinkPayoutDisplay from './linkDisplayBar';
-import LinksList from './childLinksTable';
+import ChildLinksTable from './childLinksTable';
 import LinkGraph from './childLinksGraph';
 import ResponseList from './linkResponseTable';
 
@@ -99,9 +99,7 @@ function LinkInformation(props) {
         </div>
 
         <h4 className="section-header">Child Links</h4>
-        <LinksList links={props.link.children} />
-
-        <h4 className="section-header">Link Graph</h4>
+        <ChildLinksTable links={props.link.children} />
         <LinkGraph parent={props.link} links={props.link.children} />
       </div>
     </div>

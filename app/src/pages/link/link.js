@@ -7,13 +7,11 @@ import { AuthContext } from 'App';
 
 function Link(props) {
   const authContext = useContext(AuthContext);
-  // console.log(authContext);
 
   const [isLoading, setIsLoading] = useState(true);
 
   const [user, setUser] = useState({});
   const [link, setLink] = useState({});
-  const [query, setQuery] = useState({});
   const [queryData, setQueryData] = useState({});
   const [traffic, setTraffic] = useState({});
   const [responses, setResponses] = useState([]);
@@ -26,10 +24,9 @@ function Link(props) {
       // display & admin
       setUser(body.user);
       setLink(body.link);
-      setQuery(body.query);
 
       // admin only
-      setQueryData(body.query.data);
+      setQueryData(body.link.data);
       setTraffic(body.traffic);
       setResponses(body.responses);
       setStream(body.stream);
@@ -50,21 +47,15 @@ function Link(props) {
         </div>
       ) : (
         <React.Fragment>
-          <LinkDisplay
-            query={query}
-            link={link}
-            user={user}
-            queryData={queryData}
-          />
+          <LinkDisplay link={link} user={user} queryData={queryData} />
 
           {user.isLinkOwner ? (
             <LinkAdmin
-              query={query}
               link={link}
               traffic={traffic}
-              childLinks={link.children}
               responses={responses}
               stream={stream}
+              childLinks={link.children}
             />
           ) : null}
         </React.Fragment>

@@ -12,10 +12,8 @@ import { LinkDisplay as JobDisplay } from 'components/networkData/jobDisplay.js'
 function LinkDisplay(props) {
   return (
     <div className="row row-5-3">
-      <div>
-        <div className="query-data-panel">
-          <JobDisplay data={props.queryData} />
-        </div>
+      <div className="query-data-panel">
+        <JobDisplay data={props.queryData} />
       </div>
 
       <div>
@@ -23,14 +21,13 @@ function LinkDisplay(props) {
           <h4 className="section-header">Apply</h4>
           <p>
             Apply for this position. This position comes with a{' '}
-            {formatCurrency(props.query.target_bonus)} signing bonus.
+            {formatCurrency(props.link.target_bonus)} signing bonus.
           </p>
           <ResponseButton
-            queryId={props.query._id}
             linkId={props.link.linkId}
-            payoff={props.query.target_bonus}
+            payoff={props.link.target_bonus}
             disabled={props.user._id === 0 || props.user.isLinkOwner}
-            label={'Apply @ ' + formatCurrency(props.query.target_bonus)}
+            label={'Apply @ ' + formatCurrency(props.link.target_bonus)}
           />
         </div>
 
@@ -45,7 +42,6 @@ function LinkDisplay(props) {
             if the candidate responds through your link.
           </p>
           <LinkButton
-            queryId={props.query._id}
             parentLink={props.link.linkId}
             disabled={props.user._id === 0 || props.user.isLinkOwner}
             label={
