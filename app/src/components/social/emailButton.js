@@ -2,19 +2,14 @@ import React, { useState } from 'react';
 import { Dialog } from '@reach/dialog';
 import { formatCurrency } from 'components/util/random';
 
-// import EmailForm from './emailForm';
-
 const gmailColor = '#D14836';
 
-function SocialButton(props) {
+function EmailButton(props) {
   const [socialFormOpen, setSocialFormOpen] = useState(false);
 
-  function handleClick(formData) {
-    // add params
-    // formData.queryId = props.queryId;
-    // formData.linkId = props.linkId;
-
-    createTweet(formData).then(results => {
+  function handleSubmit(formData) {
+    //
+    sendEmail(formData).then(results => {
       setSocialFormOpen(false);
     });
   }
@@ -23,7 +18,7 @@ function SocialButton(props) {
     <div className="icon-block">
       <button
         className="button-unstyled"
-        name="email"
+        name="toAddress"
         onClick={() => setSocialFormOpen(true)}
       >
         <span
@@ -48,26 +43,22 @@ function SocialButton(props) {
         isOpen={socialFormOpen}
         onDismiss={() => setSocialFormOpen(false)}
       >
-        <CreateEmail submit={handleClick} link={props.link} />
+        <EmailForm submit={handleSubmit} link={props.link} />
       </Dialog>
     </div>
   );
 }
 
-export default SocialButton;
+export default EmailButton;
 
-function CreateEmail(props) {
-  const [email, setEmail] = useState(props.toArray || []);
+function EmailForm(props) {
+  const [toAddress, setToAddress] = useState(props.toAddress || '');
   const [subject, setSubject] = useState(
     `${props.link.title} – Promote for up to ${formatCurrency(
       props.link.potentialPayoffs[props.link.generation + 1]
     )}`
   );
   const [message, setMessage] = useState(props.message || '');
-
-  function handleChange(event) {
-    setMessage(event.target.value);
-  }
 
   function submit(event) {
     event.preventDefault();
@@ -79,6 +70,9 @@ function CreateEmail(props) {
       formObj[key] = value;
     });
 
+    // add linkId
+    formObj.linkId = props.link.linkId;
+
     props.submit(formObj);
   }
 
@@ -88,13 +82,15 @@ function CreateEmail(props) {
         <legend>Email</legend>
 
         <fieldset>
-          <label htmlFor="email">To </label>
+          <label htmlFor="toAddress">To </label>
           <input
             type="text"
             className="pure-input-1"
-            name="email"
-            value={email}
-            onChange={handleChange}
+            name="toAddress"
+            value={toAddress}
+            onChange={event => {
+              setToAddress(event.target.value);
+            }}
           />
           <label htmlFor="subject">Subject </label>
           <input
@@ -102,7 +98,9 @@ function CreateEmail(props) {
             className="pure-input-1"
             name="subject"
             value={subject}
-            onChange={handleChange}
+            onChange={event => {
+              setSubject(event.target.value);
+            }}
           />
           <label htmlFor="name">Message </label>
           <textarea
@@ -111,7 +109,9 @@ function CreateEmail(props) {
             id="message"
             name="message"
             value={message}
-            onChange={handleChange}
+            onChange={event => {
+              setMessage(event.target.value);
+            }}
             rows="5"
           />
         </fieldset>
@@ -122,8 +122,8 @@ function CreateEmail(props) {
   );
 }
 
-async function createTweet(formData) {
-  const apiEndpoint = '/api/user/tweet';
+async function sendEmail(formData) {
+  const apiEndpoint = '/api/user/email';
 
   return await fetch(apiEndpoint, {
     method: 'POST',

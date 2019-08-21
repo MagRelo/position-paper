@@ -2,54 +2,22 @@ var express = require('express');
 var router = express.Router();
 
 const passport = require('passport');
-const scrape = require('html-metadata');
+// const scrape = require('html-metadata');
 const request = require('request');
 const jwt = require('jsonwebtoken');
-const expressJwt = require('express-jwt');
+
+const { getToken, authenticate, getUser } = require('./controllers/middleware');
 
 const payments = require('./integrations/payments');
 const getStream = require('./integrations/getstream');
 const elasticSearch = require('./integrations/elasticsearch');
 const twitter = require('./integrations/twitter');
+const sendgrid = require('./integrations/sendgrid');
 
 const UserModel = require('./models').UserModel;
 const LinkModel = require('./models').LinkModel;
 const ResponseModel = require('./models').ResponseModel;
 const PaymentModel = require('./models').PaymentModel;
-
-//
-// MIDDLEWARE
-//
-
-var getToken = expressJwt({
-  secret: process.env['JWT_SECRET'],
-  getToken: function(req) {
-    if (req.headers['servesa-auth-token']) {
-      return req.headers['servesa-auth-token'];
-    }
-    if (req.cookies['servesa-auth-token']) {
-      return req.cookies['servesa-auth-token'];
-    }
-    return null;
-  },
-  credentialsRequired: false
-});
-
-function authenticate(req, res, next) {
-  if (req.user && !req.user.id) {
-    console.log('getUser - no user id');
-    return res.status(401).send({ error: 'getUser - no user id' });
-  }
-  next();
-}
-
-async function getUser(req, res, next) {
-  if (req.user && req.user.id) {
-    const user = await UserModel.findOne({ _id: req.user.id }).lean();
-    req.user = { ...user, ...req.user };
-  }
-  next();
-}
 
 //
 // MISC
@@ -117,39 +85,39 @@ router.get('/search', getToken, getUser, async function(req, res) {
   }
 });
 
-router.post('/query/metadata', async function(req, res) {
-  if (!req.body.url) {
-    return res.status(400).send({ error: 'bad request' });
-  }
+// router.post('/query/metadata', async function(req, res) {
+//   if (!req.body.url) {
+//     return res.status(400).send({ error: 'bad request' });
+//   }
 
-  try {
-    const metadata = await scrape(req.body.url);
+//   try {
+//     const metadata = await scrape(req.body.url);
 
-    const salary = `$${metadata.jsonLd.baseSalary.value.minValue} – $${
-      metadata.jsonLd.baseSalary.value.maxValue
-    }`;
-    const location = `${
-      metadata.jsonLd.jobLocation[0].address.addressLocality
-    }, ${metadata.jsonLd.jobLocation[0].address.addressRegion}`;
-    // const description = `$${metadata.jsonLd.description}`;
+//     const salary = `$${metadata.jsonLd.baseSalary.value.minValue} – $${
+//       metadata.jsonLd.baseSalary.value.maxValue
+//     }`;
+//     const location = `${
+//       metadata.jsonLd.jobLocation[0].address.addressLocality
+//     }, ${metadata.jsonLd.jobLocation[0].address.addressRegion}`;
+//     // const description = `$${metadata.jsonLd.description}`;
 
-    const formatted = {
-      title: metadata.jsonLd.title,
-      salary: salary,
-      location: location,
-      hiringOrganization: metadata.jsonLd.hiringOrganization.name,
-      skills: metadata.jsonLd.skills,
-      maxSalary: metadata.jsonLd.baseSalary.value.maxValue,
-      minSalary: metadata.jsonLd.baseSalary.value.minValue,
-      jobData: metadata.jsonLd
-    };
+//     const formatted = {
+//       title: metadata.jsonLd.title,
+//       salary: salary,
+//       location: location,
+//       hiringOrganization: metadata.jsonLd.hiringOrganization.name,
+//       skills: metadata.jsonLd.skills,
+//       maxSalary: metadata.jsonLd.baseSalary.value.maxValue,
+//       minSalary: metadata.jsonLd.baseSalary.value.minValue,
+//       jobData: metadata.jsonLd
+//     };
 
-    res.status(200).send(formatted);
-  } catch (error) {
-    console.log('API Error:', error);
-    res.status(500).send(error);
-  }
-});
+//     res.status(200).send(formatted);
+//   } catch (error) {
+//     console.log('API Error:', error);
+//     res.status(500).send(error);
+//   }
+// });
 
 //
 // USER
@@ -345,7 +313,6 @@ router.post('/user/follow', getToken, authenticate, getUser, async function(
   }
 });
 
-// get user session status (loggedin)
 router.get('/user/friends', getToken, authenticate, getUser, async function(
   req,
   res
@@ -387,6 +354,23 @@ router.post('/user/tweet', getToken, authenticate, getUser, async function(
       message
     );
     return res.status(200).send(tweet);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send(error);
+  }
+});
+
+router.post('/user/email', getToken, authenticate, getUser, async function(
+  req,
+  res
+) {
+  try {
+    // get twitter creds
+    const link = await LinkModel.findOne({ linkId: req.body.linkId });
+
+    const response = await sendgrid.sendNewLink(req.user, req.body, link);
+
+    return res.status(200).send(response);
   } catch (error) {
     console.log(error);
     return res.status(500).send(error);
@@ -473,7 +457,7 @@ router.get('/link/:linkId', getToken, getUser, async function(req, res) {
       .populate('user')
       .populate({ path: 'children', populate: { path: 'user' } })
       .populate({ path: 'responses', populate: { path: 'user' } });
-    if (!link) return res.status(401).send({ error: 'not found' });
+    if (!link) return res.status(404).send({ error: 'not found' });
 
     // public info
     let responseObj = {
