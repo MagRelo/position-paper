@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Dialog } from '@reach/dialog';
-import { formatCurrency } from 'components/util/random';
 
 const gmailColor = '#D14836';
 
@@ -53,16 +52,7 @@ export default EmailButton;
 
 function EmailForm(props) {
   const [toAddress, setToAddress] = useState(props.toAddress || '');
-  const [subject, setSubject] = useState(
-    `${props.link.title} – Promote for up to ${formatCurrency(
-      props.link.potentialPayoffs[props.link.generation + 1]
-    )}`
-  );
-
-  const defaultBody = `Here's your link: https://incentive.exchange/link/${
-    props.link.linkId
-  }`;
-  const [message, setMessage] = useState(props.message || defaultBody);
+  const [message, setMessage] = useState(props.message);
 
   function submit(event) {
     event.preventDefault();
@@ -96,17 +86,7 @@ function EmailForm(props) {
               setToAddress(event.target.value);
             }}
           />
-          <label htmlFor="subject">Subject </label>
-          <input
-            type="text"
-            className="pure-input-1"
-            name="subject"
-            value={subject}
-            onChange={event => {
-              setSubject(event.target.value);
-            }}
-          />
-          <label htmlFor="message">Message </label>
+          <label htmlFor="message">Add a Message (optional) </label>
           <textarea
             className="pure-input-1"
             type="text"
