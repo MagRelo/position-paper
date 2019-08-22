@@ -58,7 +58,11 @@ function EmailForm(props) {
       props.link.potentialPayoffs[props.link.generation + 1]
     )}`
   );
-  const [message, setMessage] = useState(props.message || '');
+
+  const defaultBody = `Here's your link: https://incentive.exchange/link/${
+    props.link.linkId
+  }`;
+  const [message, setMessage] = useState(props.message || defaultBody);
 
   function submit(event) {
     event.preventDefault();
@@ -84,7 +88,7 @@ function EmailForm(props) {
         <fieldset>
           <label htmlFor="toAddress">To </label>
           <input
-            type="text"
+            type="email"
             className="pure-input-1"
             name="toAddress"
             value={toAddress}
@@ -102,7 +106,7 @@ function EmailForm(props) {
               setSubject(event.target.value);
             }}
           />
-          <label htmlFor="name">Message </label>
+          <label htmlFor="message">Message </label>
           <textarea
             className="pure-input-1"
             type="text"
@@ -116,7 +120,12 @@ function EmailForm(props) {
           />
         </fieldset>
 
-        <button className="pure-button pure-button-primary">Send</button>
+        <button
+          className="pure-button pure-button-primary"
+          disabled={!toAddress}
+        >
+          Send
+        </button>
       </form>
     </React.Fragment>
   );

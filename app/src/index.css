@@ -25,7 +25,7 @@ svg {
 }
 
 .content-wrapper {
-  padding: 1em 2em 0;
+  padding: 0 2em;
 }
 
 .row {
@@ -48,11 +48,6 @@ svg {
 }
 
 @media screen and (min-width: 992px) {
-  .content-wrapper {
-    max-width: 992px;
-    margin: 0 auto;
-    min-width: 992px;
-  }
 
   .row-2 {
     grid-template-columns: 1fr 1fr;

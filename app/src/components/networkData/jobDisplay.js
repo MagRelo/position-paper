@@ -34,7 +34,6 @@ export function LinkDisplay(props) {
         {jobDataItem('Employer', props.data.employer)}
         {jobDataItem('Location', props.data.location)}
         {jobDataItem('Salary', props.data.salary)}
-        {jobDataItem('Location', props.data.location)}
 
         {/* Link */}
         <React.Fragment>
