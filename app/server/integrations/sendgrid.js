@@ -19,12 +19,12 @@ exports.sendNewLink = async function(fromUser, messageData, link) {
     from: fromAddress,
     templateId: newPositionTemplate,
     dynamic_template_data: {
+      ...link.data,
       linkUrl: 'https://incentive.exchange/link/' + link.linkId,
       candidate_bonus: formatCurrency(link.target_bonus, opts),
       network_bonus: formatCurrency(link.network_bonus, opts),
       message: messageData.message,
-      messageFrom: fromUser.name,
-      ...link.data
+      messageFrom: fromUser.name
     }
   };
 
