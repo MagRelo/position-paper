@@ -75,8 +75,8 @@ function CreateJob(props) {
   }
 
   return (
-    <section>
-      <h2>New Query</h2>
+    <section style={{ maxWidth: '48em', margin: '0 auto' }}>
+      <h2>Add Job</h2>
       <form name="addJobForm" onSubmit={createQuery} className="pure-form">
         <legend>Job Information</legend>
 
@@ -184,17 +184,7 @@ function CreateJob(props) {
           </div>
         </fieldset>
 
-        <div className="row row-2">
-          <div>
-            <legend>Network Settings</legend>
-            <fieldset>
-              {lineItem('Incentive Type', 'Value (minus)')}
-              {lineItem('Incentive Pricing', 'Algorithmic')}
-              {lineItem('Can follow Links', 'Yes')}
-              {lineItem('Can follow Users', 'Yes')}
-              {lineItem('Can create Child Links', 'Yes')}
-            </fieldset>
-          </div>
+        <div>
           <div>
             <legend>Add Network Incentives</legend>
 
@@ -205,7 +195,6 @@ function CreateJob(props) {
                   formatCurrency(recruiterBonus)
                 )}
               </i>
-              <hr />
               <label htmlFor="candidate_bonus">Candidate Bonus</label>
               <input
                 type="number"

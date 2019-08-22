@@ -3,10 +3,6 @@ import { Dialog } from '@reach/dialog';
 
 const twitterColor = '#1DA1F2';
 
-// const message = `Check out my link on Incentive Exchange: https://incentive.exchange/link/${
-//   props.link.linkId
-// }`;
-
 function SocialButton(props) {
   const [socialFormOpen, setSocialFormOpen] = useState(false);
 
@@ -45,7 +41,7 @@ function SocialButton(props) {
         isOpen={socialFormOpen}
         onDismiss={() => setSocialFormOpen(false)}
       >
-        <CreateTweet submit={handleClick} message={props.message} />
+        <CreateTweet submit={handleClick} link={props.link} />
       </Dialog>
     </div>
   );
@@ -54,7 +50,12 @@ function SocialButton(props) {
 export default SocialButton;
 
 function CreateTweet(props) {
-  const [message, setMessage] = useState(props.message || '');
+  const [message, setMessage] = useState(
+    props.message ||
+      `Check out my link on Incentive Exchange: https://incentive.exchange/link/${
+        props.link.linkId
+      }`
+  );
 
   function handleChange(event) {
     setMessage(event.target.value);
