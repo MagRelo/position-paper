@@ -4,10 +4,10 @@ let opts = { format: '%s%v', symbol: '$' };
 // using Twilio SendGrid's v3 Node.js Library
 // https://github.com/sendgrid/sendgrid-nodejs
 const sgMail = require('@sendgrid/mail');
-
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-const fromAddress = 'magrelo404+test@gmail.com';
+const fromAddress =
+  process.env.SENDGRID_FROM_ADDRESS || 'magrelo404+test@gmail.com';
 const newPositionTemplate = 'd-077c63f80de849bf92a4d2723c41ec4f';
 
 exports.sendNewLink = async function(fromUser, messageData, link) {
