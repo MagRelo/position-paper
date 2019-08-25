@@ -5,6 +5,8 @@ import LinkDisplay from './linkDisplay';
 
 import { AuthContext } from 'App';
 
+import { Loading } from 'components/util/random';
+
 function Link(props) {
   const authContext = useContext(AuthContext);
 
@@ -38,13 +40,7 @@ function Link(props) {
   return (
     <div>
       {isLoading ? (
-        <div>
-          <div className="spinner" style={{ margin: '0 auto' }}>
-            <div className="bounce1" />
-            <div className="bounce2" />
-            <div className="bounce3" />
-          </div>
-        </div>
+        <Loading />
       ) : (
         <React.Fragment>
           <LinkDisplay link={link} user={user} queryData={queryData} />

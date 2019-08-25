@@ -109,22 +109,3 @@ function SocialButton(props) {
 }
 
 export default SocialButton;
-
-async function createTweet(formData) {
-  const apiEndpoint = '/api/user/tweet';
-
-  return await fetch(apiEndpoint, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(formData)
-  })
-    .then(r => {
-      return r.status === 200 ? r.json() : {};
-    })
-    .catch(error => {
-      console.error(error);
-      return {};
-    });
-}

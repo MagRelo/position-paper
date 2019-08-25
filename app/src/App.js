@@ -5,6 +5,7 @@ import { NavLink, Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
 // CSS
+import 'react-input-range/lib/css/index.css';
 import '@reach/dialog/styles.css';
 import './css/open-sans.css';
 import './css/pure-min.css';

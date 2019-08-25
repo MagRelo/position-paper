@@ -440,3 +440,15 @@ button:focus {
   height: 200px;
   margin-top: 1em;
 }
+
+/* input range slider */
+
+.input-range {
+  margin: 24px 0 32px;
+}
+
+.input-range__slider,
+.input-range__track--active {
+  border-color: #0079db;
+  background-color: #0079db;
+}

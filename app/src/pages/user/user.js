@@ -2,7 +2,12 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Tabs, TabList, TabPanels, TabPanel } from '@reach/tabs';
-import { lineItem, formatCurrency, CoolTab } from 'components/util/random';
+import {
+  lineItem,
+  formatCurrency,
+  CoolTab,
+  Loading
+} from 'components/util/random';
 
 import SocialIcon from 'components/socialButton';
 
@@ -49,13 +54,7 @@ function User(props) {
   return (
     <div>
       {isLoading ? (
-        <div>
-          <div className="spinner" style={{ margin: '0 auto' }}>
-            <div className="bounce1" />
-            <div className="bounce2" />
-            <div className="bounce3" />
-          </div>
-        </div>
+        <Loading />
       ) : (
         <div>
           <div className="row row-3">
