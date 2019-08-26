@@ -6,8 +6,8 @@ function SearchJob(props) {
   // Our State
   const [queryObject, setQueryObject] = useState({});
 
-  const [targetRange, setTargetRange] = useState({ min: 0, max: 100 });
-  const [networkRange, setNetworkRange] = useState({ min: 0, max: 100 });
+  const [targetRange, setTargetRange] = useState({ min: 0, max: 1000 });
+  const [networkRange, setNetworkRange] = useState({ min: 0, max: 1000 });
 
   function createElasticQuery(event) {
     event.preventDefault();
@@ -29,6 +29,7 @@ function SearchJob(props) {
       onSubmit={createElasticQuery}
     >
       <div className="row row-2">
+        {/* Filter */}
         <div>
           <label htmlFor="text">Filter</label>
           <input
@@ -40,6 +41,7 @@ function SearchJob(props) {
           />
         </div>
 
+        {/* Sliders */}
         <div className="row row-2">
           <div>
             <label htmlFor="text">Network Bonus</label>
@@ -67,6 +69,30 @@ function SearchJob(props) {
             </div>
           </div>
         </div>
+
+        {/* Location Combobox */}
+        {/* <div>
+          <label htmlFor="text">Location</label>
+          <input
+            type="text"
+            className="pure-input-1"
+            placeholder="type to filter"
+            name="text"
+            onChange={updateQueryObject}
+          />
+        </div> */}
+
+        {/* Skills Combobox */}
+        {/* <div>
+          <label htmlFor="text">Skills</label>
+          <input
+            type="text"
+            className="pure-input-1"
+            placeholder="type to filter"
+            name="text"
+            onChange={updateQueryObject}
+          />
+        </div> */}
       </div>
 
       <button className="pure-button pure-button-primary">Search</button>

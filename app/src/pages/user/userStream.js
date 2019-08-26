@@ -7,9 +7,17 @@ import { GiInfo } from 'react-icons/gi';
 import { GoGitMerge, GoBroadcast } from 'react-icons/go';
 import { MdInput } from 'react-icons/md';
 
-//
 import { useTrail, animated } from 'react-spring';
-// const trail = useTrail(number, {opacity: 1})
+
+// Load locale-specific relative date/time formatting rules.
+import en from 'javascript-time-ago/locale/en';
+import TimeAgo from 'javascript-time-ago';
+
+// Add locale-specific relative date/time formatting rules.
+TimeAgo.addLocale(en);
+
+// Create relative date/time formatter.
+const timeAgo = new TimeAgo('en-US');
 
 function getIcon(activityType) {
   switch (activityType) {
@@ -128,6 +136,10 @@ function activityTile(item, user) {
       <div className="stream-label">
         {getIcon(item.verb)}
         {getLabel(item.verb, isUser, item.data)}
+
+        <span style={{ float: 'right' }}>
+          {timeAgo.format(new Date(item.time))}
+        </span>
       </div>
       {getContent(item.verb, isUser, item.data)}
     </div>
