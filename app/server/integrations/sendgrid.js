@@ -28,5 +28,18 @@ exports.sendNewLink = async function(fromUser, messageData, link) {
     }
   };
 
-  return sgMail.send(msg);
+  return sgMail.send(msg).then(responseArray => {
+    const response = responseArray[0];
+    const err = responseArray[1];
+
+    if (err) {
+      throw new Error(err);
+    }
+
+    return {
+      id: response.headers['x-message-id'],
+      statusCode: response.statusCode,
+      statusMessage: response.statusMessage
+    };
+  });
 };

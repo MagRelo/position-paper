@@ -71,6 +71,8 @@ function CreateTweet(props) {
       formObj[key] = value;
     });
 
+    formObj.linkId = props.link.linkId;
+
     props.submit(formObj);
   }
 

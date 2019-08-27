@@ -38,23 +38,20 @@ export const AuthContext = React.createContext({});
 function App(props) {
   const [activeSession, setActiveSession] = useState(false);
 
-  useEffect(
-    () => {
-      const servesaCookie = Cookies.get('servesa-auth-token');
-      if (servesaCookie) {
-        // hit server and see if logged in
-        getUser().then(isLoggedIn => {
-          if (isLoggedIn) {
-            setActiveSession(true);
-          } else {
-            Cookies.remove('servesa-auth-token');
-            setActiveSession(false);
-          }
-        });
-      }
-    },
-    [activeSession]
-  );
+  useEffect(() => {
+    const servesaCookie = Cookies.get('servesa-auth-token');
+    if (servesaCookie) {
+      // hit server and see if logged in
+      getUser().then(isLoggedIn => {
+        if (isLoggedIn) {
+          setActiveSession(true);
+        } else {
+          Cookies.remove('servesa-auth-token');
+          setActiveSession(false);
+        }
+      });
+    }
+  }, [activeSession]);
 
   function createSession(user) {
     Cookies.set('servesa-auth-token', user.token);
@@ -145,7 +142,7 @@ function App(props) {
 export default withRouter(App);
 
 async function getUser() {
-  const apiEndpoint = '/api/user/status';
+  const apiEndpoint = '/api/auth/status';
 
   return await fetch(apiEndpoint)
     .then(r => {

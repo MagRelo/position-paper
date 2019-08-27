@@ -29,14 +29,6 @@ const UserSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// UserSchema.virtual('password').set(function(value) {
-//   this.passwordHash = bcrypt.hashSync(value, 12);
-// });
-
-// UserSchema.methods.validPassword = function(password) {
-//   return bcrypt.compareSync(password, this.passwordHash);
-// };
-
 UserSchema.statics.upsertTwitterUser = function(
   token,
   tokenSecret,
@@ -194,3 +186,17 @@ const PaymentSchema = new mongoose.Schema(
   { timestamps: true }
 );
 exports.PaymentModel = mongoose.model('Payment', PaymentSchema);
+
+//
+// Share
+//
+const ShareSchema = new mongoose.Schema(
+  {
+    link: { type: mongoose.Schema.Types.ObjectId, ref: 'Link' },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    type: 'String',
+    data: Object
+  },
+  { timestamps: true }
+);
+exports.ShareModel = mongoose.model('Share', ShareSchema);

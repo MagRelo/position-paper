@@ -18,6 +18,7 @@ const UserModel = require('./models').UserModel;
 const LinkModel = require('./models').LinkModel;
 const ResponseModel = require('./models').ResponseModel;
 const PaymentModel = require('./models').PaymentModel;
+const ShareModel = require('./models').ShareModel;
 
 //
 // MISC
@@ -93,12 +94,8 @@ router.post('/query/metadata', async function(req, res) {
   try {
     const metadata = await scrape(req.body.url);
 
-    const salary = `$${metadata.jsonLd.baseSalary.value.minValue} – $${
-      metadata.jsonLd.baseSalary.value.maxValue
-    }`;
-    const location = `${
-      metadata.jsonLd.jobLocation[0].address.addressLocality
-    }, ${metadata.jsonLd.jobLocation[0].address.addressRegion}`;
+    const salary = `$${metadata.jsonLd.baseSalary.value.minValue} – $${metadata.jsonLd.baseSalary.value.maxValue}`;
+    const location = `${metadata.jsonLd.jobLocation[0].address.addressLocality}, ${metadata.jsonLd.jobLocation[0].address.addressRegion}`;
     // const description = `$${metadata.jsonLd.description}`;
 
     const formatted = {
@@ -120,7 +117,7 @@ router.post('/query/metadata', async function(req, res) {
 });
 
 //
-// USER
+// AUTH
 //
 
 router.route('/auth/twitter/reverse').post(function(req, res) {
@@ -134,8 +131,8 @@ router.route('/auth/twitter/reverse').post(function(req, res) {
       }
     },
     function(err, r, body) {
-      if (err) {
-        return res.send(500, { message: err.message });
+      if (r.statusCode !== 200) {
+        return res.status(500).send({ message: r.statusMessage });
       }
 
       var jsonStr =
@@ -196,8 +193,7 @@ router.route('/auth/twitter').post(
   }
 );
 
-// get user session status (loggedin)
-router.get('/user/status', getToken, authenticate, getUser, async function(
+router.get('/auth/status', getToken, authenticate, getUser, async function(
   req,
   res
 ) {
@@ -207,6 +203,10 @@ router.get('/user/status', getToken, authenticate, getUser, async function(
   }
   return res.status(200).send({});
 });
+
+//
+// USER
+//
 
 // get user
 router.get('/user', getToken, authenticate, getUser, async function(req, res) {
@@ -342,18 +342,29 @@ router.post('/user/tweet', getToken, authenticate, getUser, async function(
   const message = req.body.message;
 
   try {
+    const link = await LinkModel.findOne({ linkId: req.body.linkId });
+
     // get twitter creds
     const user = await UserModel.findOne({ _id: req.user._id }).select(
       'twitterProvider'
     );
     const twitterCreds = user.twitterProvider;
-
     const tweet = await twitter.postTweet(
       twitterCreds.token,
       twitterCreds.tokenSecret,
       message
     );
-    return res.status(200).send(tweet);
+
+    // save share
+    const share = new ShareModel({
+      link: link._id,
+      user: req.user._id,
+      type: 'tweet',
+      data: tweet
+    });
+    await share.save();
+
+    return res.status(200).send(share);
   } catch (error) {
     console.log(error);
     return res.status(500).send(error);
@@ -365,12 +376,20 @@ router.post('/user/email', getToken, authenticate, getUser, async function(
   res
 ) {
   try {
-    // get twitter creds
     const link = await LinkModel.findOne({ linkId: req.body.linkId });
 
     const response = await sendgrid.sendNewLink(req.user, req.body, link);
 
-    return res.status(200).send(response);
+    // save share
+    const share = new ShareModel({
+      link: link._id,
+      user: req.user._id,
+      type: 'email',
+      data: response
+    });
+    await share.save();
+
+    return res.status(200).send(share);
   } catch (error) {
     console.log(error);
     return res.status(500).send(error);
