@@ -7,6 +7,7 @@ import Cookies from 'js-cookie';
 // CSS
 import 'react-input-range/lib/css/index.css';
 import '@reach/dialog/styles.css';
+import '@reach/menu-button/styles.css';
 import './css/open-sans.css';
 import './css/pure-min.css';
 import './index.css';
@@ -31,27 +32,33 @@ import Response from 'pages/response/response';
 
 // test? rename?
 import createQuery2 from 'components/networkData/createJob';
+// import { setupMaster } from 'cluster';
 
 // Setup Auth context
 export const AuthContext = React.createContext({});
 
 function App(props) {
   const [activeSession, setActiveSession] = useState(false);
+  const [user, setUser] = useState({});
 
-  useEffect(() => {
-    const servesaCookie = Cookies.get('servesa-auth-token');
-    if (servesaCookie) {
-      // hit server and see if logged in
-      getUser().then(isLoggedIn => {
-        if (isLoggedIn) {
-          setActiveSession(true);
-        } else {
-          Cookies.remove('servesa-auth-token');
-          setActiveSession(false);
-        }
-      });
-    }
-  }, [activeSession]);
+  useEffect(
+    () => {
+      const servesaCookie = Cookies.get('servesa-auth-token');
+      if (servesaCookie) {
+        // hit server and see if logged in
+        getUser().then(user => {
+          if (!!user) {
+            setUser(user);
+            setActiveSession(true);
+          } else {
+            Cookies.remove('servesa-auth-token');
+            setActiveSession(false);
+          }
+        });
+      }
+    },
+    [activeSession]
+  );
 
   function createSession(user) {
     Cookies.set('servesa-auth-token', user.token);
@@ -75,13 +82,14 @@ function App(props) {
             <NavLink exact={true} activeClassName="is-active" to={'/search'}>
               Search
             </NavLink>
-            {activeSession ? (
-              <NavLink activeClassName="is-active" to={'/user'}>
-                My Account
-              </NavLink>
-            ) : null}
 
             <span>|</span>
+
+            {activeSession ? (
+              <NavLink activeClassName="is-active" to={'/user'}>
+                {user.name}
+              </NavLink>
+            ) : null}
 
             <LoginButton
               activeSession={activeSession}
@@ -146,7 +154,7 @@ async function getUser() {
 
   return await fetch(apiEndpoint)
     .then(r => {
-      return r.status === 200 ? true : false;
+      return r.json();
     })
     .catch(error => {
       console.error(error);

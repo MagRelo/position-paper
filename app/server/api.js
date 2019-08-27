@@ -94,8 +94,12 @@ router.post('/query/metadata', async function(req, res) {
   try {
     const metadata = await scrape(req.body.url);
 
-    const salary = `$${metadata.jsonLd.baseSalary.value.minValue} – $${metadata.jsonLd.baseSalary.value.maxValue}`;
-    const location = `${metadata.jsonLd.jobLocation[0].address.addressLocality}, ${metadata.jsonLd.jobLocation[0].address.addressRegion}`;
+    const salary = `$${metadata.jsonLd.baseSalary.value.minValue} – $${
+      metadata.jsonLd.baseSalary.value.maxValue
+    }`;
+    const location = `${
+      metadata.jsonLd.jobLocation[0].address.addressLocality
+    }, ${metadata.jsonLd.jobLocation[0].address.addressRegion}`;
     // const description = `$${metadata.jsonLd.description}`;
 
     const formatted = {
@@ -201,7 +205,10 @@ router.get('/auth/status', getToken, authenticate, getUser, async function(
   if (!req.user) {
     return res.status(401).send({ error: 'no user' });
   }
-  return res.status(200).send({});
+  return res.status(200).send({
+    name: req.user.name,
+    avatar: req.user.avatar
+  });
 });
 
 //

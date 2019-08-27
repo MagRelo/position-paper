@@ -1,5 +1,6 @@
 import React from 'react';
 import TwitterLogin from 'react-twitter-auth';
+import { Menu, MenuList, MenuButton, MenuItem } from '@reach/menu-button';
 
 const domain = window.location.origin || 'http://localhost:3000';
 const loginPath = '/api/auth/twitter';
@@ -21,12 +22,22 @@ function LoginButton(props) {
   return (
     <React.Fragment>
       {props.activeSession ? (
-        <button
-          className="pure-button pure-button-primary"
-          onClick={props.clearSession}
-        >
-          Logout
-        </button>
+        <Menu>
+          <MenuButton
+            className="pure-button"
+            style={{
+              background: 'none',
+              color: 'gray',
+              padding: 'none',
+              marginLeft: 0
+            }}
+          >
+            <span aria-hidden>▾</span>
+          </MenuButton>
+          <MenuList>
+            <MenuItem onSelect={() => props.clearSession()}>Logout</MenuItem>
+          </MenuList>
+        </Menu>
       ) : (
         <TwitterLogin
           loginUrl={domain + loginPath}
