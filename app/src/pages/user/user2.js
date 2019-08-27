@@ -57,19 +57,23 @@ function User(props) {
         <Loading />
       ) : (
         <div>
-          <div className="user-profile">
-            <img src={userData.avatar} alt="avatar" className="user-avatar" />
-            <div className="user-info">
-              <div className="user-name">{userData.name}</div>
-              <div className="user-location">{userData.location}</div>
-            </div>
-          </div>
-
           <div className="row row-6-1">
             {/* content */}
             <div>
+              <div className="user-profile">
+                <img
+                  src={userData.avatar}
+                  alt="avatar"
+                  className="user-avatar"
+                />
+                <div className="user-info">
+                  <div className="user-name">{userData.name}</div>
+                  <div className="user-location">{userData.location}</div>
+                </div>
+              </div>
               <Tabs style={{ marginTop: '0.5em' }}>
                 <TabList style={{ marginBottom: '0.5em' }}>
+                  <CoolTab>Jobs</CoolTab>
                   <CoolTab>Links</CoolTab>
                   <CoolTab>Responses</CoolTab>
                   <CoolTab>Payments</CoolTab>
@@ -86,6 +90,10 @@ function User(props) {
                     >
                       Add Job
                     </Link>
+                  </TabPanel>
+
+                  <TabPanel style={{ outline: 'none' }}>
+                    <LinksList links={links} />
                   </TabPanel>
 
                   <TabPanel style={{ outline: 'none' }}>
