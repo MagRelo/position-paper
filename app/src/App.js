@@ -26,7 +26,7 @@ import Search from 'pages/search';
 import LinkPage from 'pages/link/link';
 
 // Auth
-import User from 'pages/user/user';
+import User from 'pages/user/user2';
 import UserBankAccount from 'pages/user/userBankAccount';
 import Response from 'pages/response/response';
 
