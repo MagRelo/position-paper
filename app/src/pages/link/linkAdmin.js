@@ -3,7 +3,7 @@ import React from 'react';
 import { formatCurrency, lineItem } from 'components/util/random';
 
 import LinkMap from './linkMap';
-import LinkPayoutDisplay from './linkDisplayBar';
+import LinkPayoutDisplayFixed from './linkDisplayBarFixed';
 import ChildLinksTable from './childLinksTable';
 import LinkGraph from './childLinksGraph';
 
@@ -24,27 +24,20 @@ function LinkAdmin(props) {
       />
 
       <div>
-        <div>
-          <h3 className="section-header">Child Links</h3>
-          <p>
-            You will be paid{' '}
-            <b>
-              {formatCurrency(
-                props.link.potentialPayoffs &&
-                  props.link.potentialPayoffs[props.link.generation]
-              )}
-            </b>{' '}
-            if the candidate responds through a child of this link and the
-            candidate bonus is paid.
-          </p>
-          <LinkPayoutDisplay
-            payoffs={props.link.potentialPayoffs}
-            generation={props.link.generation}
-          />
+        <h4 className="section-header">Share Link</h4>
+        <div className="social-grid">
+          <EmailButton enabled={true} link={props.link} />
+          <LinkedinButton enabled={false} link={props.link} />
+          <TwitterButton enabled={true} link={props.link} />
+          <InstaButton enabled={false} link={props.link} />
+        </div>
 
-          <h4 className="section-header">Child Links</h4>
-          <ChildLinksTable links={props.link.children} />
-          <LinkGraph parent={props.link} links={props.link.children} />
+        <h4 className="section-header">Link Traffic</h4>
+        <div>
+          <LinkMap />
+          {lineItem('Last 24 hours', props.traffic.last1days)}
+          {lineItem('Last 7 days', props.traffic.last7days)}
+          {lineItem('Last 30 days', props.traffic.last30days)}
         </div>
 
         <h3 className="section-header">Insights</h3>
@@ -74,26 +67,34 @@ function LinkInformation(props) {
           paid.
         </p>
 
-        <LinkPayoutDisplay
-          payoffs={props.link.payoffs}
-          generation={props.link.generation}
+        <LinkPayoutDisplayFixed
+          employer={props.link.data.employer}
+          viewerPayout={props.link.payoffs[props.link.generation]}
+          showChild={false}
         />
 
-        <h4 className="section-header">Share Link</h4>
-        <div className="social-grid">
-          <EmailButton enabled={true} link={props.link} />
-          <LinkedinButton enabled={false} link={props.link} />
-          <TwitterButton enabled={true} link={props.link} />
-          <InstaButton enabled={false} link={props.link} />
-        </div>
+        <p>
+          You will be paid{' '}
+          <b>
+            {formatCurrency(
+              props.link.potentialPayoffs &&
+                props.link.potentialPayoffs[props.link.generation]
+            )}
+          </b>{' '}
+          if the candidate responds through a child of this link and the
+          candidate bonus is paid.
+        </p>
 
-        <h4 className="section-header">Link Traffic</h4>
-        <div>
-          <LinkMap />
-          {lineItem('Last 24 hours', props.traffic.last1days)}
-          {lineItem('Last 7 days', props.traffic.last7days)}
-          {lineItem('Last 30 days', props.traffic.last30days)}
-        </div>
+        <LinkPayoutDisplayFixed
+          employer={props.link.data.employer}
+          viewerPayout={props.link.potentialPayoffs[props.link.generation]}
+          showChild={true}
+          childPayout={props.link.potentialPayoffs[props.link.generation + 1]}
+        />
+
+        <h4 className="section-header">Child Links</h4>
+        <ChildLinksTable links={props.link.children} />
+        <LinkGraph parent={props.link} links={props.link.children} />
       </div>
     </div>
   );
