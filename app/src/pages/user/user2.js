@@ -13,7 +13,8 @@ import SocialIcon from 'components/socialButton';
 
 import PaymentsTable from './userPaymentsTable';
 import ResponseList from './userResponseTable';
-import LinksList from './userLinksTable';
+import JobTable from './userJobsTable';
+import LinksTable from './userLinksTable';
 import StreamList from './userStream';
 
 import { AuthContext } from 'App';
@@ -71,8 +72,8 @@ function User(props) {
                   <div className="user-location">{userData.location}</div>
                 </div>
               </div>
-              <Tabs style={{ marginTop: '0.5em' }}>
-                <TabList style={{ marginBottom: '0.5em' }}>
+              <Tabs style={{ marginTop: '1em' }}>
+                <TabList style={{ marginBottom: '1em' }}>
                   <CoolTab>Jobs</CoolTab>
                   <CoolTab>Links</CoolTab>
                   <CoolTab>Responses</CoolTab>
@@ -81,21 +82,21 @@ function User(props) {
                 </TabList>
 
                 <TabPanels>
+                  {/* Jobs */}
                   <TabPanel style={{ outline: 'none' }}>
-                    <LinksList links={links} />
-                    <Link
-                      to="/addquery"
-                      className="pure-button pure-button-primary"
-                      style={{ float: 'right', marginTop: '1.5em' }}
-                    >
-                      Add Job
-                    </Link>
+                    <JobTable
+                      links={links.filter(link => link.generation === 0)}
+                    />
                   </TabPanel>
 
+                  {/* Links */}
                   <TabPanel style={{ outline: 'none' }}>
-                    <LinksList links={links} />
+                    <LinksTable
+                      links={links.filter(link => link.generation !== 0)}
+                    />
                   </TabPanel>
 
+                  {/* Responses */}
                   <TabPanel style={{ outline: 'none' }}>
                     <div>
                       <ResponseList responses={responses} />

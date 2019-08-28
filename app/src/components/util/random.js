@@ -92,9 +92,9 @@ export function CoolTab(props) {
     <Tab
       {...props}
       style={{
+        color: 'gray',
         background: 'none',
         border: 'none',
-        color: 'gray',
         borderBottom: isSelected ? 'solid 1px #cbcbcb' : 'none',
         marginRight: '1em'
       }}

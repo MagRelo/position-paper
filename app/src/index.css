@@ -96,7 +96,7 @@ svg {
   }
 
   .row-6-1 {
-    grid-template-columns: 3fr 1fr;
+    grid-template-columns: 5fr 2fr;
     grid-gap: 2em;
   }
 }

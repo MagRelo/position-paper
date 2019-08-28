@@ -2,16 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-function formatCurrency(input) {
-  if (typeof input === 'number') {
-    return input.toLocaleString('en-US', {
-      style: 'currency',
-      currency: 'USD'
-    });
-  }
-  return '';
-}
-
 class Inbox extends Component {
   render() {
     return (
@@ -19,9 +9,10 @@ class Inbox extends Component {
         <table className="pure-table">
           <thead>
             <tr>
-              <th>Link</th>
-              <th>Value</th>
+              <th>Title</th>
               <th>Views</th>
+              <th>Shares</th>
+              <th>Child Links</th>
             </tr>
           </thead>
           <tbody>
@@ -31,8 +22,9 @@ class Inbox extends Component {
                   <td>
                     <Link to={'/link/' + link.linkId}>{link.title}</Link>
                   </td>
-                  <td>{formatCurrency(link.payoffs[link.generation])}</td>
                   <td>{link.views}</td>
+                  <td>{link.shares}</td>
+                  <td>{link.children.length}</td>
                 </tr>
               );
             })}
@@ -46,11 +38,11 @@ class Inbox extends Component {
 
         <div>
           <Link
-            to="/search"
+            to="/addquery"
             className="pure-button pure-button-primary"
             style={{ float: 'right', marginTop: '1.5em' }}
           >
-            Search for Links
+            Post a Job
           </Link>
         </div>
       </React.Fragment>
