@@ -99,7 +99,31 @@ export function CoolTab(props) {
         marginRight: '1em'
       }}
     >
-      {children}
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}
+      >
+        {children}
+        {props.count ? (
+          <span
+            style={{
+              fontSize: ' 10px',
+              marginLeft: '6px',
+              display: 'inline-block',
+              lineHeight: '16px',
+              background: '#eee',
+              borderRadius: '50%',
+              height: '16px',
+              width: '16px'
+            }}
+          >
+            {props.count}
+          </span>
+        ) : null}
+      </div>
     </Tab>
   );
 }

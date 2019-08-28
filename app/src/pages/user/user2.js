@@ -25,6 +25,7 @@ function User(props) {
   const [isLoading, setIsLoading] = useState(true);
   const [userData, setUserData] = useState({});
   const [links, setLinks] = useState({});
+  const [jobs, setJobs] = useState({});
   const [payments, setPayments] = useState({});
   const [responses, setResponses] = useState([]);
   const [stream, setStream] = useState([]);
@@ -38,7 +39,8 @@ function User(props) {
     getUser(authContext.clearSession).then(body => {
       if (isSubscribed) {
         setUserData(body.user);
-        setLinks(body.links);
+        setJobs(body.links.filter(link => link.generation === 0));
+        setLinks(body.links.filter(link => link.generation !== 0));
         setStream(body.stream);
         setResponses(body.responses);
         setPayments(body.payments);
@@ -74,8 +76,8 @@ function User(props) {
               </div>
               <Tabs style={{ marginTop: '1em' }}>
                 <TabList style={{ marginBottom: '1em' }}>
-                  <CoolTab>Jobs</CoolTab>
-                  <CoolTab>Links</CoolTab>
+                  <CoolTab count={jobs.length}>Jobs</CoolTab>
+                  <CoolTab count={links.length}>Links</CoolTab>
                   <CoolTab>Responses</CoolTab>
                   <CoolTab>Payments</CoolTab>
                   <CoolTab>Profile</CoolTab>
@@ -84,16 +86,12 @@ function User(props) {
                 <TabPanels>
                   {/* Jobs */}
                   <TabPanel style={{ outline: 'none' }}>
-                    <JobTable
-                      links={links.filter(link => link.generation === 0)}
-                    />
+                    <JobTable links={jobs} />
                   </TabPanel>
 
                   {/* Links */}
                   <TabPanel style={{ outline: 'none' }}>
-                    <LinksTable
-                      links={links.filter(link => link.generation !== 0)}
-                    />
+                    <LinksTable links={links} />
                   </TabPanel>
 
                   {/* Responses */}
@@ -103,11 +101,11 @@ function User(props) {
                     </div>
                   </TabPanel>
 
-                  <TabPanel>
+                  <TabPanel style={{ outline: 'none' }}>
                     <PaymentsTable payments={payments} />
                   </TabPanel>
 
-                  <TabPanel>
+                  <TabPanel style={{ outline: 'none' }}>
                     <div>
                       <h3 className="section-header">Profile</h3>
 
