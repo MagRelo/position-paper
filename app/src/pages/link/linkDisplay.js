@@ -7,7 +7,7 @@ import LinkButton from 'components/linkButton';
 import ResponseButton from 'pages/response/responseButton';
 
 // network Data
-import { LinkDisplay as JobDisplay } from 'components/networkData/jobDisplay.js';
+import { LinkDisplay as JobDisplay } from 'networkData/jobDisplay.js';
 
 function LinkDisplay(props) {
   return (

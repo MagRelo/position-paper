@@ -51,7 +51,7 @@ function LandingPage(props) {
           </thead>
           <tbody>
             <tr>
-              <td>How mush does it cost? </td>
+              <td>How much does it cost? </td>
               <td>
                 Free to post, then you choose the appropriate network incentives
                 to power your search{' '}

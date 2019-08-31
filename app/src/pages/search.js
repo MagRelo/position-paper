@@ -4,7 +4,7 @@ import { useDebounce } from 'components/util/random';
 
 import SearchResults from 'components/searchResult';
 
-import JobSearchForm from 'components/networkData/searchForm';
+import JobSearchForm from 'networkData/searchForm';
 
 function SearchFlow() {
   // search data

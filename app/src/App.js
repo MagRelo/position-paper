@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
-import { NavLink, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
 // CSS
@@ -14,10 +14,12 @@ import './index.css';
 import './app.css';
 
 // Header
-import LoginButton from 'components/loginButton';
+import Header from 'components/header';
 
 // Routes
-import LandingPage from 'pages/landingPage';
+import LandingPage from 'networkData/landingPage';
+import createQuery2 from 'networkData/createJob';
+
 import TOS_and_Privacy from 'pages/legal';
 import About from 'pages/about';
 
@@ -31,7 +33,6 @@ import UserBankAccount from 'pages/user/userBankAccount';
 import Response from 'pages/response/response';
 
 // test? rename?
-import createQuery2 from 'components/networkData/createJob';
 // import { setupMaster } from 'cluster';
 
 // Setup Auth context
@@ -77,33 +78,12 @@ function App(props) {
       value={{ activeSession: activeSession, clearSession: clearSession }}
     >
       <div className="container">
-        <nav className="header">
-          <div className="menu">
-            <NavLink exact={true} activeClassName="is-active" to={'/search'}>
-              Search
-            </NavLink>
-
-            <span>|</span>
-
-            {activeSession ? (
-              <NavLink activeClassName="is-active" to={'/user'}>
-                {user.name}
-              </NavLink>
-            ) : null}
-
-            <LoginButton
-              activeSession={activeSession}
-              createSession={createSession}
-              clearSession={clearSession}
-            />
-          </div>
-
-          <h1>
-            <Link to="/">talent</Link>
-          </h1>
-
-          <h2>@ incentive ( dot ) exchange</h2>
-        </nav>
+        <Header
+          user={user}
+          activeSession={activeSession}
+          createSession={createSession}
+          clearSession={clearSession}
+        />
 
         <div className="content-wrapper">
           {activeSession ? (
