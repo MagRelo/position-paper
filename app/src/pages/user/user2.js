@@ -78,8 +78,8 @@ function User(props) {
                 <TabList style={{ marginBottom: '1em' }}>
                   <CoolTab count={jobs.length}>Jobs</CoolTab>
                   <CoolTab count={links.length}>Links</CoolTab>
-                  <CoolTab>Responses</CoolTab>
-                  <CoolTab>Payments</CoolTab>
+                  <CoolTab count={responses.length}>Responses</CoolTab>
+                  <CoolTab count={payments.length}>Payments</CoolTab>
                   <CoolTab>Profile</CoolTab>
                 </TabList>
 

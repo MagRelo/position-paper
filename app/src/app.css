@@ -274,22 +274,6 @@ button:focus {
   z-index: -1;
 }
 
-.progressbar li:first-child:after {
-  content: none;
-}
-
-.progressbar li.active {
-  color: green;
-}
-
-.progressbar li.active:before {
-  border-color: #55b776;
-}
-
-.progressbar li.active+li:after {
-  background-color: #55b776;
-}
-
 /* LINK QUERY DATA */
 .query-data-panel {
   padding: 1px 2em 2em;
@@ -297,8 +281,7 @@ button:focus {
 }
 
 
-/* REsponse Qutoe */
-
+/* Response Quote */
 .testimonial-quote {
   font-size: 16px;
 }

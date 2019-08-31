@@ -21,7 +21,7 @@ function jobDataItem(label, value) {
 
 export function LinkDisplay(props) {
   return (
-    <div>
+    <div className="query-data-panel">
       <h2>{props.data.title}</h2>
 
       <div

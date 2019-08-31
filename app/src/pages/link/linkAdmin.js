@@ -15,37 +15,40 @@ import InstaButton from 'components/social/instagramButton';
 
 function LinkAdmin(props) {
   return (
-    <div className="row row-2">
-      <LinkInformation
-        link={props.link}
-        stream={props.stream}
-        userId={props.userId}
-        traffic={props.traffic}
-      />
+    <React.Fragment>
+      <h3 className="section-header">Link Information</h3>
+      <div className="row row-2">
+        <LinkInformation
+          link={props.link}
+          stream={props.stream}
+          userId={props.userId}
+          traffic={props.traffic}
+        />
 
-      <div>
-        <h4 className="section-header">Share Link</h4>
-        <div className="social-grid">
-          <EmailButton enabled={true} link={props.link} />
-          <LinkedinButton enabled={false} link={props.link} />
-          <TwitterButton enabled={true} link={props.link} />
-          <InstaButton enabled={false} link={props.link} />
-        </div>
-
-        <h4 className="section-header">Link Traffic</h4>
         <div>
-          <LinkMap />
-          {lineItem('Last 24 hours', props.traffic.last1days)}
-          {lineItem('Last 7 days', props.traffic.last7days)}
-          {lineItem('Last 30 days', props.traffic.last30days)}
-        </div>
+          <h4 className="section-header">Share Link</h4>
+          <div className="social-grid">
+            <EmailButton enabled={true} link={props.link} />
+            <LinkedinButton enabled={false} link={props.link} />
+            <TwitterButton enabled={true} link={props.link} />
+            <InstaButton enabled={false} link={props.link} />
+          </div>
 
-        <h3 className="section-header">Insights</h3>
-        <div style={{ textAlign: 'center', margin: '1em 0' }}>
-          <i>No insights...</i>
+          <h4 className="section-header">Link Traffic</h4>
+          <div>
+            <LinkMap />
+            {lineItem('Last 24 hours', props.traffic.last1days)}
+            {lineItem('Last 7 days', props.traffic.last7days)}
+            {lineItem('Last 30 days', props.traffic.last30days)}
+          </div>
+
+          <h3 className="section-header">Insights</h3>
+          <div style={{ textAlign: 'center', margin: '1em 0' }}>
+            <i>No insights...</i>
+          </div>
         </div>
       </div>
-    </div>
+    </React.Fragment>
   );
 }
 
@@ -55,7 +58,6 @@ function LinkInformation(props) {
   return (
     <div>
       <div>
-        <h3 className="section-header">Link Information</h3>
         <p>
           You will be paid{' '}
           <b>

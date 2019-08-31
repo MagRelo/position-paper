@@ -32,7 +32,7 @@ class Inbox extends Component {
         </table>
         {this.props.links.length ? null : (
           <div style={{ textAlign: 'center', margin: '1em 0' }}>
-            <i>No active links...</i>
+            <i>No active jobs...</i>
           </div>
         )}
 

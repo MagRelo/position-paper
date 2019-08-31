@@ -3,7 +3,7 @@ import React from 'react';
 import {
   IoMdBusiness,
   IoIosPerson,
-  IoIosHappy,
+  IoIosLink,
   IoIosPeople
 } from 'react-icons/io';
 
@@ -42,11 +42,13 @@ function linkDisplay(props) {
             borderColor: '#55b776'
           }}
         >
-          <IoIosHappy style={{ ...iconStyle, color: '#55b776' }} />
+          <IoIosLink style={{ ...iconStyle, color: '#55b776' }} />
         </span>
 
         {/* Label */}
-        <span>{formatCurrency(props.viewerPayout || 0)}</span>
+        <span style={{ fontWeight: 'bolder', color: '#55b776' }}>
+          {formatCurrency(props.viewerPayout || 0)}
+        </span>
 
         {/* line to previous dot */}
         <span

@@ -55,8 +55,12 @@ function Header(props) {
                 <span aria-hidden>▾</span>
               </MenuButton>
               <MenuList>
-                <MenuLink to={'/search'} className="show-mobile">
+                <MenuLink as={Link} to={'/search'}>
                   Search
+                </MenuLink>
+
+                <MenuLink as={Link} to={'/user'}>
+                  Account
                 </MenuLink>
 
                 <MenuItem onSelect={() => props.clearSession()}>

@@ -12,7 +12,7 @@ import { LinkDisplay as JobDisplay } from 'networkData/jobDisplay.js';
 function LinkDisplay(props) {
   return (
     <div className="row row-5-3">
-      <div className="query-data-panel">
+      <div>
         <JobDisplay data={props.queryData} />
       </div>
 
