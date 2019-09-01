@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '@reach/router';
 
 // icons
 import { IoMdLink, IoIosPerson } from 'react-icons/io';

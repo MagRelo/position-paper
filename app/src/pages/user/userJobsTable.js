@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link } from '@reach/router';
 
-class Inbox extends Component {
+class JobTable extends Component {
   render() {
     return (
       <React.Fragment>
@@ -50,15 +49,4 @@ class Inbox extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {};
-};
-
-const mapDispatchToProps = dispatch => {
-  return {};
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Inbox);
+export default JobTable;

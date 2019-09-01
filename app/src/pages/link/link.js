@@ -17,25 +17,29 @@ function Link(props) {
   const [queryData, setQueryData] = useState({});
   const [traffic, setTraffic] = useState({});
   const [responses, setResponses] = useState([]);
+
   const [stream, setStream] = useState([]);
 
-  useEffect(() => {
-    setIsLoading(true);
+  useEffect(
+    () => {
+      setIsLoading(true);
 
-    getLink(props.match.params.linkId, authContext.clearSession).then(body => {
-      // display & admin
-      setUser(body.user);
-      setLink(body.link);
+      getLink(props.linkId, authContext.clearSession).then(body => {
+        // display & admin
+        setUser(body.user);
+        setLink(body.link);
 
-      // admin only
-      setQueryData(body.link.data);
-      setTraffic(body.traffic);
-      setResponses(body.responses);
-      setStream(body.stream);
+        // admin only
+        setQueryData(body.link.data);
+        setTraffic(body.traffic);
+        setResponses(body.responses);
+        setStream(body.stream);
 
-      setIsLoading(false);
-    });
-  }, props.match.params.linkId);
+        setIsLoading(false);
+      });
+    },
+    [props.linkId]
+  );
 
   return (
     <div>

@@ -18,23 +18,24 @@ function getTotal(targetPayouts, networkPayouts) {
 }
 
 function Response(props) {
+  const [responseId] = useState(props.responseId);
+
+  // local data
   const [user, setUser] = useState({});
   const [response, setResponse] = useState({});
   const [networkPayouts, setNetworkPayouts] = useState([]);
   const [targetPayouts, setTargetPayouts] = useState([]);
   const [respondant, setRespondant] = useState({});
-  // const [query, setQuery] = useState({});
 
   useEffect(() => {
-    getResponse(props.match.params.responseId).then(result => {
+    getResponse(responseId).then(result => {
       setResponse(result);
       setUser(result.user);
       setNetworkPayouts(result.networkPayouts);
       setTargetPayouts(result.targetPayouts);
       setRespondant(result.user);
-      // setQuery(result.query);
     });
-  }, props.match.params.responseId);
+  }, responseId);
 
   return (
     <div className="row row-5-3">

@@ -22,10 +22,6 @@
   line-height: 54px;
 }
 
-.menu>a.is-active {
-  border-bottom: solid 1px;
-}
-
 .menu>* {
   margin-left: 1em;
 }

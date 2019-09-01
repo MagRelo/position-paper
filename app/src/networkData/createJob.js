@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { navigate } from '@reach/router';
 
 import { useDebounce, lineItem, formatCurrency } from 'components/util/random';
 
@@ -70,7 +71,7 @@ function CreateJob(props) {
       data: formObject
     }).then(link => {
       // redirect
-      props.history.push('/link/' + link.linkId);
+      navigate('/link/' + link.linkId);
     });
   }
 

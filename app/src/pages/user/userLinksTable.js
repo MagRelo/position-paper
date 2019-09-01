@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link } from '@reach/router';
 
 function formatCurrency(input) {
   if (typeof input === 'number') {
@@ -12,7 +11,7 @@ function formatCurrency(input) {
   return '';
 }
 
-class Inbox extends Component {
+class UserLinks extends Component {
   render() {
     return (
       <React.Fragment>
@@ -58,15 +57,4 @@ class Inbox extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {};
-};
-
-const mapDispatchToProps = dispatch => {
-  return {};
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Inbox);
+export default UserLinks;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Dialog } from '@reach/dialog';
-import { withRouter } from 'react-router-dom';
+import { navigate } from '@reach/router';
 
 import ResponseForm from './createResponse';
 
@@ -14,7 +14,7 @@ function ResponseButton(props) {
     sendResponse(formData).then(results => {
       setReponseOpen(false);
 
-      props.history.push('/response/' + results._id);
+      navigate('/response/' + results._id);
     });
   }
 
@@ -35,7 +35,7 @@ function ResponseButton(props) {
   );
 }
 
-export default withRouter(ResponseButton);
+export default ResponseButton;
 
 async function sendResponse(formData) {
   // console.log(formData);

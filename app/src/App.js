@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Switch, Route } from 'react-router-dom';
-import { withRouter } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+
+import { Router, Link, navigate } from '@reach/router';
+
 import Cookies from 'js-cookie';
 
 // CSS
@@ -18,9 +18,9 @@ import Header from 'components/header';
 
 // Routes
 import LandingPage from 'networkData/landingPage';
-import createQuery2 from 'networkData/createJob';
+import CreateQuery2 from 'networkData/createJob';
 
-import TOS_and_Privacy from 'pages/legal';
+import Terms from 'pages/legal';
 import About from 'pages/about';
 
 // Maybe Auth
@@ -31,9 +31,6 @@ import LinkPage from 'pages/link/link';
 import User from 'pages/user/user2';
 import UserBankAccount from 'pages/user/userBankAccount';
 import Response from 'pages/response/response';
-
-// test? rename?
-// import { setupMaster } from 'cluster';
 
 // Setup Auth context
 export const AuthContext = React.createContext({});
@@ -64,13 +61,13 @@ function App(props) {
   function createSession(user) {
     Cookies.set('servesa-auth-token', user.token);
     setActiveSession(true);
-    props.history.push('/user');
+    navigate('/user');
   }
 
   function clearSession() {
     Cookies.remove('servesa-auth-token');
     setActiveSession(false);
-    props.history.push('/');
+    navigate('/');
   }
 
   return (
@@ -87,27 +84,27 @@ function App(props) {
 
         <div className="content-wrapper">
           {activeSession ? (
-            <Switch>
+            <Router>
               {/* Auth required */}
-              <Route path="/addquery" component={createQuery2} />
-              <Route path="/response/:responseId" component={Response} />
-              <Route path="/user/account" component={UserBankAccount} />
-              <Route path="/user" component={User} />
+              <CreateQuery2 path="/addquery" />
+              <Response path="/response/:responseId" />
+              <UserBankAccount path="/user/account" />
+              <User path="/user" />
 
-              <Route path="/search" component={Search} />
-              <Route path="/link/:linkId" component={LinkPage} />
-              <Route path="/terms" component={TOS_and_Privacy} />
-              <Route path="/about" component={About} />
-              <Route component={LandingPage} />
-            </Switch>
+              <Search path="/search" />
+              <LinkPage path="/link/:linkId" />
+              <Terms path="/terms" />
+              <About path="/about" />
+              <LandingPage path="/" />
+            </Router>
           ) : (
-            <Switch>
-              <Route path="/search" component={Search} />
-              <Route path="/link/:linkId" component={LinkPage} />
-              <Route path="/terms" component={TOS_and_Privacy} />
-              <Route path="/about" component={About} />
-              <Route component={LandingPage} />
-            </Switch>
+            <Router>
+              <Search path="/search" />
+              <LinkPage path="/link/:linkId" />
+              <Terms path="/terms" />
+              <About path="/about" />
+              <LandingPage path="/" />
+            </Router>
           )}
         </div>
 
@@ -127,7 +124,7 @@ function App(props) {
   );
 }
 
-export default withRouter(App);
+export default App;
 
 async function getUser() {
   const apiEndpoint = '/api/auth/status';

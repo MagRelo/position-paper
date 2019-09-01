@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { withRouter } from 'react-router-dom';
+import { navigate } from '@reach/router';
 
 function LinkButton(props) {
   const [isLoading, setIsLoading] = useState(false);
@@ -7,10 +7,7 @@ function LinkButton(props) {
     setIsLoading(true);
     createLink(props.parentLink).then(link => {
       setIsLoading(false);
-
-      props.history.push('/link/' + link.linkId);
-
-      // console.log(props);
+      navigate('/link/' + link.linkId);
     });
   }
 
@@ -33,7 +30,7 @@ function LinkButton(props) {
   );
 }
 
-export default withRouter(LinkButton);
+export default LinkButton;
 
 async function createLink(parentLink) {
   const apiEndpoint = '/api/link/add';

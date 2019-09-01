@@ -1,14 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 
 // stripe
 import { StripeProvider } from 'react-stripe-elements';
-
-// redux stote
-import store from 'state/store';
 
 // import * as serviceWorker from './serviceWorker';
 // If you want your app to work offline and load faster, you can change
@@ -20,13 +15,9 @@ import store from 'state/store';
 // loadWeb3();
 
 ReactDOM.render(
-  <Provider store={store}>
-    <BrowserRouter>
-      <StripeProvider apiKey="pk_test_dMv1AAldL0wj69FLCG4c8jce00J8jWxWg9">
-        <App />
-      </StripeProvider>
-    </BrowserRouter>
-  </Provider>,
+  <StripeProvider apiKey="pk_test_dMv1AAldL0wj69FLCG4c8jce00J8jWxWg9">
+    <App />
+  </StripeProvider>,
 
   document.getElementById('root')
 );
