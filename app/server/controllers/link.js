@@ -53,8 +53,8 @@ exports.getLink = async function(req, res) {
       linkId: req.params.linkId
     })
       .populate('user')
-      .populate({ path: 'children', populate: { path: 'user' } })
-      .populate({ path: 'responses', populate: { path: 'user' } });
+      .populate({ path: 'originLink', populate: { path: 'user' } })
+      .populate({ path: 'children', populate: { path: 'user' } });
     if (!link) return res.status(404).send({ error: 'not found' });
 
     // public info
@@ -90,6 +90,10 @@ exports.getLink = async function(req, res) {
       return res.status(200).send(responseObj);
     }
 
+    //
+    // User is logged in
+    //
+
     // display indicators
     const isFollowingLink =
       req.user && req.user.follows.indexOf(link._id.toString()) > -1;
@@ -97,12 +101,23 @@ exports.getLink = async function(req, res) {
       req.user && req.user.follows.indexOf(link.user._id.toString()) > -1;
     const isLinkOwner = req.user._id.equals(link.user._id);
 
+    let isQueryOwner = false;
+    // display indicators
+    if (link.originLink) {
+      // this is a secondary link
+      isQueryOwner = req.user._id.equals(link.originLink.user._id);
+    } else {
+      // this is a primary link
+      isQueryOwner = req.user._id.equals(link.user._id);
+    }
+
     // user
     responseObj.user = {
       _id: req.user._id,
       isFollowingUser: isFollowingUser,
       isLinkOwner: isLinkOwner,
-      isFollowingLink: isFollowingLink
+      isFollowingLink: isFollowingLink,
+      isQueryOwner: isQueryOwner
     };
 
     // traffic
@@ -113,8 +128,6 @@ exports.getLink = async function(req, res) {
       link._id,
       req.user._id
     );
-    // responses
-    responseObj.responses = link.responses;
 
     res.status(200).send(responseObj);
   } catch (error) {

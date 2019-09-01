@@ -16,8 +16,6 @@ function Link(props) {
   const [link, setLink] = useState({});
   const [queryData, setQueryData] = useState({});
   const [traffic, setTraffic] = useState({});
-  const [responses, setResponses] = useState([]);
-
   const [stream, setStream] = useState([]);
 
   useEffect(
@@ -32,7 +30,6 @@ function Link(props) {
         // admin only
         setQueryData(body.link.data);
         setTraffic(body.traffic);
-        setResponses(body.responses);
         setStream(body.stream);
 
         setIsLoading(false);
@@ -53,7 +50,6 @@ function Link(props) {
             <LinkAdmin
               link={link}
               traffic={traffic}
-              responses={responses}
               stream={stream}
               childLinks={link.children}
             />
