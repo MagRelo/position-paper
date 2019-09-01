@@ -10,7 +10,6 @@ import LinkGraph from './childLinksGraph';
 import EmailButton from 'components/social/emailButton';
 import TwitterButton from 'components/social/twitterButton';
 import LinkedinButton from 'components/social/linkedinButton';
-
 import InstaButton from 'components/social/instagramButton';
 
 function LinkAdmin(props) {
@@ -29,8 +28,8 @@ function LinkAdmin(props) {
           <h4 className="section-header">Share Link</h4>
           <div className="social-grid">
             <EmailButton enabled={true} link={props.link} />
-            <LinkedinButton enabled={false} link={props.link} />
             <TwitterButton enabled={true} link={props.link} />
+            <LinkedinButton enabled={false} link={props.link} />
             <InstaButton enabled={false} link={props.link} />
           </div>
 

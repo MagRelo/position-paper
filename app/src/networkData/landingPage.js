@@ -4,9 +4,17 @@ import post from 'images/1_doc.svg';
 import network from 'images/2_network.svg';
 import reward from 'images/3_reward.svg';
 
-function LandingPage(props) {
+function LandingPage() {
   return (
     <React.Fragment>
+      <section>
+        <h2>Incentive Networks</h2>
+        <p>Find better candidates...</p>
+        <p>Spend 75% less on recruituing...</p>
+        <p>
+          And give the money to your employees, friends, family, network...{' '}
+        </p>
+      </section>
       <section>
         <h2>How does it work?</h2>
         <div className="row row-3">
@@ -40,7 +48,7 @@ function LandingPage(props) {
       </section>
 
       <section>
-        <h2>Better (and cheaper!) than recruiters</h2>
+        <h2>Compare with recruiters</h2>
         <table className="pure-table">
           <thead>
             <tr>
