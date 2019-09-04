@@ -50,18 +50,7 @@ export function LinkDisplay(props) {
               {props.data.skills.length &&
                 props.data.skills.map(skill => {
                   return (
-                    <li
-                      key={skill}
-                      style={{
-                        display: 'inline',
-                        marginRight: '1em',
-                        padding: '0.15em 0.5em 0.3em',
-                        border: 'solid 1px #ccc',
-                        color: '#666',
-                        borderRadius: '4px',
-                        fontSize: 'smaller'
-                      }}
-                    >
+                    <li key={skill} className="job-skill">
                       {skill}
                     </li>
                   );

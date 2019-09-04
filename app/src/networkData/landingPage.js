@@ -10,7 +10,7 @@ function LandingPage() {
       <section>
         <h2>Incentive Networks</h2>
         <p>Find better candidates...</p>
-        <p>Spend 75% less on recruituing...</p>
+        <p>Spend 75% less on recruiting...</p>
         <p>
           And give the money to your employees, friends, family, network...{' '}
         </p>

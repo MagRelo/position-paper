@@ -17,12 +17,20 @@ function LinkAdmin(props) {
     <React.Fragment>
       <h3 className="section-header">Link Information</h3>
       <div className="row row-2">
-        <LinkInformation
-          link={props.link}
-          stream={props.stream}
-          userId={props.userId}
-          traffic={props.traffic}
-        />
+        <div>
+          {props.user.isQueryOwner ? null : (
+            <LinkInformation
+              link={props.link}
+              stream={props.stream}
+              userId={props.userId}
+              traffic={props.traffic}
+            />
+          )}
+
+          <h4 className="section-header">Child Links</h4>
+          <ChildLinksTable links={props.link.children} />
+          <LinkGraph parent={props.link} links={props.link.children} />
+        </div>
 
         <div>
           <h4 className="section-header">Share Link</h4>
@@ -92,10 +100,6 @@ function LinkInformation(props) {
           showChild={true}
           childPayout={props.link.potentialPayoffs[props.link.generation + 1]}
         />
-
-        <h4 className="section-header">Child Links</h4>
-        <ChildLinksTable links={props.link.children} />
-        <LinkGraph parent={props.link} links={props.link.children} />
       </div>
     </div>
   );

@@ -51,6 +51,7 @@ function Link(props) {
               link={link}
               traffic={traffic}
               stream={stream}
+              user={user}
               childLinks={link.children}
             />
           ) : null}
