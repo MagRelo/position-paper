@@ -234,6 +234,12 @@ button:focus {
   padding: 0;
 }
 
+.progressbar:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
 .progressbar li {
   list-style-type: none;
   float: left;

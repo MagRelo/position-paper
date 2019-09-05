@@ -17,6 +17,7 @@ function LegalPage(props) {
       <h2>Compliance</h2>
       <ul>
         <li>US Sanctions</li>
+        <li>ACH Requirements</li>
         <li>Plaid TOS</li>
         <li>Stripe TOS</li>
       </ul>

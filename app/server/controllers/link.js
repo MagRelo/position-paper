@@ -114,6 +114,9 @@ exports.getLink = async function(req, res) {
     // user
     responseObj.user = {
       _id: req.user._id,
+      name: req.user.name,
+      avatar: req.user.avatar,
+
       isFollowingUser: isFollowingUser,
       isLinkOwner: isLinkOwner,
       isFollowingLink: isFollowingLink,

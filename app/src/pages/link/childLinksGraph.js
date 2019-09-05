@@ -4,6 +4,8 @@ import { Graph } from 'react-d3-graph';
 const graphOptions = {
   width: 400,
   height: 200,
+  directed: true,
+  highlightDegree: 2,
   nodeHighlightBehavior: true,
   node: {
     color: '#0079db',
@@ -39,7 +41,7 @@ function shadeColor(color, percent) {
   return '#' + RR + GG + BB;
 }
 
-function buildGraphData(parent, links) {
+function buildGraphData(parent, links, user) {
   const graphData = {
     nodes: [],
     links: []
@@ -57,8 +59,8 @@ function buildGraphData(parent, links) {
     id: parent._id,
     size: size,
     color: color,
-    name: 'Origin',
-    symbolType: 'square'
+    name: user.name,
+    svg: user.avatar
   });
 
   // loop through links
@@ -73,7 +75,8 @@ function buildGraphData(parent, links) {
       id: link._id,
       size: size,
       color: color,
-      name: link.user.name
+      name: link.user.name,
+      svg: link.user.avatar
     });
 
     // link to parent
@@ -97,9 +100,12 @@ class LinkGraph extends Component {
         {this.props.links.length ? (
           <Graph
             id="graph-id"
-            data={buildGraphData(this.props.parent, this.props.links)}
+            data={buildGraphData(
+              this.props.parent,
+              this.props.links,
+              this.props.user
+            )}
             config={graphOptions}
-            directed={true}
           />
         ) : null}
       </div>

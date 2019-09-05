@@ -27,9 +27,33 @@ function LinkAdmin(props) {
             />
           )}
 
-          <h4 className="section-header">Child Links</h4>
-          <ChildLinksTable links={props.link.children} />
-          <LinkGraph parent={props.link} links={props.link.children} />
+          <h4 className="section-header">Network Links</h4>
+
+          <p>
+            You will be paid{' '}
+            <b>
+              {formatCurrency(
+                props.link.potentialPayoffs &&
+                  props.link.potentialPayoffs[props.link.generation]
+              )}
+            </b>{' '}
+            if the candidate responds through a child of this link and the
+            candidate bonus is paid.
+          </p>
+
+          <LinkPayoutDisplayFixed
+            employer={props.link.data.employer}
+            viewerPayout={props.link.potentialPayoffs[props.link.generation]}
+            showChild={true}
+            childPayout={props.link.potentialPayoffs[props.link.generation + 1]}
+          />
+          {/* <ChildLinksTable links={props.link.children} /> */}
+          <h4 className="section-header">Your Network Links</h4>
+          <LinkGraph
+            user={props.user}
+            parent={props.link}
+            links={props.link.children}
+          />
         </div>
 
         <div>
@@ -80,25 +104,6 @@ function LinkInformation(props) {
           employer={props.link.data.employer}
           viewerPayout={props.link.payoffs[props.link.generation]}
           showChild={false}
-        />
-
-        <p>
-          You will be paid{' '}
-          <b>
-            {formatCurrency(
-              props.link.potentialPayoffs &&
-                props.link.potentialPayoffs[props.link.generation]
-            )}
-          </b>{' '}
-          if the candidate responds through a child of this link and the
-          candidate bonus is paid.
-        </p>
-
-        <LinkPayoutDisplayFixed
-          employer={props.link.data.employer}
-          viewerPayout={props.link.potentialPayoffs[props.link.generation]}
-          showChild={true}
-          childPayout={props.link.potentialPayoffs[props.link.generation + 1]}
         />
       </div>
     </div>
