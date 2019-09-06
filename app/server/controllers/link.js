@@ -25,13 +25,13 @@ exports.createQuery = async function(req, res) {
       parentLink: null,
       isQueryOwner: true,
       generation: 0,
-      target_bonus: query.target_bonus,
-      network_bonus: query.network_bonus,
-      title: query.title,
-      type: query.type,
-      data: query.data,
-      payoffs: calcLinkPayouts(query.network_bonus, 0),
-      potentialPayoffs: calcLinkPayouts(query.network_bonus, 1)
+      target_bonus: query.targetBonus,
+      network_bonus: query.networkBonus,
+      title: query.jobTitle,
+      type: 'job',
+      data: query,
+      payoffs: calcLinkPayouts(query.networkBonus, 0),
+      potentialPayoffs: calcLinkPayouts(query.networkBonus, 1)
     });
     await newLink.save();
 

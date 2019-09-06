@@ -14,9 +14,9 @@ function SearchResult(link, query, user) {
       </td>
       <td>{query.data.employer}</td>
       <td>
-        {formatCurrency(query.data.baseSalary.value.minValue, true) +
+        {formatCurrency(query.data.salaryMin, true) +
           ' – ' +
-          formatCurrency(query.data.baseSalary.value.maxValue, true)}
+          formatCurrency(query.data.salaryMax, true)}
       </td>
       <td>{formatCurrency(link.respondBonus)}</td>
       <td>{formatCurrency(link.promoteBonus)}</td>

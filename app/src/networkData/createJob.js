@@ -1,61 +1,74 @@
 import React, { useState, useEffect } from 'react';
 import { navigate } from '@reach/router';
-
+import InputRange from 'react-input-range';
 import { useDebounce, lineItem, formatCurrency } from 'components/util/random';
 
 function CreateJob(props) {
-  // angelist data
-  const [url, setUrl] = useState('');
-  const debouncedUrl = useDebounce(url, 333);
-
   const [jobTitle, setJobTitle] = useState('');
-  const [salary, setSalary] = useState('');
   const [employer, setEmployer] = useState('');
   const [location, setLocation] = useState('');
-  const [skills, setSkills] = useState([]);
-  const [jobData, setJobData] = useState([]);
+  const [description, setDescription] = useState([]);
 
-  const [isSearching, setIsSearching] = useState(false);
+  const [salaryRange, setSalaryRange] = useState({ min: 75000, max: 125000 });
+  const debouncedRange = useDebounce(salaryRange, 333);
+
+  const [networkBonus, setNetworkBonus] = useState({
+    min: 100,
+    max: 5000,
+    value: 3000
+  });
+  const [targetBonus, setTargetBonus] = useState({
+    min: 100,
+    max: 5000,
+    value: 3000
+  });
+
+  // Sync target and network with salary
   useEffect(
     () => {
-      if (debouncedUrl) {
-        setIsSearching(true);
-        getAngelListData(url).then(result => {
-          // console.log(result);
-          // setJobData(result);
+      // network => 3.5%
+      // set mix, max, default for network
+      const networkShare = roundToNearest(salaryRange.min * 0.035, 250);
+      setNetworkBonus({
+        min: Math.round(networkShare - networkShare * 0.3),
+        max: Math.round(networkShare + networkShare * 0.7),
+        value: networkShare
+      });
 
-          setJobTitle(result.title);
-          setSalary(
-            formatCurrency(result.minSalary) +
-              ' – ' +
-              formatCurrency(result.maxSalary)
-          );
-          setEmployer(result.hiringOrganization);
-          setLocation(result.location);
-          setSkills(result.skills);
-
-          setRecruiterBonus(result.minSalary * 0.2);
-          setCandidateBonus(result.minSalary * 0.2 * 0.75);
-          setNetworkBonus(result.minSalary * 0.2 * 0.25);
-
-          setJobData(result.jobData);
-
-          setIsSearching(false);
-        });
-      }
+      // target => 6.5%
+      // set mix, max, default for target
+      const targetShare = roundToNearest(salaryRange.min * 0.065, 250);
+      setTargetBonus({
+        min: Math.round(targetShare - targetShare * 0.3),
+        max: Math.round(targetShare + targetShare * 0.7),
+        value: targetShare
+      });
     },
-    [debouncedUrl]
+    [debouncedRange]
   );
 
-  // Our State
-  const [recruiterBonus, setRecruiterBonus] = useState(0);
-  const [candidateBonus, setCandidateBonus] = useState(0);
-  const [networkBonus, setNetworkBonus] = useState(0);
+  const [totalCost, setTotalCost] = useState({});
+  // Sync total with target and network
+  useEffect(
+    () => {
+      const subTotal = targetBonus.value + networkBonus.value;
+      const platformFee = Math.round(subTotal * 0.1);
+      setTotalCost({
+        targetBonus: targetBonus.value,
+        networkBonus: networkBonus.value,
+        subTotal: subTotal,
+        recruiterFee: roundToNearest(salaryRange.min * 0.2, 100),
+        platformFee: platformFee,
+        total: subTotal + platformFee
+      });
+    },
+    [targetBonus, networkBonus]
+  );
 
   function createQuery(event) {
     event.preventDefault();
 
-    var formObject = { jobTitle, salary, employer, location, ...jobData };
+    var formObject = { jobTitle, employer, location, description };
 
     // get and format form data
     const formData = new FormData(event.target);
@@ -63,13 +76,7 @@ function CreateJob(props) {
       formObject[key] = value;
     });
 
-    addQuery({
-      target_bonus: candidateBonus,
-      network_bonus: networkBonus,
-      title: jobTitle,
-      type: 'Job',
-      data: formObject
-    }).then(link => {
+    addQuery(formObject).then(link => {
       // redirect
       navigate('/link/' + link.linkId);
     });
@@ -77,37 +84,21 @@ function CreateJob(props) {
 
   return (
     <section style={{ maxWidth: '48em', margin: '0 auto' }}>
-      <h2>Add Job</h2>
+      <h2>Post A New Job</h2>
       <form name="addJobForm" onSubmit={createQuery} className="pure-form">
         <legend>Job Information</legend>
-
         <fieldset>
-          <div className="row row-2 ">
-            <div>
-              <label htmlFor="title">Title</label>
-              <input
-                type="text"
-                name="title"
-                className="pure-input-1"
-                value={jobTitle}
-                onChange={e => {
-                  setJobTitle(e.target.value);
-                }}
-              />
-            </div>
-
-            <div>
-              <label htmlFor="salary">Salary</label>
-              <input
-                type="text"
-                name="salary"
-                className="pure-input-1"
-                value={salary}
-                onChange={e => {
-                  setSalary(e.target.value);
-                }}
-              />
-            </div>
+          <div>
+            <label htmlFor="title">Title</label>
+            <input
+              type="text"
+              name="title"
+              className="pure-input-1"
+              value={jobTitle}
+              onChange={e => {
+                setJobTitle(e.target.value);
+              }}
+            />
           </div>
 
           <div className="row row-2 ">
@@ -138,103 +129,116 @@ function CreateJob(props) {
             </div>
           </div>
 
-          <label htmlFor="url">Skills</label>
+          <label htmlFor="location">Description</label>
+          <textarea
+            type="text"
+            name="description"
+            className="pure-input-1"
+            rows="4"
+            value={description}
+            onChange={e => {
+              setDescription(e.target.value);
+            }}
+          />
 
-          <ul style={{ padding: '0', minHeight: '22px', marginTop: '0.2em' }}>
-            {skills.map(skill => (
-              <li
-                key={skill}
-                style={{
-                  display: 'inline',
-                  marginRight: '1em',
-                  padding: '0.15em 0.5em 0.3em',
-                  border: 'solid 1px #ccc',
-                  borderRadius: '4px',
-                  fontSize: 'smaller'
-                }}
-              >
-                {skill}
-              </li>
-            ))}
-          </ul>
+          <label htmlFor="text">Salary Range</label>
+          <div style={{ padding: '0 1em 0 0.5em' }}>
+            <InputRange
+              name="salary"
+              step={2500}
+              maxValue={275000}
+              minValue={25000}
+              formatLabel={value => formatCurrency(value, true)}
+              value={salaryRange}
+              onChange={value => setSalaryRange(value)}
+            />
+          </div>
         </fieldset>
 
+        <legend>Network Incentives</legend>
         <fieldset>
-          <div className="row row-5-3">
-            <div>
-              <label htmlFor="url">URL</label>
-              <input
-                type="text"
-                name="url"
-                className="pure-input-1"
-                onChange={e => {
-                  setUrl(e.target.value);
-                }}
-              />
-            </div>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae
+            maxime sit quibusdam sunt vero ea! Sunt, quas nemo distinctio natus
+            tempora atque harum, exercitationem excepturi sint culpa quis vitae
+            aliquid!
+          </p>
 
-            <div style={{ marginTop: '40px' }}>
-              {isSearching ? (
-                <div className="spinner">
-                  <div className="bounce1" />
-                  <div className="bounce2" />
-                  <div className="bounce3" />
-                </div>
-              ) : null}
+          <div className="row row-2">
+            <div>
+              <label htmlFor="text">Network Bonus</label>
+              <div style={{ padding: '0 1em 0 0.5em' }}>
+                <InputRange
+                  name="networkBonus"
+                  step={250}
+                  minValue={networkBonus.min}
+                  maxValue={networkBonus.max}
+                  formatLabel={value => `$${value}`}
+                  value={networkBonus.value}
+                  onChange={value =>
+                    setNetworkBonus({ ...networkBonus, value: value })
+                  }
+                />
+              </div>
+            </div>
+            <div>
+              <label htmlFor="text">Candidate Signing Bonus</label>
+              <div style={{ padding: '0 1em 0 0.5em' }}>
+                <InputRange
+                  name="targetBonus"
+                  step={250}
+                  minValue={targetBonus.min}
+                  maxValue={targetBonus.max}
+                  formatLabel={value => `$${value}`}
+                  value={targetBonus.value}
+                  onChange={value =>
+                    setTargetBonus({ ...targetBonus, value: value })
+                  }
+                />
+              </div>
             </div>
           </div>
         </fieldset>
 
-        <div>
-          <div>
-            <legend>Add Network Incentives</legend>
+        <legend>Review</legend>
+        <fieldset>
+          <p>
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Et iusto
+            praesentium omnis? Libero molestias provident maxime voluptates
+            rerum, vel odio excepturi saepe nobis eos. Explicabo officiis
+            tempora asperiores odit illo?
+          </p>
 
-            <fieldset>
-              <i>
-                {lineItem(
-                  'Min Recruiter Fee (20%)',
-                  formatCurrency(recruiterBonus)
-                )}
-              </i>
-              <label htmlFor="candidate_bonus">Candidate Bonus</label>
-              <input
-                type="number"
-                name="candidate_bonus"
-                className="pure-input-1"
-                style={{ textAlign: 'right' }}
-                value={candidateBonus}
-                onChange={e => {
-                  setCandidateBonus(e.target.value);
-                }}
-              />
-
-              <label htmlFor="network_bonus">Network Bonus</label>
-              <input
-                type="number"
-                name="network_bonus"
-                className="pure-input-1"
-                style={{ textAlign: 'right' }}
-                value={networkBonus}
-                onChange={e => {
-                  setNetworkBonus(e.target.value);
-                }}
-              />
-            </fieldset>
-            <fieldset>
+          <div className="row row-3-5">
+            <div />
+            <div>
               {lineItem(
-                'Total',
-                formatCurrency(
-                  parseInt(candidateBonus, 10) + parseInt(networkBonus, 10)
-                )
+                'Candidate Bonus',
+                formatCurrency(totalCost.targetBonus)
               )}
-            </fieldset>
+              {lineItem(
+                'Network Bonus',
+                formatCurrency(totalCost.networkBonus)
+              )}
+              {lineItem('Platform Fee', formatCurrency(totalCost.platformFee))}
+
+              {lineItem('Total Cost', formatCurrency(totalCost.total))}
+              {lineItem(
+                'Recruiter Fee',
+                formatCurrency(totalCost.recruiterFee)
+              )}
+              {lineItem(
+                'Savings',
+                formatCurrency(totalCost.recruiterFee - totalCost.total)
+              )}
+            </div>
           </div>
-        </div>
+        </fieldset>
 
         <hr />
         <div style={{ textAlign: 'right' }}>
           <button className="pure-button pure-button-primary" type="submit">
-            Create Query
+            Post Job
           </button>
         </div>
       </form>
@@ -244,21 +248,21 @@ function CreateJob(props) {
 
 export default CreateJob;
 
-async function getAngelListData(url) {
-  return await fetch('/api/query/metadata', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ url: url })
-  }).then(response => {
-    if (response.status === 200) {
-      return response.json();
-    }
+// async function getAngelListData(url) {
+//   return await fetch('/api/query/metadata', {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json'
+//     },
+//     body: JSON.stringify({ url: url })
+//   }).then(response => {
+//     if (response.status === 200) {
+//       return response.json();
+//     }
 
-    return { skills: [] };
-  });
-}
+//     return { skills: [] };
+//   });
+// }
 
 async function addQuery(queryData) {
   return fetch('/api/query/add', {
@@ -268,4 +272,8 @@ async function addQuery(queryData) {
     },
     body: JSON.stringify(queryData)
   }).then(response => response.json());
+}
+
+function roundToNearest(input, step) {
+  return Math.round(input / step) * step;
 }

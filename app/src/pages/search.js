@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 
 import { useDebounce } from 'components/util/random';
 
-import SearchResults from 'components/searchResult';
-
 import JobSearchForm from 'networkData/searchForm';
+import SearchResults from 'networkData/searchResult';
 
 function SearchFlow() {
   // search data

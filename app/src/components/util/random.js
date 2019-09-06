@@ -18,12 +18,15 @@ function abbreviateNumber(number) {
   var scaled = number / scale;
 
   // format number and add suffix
-  return scaled + suffix;
+  return '$' + scaled + suffix;
 }
 
 export function formatCurrency(input, isShorthand) {
+  if (!input) {
+    return '';
+  }
   // type checks
-  let inputNum = null;
+  let inputNum = 0;
   if (typeof input === 'string') {
     inputNum = parseInt(input, 10);
   } else {

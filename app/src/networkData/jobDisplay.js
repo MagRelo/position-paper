@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatCurrency } from '../components/util/random';
 
 const labelStyle = {
   textTransform: 'uppercase',
@@ -33,31 +34,14 @@ export function LinkDisplay(props) {
       >
         {jobDataItem('Employer', props.data.employer)}
         {jobDataItem('Location', props.data.location)}
-        {jobDataItem('Salary', props.data.salary)}
-
-        {/* Link */}
-        <React.Fragment>
-          <div style={labelStyle}>Link</div>
-          <div>
-            <a href={props.data.url}>Stack Overflow</a>
-          </div>
-        </React.Fragment>
-
-        <React.Fragment>
-          <div style={labelStyle}>Skills</div>
-          <div>
-            <ul style={{ padding: 0, margin: 0 }}>
-              {props.data.skills.length &&
-                props.data.skills.map(skill => {
-                  return (
-                    <li key={skill} className="job-skill">
-                      {skill}
-                    </li>
-                  );
-                })}
-            </ul>
-          </div>
-        </React.Fragment>
+        {jobDataItem(
+          'Salary',
+          `${formatCurrency(props.data.salaryMin, true)} – ${formatCurrency(
+            props.data.salaryMax,
+            true
+          )}`
+        )}
+        {jobDataItem('', props.data.description)}
       </div>
     </div>
   );
