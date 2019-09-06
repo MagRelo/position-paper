@@ -9,8 +9,6 @@ import {
   Loading
 } from 'components/util/random';
 
-import SocialIcon from 'components/socialButton';
-
 import PaymentsTable from './userPaymentsTable';
 import ResponseList from './userResponseTable';
 import JobTable from './userJobsTable';
@@ -78,8 +76,7 @@ function User(props) {
                 <TabList style={{ marginBottom: '1em' }}>
                   <CoolTab count={jobs.length}>Jobs</CoolTab>
                   <CoolTab count={links.length}>Links</CoolTab>
-                  <CoolTab count={responses.length}>Responses</CoolTab>
-                  <CoolTab count={payments.length}>Payments</CoolTab>
+                  <CoolTab count={responses.length}>Applications</CoolTab>
                   <CoolTab>Profile</CoolTab>
                 </TabList>
 
@@ -102,10 +99,6 @@ function User(props) {
                   </TabPanel>
 
                   <TabPanel style={{ outline: 'none' }}>
-                    <PaymentsTable payments={payments} />
-                  </TabPanel>
-
-                  <TabPanel style={{ outline: 'none' }}>
                     <div>
                       <h3 className="section-header">Profile</h3>
 
@@ -125,17 +118,7 @@ function User(props) {
                     </div>
 
                     <div>
-                      <h3 className="section-header">Social Accounts</h3>
-                      <div className="social-grid">
-                        <SocialIcon company="gmail" enabled="true" />
-                        <SocialIcon company="linkedin" />
-                        <SocialIcon company="twitter" enabled="true" />
-                        <SocialIcon company="instagram" />
-                      </div>
-                    </div>
-
-                    <div>
-                      <h3 className="section-header">Bank Account</h3>
+                      <h3 className="section-header">Account Balance</h3>
                       {lineItem('Pending Balance', formatCurrency(0))}
 
                       {userData.hasAccount ? (
@@ -146,6 +129,9 @@ function User(props) {
                         </p>
                       )}
                     </div>
+
+                    <h3 className="section-header">Payments</h3>
+                    <PaymentsTable payments={payments} />
                   </TabPanel>
                 </TabPanels>
               </Tabs>
