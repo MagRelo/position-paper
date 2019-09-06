@@ -4,7 +4,7 @@ import { formatCurrency, lineItem } from 'components/util/random';
 
 import LinkMap from './linkMap';
 import LinkPayoutDisplayFixed from './linkDisplayBarFixed';
-import ChildLinksTable from './childLinksTable';
+// import ChildLinksTable from './childLinksTable';
 import LinkGraph from './childLinksGraph';
 
 import EmailButton from 'components/social/emailButton';
@@ -15,39 +15,41 @@ import InstaButton from 'components/social/instagramButton';
 function LinkAdmin(props) {
   return (
     <React.Fragment>
-      <h3 className="section-header">Link Information</h3>
+      <h3 className="section-header">Link Dashboard</h3>
+
       <div className="row row-2">
         <div>
-          {props.user.isQueryOwner ? null : (
-            <LinkInformation
+          {/* Info */}
+          {props.user.isQueryOwner ? (
+            <QueryOwnerMessage
+              link={props.link}
+              stream={props.stream}
+              userId={props.userId}
+              traffic={props.traffic}
+            />
+          ) : (
+            <LinkOwnerMessage
               link={props.link}
               stream={props.stream}
               userId={props.userId}
               traffic={props.traffic}
             />
           )}
+        </div>
 
-          <h4 className="section-header">Network Links</h4>
+        <div>
+          {/* Share */}
+          <h4 className="section-header">Share Link</h4>
+          <div className="social-grid">
+            <EmailButton enabled={true} link={props.link} />
+            <TwitterButton enabled={true} link={props.link} />
+            <LinkedinButton enabled={false} link={props.link} />
+            <InstaButton enabled={false} link={props.link} />
+          </div>
+        </div>
 
-          <p>
-            You will be paid{' '}
-            <b>
-              {formatCurrency(
-                props.link.potentialPayoffs &&
-                  props.link.potentialPayoffs[props.link.generation]
-              )}
-            </b>{' '}
-            if the candidate responds through a child of this link and the
-            candidate bonus is paid.
-          </p>
-
-          <LinkPayoutDisplayFixed
-            employer={props.link.data.employer}
-            viewerPayout={props.link.potentialPayoffs[props.link.generation]}
-            showChild={true}
-            childPayout={props.link.potentialPayoffs[props.link.generation + 1]}
-          />
-          {/* <ChildLinksTable links={props.link.children} /> */}
+        <div>
+          {/* Child Links */}
           <h4 className="section-header">Your Network Links</h4>
           <LinkGraph
             user={props.user}
@@ -57,14 +59,7 @@ function LinkAdmin(props) {
         </div>
 
         <div>
-          <h4 className="section-header">Share Link</h4>
-          <div className="social-grid">
-            <EmailButton enabled={true} link={props.link} />
-            <TwitterButton enabled={true} link={props.link} />
-            <LinkedinButton enabled={false} link={props.link} />
-            <InstaButton enabled={false} link={props.link} />
-          </div>
-
+          {/* Traffic */}
           <h4 className="section-header">Link Traffic</h4>
           <div>
             <LinkMap />
@@ -85,7 +80,7 @@ function LinkAdmin(props) {
 
 export default LinkAdmin;
 
-function LinkInformation(props) {
+function LinkOwnerMessage(props) {
   return (
     <div>
       <div>
@@ -106,6 +101,39 @@ function LinkInformation(props) {
           showChild={false}
         />
       </div>
+
+      <h4 className="section-header">Network Links</h4>
+      <p>
+        You will be paid{' '}
+        <b>
+          {formatCurrency(
+            props.link.potentialPayoffs &&
+              props.link.potentialPayoffs[props.link.generation]
+          )}
+        </b>{' '}
+        if the candidate responds through a child of this link and the candidate
+        bonus is paid.
+      </p>
+
+      <LinkPayoutDisplayFixed
+        employer={props.link.data.employer}
+        viewerPayout={props.link.potentialPayoffs[props.link.generation]}
+        showChild={true}
+        childPayout={props.link.potentialPayoffs[props.link.generation + 1]}
+      />
+    </div>
+  );
+}
+
+function QueryOwnerMessage(props) {
+  return (
+    <div>
+      <p>This is the owner message.</p>
+
+      <ul>
+        <li>Target Bonus Cost: {formatCurrency(props.link.target_bonus)}</li>
+        <li>Network Bonus Cost: {formatCurrency(props.link.network_bonus)}</li>
+      </ul>
     </div>
   );
 }
