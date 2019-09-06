@@ -10,14 +10,23 @@ import { MdInput } from 'react-icons/md';
 import { useTrail, animated } from 'react-spring';
 
 // Load locale-specific relative date/time formatting rules.
-import en from 'javascript-time-ago/locale/en';
 import TimeAgo from 'javascript-time-ago';
+import en from 'javascript-time-ago/locale/en';
 
 // Add locale-specific relative date/time formatting rules.
 TimeAgo.addLocale(en);
 
 // Create relative date/time formatter.
 const timeAgo = new TimeAgo('en-US');
+const offset = new Date().getTimezoneOffset();
+const offsetMs = offset * 60000;
+
+function formatDate(utcTimeStamp) {
+  const date = new Date(utcTimeStamp);
+  const offsetDate = date.getTime() - offsetMs;
+
+  return timeAgo.format(offsetDate, 'twitter');
+}
 
 function getIcon(activityType) {
   switch (activityType) {
@@ -137,9 +146,7 @@ function activityTile(item, user) {
         {getIcon(item.verb)}
         {getLabel(item.verb, isUser, item.data)}
 
-        <span style={{ float: 'right' }}>
-          {timeAgo.format(new Date(item.time))}
-        </span>
+        <span style={{ float: 'right' }}>{formatDate(item.time)}</span>
       </div>
       {getContent(item.verb, isUser, item.data)}
     </div>
