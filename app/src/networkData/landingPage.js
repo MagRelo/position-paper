@@ -46,50 +46,6 @@ function LandingPage() {
           </div>
         </div>
       </section>
-
-      <section>
-        <h2>Compare with recruiters</h2>
-        <table className="pure-table">
-          <thead>
-            <tr>
-              <th> </th>
-              <th>Incentive Network</th>
-              <th>Recruiters</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>How much does it cost? </td>
-              <td>
-                Free to post, then you choose the appropriate network incentives
-                to power your search{' '}
-              </td>
-              <td> 20% of annual salary</td>
-            </tr>
-            <tr>
-              <td>Where does the money go?</td>
-              <td>
-                To your employees, your friends, your investors, your favorite
-                charities
-              </td>
-              <td>Anonymous corporation</td>
-            </tr>
-            <tr>
-              <td>Who does the work?</td>
-              <td>
-                Independent agents cooperate and/or compete for the network
-                incentives you offer
-              </td>
-              <td>✘</td>
-            </tr>
-            <tr>
-              <td>Cheap</td>
-              <td>✔</td>
-              <td>✘</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
     </React.Fragment>
   );
 }
@@ -138,3 +94,48 @@ export default LandingPage;
 //   </div>
 // </div>
 // </section>
+
+// <section>
+// <h2>Compare with recruiters</h2>
+// <table className="pure-table">
+//   <thead>
+//     <tr>
+//       <th> </th>
+//       <th>Incentive Network</th>
+//       <th>Recruiters</th>
+//     </tr>
+//   </thead>
+//   <tbody>
+//     <tr>
+//       <td>How much does it cost? </td>
+//       <td>
+//         Free to post, then you choose the appropriate network incentives
+//         to power your search{' '}
+//       </td>
+//       <td> 20% of annual salary</td>
+//     </tr>
+//     <tr>
+//       <td>Where does the money go?</td>
+//       <td>
+//         To your employees, your friends, your investors, your favorite
+//         charities
+//       </td>
+//       <td>Anonymous corporation</td>
+//     </tr>
+//     <tr>
+//       <td>Who does the work?</td>
+//       <td>
+//         Independent agents cooperate and/or compete for the network
+//         incentives you offer
+//       </td>
+//       <td>✘</td>
+//     </tr>
+//     <tr>
+//       <td>Cheap</td>
+//       <td>✔</td>
+//       <td>✘</td>
+//     </tr>
+//   </tbody>
+// </table>
+// </section>
+//

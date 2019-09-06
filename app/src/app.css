@@ -95,32 +95,20 @@ h3.section-header {
 
 
 /* payment line items */
+
 .line-item {
-  grid-template-columns: 1fr;
-  grid-gap: 0;
-  font-size: 0.9em;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-gap: 1em;
+
+  margin: 0.5em 0;
 }
 
 .line-item-filler {
-  display: none;
+  border-bottom: 1px dashed #cbcbcb;
+  display: block;
 }
 
-@media screen and (min-width: 435px) {
-
-  .line-item {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    grid-gap: 1em;
-
-    margin: 0.5em 0;
-  }
-
-  .line-item-filler {
-    border-bottom: 1px dashed #cbcbcb;
-    display: block;
-  }
-
-}
 
 /* payment line items */
 
