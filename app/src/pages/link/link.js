@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { Helmet } from 'react-helmet';
 
 import LinkAdmin from './linkAdmin';
 import LinkDisplay from './linkDisplay';
@@ -44,6 +45,36 @@ function Link(props) {
         <Loading />
       ) : (
         <React.Fragment>
+          <Helmet>
+            <title>{queryData.jobTitle}</title>
+            <meta name="description" content={queryData.description} />
+            <link
+              rel="canonical"
+              href={'https://incentive.exchange/link/' + link.linkId}
+            />
+
+            <meta property="og:site_name" content="Incentive Exchange" />
+            <meta property="og:type" content="website" />
+            <meta
+              property="og:url"
+              content={'https://incentive.exchange/link/' + link.linkId}
+            />
+            <meta property="og:title" content={queryData.jobTitle} />
+            <meta property="og:description" content={queryData.description} />
+
+            {/* <meta property="og:image" content="" /> */}
+            {/* <meta property="og:image:secure_url" content="" /> */}
+            {/* <meta property="og:image:type" content="jpeg" /> */}
+            {/* <meta property="og:image:height" content="606" /> */}
+            {/* <meta property="og:image:width" content="808" /> */}
+
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:site" content="@spoonuniversity" />
+            <meta name="twitter:title" content={queryData.jobTitle} />
+            <meta name="twitter:description" content={queryData.description} />
+            {/* <meta name="twitter:image" content="" /> */}
+          </Helmet>
+
           <LinkDisplay link={link} user={user} queryData={queryData} />
 
           {user.isLinkOwner ? (
