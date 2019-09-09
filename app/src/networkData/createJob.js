@@ -3,6 +3,8 @@ import { navigate } from '@reach/router';
 import InputRange from 'react-input-range';
 import { useDebounce, lineItem, formatCurrency } from 'components/util/random';
 
+import LinkPayoutDisplayFixed from 'pages/link/linkDisplayBarFixed';
+
 function CreateJob(props) {
   const [jobTitle, setJobTitle] = useState('');
   const [employer, setEmployer] = useState('');
@@ -31,7 +33,7 @@ function CreateJob(props) {
       const networkShare = roundToNearest(salaryRange.min * 0.035, 250);
       setNetworkBonus({
         min: Math.round(networkShare - networkShare * 0.3),
-        max: Math.round(networkShare + networkShare * 0.7),
+        max: Math.round(networkShare + networkShare * 1.7),
         value: networkShare
       });
 
@@ -40,7 +42,7 @@ function CreateJob(props) {
       const targetShare = roundToNearest(salaryRange.min * 0.065, 250);
       setTargetBonus({
         min: Math.round(targetShare - targetShare * 0.3),
-        max: Math.round(targetShare + targetShare * 0.7),
+        max: Math.round(targetShare + targetShare * 1.7),
         value: targetShare
       });
     },
@@ -84,7 +86,6 @@ function CreateJob(props) {
 
   return (
     <section style={{ maxWidth: '48em', margin: '0 auto' }}>
-      <h2>Post A New Job</h2>
       <form name="addJobForm" onSubmit={createQuery} className="pure-form">
         <legend>Job Information</legend>
         <fieldset>
@@ -156,18 +157,17 @@ function CreateJob(props) {
         </fieldset>
 
         <legend>Network Incentives</legend>
+
         <fieldset>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae
-            maxime sit quibusdam sunt vero ea! Sunt, quas nemo distinctio natus
-            tempora atque harum, exercitationem excepturi sint culpa quis vitae
-            aliquid!
+            Network Incentives are the fuel that powers the search for the
+            perfect candidate.{' '}
           </p>
 
           <div className="row row-2">
             <div>
               <label htmlFor="text">Network Bonus</label>
-              <div style={{ padding: '0 1em 0 0.5em' }}>
+              <div style={{ padding: '0 1em' }}>
                 <InputRange
                   name="networkBonus"
                   step={250}
@@ -182,8 +182,8 @@ function CreateJob(props) {
               </div>
             </div>
             <div>
-              <label htmlFor="text">Candidate Signing Bonus</label>
-              <div style={{ padding: '0 1em 0 0.5em' }}>
+              <label htmlFor="text">Employee Bonus</label>
+              <div style={{ padding: '0 1em' }}>
                 <InputRange
                   name="targetBonus"
                   step={250}
@@ -200,33 +200,35 @@ function CreateJob(props) {
           </div>
         </fieldset>
 
-        <legend>Review</legend>
+        <LinkPayoutDisplayFixed
+          employer={employer}
+          showLink={false}
+          linkPayout={networkBonus.value}
+          showChild={true}
+          childPayout={networkBonus.value}
+          candidatePayout={targetBonus.value}
+        />
+
+        <legend>Review & Compare</legend>
         <fieldset>
-          <p>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Et iusto
-            praesentium omnis? Libero molestias provident maxime voluptates
-            rerum, vel odio excepturi saepe nobis eos. Explicabo officiis
-            tempora asperiores odit illo?
-          </p>
-
-          <div className="row row-3-5">
-            <div />
+          <div className="row row-2">
             <div>
-              {lineItem(
-                'Candidate Bonus',
-                formatCurrency(totalCost.targetBonus)
-              )}
-              {lineItem(
-                'Network Bonus',
-                formatCurrency(totalCost.networkBonus)
-              )}
-              {lineItem('Platform Fee', formatCurrency(totalCost.platformFee))}
-
-              {lineItem('Total Cost', formatCurrency(totalCost.total))}
+              <legend>Typical Hiring Process</legend>
               {lineItem(
                 'Recruiter Fee',
                 formatCurrency(totalCost.recruiterFee)
               )}
+            </div>
+            <div>
+              <legend>Incentive Network</legend>
+              {lineItem(
+                'Friends & Family',
+                formatCurrency(totalCost.networkBonus)
+              )}
+              {lineItem('New Employee', formatCurrency(totalCost.targetBonus))}
+              {lineItem('Platform Fee', formatCurrency(totalCost.platformFee))}
+              {lineItem('Total', formatCurrency(totalCost.total))}
+
               {lineItem(
                 'Savings',
                 formatCurrency(totalCost.recruiterFee - totalCost.total)

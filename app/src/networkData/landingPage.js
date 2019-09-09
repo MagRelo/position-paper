@@ -4,6 +4,8 @@ import post from 'images/1_doc.svg';
 import network from 'images/2_network.svg';
 import reward from 'images/3_reward.svg';
 
+import CreateJob from 'networkData/createJob';
+
 function LandingPage() {
   return (
     <React.Fragment>
@@ -13,6 +15,12 @@ function LandingPage() {
         <p>Spend 75% less on recruiting...</p>
         <p>
           And give the money to your employees, friends, family, network...{' '}
+        </p>
+        <p>
+          Redirect the money you would have spent on recruiters to your new
+          employee, your existing employees, plus their friends, their family,
+          friends of friends, etc. Use your recruiting process to build an
+          extended network of goodwill.
         </p>
       </section>
       <section>
@@ -45,6 +53,11 @@ function LandingPage() {
             </p>
           </div>
         </div>
+      </section>
+
+      <section>
+        <h2>Post a Job</h2>
+        <CreateJob />
       </section>
     </React.Fragment>
   );

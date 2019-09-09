@@ -17,61 +17,66 @@ const iconStyle = {
 };
 
 function linkDisplay(props) {
-  const count = props.showChild ? 4 : 3;
+  // count of tiles for spacing
+  let count = 2;
+  if (props.showChild) {
+    count++;
+  }
+  if (props.showLink) {
+    count++;
+  }
   const width = 100 / count;
 
   return (
     <ul className="progressbar">
-      {/* Job Ad */}
+      {/* Employer */}
       <li style={{ width: width + '%' }}>
-        {/* Circle */}
-        <span className="before">
+        <span className="circle">
           <IoMdBusiness style={iconStyle} />
         </span>
-
-        {/* Label */}
-        <span>{props.employer || 'Daily Beast'}</span>
+        <span>{props.employer || 'Your Company'}</span>
       </li>
 
-      {/* viewer */}
-      <li style={{ width: width + '%' }}>
-        {/* Circle */}
-        <span
-          className="before"
-          style={{
-            borderColor: '#55b776'
-          }}
-        >
-          <IoIosLink style={{ ...iconStyle, color: '#55b776' }} />
-        </span>
+      {/* Link */}
+      {props.showLink ? (
+        <li style={{ width: width + '%' }}>
+          <span
+            className="circle"
+            style={{
+              borderColor: '#55b776'
+            }}
+          >
+            <IoIosLink style={{ ...iconStyle, color: '#55b776' }} />
+          </span>
 
-        {/* Label */}
-        <span style={{ fontWeight: 'bolder', color: '#55b776' }}>
-          {formatCurrency(props.viewerPayout || 0)}
-        </span>
+          <span style={{ fontWeight: 'bolder', color: '#55b776' }}>
+            {formatCurrency(props.linkPayout || 0)}
+          </span>
 
-        {/* line to previous dot */}
-        <span
-          className="after"
-          style={{
-            borderTop: '2px solid #bdbdbd'
-          }}
-        />
-      </li>
+          <span
+            className="line"
+            style={{
+              borderTop: '2px solid #bdbdbd'
+            }}
+          />
+        </li>
+      ) : null}
 
+      {/* Network */}
       {props.showChild ? (
         <li style={{ width: width + '%' }}>
-          {/* Circle */}
-          <span className="before" style={{ borderStyle: 'dashed' }}>
+          <span className="circle" style={{ borderStyle: 'dashed' }}>
             <IoIosPeople style={iconStyle} />
           </span>
 
           {/* Label */}
+          <span style={{ display: 'block' }}>
+            {props.childLabel || 'Employees, Friends, Family...'}
+          </span>
           <span>{formatCurrency(props.childPayout || 0)}</span>
 
-          {/* line to previous dot */}
           <span
-            className="after"
+            className="line"
             style={{
               borderTop: '2px dashed #bdbdbd'
             }}
@@ -79,19 +84,17 @@ function linkDisplay(props) {
         </li>
       ) : null}
 
-      {/* Cadidate */}
+      {/* Candidate */}
       <li style={{ width: width + '%' }}>
-        {/* Circle */}
-        <span className="before">
+        <span className="circle" style={{ borderStyle: 'dashed' }}>
           <IoIosPerson style={iconStyle} />
         </span>
-
-        {/* Label */}
-        <span>Candidate</span>
-
-        {/* line to previous dot */}
+        <span style={{ display: 'block' }}>
+          {props.candidateLabel || 'New Employee'}
+        </span>
+        <span>{formatCurrency(props.candidatePayout || 0)}</span>
         <span
-          className="after"
+          className="line"
           style={{
             borderTop: '2px dashed #bdbdbd'
           }}

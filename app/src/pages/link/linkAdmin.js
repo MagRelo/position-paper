@@ -97,7 +97,8 @@ function LinkOwnerMessage(props) {
 
         <LinkPayoutDisplayFixed
           employer={props.link.data.employer}
-          viewerPayout={props.link.payoffs[props.link.generation]}
+          showLink={true}
+          linkPayout={props.link.payoffs[props.link.generation]}
           showChild={false}
         />
       </div>
@@ -117,7 +118,8 @@ function LinkOwnerMessage(props) {
 
       <LinkPayoutDisplayFixed
         employer={props.link.data.employer}
-        viewerPayout={props.link.potentialPayoffs[props.link.generation]}
+        showLink={true}
+        linkPayout={props.link.potentialPayoffs[props.link.generation]}
         showChild={true}
         childPayout={props.link.potentialPayoffs[props.link.generation + 1]}
       />

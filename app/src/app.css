@@ -222,6 +222,7 @@ button:focus {
   padding: 0;
 }
 
+/* clearfix */
 .progressbar:after {
   content: "";
   display: table;
@@ -234,12 +235,10 @@ button:focus {
   font-size: 12px;
   position: relative;
   text-align: center;
-  text-transform: uppercase;
   color: #3a3a3a;
-  margin: 2em 0;
 }
 
-.progressbar li span.before {
+.progressbar li span.circle {
   width: 30px;
   height: 30px;
   content: counter(step);
@@ -253,7 +252,7 @@ button:focus {
   background-color: white;
 }
 
-.progressbar li>span.after {
+.progressbar li>span.line {
   width: 100%;
   height: 2px;
   content: '';

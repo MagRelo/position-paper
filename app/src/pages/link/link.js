@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Helmet } from 'react-helmet';
 
+// network Data
+import { LinkDisplay as JobDisplay } from 'networkData/jobDisplay.js';
 import LinkAdmin from './linkAdmin';
 import LinkDisplay from './linkDisplay';
 
@@ -45,37 +47,18 @@ function Link(props) {
         <Loading />
       ) : (
         <React.Fragment>
-          <Helmet>
-            <title>{queryData.jobTitle}</title>
-            <meta name="description" content={queryData.description} />
-            <link
-              rel="canonical"
-              href={'https://incentive.exchange/link/' + link.linkId}
-            />
+          <MetaData link={link} user={user} queryData={queryData} />
 
-            <meta property="og:site_name" content="Incentive Exchange" />
-            <meta property="og:type" content="website" />
-            <meta
-              property="og:url"
-              content={'https://incentive.exchange/link/' + link.linkId}
-            />
-            <meta property="og:title" content={queryData.jobTitle} />
-            <meta property="og:description" content={queryData.description} />
+          <div className="row row-5-3">
+            <div>
+              <JobDisplay data={queryData} />
+            </div>
 
-            {/* <meta property="og:image" content="" /> */}
-            {/* <meta property="og:image:secure_url" content="" /> */}
-            {/* <meta property="og:image:type" content="jpeg" /> */}
-            {/* <meta property="og:image:height" content="606" /> */}
-            {/* <meta property="og:image:width" content="808" /> */}
-
-            <meta name="twitter:card" content="summary_large_image" />
-            <meta name="twitter:site" content="@spoonuniversity" />
-            <meta name="twitter:title" content={queryData.jobTitle} />
-            <meta name="twitter:description" content={queryData.description} />
-            {/* <meta name="twitter:image" content="" /> */}
-          </Helmet>
-
-          <LinkDisplay link={link} user={user} queryData={queryData} />
+            {/* Buttons */}
+            {!user.isLinkOwner ? (
+              <LinkDisplay link={link} user={user} queryData={queryData} />
+            ) : null}
+          </div>
 
           {user.isLinkOwner ? (
             <LinkAdmin
@@ -93,6 +76,40 @@ function Link(props) {
 }
 
 export default Link;
+
+function MetaData({ queryData, link }) {
+  return (
+    <Helmet>
+      <title>{queryData.jobTitle}</title>
+      <meta name="description" content={queryData.description} />
+      <link
+        rel="canonical"
+        href={'https://incentive.exchange/link/' + link.linkId}
+      />
+
+      <meta property="og:site_name" content="Incentive Exchange" />
+      <meta property="og:type" content="website" />
+      <meta
+        property="og:url"
+        content={'https://incentive.exchange/link/' + link.linkId}
+      />
+      <meta property="og:title" content={queryData.jobTitle} />
+      <meta property="og:description" content={queryData.description} />
+
+      {/* <meta property="og:image" content="" /> */}
+      {/* <meta property="og:image:secure_url" content="" /> */}
+      {/* <meta property="og:image:type" content="jpeg" /> */}
+      {/* <meta property="og:image:height" content="606" /> */}
+      {/* <meta property="og:image:width" content="808" /> */}
+
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:site" content="@spoonuniversity" />
+      <meta name="twitter:title" content={queryData.jobTitle} />
+      <meta name="twitter:description" content={queryData.description} />
+      {/* <meta name="twitter:image" content="" /> */}
+    </Helmet>
+  );
+}
 
 async function getLink(linkId, clearSession) {
   return await fetch('/api/link/' + linkId).then(response => {
