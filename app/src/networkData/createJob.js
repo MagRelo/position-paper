@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { navigate } from '@reach/router';
 import InputRange from 'react-input-range';
 import { useDebounce, lineItem, formatCurrency } from 'components/util/random';
 
 import LinkPayoutDisplayFixed from 'pages/link/linkDisplayBarFixed';
 
+import { AuthContext } from 'App';
+
 function CreateJob(props) {
+  const { activeSession } = useContext(AuthContext);
+
   const [jobTitle, setJobTitle] = useState('');
   const [employer, setEmployer] = useState('');
   const [location, setLocation] = useState('');
@@ -78,10 +82,14 @@ function CreateJob(props) {
       formObject[key] = value;
     });
 
-    addQuery(formObject).then(link => {
-      // redirect
-      navigate('/link/' + link.linkId);
-    });
+    if (!activeSession) {
+      alert('Please login!');
+    } else {
+      addQuery(formObject).then(link => {
+        // redirect
+        navigate('/link/' + link.linkId);
+      });
+    }
   }
 
   return (
@@ -94,6 +102,7 @@ function CreateJob(props) {
             <input
               type="text"
               name="title"
+              required={true}
               className="pure-input-1"
               value={jobTitle}
               onChange={e => {
@@ -108,6 +117,7 @@ function CreateJob(props) {
               <input
                 type="text"
                 name="employer"
+                required={true}
                 className="pure-input-1"
                 value={employer}
                 onChange={e => {
@@ -121,6 +131,7 @@ function CreateJob(props) {
               <input
                 type="text"
                 name="location"
+                required={true}
                 className="pure-input-1"
                 value={location}
                 onChange={e => {
@@ -134,6 +145,7 @@ function CreateJob(props) {
           <textarea
             type="text"
             name="description"
+            required={true}
             className="pure-input-1"
             rows="4"
             value={description}
@@ -159,11 +171,6 @@ function CreateJob(props) {
         <legend>Network Incentives</legend>
 
         <fieldset>
-          <p>
-            Network Incentives are the fuel that powers the search for the
-            perfect candidate.{' '}
-          </p>
-
           <div className="row row-2">
             <div>
               <label htmlFor="text">Network Bonus</label>
@@ -249,22 +256,6 @@ function CreateJob(props) {
 }
 
 export default CreateJob;
-
-// async function getAngelListData(url) {
-//   return await fetch('/api/query/metadata', {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/json'
-//     },
-//     body: JSON.stringify({ url: url })
-//   }).then(response => {
-//     if (response.status === 200) {
-//       return response.json();
-//     }
-
-//     return { skills: [] };
-//   });
-// }
 
 async function addQuery(queryData) {
   return fetch('/api/query/add', {
