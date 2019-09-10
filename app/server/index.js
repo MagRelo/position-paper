@@ -1,4 +1,9 @@
 // *
+// monitoring
+// *
+require('newrelic');
+
+// *
 // load env var's
 // *
 const dotenv = require('dotenv');
