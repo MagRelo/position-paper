@@ -1,12 +1,16 @@
 .header {
   padding: 0.6em 2em;
   background: rgb(84, 84, 84);
-  color: white
+  color: white;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .header h1 {
   margin: 0;
   color: #0079db;
+  flex-grow: 1;
 }
 
 .header h2 {
@@ -25,7 +29,7 @@
 }
 
 .menu>* {
-  margin-left: 1em;
+  margin-left: 2em;
 }
 
 .header a {
@@ -456,6 +460,7 @@ button:focus {
   background-color: white;
   border-radius: 4px;
   box-shadow: 0 2px 3px #272727;
+  padding: 5px 14px;
 }
 
 .landing-image-container {

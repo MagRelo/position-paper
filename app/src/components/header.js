@@ -43,6 +43,9 @@ function Header(props) {
   return (
     <React.Fragment>
       <nav className="header">
+        <h1>
+          <Link to="/">TalentRelay</Link>
+        </h1>
         <div className="menu">
           <span className="hide-mobile">
             <NavLink to={'/search'}>Search</NavLink>
@@ -90,10 +93,6 @@ function Header(props) {
             />
           )}
         </div>
-
-        <h1>
-          <Link to="/">talent</Link>
-        </h1>
       </nav>
     </React.Fragment>
   );
