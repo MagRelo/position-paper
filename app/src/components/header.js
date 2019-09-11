@@ -94,8 +94,6 @@ function Header(props) {
         <h1>
           <Link to="/">talent</Link>
         </h1>
-
-        <h2>@ incentive ( dot ) exchange</h2>
       </nav>
     </React.Fragment>
   );

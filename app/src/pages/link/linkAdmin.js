@@ -17,8 +17,19 @@ function LinkAdmin(props) {
     <React.Fragment>
       <h3 className="section-header">Link Dashboard</h3>
 
-      <div className="row row-2">
-        <div>
+      <div className="link-admin-grid">
+        <div className="share">
+          {/* Share */}
+          <h4 className="section-header">Share Link</h4>
+          <div className="social-grid">
+            <EmailButton enabled={true} link={props.link} />
+            <TwitterButton enabled={true} link={props.link} />
+            <LinkedinButton enabled={false} link={props.link} />
+            <InstaButton enabled={false} link={props.link} />
+          </div>
+        </div>
+
+        <div className="info">
           {/* Info */}
           {props.user.isQueryOwner ? (
             <QueryOwnerMessage
@@ -37,18 +48,7 @@ function LinkAdmin(props) {
           )}
         </div>
 
-        <div>
-          {/* Share */}
-          <h4 className="section-header">Share Link</h4>
-          <div className="social-grid">
-            <EmailButton enabled={true} link={props.link} />
-            <TwitterButton enabled={true} link={props.link} />
-            <LinkedinButton enabled={false} link={props.link} />
-            <InstaButton enabled={false} link={props.link} />
-          </div>
-        </div>
-
-        <div>
+        <div className="child-links">
           {/* Child Links */}
           <h4 className="section-header">Your Network Links</h4>
           <LinkGraph
@@ -58,7 +58,7 @@ function LinkAdmin(props) {
           />
         </div>
 
-        <div>
+        <div className="traffic">
           {/* Traffic */}
           <h4 className="section-header">Link Traffic</h4>
           <div>
@@ -68,7 +68,7 @@ function LinkAdmin(props) {
             {lineItem('Last 30 days', props.traffic.last30days)}
           </div>
 
-          <h3 className="section-header">Insights</h3>
+          <h4 className="section-header">Insights</h4>
           <div style={{ textAlign: 'center', margin: '1em 0' }}>
             <i>No insights...</i>
           </div>
@@ -83,6 +83,7 @@ export default LinkAdmin;
 function LinkOwnerMessage(props) {
   return (
     <div>
+      <h4 className="section-header">Direct Links</h4>
       <div>
         <p>
           You will be paid{' '}

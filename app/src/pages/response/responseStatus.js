@@ -44,7 +44,7 @@ function linkDisplay(props) {
             style={{ width: width + '%' }}
           >
             {/* Circle */}
-            <span className="before" style={circleStyle}>
+            <span className="circle" style={circleStyle}>
               {index + 1}
             </span>
 
@@ -52,7 +52,7 @@ function linkDisplay(props) {
             <span>{item.label}</span>
 
             {/* line to previous dot */}
-            {isFirstItem ? null : <span className="after" style={lineStyle} />}
+            {isFirstItem ? null : <span className="line" style={lineStyle} />}
           </li>
         );
       })}

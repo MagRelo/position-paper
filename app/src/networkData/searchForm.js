@@ -15,6 +15,7 @@ function SearchJob(props) {
     console.log(queryObject);
 
     // execute search
+    console.log('test - not sent)');
     // props.submit(queryObject);
   }
 
@@ -25,7 +26,7 @@ function SearchJob(props) {
   return (
     <form
       action="searchJob"
-      className="pure-form"
+      className="pure-form search-form"
       onSubmit={createElasticQuery}
     >
       <div className="row row-2">

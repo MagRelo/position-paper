@@ -18,8 +18,6 @@ import Header from 'components/header';
 
 // Routes
 import LandingPage from 'networkData/landingPage';
-import CreateQuery2 from 'networkData/createJob';
-
 import Terms from 'pages/legal';
 import About from 'pages/about';
 
@@ -31,6 +29,8 @@ import LinkPage from 'pages/link/link';
 import User from 'pages/user/user2';
 import UserBankAccount from 'pages/user/userBankAccount';
 import Response from 'pages/response/response';
+import CreateQuery2 from 'networkData/createJob';
+import CreateResponse from 'pages/response/createResponse';
 
 // Setup Auth context
 export const AuthContext = React.createContext({});
@@ -81,13 +81,13 @@ function App(props) {
           createSession={createSession}
           clearSession={clearSession}
         />
-
         <div className="content-wrapper">
           {activeSession ? (
-            <Router>
+            <Router primary={false}>
               {/* Auth required */}
               <CreateQuery2 path="/addquery" />
               <Response path="/response/:responseId" />
+              <CreateResponse path="/respond/:linkId" />
               <UserBankAccount path="/user/account" />
               <User path="/user" />
 
@@ -98,7 +98,7 @@ function App(props) {
               <LandingPage path="/" />
             </Router>
           ) : (
-            <Router>
+            <Router primary={false}>
               <Search path="/search" />
               <LinkPage path="/link/:linkId" />
               <Terms path="/terms" />

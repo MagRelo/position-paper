@@ -54,6 +54,9 @@ function Response(props) {
             </cite>
           </div>
         </div>
+
+        <h3 className="section-header">Response Status</h3>
+        <ResponseStatus status={response.status} />
       </div>
 
       <div>
@@ -88,11 +91,6 @@ function Response(props) {
             />
           </React.Fragment>
         ) : null}
-      </div>
-
-      <div>
-        <h3 className="section-header">Response Status</h3>
-        <ResponseStatus status={response.status} />
       </div>
     </div>
   );

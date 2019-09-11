@@ -1,10 +1,10 @@
 import React from 'react';
+import { Link } from '@reach/router';
 
 import { formatCurrency } from 'components/util/random';
 
 import FollowButton from 'components/followButton';
 import LinkButton from 'components/linkButton';
-import ResponseButton from 'pages/response/responseButton';
 
 function LinkDisplay(props) {
   return (
@@ -15,12 +15,14 @@ function LinkDisplay(props) {
           Apply for this position. This position comes with a{' '}
           {formatCurrency(props.link.target_bonus)} signing bonus.
         </p>
-        <ResponseButton
-          linkId={props.link.linkId}
-          payoff={props.link.target_bonus}
-          disabled={props.user._id === 0 || props.user.isLinkOwner}
-          label={'Apply @ ' + formatCurrency(props.link.target_bonus)}
-        />
+
+        <Link
+          className="pure-button pure-button-primary"
+          style={{ background: 'rgb(14, 165, 29)' }}
+          to={'/respond/' + props.link.linkId}
+        >
+          {'Apply @ ' + formatCurrency(props.link.target_bonus)}
+        </Link>
       </div>
 
       <div>

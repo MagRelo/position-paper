@@ -22,9 +22,9 @@ function User(props) {
 
   const [isLoading, setIsLoading] = useState(true);
   const [userData, setUserData] = useState({});
-  const [links, setLinks] = useState({});
-  const [jobs, setJobs] = useState({});
-  const [payments, setPayments] = useState({});
+  const [links, setLinks] = useState([]);
+  const [jobs, setJobs] = useState([]);
+  const [payments, setPayments] = useState([]);
   const [responses, setResponses] = useState([]);
   const [stream, setStream] = useState([]);
 
@@ -53,98 +53,89 @@ function User(props) {
   }, []);
 
   return (
-    <div>
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <div>
-          <div className="row row-6-1">
-            {/* content */}
-            <div>
-              <div className="user-profile">
-                <img
-                  src={userData.avatar}
-                  alt="avatar"
-                  className="user-avatar"
-                />
-                <div className="user-info">
-                  <div className="user-name">{userData.name}</div>
-                  <div className="user-location">{userData.location}</div>
-                </div>
+    <div className="row row-6-1">
+      <div>
+        <h3 className="section-header">Account</h3>
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <div>
+            <div className="user-profile">
+              <img src={userData.avatar} alt="avatar" className="user-avatar" />
+              <div className="user-info">
+                <div className="user-name">{userData.name}</div>
+                <div className="user-location">{userData.location}</div>
               </div>
-              <Tabs style={{ marginTop: '1em' }}>
-                <TabList style={{ marginBottom: '1em' }}>
-                  <CoolTab count={jobs.length}>Jobs</CoolTab>
-                  <CoolTab count={links.length}>Links</CoolTab>
-                  <CoolTab count={responses.length}>Applications</CoolTab>
-                  <CoolTab>Profile</CoolTab>
-                </TabList>
+            </div>
+            <Tabs style={{ marginTop: '1em' }}>
+              <TabList style={{ marginBottom: '1em' }}>
+                <CoolTab count={jobs.length}>Jobs</CoolTab>
+                <CoolTab count={links.length}>Links</CoolTab>
+                <CoolTab count={responses.length}>Applications</CoolTab>
+                <CoolTab>Profile</CoolTab>
+              </TabList>
 
-                <TabPanels>
-                  {/* Jobs */}
-                  <TabPanel style={{ outline: 'none' }}>
-                    <JobTable links={jobs} />
-                  </TabPanel>
+              <TabPanels>
+                {/* Jobs */}
+                <TabPanel style={{ outline: 'none' }}>
+                  <JobTable links={jobs} />
+                </TabPanel>
 
-                  {/* Links */}
-                  <TabPanel style={{ outline: 'none' }}>
-                    <LinksTable links={links} />
-                  </TabPanel>
+                {/* Links */}
+                <TabPanel style={{ outline: 'none' }}>
+                  <LinksTable links={links} />
+                </TabPanel>
 
-                  {/* Responses */}
-                  <TabPanel style={{ outline: 'none' }}>
-                    <div>
-                      <ResponseList responses={responses} />
-                    </div>
-                  </TabPanel>
+                {/* Responses */}
+                <TabPanel style={{ outline: 'none' }}>
+                  <div>
+                    <ResponseList responses={responses} />
+                  </div>
+                </TabPanel>
 
-                  <TabPanel style={{ outline: 'none' }}>
-                    <div>
-                      <h3 className="section-header">Profile</h3>
+                <TabPanel style={{ outline: 'none' }}>
+                  <div>
+                    <h3 className="section-header">Profile</h3>
 
-                      <div className="user-profile">
-                        <img
-                          src={userData.avatar}
-                          alt="avatar"
-                          className="user-avatar"
-                        />
-                        <div className="user-info">
-                          <div className="user-name">{userData.name}</div>
-                          <div className="user-location">
-                            {userData.location}
-                          </div>
-                        </div>
+                    <div className="user-profile">
+                      <img
+                        src={userData.avatar}
+                        alt="avatar"
+                        className="user-avatar"
+                      />
+                      <div className="user-info">
+                        <div className="user-name">{userData.name}</div>
+                        <div className="user-location">{userData.location}</div>
                       </div>
                     </div>
+                  </div>
+                  <div>
+                    <h3 className="section-header">Account Balance</h3>
+                    {lineItem('Pending Balance', formatCurrency(0))}
 
-                    <div>
-                      <h3 className="section-header">Account Balance</h3>
-                      {lineItem('Pending Balance', formatCurrency(0))}
-
-                      {userData.hasAccount ? (
-                        lineItem('Account', userData.stripeAccountLabel)
-                      ) : (
-                        <p style={{ textAlign: 'center' }}>
-                          <Link to="/user/account">Link Bank Account</Link>
-                        </p>
-                      )}
-                    </div>
-
-                    <h3 className="section-header">Payments</h3>
-                    <PaymentsTable payments={payments} />
-                  </TabPanel>
-                </TabPanels>
-              </Tabs>
-            </div>
-
-            {/* stream */}
-            <div>
-              <h3 className="section-header">Activity</h3>
-              <StreamList stream={stream} userId={userData._id} />
-            </div>
+                    {userData.hasAccount ? (
+                      lineItem('Account', userData.stripeAccountLabel)
+                    ) : (
+                      <p style={{ textAlign: 'center' }}>
+                        <Link to="/user/account">Link Bank Account</Link>
+                      </p>
+                    )}
+                  </div>
+                  )}
+                  <h3 className="section-header">Payments</h3>
+                  <PaymentsTable payments={payments} />
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
           </div>
-        </div>
-      )}
+        )}
+      </div>
+
+      {/* stream */}
+      <div>
+        <h3 className="section-header">Activity</h3>
+        <StreamList stream={stream} userId={userData._id} />
+      </div>
     </div>
   );
 }

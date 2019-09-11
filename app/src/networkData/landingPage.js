@@ -56,6 +56,9 @@ function LandingPage() {
       </section>
 
       <section>
+        <h2>Search</h2>
+      </section>
+      <section>
         <h2>Post a Job</h2>
         <CreateJob />
       </section>

@@ -1,6 +1,11 @@
 import React from 'react';
 import { formatCurrency } from '../components/util/random';
 
+const panelStyle = {
+  padding: '1px 2em 2em'
+  // boxShadow: '0px 2px 5px 0px rgba(117, 117, 117, 0.58)'
+};
+
 const labelStyle = {
   textTransform: 'uppercase',
   fontSize: 'smaller',
@@ -8,6 +13,12 @@ const labelStyle = {
   marginLeft: '1em',
   textAlign: 'right',
   color: 'gray'
+};
+
+const gridStyle = {
+  display: 'grid',
+  gridTemplateColumns: 'auto 1fr',
+  gridGap: '1em'
 };
 
 // JOB DATA
@@ -20,28 +31,19 @@ function jobDataItem(label, value) {
   );
 }
 
-export function LinkDisplay(props) {
-  return (
-    <div className="query-data-panel">
-      <h2>{props.data.title}</h2>
+export function LinkDisplay({ data }) {
+  const salaryString = `${formatCurrency(
+    data.salaryMin,
+    true
+  )} – ${formatCurrency(data.salaryMax, true)}`;
 
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'auto 1fr',
-          gridGap: '1em'
-        }}
-      >
-        {jobDataItem('Employer', props.data.employer)}
-        {jobDataItem('Location', props.data.location)}
-        {jobDataItem(
-          'Salary',
-          `${formatCurrency(props.data.salaryMin, true)} – ${formatCurrency(
-            props.data.salaryMax,
-            true
-          )}`
-        )}
-        {jobDataItem('', props.data.description)}
+  return (
+    <div style={panelStyle}>
+      <div style={gridStyle}>
+        {jobDataItem('Employer', data.employer)}
+        {jobDataItem('Location', data.location)}
+        {jobDataItem('Salary', salaryString)}
+        {jobDataItem('', data.description)}
       </div>
     </div>
   );

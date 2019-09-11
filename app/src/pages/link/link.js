@@ -44,11 +44,14 @@ function Link(props) {
   return (
     <div>
       {isLoading ? (
-        <Loading />
+        <div style={{ marginTop: '2em' }}>
+          <Loading />
+        </div>
       ) : (
         <React.Fragment>
           <MetaData link={link} user={user} queryData={queryData} />
 
+          <h3 className="section-header">{link.title}</h3>
           <div className="row row-5-3">
             <div>
               <JobDisplay data={queryData} />
