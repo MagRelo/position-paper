@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Link } from '@reach/router';
 import post from 'images/1_doc.svg';
 import network from 'images/2_network.svg';
 import reward from 'images/3_reward.svg';
@@ -8,9 +8,9 @@ import CreateJob from 'networkData/createJob';
 
 function LandingPage() {
   return (
-    <React.Fragment>
+    <div className="landing">
       <section>
-        <h2>Incentive Networks</h2>
+        <h2 className="section-header">Incentive Networks</h2>
         <p>Find better candidates...</p>
         <p>Spend 75% less on recruiting...</p>
         <p>
@@ -24,7 +24,7 @@ function LandingPage() {
         </p>
       </section>
       <section>
-        <h2>How does it work?</h2>
+        <h2 className="section-header">How does it work?</h2>
         <div className="row row-3">
           <div className="landing-image-container">
             <h3>1. Post a Job</h3>
@@ -56,20 +56,30 @@ function LandingPage() {
       </section>
 
       <section>
-        <h2>Search</h2>
+        <h2 className="section-header">Search</h2>
+
+        <div style={{ textAlign: 'center' }}>
+          <Link
+            to="/search"
+            className="pure-button pure-button-primary"
+            style={{ marginTop: '1.5em' }}
+          >
+            Search for Jobs
+          </Link>
+        </div>
       </section>
       <section>
-        <h2>Post a Job</h2>
+        <h2 className="section-header">Post a Job</h2>
         <CreateJob />
       </section>
-    </React.Fragment>
+    </div>
   );
 }
 
 export default LandingPage;
 
 // <section>
-// <h2>Incentive Networks: A new way to do business</h2>
+// <h2 className="section-header">Incentive Networks: A new way to do business</h2>
 // <div className="row row-3">
 //   <div>
 //     <h3>1) Design the Deal</h3>
@@ -112,7 +122,7 @@ export default LandingPage;
 // </section>
 
 // <section>
-// <h2>Compare with recruiters</h2>
+// <h2 className="section-header">Compare with recruiters</h2>
 // <table className="pure-table">
 //   <thead>
 //     <tr>

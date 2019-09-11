@@ -1,6 +1,7 @@
 .header {
-  padding: 0.6em 2em;
-  background: rgb(84, 84, 84);
+  padding: 0.2em 2em;
+  background: #272727;
+  box-shadow: #bdbdbd 0 1px 2px;
   color: white;
   display: flex;
   justify-content: flex-end;
@@ -8,9 +9,11 @@
 }
 
 .header h1 {
+  flex-grow: 1;
   margin: 0;
   color: #0079db;
-  flex-grow: 1;
+  font-size: 1.6em;
+  font-weight: normal;
 }
 
 .header h2 {
@@ -85,7 +88,6 @@ li {
 .section-header {
   /* color: #145374; */
   color: gray;
-
   display: block;
   width: 100%;
   padding: .3em 0;
@@ -457,10 +459,27 @@ button:focus {
 /* } */
 
 .login-button {
-  background-color: white;
+  color: white;
+  background-color: unset;
+  border: #cecece solid 1px;
   border-radius: 4px;
-  box-shadow: 0 2px 3px #272727;
-  padding: 5px 14px;
+  box-shadow: 0 1px 3px #484848;
+  padding: 5px 18px 4px 14px;
+}
+
+.landing section {
+  max-width: 1199px;
+  margin: 0 auto;
+}
+
+.landing h3 {
+  /* color: #145374; */
+  color: gray;
+  display: block;
+  width: 100%;
+  padding: .3em 0;
+  font-weight: normal;
+
 }
 
 .landing-image-container {

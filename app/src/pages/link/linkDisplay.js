@@ -18,6 +18,7 @@ function LinkDisplay(props) {
 
         <Link
           className="pure-button pure-button-primary"
+          disabled={props.user._id === 0 || props.user.isLinkOwner}
           style={{ background: 'rgb(14, 165, 29)' }}
           to={'/respond/' + props.link.linkId}
         >

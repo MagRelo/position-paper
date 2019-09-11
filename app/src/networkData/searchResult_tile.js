@@ -75,7 +75,9 @@ function activityTile({ link, query, user }) {
       </div>
 
       <div>
-        <p className="search-tile-title">{query.data.title}</p>
+        <p className="section-header" style={{ color: 'initial' }}>
+          {query.data.title}
+        </p>
         {LinkDisplay(query)}
       </div>
 

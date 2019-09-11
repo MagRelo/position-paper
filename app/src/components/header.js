@@ -44,7 +44,7 @@ function Header(props) {
     <React.Fragment>
       <nav className="header">
         <h1>
-          <Link to="/">TalentRelay</Link>
+          <Link to="/">Incentive Exchange</Link>
         </h1>
         <div className="menu">
           <span className="hide-mobile">
