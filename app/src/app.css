@@ -1,8 +1,8 @@
 .header {
-  padding: 0.2em 2em;
+  padding: 0.33em 2em;
   background: #272727;
   box-shadow: #bdbdbd 0 1px 2px;
-  color: white;
+  color: #bdbdbd;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -11,7 +11,6 @@
 .header h1 {
   flex-grow: 1;
   margin: 0;
-  color: #0079db;
   font-size: 1.6em;
   font-weight: normal;
 }
@@ -37,11 +36,12 @@
 
 .header a {
   text-decoration: none;
-  color: white
+  color: #bdbdbd;
+  transition: 267ms;
 }
 
 .header a:hover {
-  color: white
+  color: white;
 }
 
 
@@ -87,7 +87,7 @@ li {
 
 .section-header {
   /* color: #145374; */
-  color: gray;
+  /* color: gray; */
   display: block;
   width: 100%;
   padding: .3em 0;
@@ -236,30 +236,42 @@ h3.section-header {
 /* Link */
 .link-admin-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto auto;
+  grid-template-columns: 1fr;
   grid-gap: 2em;
 }
 
-.link-admin-grid .share {
-  grid-column: 2;
-  grid-row: 1
+
+@media screen and (min-width: 992px) {
+  .link-admin-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    grid-gap: 2em;
+  }
+
+  .link-admin-grid .share {
+    grid-column: 2;
+    grid-row: 1
+  }
+
+  .link-admin-grid .info {
+    grid-column: 1;
+    grid-row: 1
+  }
+
+  .link-admin-grid .child-links {
+    grid-column: 1;
+    grid-row: 2
+  }
+
+  .link-admin-grid .traffic {
+    grid-column: 2;
+    grid-row: 2
+  }
 }
 
-.link-admin-grid .info {
-  grid-column: 1;
-  grid-row: 1
-}
 
-.link-admin-grid .child-links {
-  grid-column: 1;
-  grid-row: 2
-}
 
-.link-admin-grid .traffic {
-  grid-column: 2;
-  grid-row: 2
-}
 
 /* Follow */
 .follow-button {
@@ -461,10 +473,14 @@ button:focus {
 .login-button {
   color: white;
   background-color: unset;
-  border: #cecece solid 1px;
+  border: #787878 solid 1px;
   border-radius: 4px;
-  box-shadow: 0 1px 3px #484848;
+  box-shadow: 0 0 3px #868686;
   padding: 5px 18px 4px 14px;
+}
+
+.login-button span svg {
+  margin-right: 5px;
 }
 
 .landing section {
@@ -474,7 +490,7 @@ button:focus {
 
 .landing h3 {
   /* color: #145374; */
-  color: gray;
+  /* color: gray; */
   display: block;
   width: 100%;
   padding: .3em 0;
@@ -503,6 +519,7 @@ button:focus {
   background-color: #0079db;
 }
 
+/* 
 .job-skill {
   display: inline-block;
   margin-right: 1em;
@@ -516,5 +533,41 @@ button:focus {
 @media screen and (min-width: 435px) {
   .job-skill {
     display: inline;
+  }
+} */
+
+.link-display {
+  text-align: center;
+}
+
+.job-data-panel {
+  padding: 1px 2em 2em;
+}
+
+.job-data-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 1em;
+  text-align: center;
+}
+
+.job-data-label {
+  text-transform: uppercase;
+  font-size: smaller;
+  color: gray;
+  text-align: center;
+}
+
+
+@media screen and (min-width: 435px) {
+  .job-data-grid {
+    grid-template-columns: auto 1fr;
+    text-align: unset;
+  }
+
+  .job-data-label {
+    margin-top: 2px;
+    margin-left: 1em;
+    text-align: right;
   }
 }

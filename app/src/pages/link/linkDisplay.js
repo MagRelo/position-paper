@@ -8,7 +8,7 @@ import LinkButton from 'components/linkButton';
 
 function LinkDisplay(props) {
   return (
-    <div>
+    <div className="link-display">
       <div>
         <h4 className="section-header">Apply</h4>
         <p>

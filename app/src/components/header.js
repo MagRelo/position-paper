@@ -21,7 +21,8 @@ const NavLink = props => (
       // anchor element's props
       return {
         style: {
-          borderBottom: isCurrent ? 'solid 1px' : null
+          borderBottom: isCurrent ? 'solid 1px' : null,
+          color: isCurrent ? 'white' : null
         }
       };
     }}
