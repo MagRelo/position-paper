@@ -20,6 +20,6 @@ exports.postTweet = async function(userToken, userTokenSecret, message) {
   });
 
   return await client.post('statuses/update', {
-    status: message || "I'm on incentive.exchange :)"
+    status: message || "I'm on Talent Relay :)"
   });
 };

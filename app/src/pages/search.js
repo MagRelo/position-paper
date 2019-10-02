@@ -77,20 +77,20 @@ async function getSearchResults(searchTerm, days) {
 function MetaData() {
   return (
     <Helmet>
-      <title>Incentive Exchange | Search</title>
-      <meta
-        name="description"
-        content="Incentive Exchange – Search for Links"
-      />
-      <link rel="canonical" href={'https://incentive.exchange/search'} />
+      <title>Talent Relay | Search</title>
+      <meta name="description" content="Talent Relay – Search for Links" />
+      <link rel="canonical" href={'https://talent.incentive.exchange/search'} />
 
-      <meta property="og:site_name" content="Incentive Exchange" />
+      <meta property="og:site_name" content="Talent Relay" />
       <meta property="og:type" content="website" />
-      <meta property="og:url" content={'https://incentive.exchange/search'} />
-      <meta property="og:title" content="Incentive Exchange | Search" />
+      <meta
+        property="og:url"
+        content={'https://talent.incentive.exchange/search'}
+      />
+      <meta property="og:title" content="Talent Relay | Search" />
       <meta
         property="og:description"
-        content="Incentive Exchange – Search for Links"
+        content="Talent Relay – Search for Links"
       />
 
       {/* <meta property="og:image" content="" /> */}
@@ -101,10 +101,10 @@ function MetaData() {
 
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:site" content="@spoonuniversity" />
-      <meta name="twitter:title" content="Incentive Exchange | Search" />
+      <meta name="twitter:title" content="Talent Relay | Search" />
       <meta
         name="twitter:description"
-        content="Incentive Exchange – Search for Links"
+        content="Talent Relay – Search for Links"
       />
       {/* <meta name="twitter:image" content="" /> */}
     </Helmet>

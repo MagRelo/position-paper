@@ -227,7 +227,7 @@ function CreateJob(props) {
               )}
             </div>
             <div>
-              <legend>Incentive Network</legend>
+              <legend>Talent Realy</legend>
               {lineItem(
                 'Friends & Family',
                 formatCurrency(totalCost.networkBonus)

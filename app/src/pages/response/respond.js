@@ -7,13 +7,13 @@ import { AuthContext } from 'App';
 function Respond(props) {
   const authContext = useContext(AuthContext);
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [setIsLoading] = useState(true);
 
   const [user, setUser] = useState({});
   const [link, setLink] = useState({});
   const [queryData, setQueryData] = useState({});
-  const [traffic, setTraffic] = useState({});
-  const [stream, setStream] = useState([]);
+  // const [traffic, setTraffic] = useState({});
+  // const [stream, setStream] = useState([]);
 
   useEffect(
     () => {

@@ -110,7 +110,7 @@ function App(props) {
 
         <footer>
           <ul>
-            <li>incentive.exchange</li>
+            <li>Talent Relay</li>
             <li>
               <Link to="/terms">Terms of Service & Privacy</Link>
             </li>

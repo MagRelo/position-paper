@@ -87,14 +87,14 @@ function MetaData({ queryData, link }) {
       <meta name="description" content={queryData.description} />
       <link
         rel="canonical"
-        href={'https://incentive.exchange/link/' + link.linkId}
+        href={'https://talent.incentive.exchange/link/' + link.linkId}
       />
 
-      <meta property="og:site_name" content="Incentive Exchange" />
+      <meta property="og:site_name" content="Talent Relay" />
       <meta property="og:type" content="website" />
       <meta
         property="og:url"
-        content={'https://incentive.exchange/link/' + link.linkId}
+        content={'https://talent.incentive.exchange/link/' + link.linkId}
       />
 
       {/* <meta property="og:image" content="" /> */}
