@@ -51,7 +51,7 @@ function Link(props) {
         <React.Fragment>
           <MetaData link={link} user={user} queryData={queryData} />
 
-          <h3 className="section-header">{link.title}</h3>
+          {/* <h3 className="section-header">{link.title}</h3> */}
           <div className="row row-5-3">
             <div>
               <JobDisplay data={queryData} />
@@ -96,8 +96,6 @@ function MetaData({ queryData, link }) {
         property="og:url"
         content={'https://incentive.exchange/link/' + link.linkId}
       />
-      <meta property="og:title" content={queryData.jobTitle} />
-      <meta property="og:description" content={queryData.description} />
 
       {/* <meta property="og:image" content="" /> */}
       {/* <meta property="og:image:secure_url" content="" /> */}
@@ -106,7 +104,7 @@ function MetaData({ queryData, link }) {
       {/* <meta property="og:image:width" content="808" /> */}
 
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:site" content="@spoonuniversity" />
+      <meta name="twitter:site" content="@i_dot_e" />
       <meta name="twitter:title" content={queryData.jobTitle} />
       <meta name="twitter:description" content={queryData.description} />
       {/* <meta name="twitter:image" content="" /> */}

@@ -2,7 +2,7 @@
   padding: 0.33em 2em;
   background: #272727;
   box-shadow: #bdbdbd 0 1px 2px;
-  color: #bdbdbd;
+  color: #dedede;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -15,12 +15,16 @@
   font-weight: normal;
 }
 
-.header h2 {
-  margin-top: 0;
-  font-size: 14px;
-  /* text-transform: uppercase; */
-  color: grey;
+.header a {
+  text-decoration: none;
+  color: #dedede;
+  transition: 267ms;
 }
+
+.header a:hover {
+  color: white;
+}
+
 
 .menu {
   float: right;
@@ -34,15 +38,6 @@
   margin-left: 2em;
 }
 
-.header a {
-  text-decoration: none;
-  color: #bdbdbd;
-  transition: 267ms;
-}
-
-.header a:hover {
-  color: white;
-}
 
 
 footer {
@@ -233,46 +228,6 @@ h3.section-header {
   padding: 1rem;
 }
 
-/* Link */
-.link-admin-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-gap: 2em;
-}
-
-
-@media screen and (min-width: 992px) {
-  .link-admin-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto;
-    grid-gap: 2em;
-  }
-
-  .link-admin-grid .share {
-    grid-column: 2;
-    grid-row: 1
-  }
-
-  .link-admin-grid .info {
-    grid-column: 1;
-    grid-row: 1
-  }
-
-  .link-admin-grid .child-links {
-    grid-column: 1;
-    grid-row: 2
-  }
-
-  .link-admin-grid .traffic {
-    grid-column: 2;
-    grid-row: 2
-  }
-}
-
-
-
-
 /* Follow */
 .follow-button {
   text-transform: uppercase;
@@ -448,7 +403,7 @@ button:focus {
 
 /* user display */
 .user-profile {
-  margin: 1em 0;
+  margin: 24px 0;
 }
 
 .user-avatar {
@@ -458,25 +413,29 @@ button:focus {
 }
 
 .user-info {
-  padding-left: 60px;
-
+  padding-left: 62px;
 }
 
 .user-name {
   font-size: 20px;
 }
 
-/* .user-location { */
-/* margin-left: 0.5em; */
-/* } */
+.user-location {
+  padding-top: 5px;
+  font-size: 14px;
+  color: #5e5e5e
+}
 
 .login-button {
   color: white;
-  background-color: unset;
   border: #787878 solid 1px;
   border-radius: 4px;
   box-shadow: 0 0 3px #868686;
   padding: 5px 18px 4px 14px;
+  background: unset;
+
+  /* background: linear-gradient(180deg, rgba(39, 39, 39, 1) 0%, rgba(39, 39, 39, 1) 53%, rgba(92, 92, 92, 1) 100%); */
+  /* transition: 267ms; */
 }
 
 .login-button span svg {
@@ -570,4 +529,10 @@ button:focus {
     margin-left: 1em;
     text-align: right;
   }
+}
+
+.graph-background {
+  background-size: 32px 32px;
+  background-image: linear-gradient(to right, #e7e7e7 1px, transparent 1px), linear-gradient(to bottom, #e7e7e7 1px, transparent 1px);
+  border: solid 1px #cacaca;
 }

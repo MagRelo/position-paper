@@ -39,6 +39,7 @@ export function LinkDisplay({ data }) {
 
   return (
     <div className="job-data-panel">
+      <h2 className="section-header">{data.title}</h2>
       <div className="job-data-grid">
         {jobDataItem('Employer', data.employer)}
         {jobDataItem('Location', data.location)}

@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import { navigate } from '@reach/router';
 
-function CreateResponse(props) {
+import EmailButton from 'components/social/emailButton';
+import TwitterButton from 'components/social/twitterButton';
+import LinkedinButton from 'components/social/linkedinButton';
+import InstaButton from 'components/social/instagramButton';
+
+function CreateResponse({ user, link }) {
   const [message, setMessage] = useState(
     'Thanks for your time. Looking forward to working with you soon!'
   );
@@ -17,7 +22,7 @@ function CreateResponse(props) {
     });
 
     // add params
-    formObj.linkId = props.linkId;
+    formObj.linkId = link.linkId;
 
     sendResponse(formObj).then(results => {
       navigate('/response/' + results._id);
@@ -29,23 +34,45 @@ function CreateResponse(props) {
   }
 
   return (
-    <form name="createForm" className="pure-form" onSubmit={submit}>
-      <legend>Respond</legend>
+    <div>
+      <h2 className="section-header">Send Response</h2>
+      <form name="createForm" className="pure-form" onSubmit={submit}>
+        <legend>Respond</legend>
+        <fieldset>
+          <label htmlFor="name">Message </label>
+          <textarea
+            className="pure-input-1"
+            type="text"
+            id="message"
+            name="message"
+            value={message}
+            onChange={onChange}
+          />
+        </fieldset>
 
-      <fieldset>
-        <label htmlFor="name">Message </label>
-        <textarea
-          className="pure-input-1"
-          type="text"
-          id="message"
-          name="message"
-          value={message}
-          onChange={onChange}
-        />
-      </fieldset>
+        <legend>Profile</legend>
+        <div className="user-profile">
+          <img src={user.avatar} alt="avatar" className="user-avatar" />
+          <div className="user-info">
+            <div className="user-name">{user.name}</div>
+            <div className="user-location">{user.location}</div>
+          </div>
+        </div>
+        <legend>Social</legend>
+        <fieldset>
+          <div className="social-grid">
+            <EmailButton enabled={true} link={link} />
+            <TwitterButton enabled={true} link={link} />
+            <LinkedinButton enabled={false} link={link} />
+            <InstaButton enabled={false} link={link} />
+          </div>
+        </fieldset>
 
-      <button className="pure-button pure-button-primary">Send Response</button>
-    </form>
+        <button className="pure-button pure-button-primary">
+          Send Response
+        </button>
+      </form>
+    </div>
   );
 }
 

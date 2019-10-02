@@ -17,60 +17,63 @@ function LinkAdmin(props) {
     <React.Fragment>
       <h3 className="section-header">Link Dashboard</h3>
 
-      <div className="link-admin-grid">
-        <div className="share">
-          {/* Share */}
-          <h4 className="section-header">Share Link</h4>
-          <div className="social-grid">
-            <EmailButton enabled={true} link={props.link} />
-            <TwitterButton enabled={true} link={props.link} />
-            <LinkedinButton enabled={false} link={props.link} />
-            <InstaButton enabled={false} link={props.link} />
-          </div>
-        </div>
-
-        <div className="info">
-          {/* Info */}
-          {props.user.isQueryOwner ? (
-            <QueryOwnerMessage
-              link={props.link}
-              stream={props.stream}
-              userId={props.userId}
-              traffic={props.traffic}
-            />
-          ) : (
-            <LinkOwnerMessage
-              link={props.link}
-              stream={props.stream}
-              userId={props.userId}
-              traffic={props.traffic}
-            />
-          )}
-        </div>
-
-        <div className="child-links">
-          {/* Child Links */}
-          <h4 className="section-header">Your Network Links</h4>
-          <LinkGraph
-            user={props.user}
-            parent={props.link}
-            links={props.link.children}
-          />
-        </div>
-
-        <div className="traffic">
-          {/* Traffic */}
-          <h4 className="section-header">Link Traffic</h4>
-          <div>
-            <LinkMap />
-            {lineItem('Last 24 hours', props.traffic.last1days)}
-            {lineItem('Last 7 days', props.traffic.last7days)}
-            {lineItem('Last 30 days', props.traffic.last30days)}
+      <div className="row row-2">
+        <div>
+          <div className="share">
+            {/* Share */}
+            <h4 className="section-header">Share Link</h4>
+            <div className="social-grid">
+              <EmailButton enabled={true} link={props.link} />
+              <TwitterButton enabled={true} link={props.link} />
+              <LinkedinButton enabled={false} link={props.link} />
+              <InstaButton enabled={false} link={props.link} />
+            </div>
           </div>
 
-          <h4 className="section-header">Insights</h4>
-          <div style={{ textAlign: 'center', margin: '1em 0' }}>
-            <i>No insights...</i>
+          <div className="info">
+            {/* Info */}
+            {props.user.isQueryOwner ? (
+              <QueryOwnerMessage
+                link={props.link}
+                stream={props.stream}
+                userId={props.userId}
+                traffic={props.traffic}
+              />
+            ) : (
+              <LinkOwnerMessage
+                link={props.link}
+                stream={props.stream}
+                userId={props.userId}
+                traffic={props.traffic}
+              />
+            )}
+          </div>
+        </div>
+        <div>
+          <div className="child-links">
+            {/* Child Links */}
+            <h4 className="section-header">Your Network Links</h4>
+            <LinkGraph
+              user={props.user}
+              parent={props.link}
+              links={props.link.children}
+            />
+          </div>
+
+          <div className="traffic">
+            {/* Traffic */}
+            <h4 className="section-header">Link Traffic</h4>
+            <div>
+              <LinkMap />
+              {lineItem('Last 24 hours', props.traffic.last1days)}
+              {lineItem('Last 7 days', props.traffic.last7days)}
+              {lineItem('Last 30 days', props.traffic.last30days)}
+            </div>
+
+            <h4 className="section-header">Insights</h4>
+            <div style={{ textAlign: 'center', margin: '1em 0' }}>
+              <i>No insights...</i>
+            </div>
           </div>
         </div>
       </div>

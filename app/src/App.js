@@ -30,7 +30,7 @@ import User from 'pages/user/user2';
 import UserBankAccount from 'pages/user/userBankAccount';
 import Response from 'pages/response/response';
 import CreateQuery2 from 'networkData/createJob';
-import CreateResponse from 'pages/response/createResponse';
+import Respond from 'pages/response/respond';
 
 // Setup Auth context
 export const AuthContext = React.createContext({});
@@ -87,7 +87,7 @@ function App(props) {
               {/* Auth required */}
               <CreateQuery2 path="/addquery" />
               <Response path="/response/:responseId" />
-              <CreateResponse path="/respond/:linkId" />
+              <Respond path="/respond/:linkId" />
               <UserBankAccount path="/user/account" />
               <User path="/user" />
 

@@ -68,14 +68,18 @@ function activityTile({ link, query, user }) {
 
   return (
     <div className="search-tile">
-      <div className="search-tile-header">
-        <span className="label" style={{ float: 'right' }}>
-          {formatDate(link.createdAt)}
-        </span>
-      </div>
+      <span
+        className="label"
+        style={{ float: 'right', lineHeight: '36px', marginLeft: '2em' }}
+      >
+        {formatDate(link.createdAt)}
+      </span>
 
       <div>
-        <p className="section-header" style={{ color: 'initial', fontSize: '18px' }}>
+        <p
+          className="section-header"
+          style={{ color: 'initial', fontSize: '18px', marginTop: 0 }}
+        >
           {query.data.title}
         </p>
         {LinkDisplay(query)}

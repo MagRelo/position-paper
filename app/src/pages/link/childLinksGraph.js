@@ -96,7 +96,7 @@ function buildGraphData(parent, links, user) {
 class LinkGraph extends Component {
   render() {
     return (
-      <div>
+      <div className="graph-background">
         {this.props.links.length ? (
           <Graph
             id="graph-id"
