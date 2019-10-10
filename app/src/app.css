@@ -91,10 +91,6 @@ li {
 
 }
 
-h3.section-header {
-  font-size: 1.4em;
-}
-
 
 /* payment line items */
 .line-item {
@@ -251,6 +247,7 @@ button:focus {
 .progressbar {
   counter-reset: step;
   padding: 0;
+  opacity: 0.99;
 }
 
 /* clearfix */
@@ -467,15 +464,40 @@ button:focus {
 }
 
 /* input range slider */
-
 .input-range {
-  margin: 24px 0 32px;
+  margin: 36px 0 28px;
 }
+
 
 .input-range__slider,
 .input-range__track--active {
-  border-color: #0079db;
-  background-color: #0079db;
+  border-color: #cccccc;
+  background-color: #eeeeee;
+}
+
+.employee .input-range__slider,
+.employee .input-range__track--active {
+  border-color: rgb(0, 96, 174);
+  background-color: rgb(0, 121, 219);
+}
+
+
+.network .input-range__slider,
+.network .input-range__track--active {
+  border-color: rgb(212, 166, 0);
+  background-color: rgb(254, 198, 1);
+}
+
+
+.input-range__label {
+  color: gray;
+}
+
+
+.form-border {
+  border: solid 1px #ddd;
+  /* border-radius: 1em; */
+  padding: 1em;
 }
 
 /* 

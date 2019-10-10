@@ -48,6 +48,7 @@
     "react-spring": "^8.0.27",
     "react-stripe-elements": "^3.0.0",
     "react-twitter-auth": "0.0.13",
+    "recharts": "^1.7.1",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
     "request": "^2.88.0",

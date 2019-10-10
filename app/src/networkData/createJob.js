@@ -170,6 +170,15 @@ function CreateJob(props) {
 
         <legend>Network Incentives</legend>
 
+        <LinkPayoutDisplayFixed
+          employer={employer}
+          showLink={false}
+          linkPayout={networkBonus.value}
+          showChild={true}
+          childPayout={networkBonus.value}
+          candidatePayout={targetBonus.value}
+        />
+
         <fieldset>
           <div className="row row-2">
             <div>
@@ -207,15 +216,6 @@ function CreateJob(props) {
           </div>
         </fieldset>
 
-        <LinkPayoutDisplayFixed
-          employer={employer}
-          showLink={false}
-          linkPayout={networkBonus.value}
-          showChild={true}
-          childPayout={networkBonus.value}
-          candidatePayout={targetBonus.value}
-        />
-
         <legend>Review & Compare</legend>
         <fieldset>
           <div className="row row-2">
@@ -227,12 +227,15 @@ function CreateJob(props) {
               )}
             </div>
             <div>
-              <legend>Talent Realy</legend>
+              <legend>Talent Relay</legend>
               {lineItem(
-                'Friends & Family',
+                'Network Bonus',
                 formatCurrency(totalCost.networkBonus)
               )}
-              {lineItem('New Employee', formatCurrency(totalCost.targetBonus))}
+              {lineItem(
+                'Employee Bonus',
+                formatCurrency(totalCost.targetBonus)
+              )}
               {lineItem('Platform Fee', formatCurrency(totalCost.platformFee))}
               {lineItem('Total', formatCurrency(totalCost.total))}
 
