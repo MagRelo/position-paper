@@ -465,20 +465,24 @@ button:focus {
 
 /* input range slider */
 .input-range {
-  margin: 36px 0 28px;
+  margin: 36px 0 36px;
 }
 
 
-.input-range__slider,
 .input-range__track--active {
+  /* border-color: red; */
+  background-color: #cccccc;
+}
+
+.input-range__slider {
   border-color: #cccccc;
   background-color: #eeeeee;
 }
 
 .employee .input-range__slider,
 .employee .input-range__track--active {
-  border-color: rgb(0, 96, 174);
-  background-color: rgb(0, 121, 219);
+  border-color: rgb(46, 142, 80);
+  background-color: rgb(68, 175, 105);
 }
 
 

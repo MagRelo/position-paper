@@ -8,7 +8,7 @@ import BarChart from 'components/barChart';
 const opacity = 0.8;
 const recruiterColor = `rgb(125,125,125, 0.6)`;
 
-const employeeColor = `rgb(0,121,219, ${opacity})`;
+const employeeColor = `rgb(68,175,105, ${opacity})`;
 const networkColor = `rgb(254,198,1, ${opacity})`;
 
 const platformColor = `rgb(99,173,242, ${opacity})`;
@@ -97,8 +97,8 @@ function CostDisplayForm(props) {
 
             <div className="row row-5-3">
               <form name="addJobForm" className="pure-form">
+                <label htmlFor="text">Salary Range</label>
                 <fieldset>
-                  <label htmlFor="text">Employee Salary</label>
                   <div style={{ padding: '0 1em 0 0.5em', margin: '1em' }}>
                     <InputRange
                       name="salary"
@@ -112,42 +112,42 @@ function CostDisplayForm(props) {
                   </div>
                 </fieldset>
 
-                {/* <h3 className="section-header">Set Network Incentives</h3> */}
-                <fieldset className="employee">
+                <div className="form-border">
                   <label htmlFor="text">Employee Signing Bonus</label>
-                  <div style={{ padding: '0 1em' }}>
-                    <InputRange
-                      name="targetBonus"
-                      step={250}
-                      minValue={targetBonus.min}
-                      maxValue={targetBonus.max}
-                      formatLabel={value => formatCurrency(value)}
-                      value={targetBonus.value}
-                      onChange={value =>
-                        setTargetBonus({ ...targetBonus, value: value })
-                      }
-                    />
-                  </div>
-                </fieldset>
-
-                <fieldset>
-                  <div className="network">
-                    <label htmlFor="text">Network Reward</label>
-                    <div style={{ padding: '0 1em' }}>
+                  <fieldset>
+                    <div className="employee" style={{ padding: '0 1em' }}>
                       <InputRange
-                        name="networkBonus"
+                        name="targetBonus"
                         step={250}
-                        minValue={networkBonus.min}
-                        maxValue={networkBonus.max}
+                        minValue={targetBonus.min}
+                        maxValue={targetBonus.max}
                         formatLabel={value => formatCurrency(value)}
-                        value={networkBonus.value}
+                        value={targetBonus.value}
                         onChange={value =>
-                          setNetworkBonus({ ...networkBonus, value: value })
+                          setTargetBonus({ ...targetBonus, value: value })
                         }
                       />
                     </div>
-                  </div>
-                </fieldset>
+                  </fieldset>
+                  <label htmlFor="text">Network Reward</label>
+                  <fieldset>
+                    <div className="network">
+                      <div style={{ padding: '0 1em' }}>
+                        <InputRange
+                          name="networkBonus"
+                          step={250}
+                          minValue={networkBonus.min}
+                          maxValue={networkBonus.max}
+                          formatLabel={value => formatCurrency(value)}
+                          value={networkBonus.value}
+                          onChange={value =>
+                            setNetworkBonus({ ...networkBonus, value: value })
+                          }
+                        />
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
               </form>
 
               <div style={{ fontSize: 'small', color: 'gray' }}>
@@ -163,47 +163,52 @@ function CostDisplayForm(props) {
                 />
                 <div style={{ padding: '0 2em' }}>
                   {lineItem(
+                    'Recruiter Fee (20%)',
+                    formatCurrency(totalCost.recruiterFee),
+                    recruiterColor,
+                    'rgb(136,136,136)'
+                  )}
+
+                  {lineItem(
                     'Employee Signing Bonus',
                     formatCurrency(totalCost.targetBonus),
-                    employeeColor
+                    employeeColor,
+                    'rgb(46, 142, 80)'
                   )}
                   {lineItem(
                     'Network Reward',
                     formatCurrency(totalCost.networkBonus),
-                    networkColor
+                    networkColor,
+                    'rgb(212, 166, 0)'
                   )}
                   {lineItem(
                     'Platform Fee',
                     formatCurrency(totalCost.platformFee),
-                    platformColor
-                  )}
-
-                  {lineItem(
-                    'Recruiter Fee (20%)',
-                    formatCurrency(totalCost.recruiterFee),
-                    recruiterColor
+                    platformColor,
+                    'rgb(70, 137, 199)'
                   )}
 
                   <div
                     style={{
-                      borderTop: 'solid 1px #eee',
-                      marginTop: '1em'
+                      marginTop: '1em',
+                      paddingTop: '1em'
                     }}
                   >
                     <p
                       style={{
                         display: 'grid',
-                        gridTemplateColumns: 'auto 1fr auto',
+                        gridTemplateColumns: '1fr auto',
                         gridGap: '1em',
                         margin: '0.5em 0'
                       }}
                     >
                       <span>Savings with Talent Relay</span>
-                      <span className="line-item-filler" />
                       <span>
-                        {formatCurrency(
-                          totalCost.recruiterFee - totalCost.total
-                        )}
+                        <b>
+                          {formatCurrency(
+                            totalCost.recruiterFee - totalCost.total
+                          )}
+                        </b>
                       </span>
                     </p>
                   </div>
@@ -223,17 +228,28 @@ function roundToNearest(input, step) {
   return Math.round(input / step) * step;
 }
 
-function lineItem(label, value, color) {
+function lineItem(label, value, color, bgColor) {
   return (
     <p
       style={{
         display: 'grid',
-        gridTemplateColumns: '30px auto 1fr auto',
+        gridTemplateColumns: 'auto auto 1fr auto',
         gridGap: '1em',
         margin: '0.5em 0'
       }}
     >
-      <span style={{ background: color }} />
+      <span>
+        <span
+          style={{
+            display: 'inline-block',
+            background: color,
+            border: `solid 1px ${bgColor}`,
+            width: '17px',
+            height: '17px',
+            borderRadius: '50%'
+          }}
+        />
+      </span>
       <span>{label}</span>
       <span className="line-item-filler" />
       <span>{value}</span>

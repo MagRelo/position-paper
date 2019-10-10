@@ -10,10 +10,9 @@ function LandingPage() {
   return (
     <div className="landing">
       <section>
-        <h1>Talent Relay</h1>
-
         <div className="row row-5-3">
           <div>
+            <h1>Talent Relay</h1>
             <p>Find better candidates...</p>
             <p>Spend 75% less on recruiting...</p>
             <p>
@@ -27,14 +26,22 @@ function LandingPage() {
             </p>
           </div>
 
-          <div>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-evenly'
+            }}
+          >
             <div style={{ textAlign: 'center' }}>
+              <p>Employers: </p>
               <Link to="/search" className="pure-button pure-button-primary">
                 Post a Job
               </Link>
             </div>
 
             <div style={{ textAlign: 'center' }}>
+              <p>Candidates:</p>
               <Link to="/search" className="pure-button pure-button-primary">
                 Search for Jobs
               </Link>
@@ -76,7 +83,7 @@ function LandingPage() {
       </section>
 
       <section>
-        <h2 className="section-header">You Choose How Much To Pay</h2>
+        <h2 className="section-header">Compare Cost</h2>
         <CreateJob />
       </section>
     </div>
