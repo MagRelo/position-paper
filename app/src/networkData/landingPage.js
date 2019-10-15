@@ -4,14 +4,14 @@ import post from 'images/1_doc.svg';
 import network from 'images/2_network.svg';
 import reward from 'images/3_reward.svg';
 
-import CreateJob from 'networkData/displayForm';
+import CompareForm from 'networkData/displayForm';
 
 function LandingPage() {
   return (
     <div className="landing">
-      <section>
+      <section className="hero">
         <div className="row row-5-3">
-          <div>
+          <div className="banner">
             <h1>Talent Relay</h1>
             <p>Find better candidates...</p>
             <p>Spend 75% less on recruiting...</p>
@@ -26,22 +26,16 @@ function LandingPage() {
             </p>
           </div>
 
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-evenly'
-            }}
-          >
-            <div style={{ textAlign: 'center' }}>
-              <p>Employers: </p>
+          <div className="cta">
+            <div className="hero-panel">
+              <p>Employers</p>
               <Link to="/search" className="pure-button pure-button-primary">
                 Post a Job
               </Link>
             </div>
 
-            <div style={{ textAlign: 'center' }}>
-              <p>Candidates:</p>
+            <div className="hero-panel">
+              <p>Candidates</p>
               <Link to="/search" className="pure-button pure-button-primary">
                 Search for Jobs
               </Link>
@@ -83,8 +77,7 @@ function LandingPage() {
       </section>
 
       <section>
-        <h2 className="section-header">Compare Cost</h2>
-        <CreateJob />
+        <CompareForm />
       </section>
     </div>
   );

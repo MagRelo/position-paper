@@ -74,7 +74,10 @@ function CostDisplayForm(props) {
   );
 
   return (
-    <section>
+    <React.Fragment>
+      <h2 className="section-header">
+        Talent Relay vs. Traditional Recruiters
+      </h2>
       <div className="row row-1-3">
         <div>
           <p>
@@ -90,10 +93,8 @@ function CostDisplayForm(props) {
         </div>
 
         <div>
-          <div className="panel" style={{ padding: '0.1em 2em 2em' }}>
-            <h3 className="section-header">
-              Talent Relay vs. Traditional Recruiters
-            </h3>
+          <div className="feature-panel">
+            <h3 className="section-header">Reward Your Team and Save Money</h3>
 
             <div className="row row-5-3">
               <form name="addJobForm" className="pure-form">
@@ -112,7 +113,11 @@ function CostDisplayForm(props) {
                   </div>
                 </fieldset>
 
-                <div className="form-border">
+                <div className="feature-border">
+                  <span className="feature-label">
+                    Add Talent Relay Incentives
+                  </span>
+
                   <label htmlFor="text">Employee Signing Bonus</label>
                   <fieldset>
                     <div className="employee" style={{ padding: '0 1em' }}>
@@ -161,7 +166,7 @@ function CostDisplayForm(props) {
                   recruiterCost={totalCost.recruiterFee}
                   recruiterColor={recruiterColor}
                 />
-                <div style={{ padding: '0 2em' }}>
+                <div style={{ padding: '0 1em' }}>
                   {lineItem(
                     'Recruiter Fee (20%)',
                     formatCurrency(totalCost.recruiterFee),
@@ -188,29 +193,11 @@ function CostDisplayForm(props) {
                     'rgb(70, 137, 199)'
                   )}
 
-                  <div
-                    style={{
-                      marginTop: '1em',
-                      paddingTop: '1em'
-                    }}
-                  >
-                    <p
-                      style={{
-                        display: 'grid',
-                        gridTemplateColumns: '1fr auto',
-                        gridGap: '1em',
-                        margin: '0.5em 0'
-                      }}
-                    >
-                      <span>Savings with Talent Relay</span>
-                      <span>
-                        <b>
-                          {formatCurrency(
-                            totalCost.recruiterFee - totalCost.total
-                          )}
-                        </b>
-                      </span>
-                    </p>
+                  <div className="feature-savings">
+                    <span>
+                      Savings:{' '}
+                      {formatCurrency(totalCost.recruiterFee - totalCost.total)}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -218,7 +205,7 @@ function CostDisplayForm(props) {
           </div>
         </div>
       </div>
-    </section>
+    </React.Fragment>
   );
 }
 
@@ -230,7 +217,7 @@ function roundToNearest(input, step) {
 
 function lineItem(label, value, color, bgColor) {
   return (
-    <p
+    <div
       style={{
         display: 'grid',
         gridTemplateColumns: 'auto auto 1fr auto',
@@ -253,6 +240,6 @@ function lineItem(label, value, color, bgColor) {
       <span>{label}</span>
       <span className="line-item-filler" />
       <span>{value}</span>
-    </p>
+    </div>
   );
 }

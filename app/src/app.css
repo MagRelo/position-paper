@@ -62,7 +62,9 @@ footer li {
 
 
 section {
-  margin-bottom: 4em;
+  max-width: 1199px;
+  margin: 0 auto;
+  min-height: 70vh;
 }
 
 a {
@@ -430,23 +432,13 @@ button:focus {
   box-shadow: 0 0 3px #868686;
   padding: 5px 18px 4px 14px;
   background: unset;
-
-  /* background: linear-gradient(180deg, rgba(39, 39, 39, 1) 0%, rgba(39, 39, 39, 1) 53%, rgba(92, 92, 92, 1) 100%); */
-  /* transition: 267ms; */
 }
 
 .login-button span svg {
   margin-right: 5px;
 }
 
-.landing section {
-  max-width: 1199px;
-  margin: 0 auto;
-}
-
 .landing h3 {
-  /* color: #145374; */
-  /* color: gray; */
   display: block;
   width: 100%;
   padding: .3em 0;
@@ -468,9 +460,11 @@ button:focus {
   margin: 36px 0 36px;
 }
 
+.input-range__label {
+  color: gray;
+}
 
 .input-range__track--active {
-  /* border-color: red; */
   background-color: #cccccc;
 }
 
@@ -493,33 +487,74 @@ button:focus {
 }
 
 
-.input-range__label {
-  color: gray;
+/* Hero Panel */
+.hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 }
 
+.hero .banner {
+  max-width: 38em;
+  margin: 0 auto;
+}
 
-.form-border {
+.hero .cta {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  color: #787878;
+
+}
+
+.hero-panel {
+  text-align: center;
+  padding: 0 1em 1.5em;
   border: solid 1px #ddd;
-  /* border-radius: 1em; */
-  padding: 1em;
+  border-radius: 1em;
 }
 
-/* 
-.job-skill {
-  display: inline-block;
-  margin-right: 1em;
-  padding: 0.15em 0.5em 0.3em;
-  border: solid 1px #ccc;
-  color: #666;
-  border-radius: 4px;
-  font-size: smaller;
+
+
+/* Compare Panel  */
+.feature-panel {
+  padding: 1em 1em 2em;
+  box-shadow: 0px 2px 5px 0px rgba(117, 117, 117, 0.58);
 }
+
+.feature-border {
+  margin-top: 1em;
+  border: solid 1px #ddd;
+  padding: 0 1em;
+}
+
+.feature-label {
+  position: relative;
+  top: -12px;
+  padding: 0 0.75em 0 0.5em;
+  background: white;
+  color: #888888;
+}
+
+.feature-savings {
+  padding-top: 1em;
+  font-size: 1.4em;
+  text-align: center;
+  color: forestgreen;
+}
+
 
 @media screen and (min-width: 435px) {
-  .job-skill {
-    display: inline;
+  .feature-panel {
+    padding: 1em 2em 2em;
   }
-} */
+
+  .feature-border {
+    padding: 0 2em;
+  }
+}
+
+/* Compare Panel  */
 
 .link-display {
   text-align: center;
