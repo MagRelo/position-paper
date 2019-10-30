@@ -3,6 +3,9 @@ import React, { Component } from 'react';
 import { Elements } from 'react-stripe-elements';
 import { CardElement, injectStripe } from 'react-stripe-elements';
 
+// stripe
+import { StripeProvider } from 'react-stripe-elements';
+
 import { formatCurrency, lineItem } from 'components/util/random';
 
 const cardElementStyle = () => {
@@ -122,9 +125,11 @@ class CheckoutForm extends Component {
 const InjectedCheckoutForm = injectStripe(CheckoutForm);
 function ButtonWrapper(props) {
   return (
-    <Elements>
-      <InjectedCheckoutForm {...props} />
-    </Elements>
+    <StripeProvider apiKey="pk_test_dMv1AAldL0wj69FLCG4c8jce00J8jWxWg9">
+      <Elements>
+        <InjectedCheckoutForm {...props} />
+      </Elements>
+    </StripeProvider>
   );
 }
 
