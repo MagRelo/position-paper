@@ -33,6 +33,8 @@ import Response from 'pages/response/response';
 import CreateQuery2 from 'networkData/createJob';
 import Respond from 'pages/response/respond';
 
+import Admin from 'pages/admin';
+
 // Setup Auth context
 export const AuthContext = React.createContext({});
 
@@ -91,6 +93,7 @@ function App(props) {
               <Respond path="/respond/:linkId" />
               <UserBankAccount path="/user/account" />
               <User path="/user" />
+              <Admin path="/admin" />
 
               <Search path="/search" />
               <LinkPage path="/link/:linkId" />

@@ -30,6 +30,8 @@ const {
   closeResponse
 } = require('./controllers/response');
 
+const { getAllData } = require('./controllers/admin');
+
 const LinkModel = require('./models').LinkModel;
 const AlphaModel = require('./models').AlphaModel;
 
@@ -104,6 +106,9 @@ router.post('/alpha', async function(req, res) {
   await newUser.save();
   res.status(200).send();
 });
+
+router.get('/admin', getToken, authenticate, getUser, getAllData);
+
 //
 // AUTH
 //
