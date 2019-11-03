@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 
+import { Loading } from 'components/util/random';
+
 import { LinkDisplay } from 'networkData/jobDisplay';
 import CreateResponse from 'pages/response/createResponse';
 import { AuthContext } from 'App';
@@ -7,7 +9,7 @@ import { AuthContext } from 'App';
 function Respond(props) {
   const authContext = useContext(AuthContext);
 
-  const [setIsLoading] = useState(true);
+  const [loading, setIsLoading] = useState(true);
 
   const [user, setUser] = useState({});
   const [link, setLink] = useState({});
@@ -33,14 +35,20 @@ function Respond(props) {
 
   return (
     <div>
-      <div className="row row-5-3">
-        <div>
-          <LinkDisplay data={queryData} />
+      {loading ? (
+        <div style={{ marginTop: '2em' }}>
+          <Loading />
         </div>
-        <div>
-          <CreateResponse link={link} user={user} />
+      ) : (
+        <div className="row row-5-3">
+          <div>
+            <LinkDisplay data={queryData} />
+          </div>
+          <div>
+            <CreateResponse link={link} user={user} />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

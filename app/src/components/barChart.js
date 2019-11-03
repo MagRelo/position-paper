@@ -30,7 +30,7 @@ function CostBarChart({
 
   return (
     <BarChart
-      width={300}
+      width={275}
       height={225}
       data={data}
       margin={{

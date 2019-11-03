@@ -20,6 +20,7 @@ import Header from 'components/header';
 import LandingPage from 'networkData/landingPage';
 import Terms from 'pages/legal';
 import About from 'pages/about';
+import Signup from 'networkData/alphaSignup';
 
 // Maybe Auth
 import Search from 'pages/search';
@@ -103,6 +104,7 @@ function App(props) {
               <LinkPage path="/link/:linkId" />
               <Terms path="/terms" />
               <About path="/about" />
+              <Signup path="/signup" />
               <LandingPage path="/" />
             </Router>
           )}

@@ -9,8 +9,8 @@ import LinkButton from 'components/linkButton';
 function LinkDisplay(props) {
   return (
     <div className="link-display">
-      <div>
-        <h4 className="section-header">Apply</h4>
+      <div className="link-display-item">
+        <h4 className="section-header">Apply for this Job</h4>
         <p>
           Apply for this position. This position comes with a{' '}
           {formatCurrency(props.link.target_bonus)} signing bonus.
@@ -26,8 +26,8 @@ function LinkDisplay(props) {
         </Link>
       </div>
 
-      <div>
-        <h4 className="section-header">Promote</h4>
+      <div className="link-display-item">
+        <h4 className="section-header">Promote this Job</h4>
         <p>
           Create your own link to this position and collect up to{' '}
           {formatCurrency(
@@ -49,8 +49,8 @@ function LinkDisplay(props) {
         />
       </div>
 
-      <div>
-        <h4 className="section-header">Follow</h4>
+      <div className="link-display-item">
+        <h4 className="section-header">Follow this Deal</h4>
         <FollowButton
           type="Link"
           targetId={props.link._id}

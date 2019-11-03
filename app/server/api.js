@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 
 const passport = require('passport');
-const scrape = require('html-metadata');
 
 // Controllers
 
@@ -32,6 +31,7 @@ const {
 } = require('./controllers/response');
 
 const LinkModel = require('./models').LinkModel;
+const AlphaModel = require('./models').AlphaModel;
 
 //
 // MISC
@@ -99,40 +99,11 @@ router.get('/search', getToken, getUser, async function(req, res) {
   }
 });
 
-router.post('/query/metadata', async function(req, res) {
-  if (!req.body.url) {
-    return res.status(400).send({ error: 'bad request' });
-  }
-
-  try {
-    const metadata = await scrape(req.body.url);
-
-    const salary = `$${metadata.jsonLd.baseSalary.value.minValue} – $${
-      metadata.jsonLd.baseSalary.value.maxValue
-    }`;
-    const location = `${
-      metadata.jsonLd.jobLocation[0].address.addressLocality
-    }, ${metadata.jsonLd.jobLocation[0].address.addressRegion}`;
-    // const description = `$${metadata.jsonLd.description}`;
-
-    const formatted = {
-      title: metadata.jsonLd.title,
-      salary: salary,
-      location: location,
-      hiringOrganization: metadata.jsonLd.hiringOrganization.name,
-      skills: metadata.jsonLd.skills,
-      maxSalary: metadata.jsonLd.baseSalary.value.maxValue,
-      minSalary: metadata.jsonLd.baseSalary.value.minValue,
-      jobData: metadata.jsonLd
-    };
-
-    res.status(200).send(formatted);
-  } catch (error) {
-    console.log('API Error:', error);
-    res.status(500).send(error);
-  }
+router.post('/alpha', async function(req, res) {
+  const newUser = new AlphaModel(req.body);
+  await newUser.save();
+  res.status(200).send();
 });
-
 //
 // AUTH
 //

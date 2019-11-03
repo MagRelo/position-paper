@@ -1,5 +1,5 @@
 .header {
-  padding: 0.33em 2em;
+  padding: 1em 2em;
   background: #272727;
   box-shadow: #bdbdbd 0 1px 2px;
   color: #dedede;
@@ -64,7 +64,8 @@ footer li {
 section {
   max-width: 1199px;
   margin: 0 auto;
-  min-height: 70vh;
+  padding-bottom: 2em;
+  ;
 }
 
 a {
@@ -75,6 +76,10 @@ a {
 
 li {
   margin-top: 0.5em;
+}
+
+h1 {
+  font-weight: normal;
 }
 
 .panel {
@@ -450,11 +455,6 @@ button:focus {
   text-align: center;
 }
 
-.landing-image {
-  height: 200px;
-  margin-top: 1em;
-}
-
 /* input range slider */
 .input-range {
   margin: 36px 0 36px;
@@ -488,6 +488,10 @@ button:focus {
 
 
 /* Hero Panel */
+section.hero {
+  min-height: 70vh;
+}
+
 .hero {
   display: flex;
   flex-direction: column;
@@ -499,19 +503,40 @@ button:focus {
   margin: 0 auto;
 }
 
-.hero .cta {
+.landing p {
+  line-height: 1.6em;
+  /* color: gray; */
+}
+
+.banner b {
+  color: inherit;
+}
+
+.cta {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  color: #787878;
+}
 
+.cta-panel {
+  margin: 0 1em;
+  padding: 0 1em 1em;
+  box-shadow: 0px 2px 5px 0px rgba(117, 117, 117, 0.58);
+  text-align: center;
+}
+
+@media screen and (min-width: 435px) {
+  .cta-panel {
+    text-align: left;
+  }
+}
+
+.hero-panel>h3 {
+  margin-bottom: 0.5em;
 }
 
 .hero-panel {
   text-align: center;
-  padding: 0 1em 1.5em;
-  border: solid 1px #ddd;
-  border-radius: 1em;
 }
 
 
@@ -556,9 +581,18 @@ button:focus {
 
 /* Compare Panel  */
 
-.link-display {
-  text-align: center;
+/*  */
+.link-display-item {
+  margin: 1em 0 0;
+  padding: 0 1em 1em;
+  box-shadow: 0px 2px 5px 0px rgba(117, 117, 117, 0.58);
+  border-top: solid 1px white;
 }
+
+.link-display-item>button+button {
+  margin-left: 1em;
+}
+
 
 .job-data-panel {
   padding: 1px 2em 2em;
@@ -596,4 +630,46 @@ button:focus {
   background-size: 32px 32px;
   background-image: linear-gradient(to right, #e7e7e7 1px, transparent 1px), linear-gradient(to bottom, #e7e7e7 1px, transparent 1px);
   border: solid 1px #cacaca;
+}
+
+/* alpha signup form */
+.alphaForm fieldset {
+  margin: 1em 0;
+  padding: 0 1em;
+}
+
+.form-radio {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  display: inline-block;
+  position: relative;
+  background-color: #f1f1f1;
+  color: #666;
+  top: 10px;
+  height: 30px;
+  width: 30px;
+  border: 0;
+  border-radius: 50px;
+  cursor: pointer;
+  margin-right: 7px;
+  outline: none;
+}
+
+.form-radio:checked::before {
+  position: absolute;
+  font: 13px/1 'Open Sans', sans-serif;
+  left: 11px;
+  top: 7px;
+  content: '\02143';
+  transform: rotate(40deg);
+}
+
+.form-radio:hover {
+  /* background-color: #f7f7f7; */
+  border: solid 1px #cccccc;
+}
+
+.form-radio:checked {
+  background-color: #f1f1f1;
 }

@@ -200,3 +200,16 @@ const ShareSchema = new mongoose.Schema(
   { timestamps: true }
 );
 exports.ShareModel = mongoose.model('Share', ShareSchema);
+
+const AlphaSchema = new mongoose.Schema(
+  {
+    company: String,
+    website: String,
+    employeeCount: String,
+    openPositions: String,
+    contactName: String,
+    contactEmail: String
+  },
+  { timestamps: true }
+);
+exports.AlphaModel = mongoose.model('Alpha', AlphaSchema);
