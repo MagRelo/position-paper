@@ -81,11 +81,19 @@ function LandingPage() {
 
       <section>
         <h2 className="section-header">Getting Started</h2>
-        <div className="cta">
-          <div
-            className="cta-panel"
-            style={{ maxWidth: '24em', margin: '0 auto' }}
-          >
+        <div className="row row-2">
+          <div className="cta-panel">
+            <h3>View Jobs</h3>
+            <p>
+              View sample jobs to get a feel for the application. Login to
+              create links, see analytics, job applications, payments and more.
+            </p>
+            <a href="/search" className="pure-button pure-button-primary">
+              View
+            </a>
+          </div>
+
+          <div className="cta-panel">
             <h3>Apply for Early Access</h3>
             <p>
               Talent Relay is launching soon – apply now to reserve your spot in
