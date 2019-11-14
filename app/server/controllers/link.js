@@ -124,7 +124,7 @@ exports.getLink = async function(req, res) {
     };
 
     // traffic
-    responseObj.traffic = await elasticSearch.getLinkTraffic(link._id);
+    responseObj.traffic = await elasticSearch.getLinkTraffic(link.linkId);
     // activity
     responseObj.stream = await getStream.getFeed(
       'Link',
