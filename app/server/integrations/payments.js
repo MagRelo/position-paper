@@ -1,32 +1,25 @@
-//  Plaid
+//  Plaid Config
 var plaid = require('plaid');
-
-const clientAppName = process.env.PLAID_CLIENT_APP_NAME || 'Incentive Exchange';
-const clientId = process.env.PLAID_CLIENT_ID || '5d0cdd955a4c3e0012b14f6e';
-const secret = process.env.PLAID_SECRET || 'ac69552f4c2f146f9a8ee31686e7ec';
-const publicKey =
-  process.env.PLAID_PUBLIC_KEY || '2b3f9221802f14178deef36cd7f168';
-const env = process.env.PLAID_ENV || 'sandbox';
-
 var plaidClient = new plaid.Client(
-  clientId,
-  secret,
-  publicKey,
-  plaid.environments[env],
+  process.env.PLAID_CLIENT_ID,
+  process.env.PLAID_SECRET,
+  process.env.PLAID_PUBLIC_KEY,
+  plaid.environments[process.env.PLAID_ENV],
   {
     version: '2019-05-29',
-    clientApp: clientAppName
+    clientApp: process.env.PLAID_CLIENT_APP_NAME
   }
 );
+console.log('Plaid mode:' + process.env.PLAID_ENV);
 
 // Stripe
 let stripeApiKey = '';
 if (process.env.STRIPE_TEST_MODE) {
   stripeApiKey = process.env.STRIPE_TEST_KEY;
-  console.log('stripe mode: test, key: ' + stripeApiKey);
+  console.log('Stripe mode: test, key: ' + stripeApiKey);
 } else {
   stripeApiKey = process.env.STRIPE_LIVE_KEY;
-  console.log('stripe mode: LIVE!');
+  console.log('Stripe mode: LIVE!');
 }
 const stripe = require('stripe')(stripeApiKey);
 

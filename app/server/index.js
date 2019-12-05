@@ -7,15 +7,14 @@ require('newrelic');
 // load env var's
 // *
 const dotenv = require('dotenv');
-if (process.env.ENV === 'production') {
-  console.log('ENV: ' + process.env.ENV);
-} else {
+if (process.env.ENV !== 'production') {
   // load local config from .env file
   const result = dotenv.config();
   if (result.error) {
     throw result.error;
   }
 }
+console.log('ENV: ' + process.env.ENV);
 
 const express = require('express');
 const app = require('express')();
@@ -40,10 +39,7 @@ const httpApi = require('./api');
 
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-mongoose.connect(
-  process.env.MONGODB_URL_INT || 'mongodb://127.0.0.1:27017/ie-app',
-  { useNewUrlParser: true }
-);
+mongoose.connect(process.env.MONGODB_URL_INT, { useNewUrlParser: true });
 mongoose.connection.on('error', function(err) {
   console.error('MongoDB connection error: ' + err);
   process.exit(-1);

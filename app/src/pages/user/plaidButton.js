@@ -2,9 +2,7 @@ import React from 'react';
 
 const clientName = 'Incentive Engine';
 const env = 'sandbox';
-
 const publicKey = '2b3f9221802f14178deef36cd7f168';
-
 const products = ['auth'];
 const institution = null;
 

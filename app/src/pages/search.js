@@ -14,16 +14,13 @@ function SearchFlow() {
   const [isOpen, setIsOpen] = useState(false);
 
   const debouncedSearchTerm = useDebounce(searchTerm, 333);
-  useEffect(
-    () => {
-      // setIsSearching(true);
-      getSearchResults(debouncedSearchTerm).then(results => {
-        setResults(results);
-        // setIsSearching(false);
-      });
-    },
-    [debouncedSearchTerm]
-  );
+  useEffect(() => {
+    // setIsSearching(true);
+    getSearchResults(debouncedSearchTerm).then(results => {
+      setResults(results);
+      // setIsSearching(false);
+    });
+  }, [debouncedSearchTerm]);
 
   function toggleForm() {
     setIsOpen(!isOpen);
@@ -35,7 +32,6 @@ function SearchFlow() {
 
   return (
     <div>
-      <MetaData />
       <h3 className="section-header">
         Search
         <button
@@ -74,39 +70,40 @@ async function getSearchResults(searchTerm, days) {
     });
 }
 
-function MetaData() {
-  return (
-    <Helmet>
-      <title>Talent Relay | Search</title>
-      <meta name="description" content="Talent Relay – Search for Links" />
-      <link rel="canonical" href={'https://talent.incentive.exchange/search'} />
+// <MetaData />
+// function MetaData() {
+//   return (
+//     <Helmet>
+//       <title>Talent Relay | Search</title>
+//       <meta name="description" content="Talent Relay – Search for Links" />
+//       <link rel="canonical" href={'https://talent.incentive.exchange/search'} />
 
-      <meta property="og:site_name" content="Talent Relay" />
-      <meta property="og:type" content="website" />
-      <meta
-        property="og:url"
-        content={'https://talent.incentive.exchange/search'}
-      />
-      <meta property="og:title" content="Talent Relay | Search" />
-      <meta
-        property="og:description"
-        content="Talent Relay – Search for Links"
-      />
+//       <meta property="og:site_name" content="Talent Relay" />
+//       <meta property="og:type" content="website" />
+//       <meta
+//         property="og:url"
+//         content={'https://talent.incentive.exchange/search'}
+//       />
+//       <meta property="og:title" content="Talent Relay | Search" />
+//       <meta
+//         property="og:description"
+//         content="Talent Relay – Search for Links"
+//       />
 
-      {/* <meta property="og:image" content="" /> */}
-      {/* <meta property="og:image:secure_url" content="" /> */}
-      {/* <meta property="og:image:type" content="jpeg" /> */}
-      {/* <meta property="og:image:height" content="606" /> */}
-      {/* <meta property="og:image:width" content="808" /> */}
+//       {/* <meta property="og:image" content="" /> */}
+//       {/* <meta property="og:image:secure_url" content="" /> */}
+//       {/* <meta property="og:image:type" content="jpeg" /> */}
+//       {/* <meta property="og:image:height" content="606" /> */}
+//       {/* <meta property="og:image:width" content="808" /> */}
 
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:site" content="@spoonuniversity" />
-      <meta name="twitter:title" content="Talent Relay | Search" />
-      <meta
-        name="twitter:description"
-        content="Talent Relay – Search for Links"
-      />
-      {/* <meta name="twitter:image" content="" /> */}
-    </Helmet>
-  );
-}
+//       <meta name="twitter:card" content="summary_large_image" />
+//       <meta name="twitter:site" content="@spoonuniversity" />
+//       <meta name="twitter:title" content="Talent Relay | Search" />
+//       <meta
+//         name="twitter:description"
+//         content="Talent Relay – Search for Links"
+//       />
+//       {/* <meta name="twitter:image" content="" /> */}
+//     </Helmet>
+//   );
+// }

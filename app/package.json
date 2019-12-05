@@ -58,16 +58,16 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && docker build . -t magrelo/ie-app",
+    "build": "react-scripts build && docker build . -t magrelo/talent-app",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "server": "node server/index.js",
     "dev": "NODE_ENV=development nodemon --inspect server/index.js",
-    "docker-build": "docker build . -t magrelo/ie-app",
-    "docker-push": "docker push magrelo/ie-app",
+    "docker-build": "docker build . -t magrelo/talent-app",
+    "docker-push": "docker push magrelo/talent-app",
     "ssh": "ssh root@174.138.40.226",
-    "dump-db": "mongodump  --db ie-app",
-    "restore-db": "mongorestore --db ie-app dump/ie-app",
+    "dump-db": "mongodump  --db talent-app",
+    "restore-db": "mongorestore --db talent-app dump/talent-app",
     "seed-db": "node server/utils/seedDb.js"
   },
   "devDependencies": {

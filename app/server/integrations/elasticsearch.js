@@ -1,10 +1,8 @@
 const fetch = require('node-fetch');
 
-const testURL = 'https://incentive.exchange:9200';
-
 exports.getLinkTraffic = async function(linkId) {
   // setup http request
-  const url = testURL;
+  const url = 'https://' + process.env.HOSTNAME + ':9200';
   const elasticIndex = '/logstash-*/_search';
   const headers = {
     'Content-Type': 'application/json'

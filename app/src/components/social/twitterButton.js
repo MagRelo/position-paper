@@ -52,9 +52,7 @@ export default SocialButton;
 function CreateTweet(props) {
   const [message, setMessage] = useState(
     props.message ||
-      `Check out my link on Talent Relay: https://talent.incentive.exchange/link/${
-        props.link.linkId
-      }`
+      `Check out my link on Talent Relay: https://talentrelay.app/link/${props.link.linkId}`
   );
 
   function handleChange(event) {
