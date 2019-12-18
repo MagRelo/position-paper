@@ -21,7 +21,7 @@ exports.populateUser = async function(req, res) {
   const userObject = {
     user: {
       _id: req.user._id,
-      name: req.user.name,
+      name: req.user.firstname + ' ' + req.user.lastname,
       email: req.user.email,
       avatar: req.user.avatar,
       location: req.user.location,

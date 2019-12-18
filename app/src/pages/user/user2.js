@@ -60,13 +60,14 @@ function User(props) {
           <Loading />
         ) : (
           <div>
-            <div className="user-profile">
+            <div className="user-profile clear-fix">
               <img src={userData.avatar} alt="avatar" className="user-avatar" />
               <div className="user-info">
                 <div className="user-name">{userData.name}</div>
                 <div className="user-location">{userData.location}</div>
               </div>
             </div>
+
             <Tabs style={{ marginTop: '1em' }}>
               <TabList style={{ marginBottom: '1em' }}>
                 <CoolTab count={jobs.length}>Jobs</CoolTab>
@@ -95,21 +96,6 @@ function User(props) {
 
                 <TabPanel style={{ outline: 'none' }}>
                   <div>
-                    <h3 className="section-header">Profile</h3>
-
-                    <div className="user-profile">
-                      <img
-                        src={userData.avatar}
-                        alt="avatar"
-                        className="user-avatar"
-                      />
-                      <div className="user-info">
-                        <div className="user-name">{userData.name}</div>
-                        <div className="user-location">{userData.location}</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div>
                     <h3 className="section-header">Account Balance</h3>
                     {lineItem('Pending Balance', formatCurrency(0))}
 
@@ -121,7 +107,7 @@ function User(props) {
                       </p>
                     )}
                   </div>
-                  )}
+
                   <h3 className="section-header">Payments</h3>
                   <PaymentsTable payments={payments} />
                 </TabPanel>

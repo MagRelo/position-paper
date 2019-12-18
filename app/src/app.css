@@ -414,6 +414,7 @@ button:focus {
   border-radius: 50%;
   float: left;
   border: solid 1px gray;
+  width: 60px;
 }
 
 .user-info {
