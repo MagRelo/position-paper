@@ -1,5 +1,6 @@
 import React from 'react';
-import TwitterLogin from 'react-twitter-auth';
+import LinkedIn from './linkedinLogin';
+
 import {
   Menu,
   MenuList,
@@ -9,9 +10,10 @@ import {
 } from '@reach/menu-button';
 import { Link } from '@reach/router';
 
-const domain = window.location.origin || 'http://localhost:3000';
-const loginPath = '/api/auth/twitter';
-const requestPath = '/api/auth/twitter/reverse';
+// Twitter
+// const domain = window.location.origin || 'http://localhost:3000';
+// const loginPath = '/api/auth/twitter';
+// const requestPath = '/api/auth/twitter/reverse';
 
 const NavLink = props => (
   <Link
@@ -30,33 +32,20 @@ const NavLink = props => (
 );
 
 function Header(props) {
-  // twitter success
-  function onSuccess(response) {
-    response.json().then(user => {
-      props.createSession(user);
-    });
-  }
-
-  function onFailed(error) {
-    console.log(error);
-  }
-
   return (
     <React.Fragment>
       <nav className="header">
         <h1>
           <Link to="/">Talent Relay</Link>
         </h1>
-        <div className="menu">
-          <span className="hide-mobile">
-            <NavLink to={'/search'}>Search</NavLink>
-          </span>
 
-          {props.activeSession ? (
+        <NavLink to={'/search'}>Search</NavLink>
+
+        <span style={{ margin: '0 1em' }}></span>
+
+        {props.activeSession ? (
+          <React.Fragment>
             <NavLink to={'/user'}>{props.user.name}</NavLink>
-          ) : null}
-
-          {props.activeSession ? (
             <Menu>
               <MenuButton
                 className="pure-button"
@@ -83,17 +72,10 @@ function Header(props) {
                 </MenuItem>
               </MenuList>
             </Menu>
-          ) : (
-            <TwitterLogin
-              loginUrl={domain + loginPath}
-              requestTokenUrl={domain + requestPath}
-              onFailure={onFailed}
-              onSuccess={onSuccess}
-              text="Login"
-              className="pure-button login-button"
-            />
-          )}
-        </div>
+          </React.Fragment>
+        ) : (
+          <LinkedIn createSession={props.createSession} />
+        )}
       </nav>
     </React.Fragment>
   );

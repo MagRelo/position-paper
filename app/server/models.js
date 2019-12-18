@@ -7,14 +7,14 @@ const nanoid = require('nanoid');
 //
 const UserSchema = new mongoose.Schema(
   {
-    name: String,
+    firstname: String,
+    lastname: String,
     avatar: String,
-    email: String,
     location: String,
-    twitterProvider: {
+    linkedinProvider: {
       type: {
         id: String,
-        token: String
+        access_token: String
       },
       select: false
     },
@@ -29,51 +29,50 @@ const UserSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-UserSchema.statics.upsertTwitterUser = function(
-  token,
-  tokenSecret,
-  profile,
-  cb
-) {
+UserSchema.statics.upsertLinkedinUser = function(access_token, profile) {
   var that = this;
   return this.findOne(
     {
-      'twitterProvider.id': profile.id
+      'linkedinProvider.id': profile.id
     },
-    function(err, user) {
+    async function(err, user) {
       // no user was found, lets create a new one
       if (!user) {
         var newUser = new that({
-          name: profile.displayName,
-          email: profile.emails[0].value,
-          avatar: profile._json.profile_image_url_https,
-          location: profile._json.location,
-          twitterProvider: {
+          firstname: profile.firstName.localized.en_US,
+          lastname: profile.lastName.localized.en_US,
+          avatar:
+            profile.profilePicture['displayImage~'].elements[1].identifiers[0]
+              .identifier,
+          linkedinProvider: {
             id: profile.id,
-            token: token,
-            tokenSecret: tokenSecret
+            access_token: access_token
           }
         });
 
-        newUser.save(function(error, savedUser) {
+        await newUser.save(function(error, savedUser) {
           if (error) {
             console.log(error);
           }
-          return cb(error, savedUser);
         });
+
+        return newUser;
       } else {
         // update
-        user.name = profile.displayName;
-        user.email = profile.emails[0].value;
-        user.avatar = profile._json.profile_image_url_https;
-        user.location = profile._json.location;
+        user.firstname = profile.firstName.localized.en_US;
+        user.lastname = profile.lastName.localized.en_US;
+        user.avatar =
+          profile.profilePicture[
+            'displayImage~'
+          ].elements[1].identifiers[0].identifier;
 
-        user.save(function(error, savedUser) {
+        await user.save(function(error, savedUser) {
           if (error) {
             console.log(error);
           }
-          return cb(error, savedUser);
         });
+
+        return user;
       }
     }
   );

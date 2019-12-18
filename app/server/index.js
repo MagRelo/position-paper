@@ -26,7 +26,8 @@ const cookieParser = require('cookie-parser');
 
 // auth
 const passport = require('passport');
-require('./auth/twitter');
+// require('./auth/twitter');
+// require('./auth/linkedIn');
 
 // routes
 const httpApi = require('./api');
@@ -39,7 +40,10 @@ const httpApi = require('./api');
 
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGODB_URL_INT, { useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_URL_INT, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 mongoose.connection.on('error', function(err) {
   console.error('MongoDB connection error: ' + err);
   process.exit(-1);

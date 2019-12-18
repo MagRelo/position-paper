@@ -673,3 +673,12 @@ section.hero {
 .form-radio:checked {
   background-color: #f1f1f1;
 }
+
+/* linked in button */
+.login-button-linkedin {
+  background-color: inherit;
+  border: none;
+
+  display: flex;
+  align-items: center;
+}

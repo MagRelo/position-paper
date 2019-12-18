@@ -1,13 +1,10 @@
 var express = require('express');
 var router = express.Router();
 
-const passport = require('passport');
-
 // Controllers
 
 const {
-  twitterReverse,
-  twitterAuth,
+  linkedinAuth,
   sendToken,
   getToken,
   authenticate,
@@ -111,14 +108,7 @@ router.get('/admin', getToken, authenticate, getUser, getAllData);
 
 //
 // AUTH
-//
-router.post('/auth/twitter/reverse', twitterReverse);
-router.post(
-  '/auth/twitter',
-  twitterAuth,
-  passport.authenticate('twitter-token'),
-  sendToken
-);
+router.post('/auth/linkedin/callback', linkedinAuth, sendToken);
 router.get('/auth/status', getToken, authenticate, getUser, userStatus);
 
 //

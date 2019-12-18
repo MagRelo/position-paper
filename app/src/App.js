@@ -4,6 +4,8 @@ import { Router, Link, navigate } from '@reach/router';
 
 import Cookies from 'js-cookie';
 
+import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
+
 // CSS
 import 'react-input-range/lib/css/index.css';
 import '@reach/dialog/styles.css';
@@ -42,24 +44,21 @@ function App(props) {
   const [activeSession, setActiveSession] = useState(false);
   const [user, setUser] = useState({});
 
-  useEffect(
-    () => {
-      const servesaCookie = Cookies.get('servesa-auth-token');
-      if (servesaCookie) {
-        // hit server and see if logged in
-        getUser().then(user => {
-          if (!!user) {
-            setUser(user);
-            setActiveSession(true);
-          } else {
-            Cookies.remove('servesa-auth-token');
-            setActiveSession(false);
-          }
-        });
-      }
-    },
-    [activeSession]
-  );
+  useEffect(() => {
+    const servesaCookie = Cookies.get('servesa-auth-token');
+    if (servesaCookie) {
+      // hit server and see if logged in
+      getUser().then(user => {
+        if (!!user) {
+          setUser(user);
+          setActiveSession(true);
+        } else {
+          Cookies.remove('servesa-auth-token');
+          setActiveSession(false);
+        }
+      });
+    }
+  }, [activeSession]);
 
   function createSession(user) {
     Cookies.set('servesa-auth-token', user.token);
@@ -103,6 +102,8 @@ function App(props) {
             </Router>
           ) : (
             <Router primary={false}>
+              <LinkedInPopUp exact path="/linkedin/callback" />
+
               <Search path="/search" />
               <LinkPage path="/link/:linkId" />
               <Terms path="/terms" />

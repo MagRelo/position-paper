@@ -1,6 +1,5 @@
-const request = require('request');
+const fetch = require('node-fetch');
 const jwt = require('jsonwebtoken');
-
 const expressJwt = require('express-jwt');
 
 const UserModel = require('../models').UserModel;
@@ -38,57 +37,111 @@ exports.getUser = async function(req, res, next) {
   next();
 };
 
-exports.twitterReverse = function(req, res) {
-  request.post(
-    {
-      url: 'https://api.twitter.com/oauth/request_token',
-      oauth: {
-        callback: process.env['TWITTER_CALLBACK'],
-        consumer_key: process.env['TWITTER_CONSUMER_KEY'],
-        consumer_secret: process.env['TWITTER_CONSUMER_SECRET']
+exports.linkedinAuth = async function(req, res, next) {
+  try {
+    // get access token
+    const params = `grant_type=authorization_code&code=${req.body.access_code}&redirect_uri=${process.env['LINKEDIN_CALLBACK']}&client_id=${process.env['LINKEDIN_KEY']}&client_secret=${process.env['LINKEDIN_SECRET']}`;
+    const accessTokenResponse = await fetch(
+      'https://www.linkedin.com/oauth/v2/accessToken',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: params
       }
-    },
-    function(err, r, body) {
-      if (r.statusCode !== 200) {
-        return res.status(500).send({ message: r.statusMessage });
+    ).then(response => {
+      if (response.status === 200) {
+        return response.json();
+      } else {
+        console.log('Get access token:', response.status, response.statusText);
+        throw Error(response);
       }
+    });
 
-      var jsonStr =
-        '{ "' + body.replace(/&/g, '", "').replace(/=/g, '": "') + '"}';
-      res.send(JSON.parse(jsonStr));
-    }
-  );
+    // get profile data
+    const profileURI =
+      'https://api.linkedin.com/v2/me?projection=(id,firstName,lastName,profilePicture(displayImage~:playableStreams))';
+    // const profileURI = 'https://api.linkedin.com/v2/me?projection=(id,firstName,lastName)';
+    const meResponse = await fetch(profileURI, {
+      method: 'GET',
+      headers: {
+        Connection: 'Keep-Alive',
+        Authorization: 'Bearer ' + accessTokenResponse.access_token
+      }
+    }).then(response => {
+      if (response.status === 200) {
+        return response.json();
+      } else {
+        console.log('Get profile data:', response.status, response.statusText);
+        throw Error(response);
+      }
+    });
+
+    // upsert user
+    const newUser = await UserModel.upsertLinkedinUser(
+      accessTokenResponse.access_token,
+      meResponse
+    );
+
+    req.user = newUser.toObject();
+    next();
+  } catch (error) {
+    res.status(500).send(error);
+  }
 };
 
-exports.twitterAuth = function(req, res, next) {
-  request.post(
-    {
-      url: `https://api.twitter.com/oauth/access_token?oauth_verifier`,
-      oauth: {
-        consumer_key: process.env['TWITTER_CONSUMER_KEY'],
-        consumer_secret: process.env['TWITTER_CONSUMER_SECRET'],
-        token: req.query.oauth_token
-      },
-      form: { oauth_verifier: req.query.oauth_verifier }
-    },
-    function(err, r, body) {
-      if (err) {
-        return res.send(500, { message: err.message });
-      }
+// exports.twitterReverse = function(req, res) {
+//   request.post(
+//     {
+//       url: 'https://api.twitter.com/oauth/request_token',
+//       oauth: {
+//         callback: process.env['TWITTER_CALLBACK'],
+//         consumer_key: process.env['TWITTER_CONSUMER_KEY'],
+//         consumer_secret: process.env['TWITTER_CONSUMER_SECRET']
+//       }
+//     },
+//     function(err, r, body) {
+//       if (r.statusCode !== 200) {
+//         return res.status(500).send({ message: r.statusMessage });
+//       }
 
-      // console.log(body);
-      const bodyString =
-        '{ "' + body.replace(/&/g, '", "').replace(/=/g, '": "') + '"}';
-      const parsedBody = JSON.parse(bodyString);
+//       var jsonStr =
+//         '{ "' + body.replace(/&/g, '", "').replace(/=/g, '": "') + '"}';
+//       res.send(JSON.parse(jsonStr));
+//     }
+//   );
+// };
 
-      req.body['oauth_token'] = parsedBody.oauth_token;
-      req.body['oauth_token_secret'] = parsedBody.oauth_token_secret;
-      req.body['user_id'] = parsedBody.user_id;
+// exports.twitterAuth = function(req, res, next) {
+//   request.post(
+//     {
+//       url: `https://api.twitter.com/oauth/access_token?oauth_verifier`,
+//       oauth: {
+//         consumer_key: process.env['TWITTER_CONSUMER_KEY'],
+//         consumer_secret: process.env['TWITTER_CONSUMER_SECRET'],
+//         token: req.query.oauth_token
+//       },
+//       form: { oauth_verifier: req.query.oauth_verifier }
+//     },
+//     function(err, r, body) {
+//       if (err) {
+//         return res.send(500, { message: err.message });
+//       }
 
-      return next();
-    }
-  );
-};
+//       // console.log(body);
+//       const bodyString =
+//         '{ "' + body.replace(/&/g, '", "').replace(/=/g, '": "') + '"}';
+//       const parsedBody = JSON.parse(bodyString);
+
+//       req.body['oauth_token'] = parsedBody.oauth_token;
+//       req.body['oauth_token_secret'] = parsedBody.oauth_token_secret;
+//       req.body['user_id'] = parsedBody.user_id;
+
+//       return next();
+//     }
+//   );
+// };
 
 exports.sendToken = function(req, res) {
   if (!req.user) {
@@ -98,7 +151,7 @@ exports.sendToken = function(req, res) {
   // create token
   const token = jwt.sign(
     {
-      id: req.user.id
+      id: req.user._id
     },
     process.env['JWT_SECRET'],
     {
