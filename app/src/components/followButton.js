@@ -19,7 +19,7 @@ function FollowButton(props) {
   return (
     <React.Fragment>
       <button
-        className="pure-button"
+        className="btn btn-theme btn-sm"
         onClick={handleClick}
         disabled={props.disabled}
       >

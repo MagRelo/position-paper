@@ -1,0 +1,257 @@
+/* Custom */
+
+
+html,
+body,
+#root,
+.page-wrapper {
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+.page-wrapper {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+}
+
+.content-wrapper {
+    padding: 0 0 3em;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+@media screen and (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+}
+
+svg {
+    fill: currentColor;
+}
+
+
+h2 {
+    line-height: 52px;
+    font-size: 42px;
+}
+
+.icon {
+    color: white;
+    height: 40px;
+    width: 40px;
+    border-radius: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 11px;
+    float: left;
+}
+
+.icon-block {
+    height: 40px;
+    line-height: 40px;
+    margin: 0 auto;
+}
+
+.icon-label {
+    padding-left: 1em;
+}
+
+.social-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    padding: 0 1em;
+    margin: 1em 0;
+    grid-gap: 1em;
+}
+
+.button-unstyled {
+    border: none;
+}
+
+.button-unstyled>* {
+    pointer-events: none;
+}
+
+.login-button {
+    margin-top: 1em;
+    color: black;
+    border-radius: 32px;
+    padding: 8px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.12),
+        0 2px 2px rgba(0, 0, 0, 0.12),
+        0 4px 4px rgba(0, 0, 0, 0.12)
+        /* 0 8px 8px rgba(0, 0, 0, 0.12),
+        0 16px 16px rgba(0, 0, 0, 0.12); */
+    ;
+}
+
+.login-button .label {
+    padding: 6px 12px;
+    display: inline-block;
+    font-size: 18px;
+}
+
+/* getstream activity */
+.stream {
+    padding: 0.667em 1em 1em;
+    box-shadow: 0px 2px 5px 0px rgba(117, 117, 117, 0.58);
+}
+
+.stream-label {
+    text-transform: uppercase;
+    font-size: small;
+}
+
+.stream p {
+    margin-bottom: 0;
+    padding-left: 0.66em;
+}
+
+.stream svg {
+    margin-bottom: -3px;
+    margin-right: 0.33em;
+    font-size: 1.2em;
+}
+
+
+
+.user-container {
+    padding-bottom: 4em;
+    min-height: 90vh;
+}
+
+
+/* user display */
+.user-profile {
+    margin: 24px 0;
+    color: #5e5e5e
+}
+
+.user-profile:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.user-avatar {
+    border-radius: 50%;
+    float: left;
+    border: solid 1px gray;
+    width: 60px;
+}
+
+.user-info {
+    padding-left: 72px;
+}
+
+.user-name {
+    font-size: 20px;
+}
+
+.user-location {
+    padding-top: 5px;
+    font-size: 14px;
+}
+
+/* input range slider */
+.input-range {
+    margin: 36px 0 36px;
+}
+
+.input-range__label {
+    color: gray;
+}
+
+.input-range__track--active {
+    background-color: #03d665;
+}
+
+.input-range__slider {
+    border-color: #03d665;
+    background-color: #03d665;
+    ;
+}
+
+.employee .input-range__slider,
+.employee .input-range__track--active {
+    border-color: rgb(46, 142, 80);
+    background-color: rgb(68, 175, 105);
+}
+
+
+.network .input-range__slider,
+.network .input-range__track--active {
+    border-color: rgb(212, 166, 0);
+    background-color: rgb(254, 198, 1);
+}
+
+/* form */
+
+.form-wrapper {
+    max-width: 48em;
+    margin: 0 auto;
+
+    border: solid #dddddd 1px;
+    border-radius: 1em;
+    padding: 2em;
+}
+
+.link-display {
+    position: sticky;
+    top: 90px;
+    padding: 1em;
+    border: solid 1px #ddd;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.12),
+        0 2px 2px rgba(0, 0, 0, 0.12),
+        0 4px 4px rgba(0, 0, 0, 0.12)
+}
+
+
+/* Search tile */
+.search-tile {
+    border-top: solid 2px #03d665;
+    box-shadow: 0px 2px 5px 0px rgba(112, 148, 116, 0.58);
+    padding: 1em;
+}
+
+.search-tile-header {
+    text-transform: uppercase;
+    font-size: small;
+}
+
+.search-tile-title {
+    font-size: 18px;
+    font-weight: bold;
+    /* margin-top: 0; */
+}
+
+.search-tile-desc {
+    font-size: 14px;
+    padding: 1em;
+    background: #f3f3f3;
+    border-radius: 4px;
+}
+
+.search-tile a {
+    color: #3a3a3a;
+}
+
+.search-tile .label {
+    margin-bottom: 0.5em;
+    display: block;
+    text-transform: uppercase;
+    color: gray;
+    font-size: small;
+}
+
+.search-form {
+    background: #f5f5f5;
+    border: solid 1px #f5f5f5;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    padding: 1rem;
+}

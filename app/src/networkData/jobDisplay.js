@@ -1,5 +1,7 @@
 import React from 'react';
 import { formatCurrency } from '../components/util/random';
+import { Link } from '@reach/router';
+import FollowButton from 'components/followButton';
 
 // const panelStyle = {
 //   padding: '1px 2em 2em'
@@ -45,6 +47,46 @@ export function LinkDisplay({ data }) {
         {jobDataItem('Location', data.location)}
         {jobDataItem('Salary', salaryString)}
         {jobDataItem('', data.description)}
+      </div>
+      <hr />
+      <div>
+        <h4 className="section-header">Apply for this Job</h4>
+        <p>
+          Apply for this position. This position comes with a{' '}
+          {formatCurrency('xxx')} signing bonus.
+        </p>
+
+        {/* <Link
+          className="btn btn-theme btn-sm"
+          disabled={data.user._id === 0 || data.user.isLinkOwner}
+          to={'/respond/' + data.link.linkId}
+        >
+          {'Apply @ ' + formatCurrency(data.link.target_bonus)}
+        </Link> */}
+
+        <button className="btn btn-theme btn-sm">Apply Now (dummy)</button>
+      </div>
+      <hr />
+      <div className="link-display-item">
+        <h4 className="section-header">Follow this Deal</h4>
+        <p>Follow to receive updates in your activity feed.</p>
+
+        {/* <FollowButton
+          type="Link"
+          targetId={props.link._id}
+          isFollowing={props.user.isFollowingLink}
+          disabled={props.user._id === 0 || props.user.isLinkOwner}
+        /> */}
+        <button className="btn btn-theme btn-sm">Follow Job (dummy)</button>
+        {/* 
+        <FollowButton
+          type="User"
+          targetId={props.link.userId}
+          isFollowing={props.user.isFollowingUser}
+          disabled={props.user._id === 0 || props.user.isLinkOwner}
+        /> */}
+
+        <button className="btn btn-theme btn-sm">Follow User (dummy)</button>
       </div>
     </div>
   );

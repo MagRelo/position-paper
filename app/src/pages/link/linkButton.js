@@ -14,7 +14,7 @@ function LinkButton(props) {
   return (
     <React.Fragment>
       <button
-        className="pure-button pure-button-primary"
+        className="btn btn-theme btn-sm"
         onClick={handleClick}
         disabled={props.disabled}
       >

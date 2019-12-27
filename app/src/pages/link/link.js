@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Helmet } from 'react-helmet';
+// import { Helmet } from 'react-helmet';
 
 // network Data
 import { LinkDisplay as JobDisplay } from 'networkData/jobDisplay.js';
@@ -23,19 +23,27 @@ function Link(props) {
 
   useEffect(() => {
     setIsLoading(true);
+    let isSubscribed = true;
 
     getLink(props.linkId, authContext.clearSession).then(body => {
-      // display & admin
-      setUser(body.user);
-      setLink(body.link);
+      if (isSubscribed) {
+        // display & admin
+        setUser(body.user);
+        setLink(body.link);
 
-      // admin only
-      setQueryData(body.link.data);
-      setTraffic(body.traffic);
-      setStream(body.stream);
+        // admin only
+        setQueryData(body.link.data);
+        setTraffic(body.traffic);
+        setStream(body.stream);
 
-      setIsLoading(false);
+        setIsLoading(false);
+      }
     });
+
+    // cleanup
+    return () => {
+      isSubscribed = false;
+    };
   }, [props.linkId]);
 
   return (
@@ -45,29 +53,29 @@ function Link(props) {
           <Loading />
         </div>
       ) : (
-        <React.Fragment>
-          {/* <h3 className="section-header">{link.title}</h3> */}
-          <div className="row row-5-3">
-            <div>
-              <JobDisplay data={queryData} />
+        <div>
+          <div className="container">
+            <div className="row">
+              <div className="col-lg-8">
+                <JobDisplay data={queryData} />
+              </div>
+              <div className="col-lg-4">
+                {/* Buttons */}
+                {!user.isLinkOwner ? (
+                  <LinkDisplay link={link} user={user} queryData={queryData} />
+                ) : (
+                  <LinkAdmin
+                    link={link}
+                    traffic={traffic}
+                    stream={stream}
+                    user={user}
+                    childLinks={link.children}
+                  />
+                )}
+              </div>
             </div>
-
-            {/* Buttons */}
-            {!user.isLinkOwner ? (
-              <LinkDisplay link={link} user={user} queryData={queryData} />
-            ) : null}
           </div>
-
-          {user.isLinkOwner ? (
-            <LinkAdmin
-              link={link}
-              traffic={traffic}
-              stream={stream}
-              user={user}
-              childLinks={link.children}
-            />
-          ) : null}
-        </React.Fragment>
+        </div>
       )}
     </div>
   );
@@ -124,3 +132,9 @@ async function getLink(linkId, clearSession) {
 //     </Helmet>
 //   );
 //}
+
+// * <h3 className="section-header">{link.title}</h3> */
+
+// {user.isLinkOwner ? (
+
+// ) : (

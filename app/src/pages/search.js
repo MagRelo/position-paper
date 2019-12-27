@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useDebounce } from 'components/util/random';
-import { Helmet } from 'react-helmet';
+// import { Helmet } from 'react-helmet';
 
 import JobSearchForm from 'networkData/searchForm';
-// import SearchResults from 'networkData/searchResult';
 import SearchResults from 'networkData/searchResult_tile';
 
 function SearchFlow() {
@@ -31,11 +30,11 @@ function SearchFlow() {
   }
 
   return (
-    <div>
-      <h3 className="section-header">
+    <div className="container">
+      <h1>
         Search
         <button
-          className="pure-button pure-button-primary"
+          className="btn btn-theme btn-sm"
           style={{ float: 'right', fontSize: 'small' }}
           onClick={() => {
             toggleForm();
@@ -43,7 +42,7 @@ function SearchFlow() {
         >
           {isOpen ? 'Close' : 'Filter'}
         </button>
-      </h3>
+      </h1>
 
       {isOpen ? (
         <div style={{ marginBottom: '2em' }}>

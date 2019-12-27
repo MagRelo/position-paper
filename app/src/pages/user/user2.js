@@ -21,7 +21,7 @@ function User(props) {
   const authContext = useContext(AuthContext);
 
   const [isLoading, setIsLoading] = useState(true);
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState(authContext.user);
   const [links, setLinks] = useState([]);
   const [jobs, setJobs] = useState([]);
   const [payments, setPayments] = useState([]);
@@ -30,7 +30,6 @@ function User(props) {
 
   useEffect(() => {
     setIsLoading(true);
-
     let isSubscribed = true;
 
     // hit user API route, get all data
@@ -53,27 +52,18 @@ function User(props) {
   }, []);
 
   return (
-    <div className="row row-6-1">
-      <div>
-        <h3 className="section-header">Account</h3>
-        {isLoading ? (
-          <Loading />
-        ) : (
-          <div>
-            <div className="user-profile clear-fix">
-              <img src={userData.avatar} alt="avatar" className="user-avatar" />
-              <div className="user-info">
-                <div className="user-name">{userData.name}</div>
-                <div className="user-location">{userData.location}</div>
-              </div>
-            </div>
-
+    <div className="container user-container">
+      <div className="row">
+        <div className="col-lg-8">
+          <h2>Dashboard</h2>
+          {isLoading ? (
+            <Loading />
+          ) : (
             <Tabs style={{ marginTop: '1em' }}>
               <TabList style={{ marginBottom: '1em' }}>
-                <CoolTab count={jobs.length}>Jobs</CoolTab>
-                <CoolTab count={links.length}>Links</CoolTab>
-                <CoolTab count={responses.length}>Applications</CoolTab>
-                <CoolTab>Profile</CoolTab>
+                <CoolTab count={jobs.length}>Post a Job</CoolTab>
+                <CoolTab count={links.length}>Promote Jobs</CoolTab>
+                <CoolTab count={responses.length}>My Applications</CoolTab>
               </TabList>
 
               <TabPanels>
@@ -93,34 +83,26 @@ function User(props) {
                     <ResponseList responses={responses} />
                   </div>
                 </TabPanel>
-
-                <TabPanel style={{ outline: 'none' }}>
-                  <div>
-                    <h3 className="section-header">Account Balance</h3>
-                    {lineItem('Pending Balance', formatCurrency(0))}
-
-                    {userData.hasAccount ? (
-                      lineItem('Account', userData.stripeAccountLabel)
-                    ) : (
-                      <p style={{ textAlign: 'center' }}>
-                        <Link to="/user/account">Link Bank Account</Link>
-                      </p>
-                    )}
-                  </div>
-
-                  <h3 className="section-header">Payments</h3>
-                  <PaymentsTable payments={payments} />
-                </TabPanel>
               </TabPanels>
             </Tabs>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
 
-      {/* stream */}
-      <div>
-        <h3 className="section-header">Activity</h3>
-        <StreamList stream={stream} userId={userData._id} />
+        {/* stream */}
+        <div className="col-lg-4">
+          <div>
+            <div className="user-profile">
+              <img src={userData.avatar} alt="avatar" className="user-avatar" />
+              <div className="user-info">
+                <div className="user-name">{userData.name}</div>
+                <div className="user-location">
+                  Earnings: {userData.pending || '$0'}
+                </div>
+              </div>
+            </div>
+            <StreamList stream={stream} userId={userData._id} />
+          </div>
+        </div>
       </div>
     </div>
   );

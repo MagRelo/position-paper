@@ -1,83 +1,126 @@
-import React from 'react';
-import LinkedIn from './linkedinLogin';
+import React, { useContext } from 'react';
+import { AuthContext } from 'App';
 
-import {
-  Menu,
-  MenuList,
-  MenuLink,
-  MenuButton,
-  MenuItem
-} from '@reach/menu-button';
 import { Link } from '@reach/router';
+
+// import {
+//   Menu,
+//   MenuList,
+//   MenuLink,
+//   MenuButton,
+//   MenuItem
+// } from '@reach/menu-button';
+
+// import { Link } from '@reach/router';
 
 // Twitter
 // const domain = window.location.origin || 'http://localhost:3000';
 // const loginPath = '/api/auth/twitter';
 // const requestPath = '/api/auth/twitter/reverse';
 
-const NavLink = props => (
-  <Link
-    {...props}
-    getProps={({ isCurrent }) => {
-      // the object returned here is passed to the
-      // anchor element's props
-      return {
-        style: {
-          borderBottom: isCurrent ? 'solid 1px' : null,
-          color: isCurrent ? 'white' : null
-        }
-      };
-    }}
-  />
-);
+// const NavLink = props => (
+//   <Link
+//     {...props}
+//     getProps={({ isCurrent }) => {
+//       // the object returned here is passed to the
+//       // anchor element's props
+
+//       // return {
+//       //   style: {
+//       //     borderBottom: isCurrent ? 'solid 1px' : null,
+//       //     color: isCurrent ? 'white' : null
+//       //   }
+//       // };
+
+//       return {
+//         className: isCurrent ? 'nav-link active' : 'active'
+//       };
+//     }}
+//   />
+// );
+
+// temp
+import logo from 'images/logo.png';
 
 function Header(props) {
+  const { activeSession } = useContext(AuthContext);
+
   return (
-    <React.Fragment>
-      <nav className="header">
-        <h1>
-          <Link to="/">Talent Relay</Link>
-        </h1>
+    <header id="site-header" className="header">
+      <div id="header-wrap">
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-lg-12">
+              <nav className="navbar navbar-expand-lg">
+                <Link className="navbar-brand logo" to="/">
+                  <img
+                    id="logo-img"
+                    className="img-center"
+                    src={logo}
+                    alt="logo"
+                  ></img>
+                </Link>
+                <button
+                  className="navbar-toggler"
+                  type="button"
+                  data-toggle="collapse"
+                  data-target="#navbarNavDropdown"
+                  aria-expanded="false"
+                  aria-label="Toggle navigation"
+                >
+                  {' '}
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </button>
 
-        <NavLink to={'/search'}>Search</NavLink>
+                {/* Menu */}
+                <div
+                  className="collapse navbar-collapse"
+                  id="navbarNavDropdown"
+                >
+                  <ul className="navbar-nav ml-auto mr-auto">
+                    {activeSession ? null : (
+                      <React.Fragment>
+                        <li className="nav-item">
+                          <a className="nav-link" href="/#customers">
+                            Customers
+                          </a>
+                        </li>
+                        <li className="nav-item">
+                          <a className="nav-link" href="/#how">
+                            How It Works
+                          </a>
+                        </li>
+                        <li className="nav-item">
+                          <a className="nav-link" href="/#getstarted">
+                            Get Started
+                          </a>
+                        </li>
+                      </React.Fragment>
+                    )}
+                  </ul>
+                </div>
 
-        <span style={{ margin: '0 1em' }}></span>
+                {/* Login/Logout */}
 
-        {props.activeSession ? (
-          <React.Fragment>
-            <NavLink to={'/user'}>{props.user.name}</NavLink>
-            <Menu>
-              <MenuButton
-                className="pure-button"
-                style={{
-                  background: 'none',
-                  color: 'gray',
-                  padding: 'none',
-                  marginLeft: 0
-                }}
-              >
-                <span aria-hidden>▾</span>
-              </MenuButton>
-              <MenuList>
-                <MenuLink as={Link} to={'/search'}>
-                  Search
-                </MenuLink>
-
-                <MenuLink as={Link} to={'/user'}>
-                  Account
-                </MenuLink>
-
-                <MenuItem onSelect={() => props.clearSession()}>
-                  Logout
-                </MenuItem>
-              </MenuList>
-            </Menu>
-          </React.Fragment>
-        ) : (
-          <LinkedIn createSession={props.createSession} />
-        )}
-      </nav>
-    </React.Fragment>
+                <div className="right-nav align-items-center d-flex justify-content-end list-inline">
+                  {activeSession ? (
+                    <Link className="btn btn-theme btn-sm" to="/user">
+                      <span>Dashboard</span>
+                    </Link>
+                  ) : (
+                    <Link className="btn btn-theme btn-sm" to="/login">
+                      <span>Login</span>
+                    </Link>
+                  )}
+                </div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
   );
 }
 

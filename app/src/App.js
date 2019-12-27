@@ -10,19 +10,45 @@ import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
 import 'react-input-range/lib/css/index.css';
 import '@reach/dialog/styles.css';
 import '@reach/menu-button/styles.css';
-import './css/open-sans.css';
-import './css/pure-min.css';
-import './index.css';
-import './app.css';
+
+// Template CSS
+
+// bootstrap -->
+import './css/bootstrap.min.css';
+// <!--== animate -->
+import './css/animate.css';
+// <!--== fontawesome -->
+import './css/fontawesome-all.css';
+// <!--== line-awesome -->
+import './css/line-awesome.min.css';
+// <!--== magnific-popup -->
+// import './css/magnific-popup/magnific-popup.css';
+// <!--== owl-carousel -->
+// import './css/owl-carousel/owl.carousel.css';
+// <!--== base -->
+import './css/base.css';
+// <!--== shortcodes -->
+import './css/shortcodes.css';
+// <!--== default-theme -->
+import './css/style.css';
+// <!--== responsive -->
+import './css/responsive.css';
+
+//
+// Template Overides
+//
+import './css/talent-relay.css';
 
 // Header
 import Header from 'components/header';
+import Footer from 'components/footer';
 
 // Routes
 import LandingPage from 'networkData/landingPage';
 import Terms from 'pages/legal';
 import About from 'pages/about';
 import Signup from 'networkData/alphaSignup';
+import Login from 'pages/login';
 
 // Maybe Auth
 import Search from 'pages/search';
@@ -74,15 +100,11 @@ function App(props) {
 
   return (
     <AuthContext.Provider
-      value={{ activeSession: activeSession, clearSession: clearSession }}
+      value={{ activeSession, createSession, clearSession, user }}
     >
-      <div className="container">
-        <Header
-          user={user}
-          activeSession={activeSession}
-          createSession={createSession}
-          clearSession={clearSession}
-        />
+      <div className="page-wrapper">
+        <Header />
+
         <div className="content-wrapper">
           {activeSession ? (
             <Router primary={false}>
@@ -103,6 +125,7 @@ function App(props) {
           ) : (
             <Router primary={false}>
               <LinkedInPopUp exact path="/linkedin/callback" />
+              <Login path="/login" />
 
               <Search path="/search" />
               <LinkPage path="/link/:linkId" />
@@ -114,17 +137,7 @@ function App(props) {
           )}
         </div>
 
-        <footer>
-          <ul>
-            <li>Talent Relay</li>
-            <li>
-              <Link to="/terms">Terms of Service & Privacy</Link>
-            </li>
-            <li>
-              <Link to="/about">About</Link>
-            </li>
-          </ul>
-        </footer>
+        <Footer />
       </div>
     </AuthContext.Provider>
   );

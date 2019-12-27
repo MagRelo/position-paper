@@ -5,13 +5,13 @@ class JobTable extends Component {
   render() {
     return (
       <React.Fragment>
-        <table className="pure-table">
+        <table className="table table-striped">
           <thead>
             <tr>
-              <th>Title</th>
+              <th>Job Title</th>
+              <th>Promoters</th>
               <th>Views</th>
-              <th>Shares</th>
-              <th>Child Links</th>
+              <th>Applications</th>
             </tr>
           </thead>
           <tbody>
@@ -21,9 +21,9 @@ class JobTable extends Component {
                   <td>
                     <Link to={'/link/' + link.linkId}>{link.title}</Link>
                   </td>
+                  <td>{link.children.length}</td>
                   <td>{link.views}</td>
                   <td>{link.shares}</td>
-                  <td>{link.children.length}</td>
                 </tr>
               );
             })}
@@ -38,7 +38,7 @@ class JobTable extends Component {
         <div>
           <Link
             to="/addquery"
-            className="pure-button pure-button-primary"
+            className="btn btn-theme btn-sm"
             style={{ float: 'right', marginTop: '1.5em' }}
           >
             Post a Job

@@ -15,12 +15,13 @@ class UserLinks extends Component {
   render() {
     return (
       <React.Fragment>
-        <table className="pure-table">
+        <table className="table table-striped">
           <thead>
             <tr>
-              <th>Link</th>
-              <th>Value</th>
-              <th>Views</th>
+              <th>Job Title</th>
+              <th>Earn Up To...</th>
+              <th>Applications</th>
+              <th>Promoters</th>
             </tr>
           </thead>
           <tbody>
@@ -46,10 +47,10 @@ class UserLinks extends Component {
         <div>
           <Link
             to="/search"
-            className="pure-button pure-button-primary"
+            className="btn btn-theme btn-sm"
             style={{ float: 'right', marginTop: '1.5em' }}
           >
-            Search for Links
+            Search for Jobs
           </Link>
         </div>
       </React.Fragment>

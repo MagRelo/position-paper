@@ -12,69 +12,60 @@ import TwitterButton from 'components/social/twitterButton';
 import LinkedinButton from 'components/social/linkedinButton';
 import InstaButton from 'components/social/instagramButton';
 
+// import JobForm from 'networkData/createJob';
+// <JobForm />
+
 function LinkAdmin(props) {
   return (
     <React.Fragment>
-      <h3 className="section-header">Link Dashboard</h3>
+      <h4>Job Dashboard</h4>
 
-      <div className="row row-2">
-        <div>
-          <div className="share">
-            {/* Share */}
-            <h4 className="section-header">Share Link</h4>
-            <div className="social-grid">
-              <EmailButton enabled={true} link={props.link} />
-              <TwitterButton enabled={true} link={props.link} />
-              <LinkedinButton enabled={false} link={props.link} />
-              <InstaButton enabled={false} link={props.link} />
-            </div>
-          </div>
-
-          <div className="info">
-            {/* Info */}
-            {props.user.isQueryOwner ? (
-              <QueryOwnerMessage
-                link={props.link}
-                stream={props.stream}
-                userId={props.userId}
-                traffic={props.traffic}
-              />
-            ) : (
-              <LinkOwnerMessage
-                link={props.link}
-                stream={props.stream}
-                userId={props.userId}
-                traffic={props.traffic}
-              />
-            )}
-          </div>
+      <div className="share">
+        {/* Share */}
+        <h4 className="section-header">Promote</h4>
+        <div className="social-grid">
+          <EmailButton enabled={true} link={props.link} />
+          <TwitterButton enabled={true} link={props.link} />
+          <LinkedinButton enabled={false} link={props.link} />
+          <InstaButton enabled={false} link={props.link} />
         </div>
+      </div>
+
+      <div className="info">
+        {/* Info */}
+        {props.user.isQueryOwner ? null : (
+          <LinkOwnerMessage
+            link={props.link}
+            stream={props.stream}
+            userId={props.userId}
+            traffic={props.traffic}
+          />
+        )}
+      </div>
+
+      <div className="child-links">
+        {/* Child Links */}
+        <h4 className="section-header">Your Network Links</h4>
+        <LinkGraph
+          user={props.user}
+          parent={props.link}
+          links={props.link.children}
+        />
+      </div>
+
+      <div className="traffic">
+        {/* Traffic */}
+        <h4 className="section-header">Link Traffic</h4>
         <div>
-          <div className="child-links">
-            {/* Child Links */}
-            <h4 className="section-header">Your Network Links</h4>
-            <LinkGraph
-              user={props.user}
-              parent={props.link}
-              links={props.link.children}
-            />
-          </div>
+          <LinkMap />
+          {lineItem('Last 24 hours', props.traffic.last1days)}
+          {lineItem('Last 7 days', props.traffic.last7days)}
+          {lineItem('Last 30 days', props.traffic.last30days)}
+        </div>
 
-          <div className="traffic">
-            {/* Traffic */}
-            <h4 className="section-header">Link Traffic</h4>
-            <div>
-              <LinkMap />
-              {lineItem('Last 24 hours', props.traffic.last1days)}
-              {lineItem('Last 7 days', props.traffic.last7days)}
-              {lineItem('Last 30 days', props.traffic.last30days)}
-            </div>
-
-            <h4 className="section-header">Insights</h4>
-            <div style={{ textAlign: 'center', margin: '1em 0' }}>
-              <i>No insights...</i>
-            </div>
-          </div>
+        <h4 className="section-header">Insights</h4>
+        <div style={{ textAlign: 'center', margin: '1em 0' }}>
+          <i>No insights...</i>
         </div>
       </div>
     </React.Fragment>

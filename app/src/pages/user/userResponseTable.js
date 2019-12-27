@@ -7,11 +7,12 @@ export default PaymentTable;
 export function PaymentTable(props) {
   return (
     <React.Fragment>
-      <table className="pure-table">
+      <table className="table table-striped">
         <thead>
           <tr>
-            <th>Link</th>
-            <th>Message</th>
+            <th>Job Title</th>
+            <th>Submitted</th>
+            <th>Status</th>
           </tr>
         </thead>
         <tbody>
@@ -23,7 +24,8 @@ export function PaymentTable(props) {
                     {response.link.title}
                   </Link>
                 </td>
-                <td>{response.message}</td>
+                <td>{response.createdAt}</td>
+                <td>{response.status}</td>
               </tr>
             );
           })}
@@ -34,6 +36,14 @@ export function PaymentTable(props) {
           <i>No responses...</i>
         </div>
       )}
+
+      <Link
+        to="/search"
+        className="btn btn-theme btn-sm"
+        style={{ float: 'right', marginTop: '1.5em' }}
+      >
+        Search for Jobs
+      </Link>
     </React.Fragment>
   );
 }

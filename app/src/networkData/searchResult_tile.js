@@ -111,7 +111,7 @@ function activityTile({ link, query, user }) {
       </div>
 
       <Link
-        className="pure-button pure-button-primary"
+        className="btn btn-theme btn-sm"
         style={{ color: 'white', width: '100%' }}
         to={'/link/' + link.linkId}
       >
@@ -132,11 +132,12 @@ function AnimatedSearchResults(props) {
   });
 
   return (
-    <div className="row row-3">
+    <div className="row">
       {trail.map(({ x, height, ...rest }, index) => {
         return (
           <animated.div
             key={index}
+            className="col-lg-4"
             style={{
               ...rest,
               transform: x.interpolate(x => `translate3d(0,${x}px,0)`)
