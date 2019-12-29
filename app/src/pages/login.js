@@ -18,7 +18,7 @@ function Login(props) {
                 <span>Login</span> with LinkedIn
               </h1>
               <p>We'll never post anything without your permission.</p>
-              <LinkedInLogin />
+              <LinkedInLogin redirect={props.redirect} />
             </div>
           </div>
         </div>

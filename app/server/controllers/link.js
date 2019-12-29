@@ -5,10 +5,10 @@ const elasticSearch = require('../integrations/elasticsearch');
 // const sendgrid = require('../integrations/sendgrid');
 
 // const UserModel = require('../models').UserModel;
-// const ResponseModel = require('../models').ResponseModel;
 // const PaymentModel = require('../models').PaymentModel;
 // const ShareModel = require('../models').ShareModel;
 
+const ResponseModel = require('../models').ResponseModel;
 const LinkModel = require('../models').LinkModel;
 
 exports.createQuery = async function(req, res) {
@@ -82,8 +82,9 @@ exports.getLink = async function(req, res) {
       responseObj.user = {
         _id: 0,
         isQueryOwner: false,
-        isFollowingUser: false,
         isLinkOwner: false,
+        hasApplied: false,
+        isFollowingUser: false,
         isFollowingLink: false
       };
 
@@ -111,16 +112,20 @@ exports.getLink = async function(req, res) {
       isQueryOwner = req.user._id.equals(link.user._id);
     }
 
+    const userResponse = await ResponseModel.findOne({ user: req.user._id });
+
     // user
     responseObj.user = {
       _id: req.user._id,
       name: req.user.name,
       avatar: req.user.avatar,
 
-      isFollowingUser: isFollowingUser,
+      isQueryOwner: isQueryOwner,
       isLinkOwner: isLinkOwner,
-      isFollowingLink: isFollowingLink,
-      isQueryOwner: isQueryOwner
+      hasApplied: !!userResponse,
+      userResponse: userResponse,
+      isFollowingUser: isFollowingUser,
+      isFollowingLink: isFollowingLink
     };
 
     // traffic

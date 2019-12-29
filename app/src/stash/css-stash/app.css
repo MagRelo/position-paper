@@ -138,7 +138,6 @@ h1 {
   padding-left: 1em;
 }
 
-
 .social-grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -155,7 +154,7 @@ h1 {
   pointer-events: none;
 }
 
-/* social */
+/* end social */
 
 /* getstream activity */
 .stream {
@@ -190,13 +189,6 @@ h1 {
   text-transform: uppercase;
   font-size: small;
 }
-
-/* 
-.search-tile-header:after {
-  content: "";
-  display: table;
-  clear: both;
-} */
 
 .search-tile-title {
   font-size: 18px;

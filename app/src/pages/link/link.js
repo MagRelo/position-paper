@@ -1,17 +1,21 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { Link } from '@reach/router';
 // import { Helmet } from 'react-helmet';
-
-// network Data
-import { LinkDisplay as JobDisplay } from 'networkData/jobDisplay.js';
-import LinkAdmin from './linkAdmin';
-import LinkDisplay from './linkDisplay';
 
 import { AuthContext } from 'App';
 
-import { Loading } from 'components/util/random';
+// network Data
+import { JobDisplay } from 'networkData/jobDisplay.js';
+import LinkAdmin from './linkAdmin';
 
-function Link(props) {
-  const authContext = useContext(AuthContext);
+import ResponseStatus from 'pages/response/responseStatus';
+
+import ApplyButton from './applyButton';
+
+import { Loading, formatCurrency } from 'components/util/random';
+
+function LinkPage(props) {
+  const { activeSession, clearSession } = useContext(AuthContext);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -25,7 +29,7 @@ function Link(props) {
     setIsLoading(true);
     let isSubscribed = true;
 
-    getLink(props.linkId, authContext.clearSession).then(body => {
+    getLink(props.linkId, clearSession).then(body => {
       if (isSubscribed) {
         // display & admin
         setUser(body.user);
@@ -47,7 +51,7 @@ function Link(props) {
   }, [props.linkId]);
 
   return (
-    <div>
+    <div className="link-container">
       {isLoading ? (
         <div style={{ marginTop: '2em' }}>
           <Loading />
@@ -58,20 +62,27 @@ function Link(props) {
             <div className="row">
               <div className="col-lg-8">
                 <JobDisplay data={queryData} />
+
+                <hr />
+
+                <ApplyPanel
+                  link={link}
+                  user={user}
+                  activeSession={activeSession}
+                />
               </div>
+
               <div className="col-lg-4">
-                {/* Buttons */}
-                {!user.isLinkOwner ? (
-                  <LinkDisplay link={link} user={user} queryData={queryData} />
-                ) : (
+                <div className="link-display">
                   <LinkAdmin
                     link={link}
                     traffic={traffic}
                     stream={stream}
                     user={user}
                     childLinks={link.children}
+                    activeSession={activeSession}
                   />
-                )}
+                </div>
               </div>
             </div>
           </div>
@@ -81,7 +92,7 @@ function Link(props) {
   );
 }
 
-export default Link;
+export default LinkPage;
 
 async function getLink(linkId, clearSession) {
   return await fetch('/api/link/' + linkId).then(response => {
@@ -98,6 +109,48 @@ async function getLink(linkId, clearSession) {
       clearSession();
     }
   });
+}
+
+function ApplyPanel({ link, user, activeSession }) {
+  return (
+    <div id="apply">
+      {activeSession ? (
+        <React.Fragment>
+          {user.hasApplied ? (
+            <div>
+              <h3 className="section-header">Application Status</h3>
+              <p>You applied to this job on Jan, 12th 2019.</p>
+              <ResponseStatus status={'open'} />
+            </div>
+          ) : (
+            <div>
+              <h2>Apply for this Job</h2>
+              <p>
+                Apply for this position. We'll pay you{' '}
+                {formatCurrency(link.target_bonus)} if you're hired.
+              </p>
+              <ApplyButton
+                linkId={link.linkId}
+                userId={user._id}
+                label="Apply Now"
+                disabled={user.isLinkOwner}
+              />
+            </div>
+          )}
+        </React.Fragment>
+      ) : (
+        // login link
+        <Link
+          className="btn btn-sm btn-theme"
+          label={'Apply Now'}
+          to="/login"
+          redirect={'/link/' + link.linkId}
+        >
+          Apply Now
+        </Link>
+      )}
+    </div>
+  );
 }
 
 // <MetaData link={link} user={user} queryData={queryData} />
@@ -132,9 +185,3 @@ async function getLink(linkId, clearSession) {
 //     </Helmet>
 //   );
 //}
-
-// * <h3 className="section-header">{link.title}</h3> */
-
-// {user.isLinkOwner ? (
-
-// ) : (

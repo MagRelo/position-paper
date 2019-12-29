@@ -29,26 +29,24 @@ function CreateResponse({ user, link }) {
   }
 
   return (
-    <div>
-      <h2 className="section-header">Send Response</h2>
-      <form name="createForm" className="pure-form" onSubmit={submit}>
+    <div className="form-wrapper">
+      <form name="createForm" className="form" onSubmit={submit}>
+        <legend>Job</legend>
+        <legend>Profile</legend>
         <legend>Respond</legend>
         <fieldset>
-          <label htmlFor="name">Message </label>
+          <label htmlFor="name">Add a Message </label>
           <textarea
-            className="pure-input-1"
-            type="text"
+            className="form-control"
             id="message"
             name="message"
             value={message}
             onChange={onChange}
-            rows="7"
+            rows="3"
           />
         </fieldset>
-
-        <button className="pure-button pure-button-primary">
-          Send Response
-        </button>
+        <hr />
+        <button className="btn btn-sm btn-theme">Apply</button>
       </form>
     </div>
   );

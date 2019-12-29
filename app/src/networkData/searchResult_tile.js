@@ -23,48 +23,21 @@ function formatDate(utcTimeStamp) {
   return timeAgo.format(offsetDate, 'twitter');
 }
 
-const gridStyle = {
-  display: 'grid',
-  gridTemplateColumns: 'auto 1fr',
-  gridGap: '1em'
-};
-
-const labelStyle = {
-  textTransform: 'uppercase',
-  fontSize: 'smaller',
-  marginTop: '2px',
-  marginLeft: '1em',
-  textAlign: 'right',
-  color: 'gray'
-};
-
 // JOB DATA
 function jobDataItem(label, value) {
   return (
     <React.Fragment>
-      <div style={labelStyle}>{label}</div>
+      <div className="grid-label">{label}</div>
       <div>{value}</div>
     </React.Fragment>
   );
 }
 
-function LinkDisplay({ data }) {
-  const salaryString = `${formatCurrency(
-    data.salaryMin,
-    true
-  )} – ${formatCurrency(data.salaryMax, true)}`;
-
-  return (
-    <div style={gridStyle}>
-      {jobDataItem('Employer', data.employer)}
-      {jobDataItem('Location', data.location)}
-      {jobDataItem('Salary', salaryString)}
-    </div>
-  );
-}
-
 function activityTile({ link, query, user }) {
-  // if (!item.data) return <div>error: no data</div>;
+  const salaryString = `${formatCurrency(
+    query.data.salaryMin,
+    true
+  )} – ${formatCurrency(query.data.salaryMax, true)}`;
 
   return (
     <div className="search-tile">
@@ -82,7 +55,12 @@ function activityTile({ link, query, user }) {
         >
           {query.data.title}
         </p>
-        {LinkDisplay(query)}
+
+        <div className="grid-left">
+          {jobDataItem('Employer', query.data.employer)}
+          {jobDataItem('Location', query.data.location)}
+          {jobDataItem('Salary', salaryString)}
+        </div>
       </div>
 
       <div

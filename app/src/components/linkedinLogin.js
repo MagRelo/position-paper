@@ -8,12 +8,14 @@ function LinkedInLogin(props) {
 
   async function handleSuccess(data) {
     const user = await sendAuthCode(data);
-    createSession(user);
+    createSession(user, props.redirect);
   }
 
   function handleError(error) {
     alert(error);
   }
+
+  const domain = window.location.origin || 'http://localhost:3000';
 
   return (
     <div>
@@ -22,7 +24,7 @@ function LinkedInLogin(props) {
         onFailure={handleError}
         onSuccess={handleSuccess}
         scope="r_liteprofile r_emailaddress w_member_social"
-        redirectUri="http://localhost:3000/linkedin/callback"
+        redirectUri={domain + '/linkedin/callback'}
         className="login-button"
       >
         <span

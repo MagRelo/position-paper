@@ -11,13 +11,6 @@ import { Link } from '@reach/router';
 //   MenuItem
 // } from '@reach/menu-button';
 
-// import { Link } from '@reach/router';
-
-// Twitter
-// const domain = window.location.origin || 'http://localhost:3000';
-// const loginPath = '/api/auth/twitter';
-// const requestPath = '/api/auth/twitter/reverse';
-
 // const NavLink = props => (
 //   <Link
 //     {...props}
@@ -79,8 +72,16 @@ function Header(props) {
                   className="collapse navbar-collapse"
                   id="navbarNavDropdown"
                 >
-                  <ul className="navbar-nav ml-auto mr-auto">
-                    {activeSession ? null : (
+                  {activeSession ? (
+                    <ul className="navbar-nav ml-auto">
+                      <li className="nav-item">
+                        <Link className="nav-link" to="/search">
+                          Search
+                        </Link>
+                      </li>
+                    </ul>
+                  ) : (
+                    <ul className="navbar-nav ml-auto mr-auto">
                       <React.Fragment>
                         <li className="nav-item">
                           <a className="nav-link" href="/#customers">
@@ -98,8 +99,8 @@ function Header(props) {
                           </a>
                         </li>
                       </React.Fragment>
-                    )}
-                  </ul>
+                    </ul>
+                  )}
                 </div>
 
                 {/* Login/Logout */}

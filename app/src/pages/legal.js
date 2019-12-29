@@ -133,12 +133,6 @@ function LegalPage(props) {
                 quasi iusto quo consequuntur dolorum neque optio ipsum, rerum
                 nesciunt illo iure.
               </p>
-              <a className="btn btn-theme" href="#">
-                <span>Accept</span>
-              </a>
-              <a className="btn btn-dark" href="#">
-                <span>Close</span>
-              </a>
             </div>
           </div>
         </div>

@@ -25,7 +25,7 @@ function Response(props) {
   const [response, setResponse] = useState({});
   const [networkPayouts, setNetworkPayouts] = useState([]);
   const [targetPayouts, setTargetPayouts] = useState([]);
-  const [respondant, setRespondant] = useState({});
+  // const [respondant, setRespondant] = useState({});
 
   useEffect(() => {
     getResponse(responseId).then(result => {
@@ -33,64 +33,63 @@ function Response(props) {
       setUser(result.user);
       setNetworkPayouts(result.networkPayouts);
       setTargetPayouts(result.targetPayouts);
-      setRespondant(result.user);
+      // setRespondant(result.user);
     });
   }, responseId);
 
   return (
-    <div className="row row-5-3">
-      <div>
-        <h3 className="section-header">Response</h3>
-        <div className="testimonial-quote group ">
-          <img src={respondant.avatar} alt="avatar" />
-          <div className="quote-container">
-            <blockquote>
-              <p>{response.message}</p>
-            </blockquote>
-            <cite>
-              <span>{respondant.name}</span>
-              <br /> {respondant.location}
-              {/* <br /> American College of Chest Physicians */}
-            </cite>
+    <div className="container">
+      <div className="row">
+        <div className="col-lg-6">
+          <h3 className="section-header">Job</h3>
+          {lineItem('title', 'title*')}
+          {lineItem('employer', 'employer*')}
+          <h3 className="section-header">Profile</h3>
+
+          <div className="user-profile">
+            <img src={user.avatar} alt="avatar" className="user-avatar" />
+            <div className="user-info">
+              <div className="user-name">{user.name}</div>
+            </div>
           </div>
+
+          <h3 className="section-header">Application Status</h3>
+          <ResponseStatus status={response.status} />
         </div>
 
-        <h3 className="section-header">Response Status</h3>
-        <ResponseStatus status={response.status} />
-      </div>
+        <div className="col-lg-6">
+          <h3 className="section-header">Incentives</h3>
 
-      <div>
-        <h3 className="section-header">Incentives</h3>
+          {/* network */}
+          <h4 className="section-header">Network Incentives</h4>
+          {networkPayouts.map((item, index) => {
+            return (
+              <div key={index}>
+                {lineItem(item.email, formatCurrency(item.amount))}
+              </div>
+            );
+          })}
 
-        {/* network */}
-        <h4 className="section-header">Network Incentives</h4>
-        {networkPayouts.map((item, index) => {
-          return (
-            <div key={index}>
-              {lineItem(item.email, formatCurrency(item.amount))}
-            </div>
-          );
-        })}
+          {/* target */}
+          <h4 className="section-header">Target Incentives</h4>
+          {targetPayouts.map((item, index) => {
+            return (
+              <div key={index}>
+                {lineItem(item.email, formatCurrency(item.amount))}
+              </div>
+            );
+          })}
 
-        {/* target */}
-        <h4 className="section-header">Target Incentives</h4>
-        {targetPayouts.map((item, index) => {
-          return (
-            <div key={index}>
-              {lineItem(item.email, formatCurrency(item.amount))}
-            </div>
-          );
-        })}
-
-        {user.isQueryOwner ? (
-          <React.Fragment>
-            <h3 className="section-header">Confirm & Pay</h3>
-            <PaymentForm
-              responseId={response._id}
-              total_incentives={getTotal(targetPayouts, networkPayouts)}
-            />
-          </React.Fragment>
-        ) : null}
+          {user.isQueryOwner ? (
+            <React.Fragment>
+              <h3 className="section-header">Confirm & Pay</h3>
+              <PaymentForm
+                responseId={response._id}
+                total_incentives={getTotal(targetPayouts, networkPayouts)}
+              />
+            </React.Fragment>
+          ) : null}
+        </div>
       </div>
     </div>
   );

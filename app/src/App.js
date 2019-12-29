@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { Router, Link, navigate } from '@reach/router';
+import { Router, navigate } from '@reach/router';
 
 import Cookies from 'js-cookie';
 
@@ -47,7 +47,7 @@ import Footer from 'components/footer';
 import LandingPage from 'networkData/landingPage';
 import Terms from 'pages/legal';
 import About from 'pages/about';
-import Signup from 'networkData/alphaSignup';
+import Signup from 'components/stash/alphaSignup';
 import Login from 'pages/login';
 
 // Maybe Auth
@@ -86,10 +86,15 @@ function App(props) {
     }
   }, [activeSession]);
 
-  function createSession(user) {
+  function createSession(user, redirect) {
     Cookies.set('servesa-auth-token', user.token);
     setActiveSession(true);
-    navigate('/user');
+
+    if (redirect) {
+      navigate(redirect);
+    } else {
+      navigate('/user');
+    }
   }
 
   function clearSession() {

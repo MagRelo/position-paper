@@ -111,11 +111,11 @@ function CreateJob(props) {
           <div className="form-group">
             <label htmlFor="location">Network Bonus</label>
             <input
-              type="currency"
-              name="networkBonus"
+              type="text"
+              name="network_bonus"
               disabled={true}
               className="form-control"
-              value={networkBonus}
+              value={formatCurrency(networkBonus)}
             />
           </div>
         </fieldset>

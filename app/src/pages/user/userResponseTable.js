@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Link } from '@reach/router';
 
+import { formatDate } from 'components/util/random';
+
 export default PaymentTable;
 
 export function PaymentTable(props) {
@@ -20,11 +22,11 @@ export function PaymentTable(props) {
             return (
               <tr key={response._id}>
                 <td>
-                  <Link to={'/response/' + response._id}>
+                  <Link to={'/link/' + response.link.linkId + '#apply'}>
                     {response.link.title}
                   </Link>
                 </td>
-                <td>{response.createdAt}</td>
+                <td>{formatDate(response.createdAt)}</td>
                 <td>{response.status}</td>
               </tr>
             );

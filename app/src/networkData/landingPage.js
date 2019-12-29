@@ -5,21 +5,21 @@ function LandingPage() {
   return (
     <React.Fragment>
       {/* HERO */}
-      <section id="home" class="hero-container">
+      <section id="home" className="hero-container">
         <div id="particles-js"></div>
-        <div class="center-container">
-          <div class="container">
-            <div class="row align-items-center">
-              <div class="col-lg-6 col-md-12">
+        <div className="center-container">
+          <div className="container">
+            <div className="row align-items-center">
+              <div className="col-lg-6 col-md-12">
                 {/* <img
-                  class="img-center wow fadeInUp"
+                  className="img-center wow fadeInUp"
                   data-wow-duration="2.5s"
                   src="images/banner/01.png"
                   alt=""
                 />
-                <div class="img-2">
+                <div className="img-2">
                   <img
-                    class="img-center topBottom"
+                    className="img-center topBottom"
                     src="images/banner/bulb.png"
                     alt=""
                   />
@@ -30,23 +30,23 @@ function LandingPage() {
                 </p>
               </div>
               <div
-                class="col-lg-6 col-md-12 md-mt-5 wow fadeInRight"
+                className="col-lg-6 col-md-12 md-mt-5 wow fadeInRight"
                 data-wow-duration="2.5s"
               >
-                <h5 class="title-theme-bg">Welcome To Talent Relay</h5>
-                <h1 class="mb-4">
+                <h5 className="title-theme-bg">Welcome To Talent Relay</h5>
+                <h1 className="mb-4">
                   Hire the best engineeering team,{' '}
-                  <span class="font-w-7">for Less</span>
+                  <span className="font-w-7">for Less</span>
                 </h1>
-                <p class="lead mb-4">
+                <p className="lead mb-4">
                   TalentRelay is the easiest way to hire the best Software
                   Developers, DevOps Engineers, and Engineering Leaders that
                   others can't
                 </p>{' '}
-                <a class="btn btn-theme" href="/#how">
+                <a className="btn btn-theme" href="/#how">
                   <span>Learn More</span>
                 </a>
-                <a class="btn btn-white" href="/#getstarted">
+                <a className="btn btn-white" href="/#getstarted">
                   <span>Contact Us</span>
                 </a>
               </div>
@@ -55,38 +55,38 @@ function LandingPage() {
         </div>
       </section>
 
-      <div class="page-content">
+      <div className="page-content">
         {/* QUOTE */}
         <section id="customers">
-          <div class="container">
-            <div class="row">
-              <div class="col-lg-12 col-md-12">
+          <div className="container">
+            <div className="row">
+              <div className="col-lg-12 col-md-12">
                 <div
-                  class="owl-carousel"
+                  className="owl-carousel"
                   data-dots="false"
                   data-nav="true"
                   data-items="1"
                   data-autoplay="true"
                 >
-                  <div class="item">
-                    <div class="testimonial style-2">
-                      <div class="testimonial-img">
+                  <div className="item">
+                    <div className="testimonial style-2">
+                      <div className="testimonial-img">
                         <img
-                          class="img-center"
+                          className="img-center"
                           src="images/testimonial/01.jpg"
                           alt=""
                         />
                       </div>
-                      <div class="testimonial-content">
-                        <div class="testimonial-quote">
-                          <i class="fas fa-quote-left"></i>
+                      <div className="testimonial-content">
+                        <div className="testimonial-quote">
+                          <i className="fas fa-quote-left"></i>
                         </div>
                         <p>
                           Eeque porro quisquam est, qui dolorem ipsum quia dolor
                           sit amet, consectetur, adipisci velit, sed quia non
                           numquam eius modi tempora incidunt contact me.
                         </p>
-                        <div class="testimonial-caption">
+                        <div className="testimonial-caption">
                           <h5>Jasse Lynn</h5>
                           <label>Founder of Sassaht</label>
                         </div>
@@ -101,53 +101,53 @@ function LandingPage() {
 
         {/* VALUE PROP #1 */}
         <section id="how">
-          <div class="container">
-            <div class="row align-items-center">
-              <div class="col-lg-6 col-md-12">
+          <div className="container">
+            <div className="row align-items-center">
+              <div className="col-lg-6 col-md-12">
                 <p>
                   <i>[networks, people]</i>
                 </p>
               </div>
-              <div class="col-lg-6 col-md-12 md-mt-5">
-                <div class="section-title">
-                  <h2 class="title">
+              <div className="col-lg-6 col-md-12 md-mt-5">
+                <div className="section-title">
+                  <h2 className="title">
                     Value Prop <span>#1</span>
                   </h2>
-                  <p class="mb-0">
+                  <p className="mb-0">
                     We incentivize engineering networks to find the best
                     candidates, including active and passive candidates. INSERT
                     FACT ON PASSIVE CANDIDATES>ACTIVE
                   </p>
                 </div>
-                <div class="row mb-4">
-                  <div class="col-md-6">
-                    <ul class="list-unstyled list-icon">
-                      <li class="mb-3">
-                        <i class="fas fa-check-circle"></i> It is a long
+                <div className="row mb-4">
+                  <div className="col-md-6">
+                    <ul className="list-unstyled list-icon">
+                      <li className="mb-3">
+                        <i className="fas fa-check-circle"></i> It is a long
                         established
                       </li>
-                      <li class="mb-3">
-                        <i class="fas fa-check-circle"></i> Distinctively
+                      <li className="mb-3">
+                        <i className="fas fa-check-circle"></i> Distinctively
                         innovation
                       </li>
                       <li>
-                        <i class="fas fa-check-circle"></i> You need there
+                        <i className="fas fa-check-circle"></i> You need there
                         anything
                       </li>
                     </ul>
                   </div>
-                  <div class="col-md-6 sm-mt-2">
-                    <ul class="list-unstyled list-icon">
-                      <li class="mb-3">
-                        <i class="fas fa-check-circle"></i> The standard of
+                  <div className="col-md-6 sm-mt-2">
+                    <ul className="list-unstyled list-icon">
+                      <li className="mb-3">
+                        <i className="fas fa-check-circle"></i> The standard of
                         Sassaht
                       </li>
-                      <li class="mb-3">
-                        <i class="fas fa-check-circle"></i> Sassaht Powerfull
-                        Template
+                      <li className="mb-3">
+                        <i className="fas fa-check-circle"></i> Sassaht
+                        Powerfull Template
                       </li>
                       <li>
-                        <i class="fas fa-check-circle"></i> Recently desktop
+                        <i className="fas fa-check-circle"></i> Recently desktop
                         publishing
                       </li>
                     </ul>
@@ -160,55 +160,55 @@ function LandingPage() {
 
         {/* VALUE PROP #2 */}
         <section>
-          <div class="container">
-            <div class="row align-items-center">
-              <div class="col-lg-6 col-md-12 md-mt-5">
-                <div class="section-title">
-                  <h2 class="title">
+          <div className="container">
+            <div className="row align-items-center">
+              <div className="col-lg-6 col-md-12 md-mt-5">
+                <div className="section-title">
+                  <h2 className="title">
                     Value Prop <span>#2</span>
                   </h2>
-                  <p class="mb-0">
+                  <p className="mb-0">
                     Experience, interest, and culture fit? Tell us about what
                     you are looking for and we’ll identify and send the best
                     candidates your way.
                   </p>
                 </div>
-                <div class="row mb-4">
-                  <div class="col-md-6">
-                    <ul class="list-unstyled list-icon">
-                      <li class="mb-3">
-                        <i class="fas fa-check-circle"></i> It is a long
+                <div className="row mb-4">
+                  <div className="col-md-6">
+                    <ul className="list-unstyled list-icon">
+                      <li className="mb-3">
+                        <i className="fas fa-check-circle"></i> It is a long
                         established
                       </li>
-                      <li class="mb-3">
-                        <i class="fas fa-check-circle"></i> Distinctively
+                      <li className="mb-3">
+                        <i className="fas fa-check-circle"></i> Distinctively
                         innovation
                       </li>
                       <li>
-                        <i class="fas fa-check-circle"></i> You need there
+                        <i className="fas fa-check-circle"></i> You need there
                         anything
                       </li>
                     </ul>
                   </div>
-                  <div class="col-md-6 sm-mt-2">
-                    <ul class="list-unstyled list-icon">
-                      <li class="mb-3">
-                        <i class="fas fa-check-circle"></i> The standard of
+                  <div className="col-md-6 sm-mt-2">
+                    <ul className="list-unstyled list-icon">
+                      <li className="mb-3">
+                        <i className="fas fa-check-circle"></i> The standard of
                         Sassaht
                       </li>
-                      <li class="mb-3">
-                        <i class="fas fa-check-circle"></i> Sassaht Powerfull
-                        Template
+                      <li className="mb-3">
+                        <i className="fas fa-check-circle"></i> Sassaht
+                        Powerfull Template
                       </li>
                       <li>
-                        <i class="fas fa-check-circle"></i> Recently desktop
+                        <i className="fas fa-check-circle"></i> Recently desktop
                         publishing
                       </li>
                     </ul>
                   </div>
                 </div>
               </div>
-              <div class="col-lg-6 col-md-12">
+              <div className="col-lg-6 col-md-12">
                 <p>
                   <i>[culture, people]</i>
                 </p>
@@ -219,60 +219,60 @@ function LandingPage() {
 
         {/* VALUE PROP #3 */}
         <section>
-          <div class="container">
-            <div class="row align-items-center">
-              <div class="col-lg-6 col-md-12">
+          <div className="container">
+            <div className="row align-items-center">
+              <div className="col-lg-6 col-md-12">
                 <p>
                   <i>[technology, network graph]</i>
                 </p>
-                {/* <div class="image-anim">
-                  <img class="img-center" src="images/about/01.png" alt="" />
+                {/* <div className="image-anim">
+                  <img className="img-center" src="images/about/01.png" alt="" />
                 </div> */}
               </div>
-              <div class="col-lg-6 col-md-12 md-mt-5">
-                <div class="section-title">
-                  <h2 class="title">
+              <div className="col-lg-6 col-md-12 md-mt-5">
+                <div className="section-title">
+                  <h2 className="title">
                     Value Prop <span>#3</span>
                   </h2>
-                  {/* <div class="title-bdr">
-                    <div class="left-bdr"></div>
-                    <div class="right-bdr"></div>
+                  {/* <div className="title-bdr">
+                    <div className="left-bdr"></div>
+                    <div className="right-bdr"></div>
                   </div> */}
-                  <p class="mb-0">
+                  <p className="mb-0">
                     By using our innovative technology, we find the best
                     candidates talent that other search services can’t. Then we
                     deliver them to that to you at a fraction of the price.
                   </p>
                 </div>
-                <div class="row mb-4">
-                  <div class="col-md-6">
-                    <ul class="list-unstyled list-icon">
-                      <li class="mb-3">
-                        <i class="fas fa-check-circle"></i> It is a long
+                <div className="row mb-4">
+                  <div className="col-md-6">
+                    <ul className="list-unstyled list-icon">
+                      <li className="mb-3">
+                        <i className="fas fa-check-circle"></i> It is a long
                         established
                       </li>
-                      <li class="mb-3">
-                        <i class="fas fa-check-circle"></i> Distinctively
+                      <li className="mb-3">
+                        <i className="fas fa-check-circle"></i> Distinctively
                         innovation
                       </li>
                       <li>
-                        <i class="fas fa-check-circle"></i> You need there
+                        <i className="fas fa-check-circle"></i> You need there
                         anything
                       </li>
                     </ul>
                   </div>
-                  <div class="col-md-6 sm-mt-2">
-                    <ul class="list-unstyled list-icon">
-                      <li class="mb-3">
-                        <i class="fas fa-check-circle"></i> The standard of
+                  <div className="col-md-6 sm-mt-2">
+                    <ul className="list-unstyled list-icon">
+                      <li className="mb-3">
+                        <i className="fas fa-check-circle"></i> The standard of
                         Sassaht
                       </li>
-                      <li class="mb-3">
-                        <i class="fas fa-check-circle"></i> Sassaht Powerfull
-                        Template
+                      <li className="mb-3">
+                        <i className="fas fa-check-circle"></i> Sassaht
+                        Powerfull Template
                       </li>
                       <li>
-                        <i class="fas fa-check-circle"></i> Recently desktop
+                        <i className="fas fa-check-circle"></i> Recently desktop
                         publishing
                       </li>
                     </ul>
@@ -284,11 +284,11 @@ function LandingPage() {
         </section>
 
         <section id="getstarted">
-          <div class="container">
-            <div class="row text-center">
-              <div class="col-lg-8 col-md-12 ml-auto mr-auto">
-                <div class="section-title">
-                  <h2 class="title">
+          <div className="container">
+            <div className="row text-center">
+              <div className="col-lg-8 col-md-12 ml-auto mr-auto">
+                <div className="section-title">
+                  <h2 className="title">
                     Try <span>Talent Relay</span> today
                   </h2>
 
@@ -298,24 +298,25 @@ function LandingPage() {
                 </div>
               </div>
             </div>
-            <div class="row text-center">
-              <div class="col-lg-8 col-md-10 ml-auto mr-auto">
-                <div class="subscribe-form">
-                  <form id="mc-form" class="group d-md-flex align-items-center">
+            <div className="row text-center">
+              <div className="col-lg-8 col-md-10 ml-auto mr-auto">
+                <div className="subscribe-form">
+                  <form
+                    id="mc-form"
+                    className="group d-md-flex align-items-center"
+                  >
                     <input
                       type="email"
-                      value=""
                       name="EMAIL"
-                      class="email"
+                      className="email"
                       id="mc-email"
                       placeholder="Enter Email Address"
                       required=""
                     />
                     <input
-                      class="btn btn-theme"
+                      className="btn btn-theme"
                       type="submit"
                       name="subscribe"
-                      value="Subscribe"
                     />
                   </form>
                 </div>

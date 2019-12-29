@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 
 import { Loading } from 'components/util/random';
 
-import { LinkDisplay } from 'networkData/jobDisplay';
+// import { LinkDisplay } from 'networkData/jobDisplay';
 import CreateResponse from 'pages/response/createResponse';
 import { AuthContext } from 'App';
 
@@ -13,40 +13,33 @@ function Respond(props) {
 
   const [user, setUser] = useState({});
   const [link, setLink] = useState({});
-  const [queryData, setQueryData] = useState({});
+  // const [queryData, setQueryData] = useState({});
   // const [traffic, setTraffic] = useState({});
   // const [stream, setStream] = useState([]);
 
-  useEffect(
-    () => {
-      setIsLoading(true);
+  useEffect(() => {
+    setIsLoading(true);
 
-      getLink(props.linkId, authContext.clearSession).then(body => {
-        // display & admin
-        setUser(body.user);
-        setLink(body.link);
-        setQueryData(body.link.data);
+    getLink(props.linkId, authContext.clearSession).then(body => {
+      // display & admin
+      setUser(body.user);
+      setLink(body.link);
+      // setQueryData(body.link.data);
 
-        setIsLoading(false);
-      });
-    },
-    [props.linkId]
-  );
+      setIsLoading(false);
+    });
+  }, [props.linkId]);
 
   return (
-    <div>
+    <div className="container">
       {loading ? (
         <div style={{ marginTop: '2em' }}>
           <Loading />
         </div>
       ) : (
-        <div className="row row-5-3">
-          <div>
-            <LinkDisplay data={queryData} />
-          </div>
-          <div>
-            <CreateResponse link={link} user={user} />
-          </div>
+        <div>
+          <h2 className="section-header">Apply</h2>
+          <CreateResponse link={link} user={user} />
         </div>
       )}
     </div>

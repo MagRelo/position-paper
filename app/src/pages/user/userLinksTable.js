@@ -32,7 +32,8 @@ class UserLinks extends Component {
                     <Link to={'/link/' + link.linkId}>{link.title}</Link>
                   </td>
                   <td>{formatCurrency(link.payoffs[link.generation])}</td>
-                  <td>{link.views}</td>
+                  <td>{link.views || '0*'}</td>
+                  <td>{link.views || '0*'}</td>
                 </tr>
               );
             })}
