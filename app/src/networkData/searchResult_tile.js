@@ -53,7 +53,7 @@ function activityTile({ link, query, user }) {
           className="section-header"
           style={{ color: 'initial', fontSize: '18px', marginTop: 0 }}
         >
-          {query.data.title}
+          {query.data.jobTitle}
         </p>
 
         <div className="grid-left">

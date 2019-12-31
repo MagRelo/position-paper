@@ -427,13 +427,15 @@
 .btn-iconic::before { content: ""; background: #7329c2; border-radius: 2px; height: 20px; width: 10px; position: absolute; left: 0; top: 50%; margin-top: -10px; z-index: -1 }
 .btn-iconic:hover { color: #ffffff; padding-left: 10px; padding-right: 10px; }
 .btn-iconic:hover:before { width: 100%; }
+
+/* 
 .btn::before, .btn::after, .btn span::before, .btn span::after { content: ''; position: absolute; top: 0; width: 25.25%; height: 0; background-color: #7329c2; z-index: -1; }
 .btn span::before, .btn span::after { top: auto; bottom: 0; }
 .btn span::after { left: 75%; }
 .btn span::before { left: 25%; }
 .btn::before { left: 0; }
 .btn::after { left: 50%; }
-.btn:hover::before, .btn:hover::after, .btn:hover span::before, .btn:hover span::after { height: 100%; }
+.btn:hover::before, .btn:hover::after, .btn:hover span::before, .btn:hover span::after { height: 100%; } */
 
 
 /* ------------------------

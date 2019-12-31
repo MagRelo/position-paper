@@ -41,19 +41,9 @@ class UserLinks extends Component {
         </table>
         {this.props.links.length ? null : (
           <div style={{ textAlign: 'center', margin: '1em 0' }}>
-            <i>No active links...</i>
+            <i>No active promotions...</i>
           </div>
         )}
-
-        <div>
-          <Link
-            to="/search"
-            className="btn btn-theme btn-sm"
-            style={{ float: 'right', marginTop: '1.5em' }}
-          >
-            Search for Jobs
-          </Link>
-        </div>
       </React.Fragment>
     );
   }

@@ -35,17 +35,9 @@ export function PaymentTable(props) {
       </table>
       {props.responses.length ? null : (
         <div style={{ textAlign: 'center', margin: '1em 0' }}>
-          <i>No responses...</i>
+          <i>No applications...</i>
         </div>
       )}
-
-      <Link
-        to="/search"
-        className="btn btn-theme btn-sm"
-        style={{ float: 'right', marginTop: '1.5em' }}
-      >
-        Search for Jobs
-      </Link>
     </React.Fragment>
   );
 }

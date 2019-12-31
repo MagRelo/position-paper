@@ -39,7 +39,7 @@ function CreateJob(props) {
     } else {
       addQuery(formObject).then(link => {
         // redirect
-        navigate('/user');
+        navigate('/link/' + link.linkId);
       });
     }
   }

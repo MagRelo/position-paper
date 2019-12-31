@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-// import { Link } from '@reach/router';
+import { Link } from '@reach/router';
 
 import { Tabs, TabList, TabPanels, TabPanel } from '@reach/tabs';
 import { formatCurrency, CoolTab, Loading } from 'components/util/random';
@@ -57,27 +57,50 @@ function User(props) {
             <Tabs style={{ marginTop: '1em' }}>
               <TabList style={{ marginBottom: '1em' }}>
                 <CoolTab count={links.length}>Promote Jobs</CoolTab>
-                <CoolTab count={responses.length}>My Applications</CoolTab>
-                <CoolTab count={jobs.length}>My Jobs</CoolTab>
-                <CoolTab count={responses.length}>My Employers</CoolTab>
+                <CoolTab count={responses.length}>Apply to Jobs</CoolTab>
+                <CoolTab count={jobs.length}>Post a Job</CoolTab>
               </TabList>
 
               <TabPanels>
                 {/* Links */}
                 <TabPanel style={{ outline: 'none' }}>
+                  <h3>Find the right Candidate → Get Paid</h3>
+                  <p>You can promote any job on Talent Relay. You can </p>
+
                   <LinksTable links={links} />
+
+                  <div>
+                    <Link to="/search" className="btn btn-theme btn-sm">
+                      Search for Jobs
+                    </Link>
+                  </div>
                 </TabPanel>
 
                 {/* Responses */}
                 <TabPanel style={{ outline: 'none' }}>
+                  <h3>Get a Job → Get Paid</h3>
+                  <p>
+                    Every job on Talent Relay includes a cash bonus once you
+                    land the job.
+                  </p>
+                  <ResponseList responses={responses} />
                   <div>
-                    <ResponseList responses={responses} />
+                    <Link to="/search" className="btn btn-theme btn-sm">
+                      Search for Jobs
+                    </Link>
                   </div>
                 </TabPanel>
 
                 {/* Jobs */}
                 <TabPanel style={{ outline: 'none' }}>
+                  <h3>Find Great Candidates, Fast</h3>
+                  <p>Just post your job and watch the community go to work</p>
                   <JobTable links={jobs} />
+                  <div>
+                    <Link to="/addquery" className="btn btn-theme btn-sm">
+                      Post a Job
+                    </Link>
+                  </div>
                 </TabPanel>
               </TabPanels>
             </Tabs>
@@ -99,7 +122,9 @@ function User(props) {
               </button>
               <img src={userData.avatar} alt="avatar" className="user-avatar" />
               <div className="user-info">
-                <div className="user-name">{userData.name}</div>
+                <div className="user-name">
+                  <Link to="/profile">{userData.name}</Link>
+                </div>
                 <div className="user-location">
                   Earnings: {formatCurrency(userData.pending || 0)}
                 </div>

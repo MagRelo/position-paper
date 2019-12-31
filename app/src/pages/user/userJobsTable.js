@@ -34,16 +34,6 @@ class JobTable extends Component {
             <i>No active jobs...</i>
           </div>
         )}
-
-        <div>
-          <Link
-            to="/addquery"
-            className="btn btn-theme btn-sm"
-            style={{ float: 'right', marginTop: '1.5em' }}
-          >
-            Post a Job
-          </Link>
-        </div>
       </React.Fragment>
     );
   }

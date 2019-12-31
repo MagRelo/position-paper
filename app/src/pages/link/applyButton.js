@@ -7,7 +7,7 @@ function ApplyButton(props) {
     setIsLoading(true);
     createApplication(props.linkId, props.userId).then(link => {
       setIsLoading(false);
-      navigate('/user');
+      navigate('/link/' + props.linkId);
     });
   }
 

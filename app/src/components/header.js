@@ -107,7 +107,7 @@ function Header(props) {
 
                 <div className="right-nav align-items-center d-flex justify-content-end list-inline">
                   {activeSession ? (
-                    <Link className="btn btn-theme btn-sm" to="/user">
+                    <Link className="btn btn-theme btn-sm" to="/dashboard">
                       <span>Dashboard</span>
                     </Link>
                   ) : (

@@ -55,7 +55,8 @@ import Search from 'pages/search';
 import LinkPage from 'pages/link/link';
 
 // Auth
-import User from 'pages/user/user2';
+import Profile from 'pages/user/userProfile';
+import Dashboard from 'pages/user/userDashboard';
 import UserBankAccount from 'pages/user/userBankAccount';
 import Response from 'pages/response/response';
 import CreateQuery2 from 'networkData/createJob';
@@ -93,7 +94,7 @@ function App(props) {
     if (redirect) {
       navigate(redirect);
     } else {
-      navigate('/user');
+      navigate('/dashboard');
     }
   }
 
@@ -118,7 +119,8 @@ function App(props) {
               <Response path="/response/:responseId" />
               <Respond path="/respond/:linkId" />
               <UserBankAccount path="/user/account" />
-              <User path="/user" />
+              <Dashboard path="/dashboard" />
+              <Profile path="/profile" />
               <Admin path="/admin" />
 
               <Search path="/search" />

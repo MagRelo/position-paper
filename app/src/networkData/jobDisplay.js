@@ -21,7 +21,7 @@ export function JobDisplay({ data }) {
 
   return (
     <div className="job-data-panel">
-      <h1 className="section-header">{data.title}</h1>
+      <h1 className="section-header">{data.jobTitle}</h1>
       <div className="grid-left">
         {jobDataItem('Employer', data.employer)}
         {jobDataItem('Location', data.location)}

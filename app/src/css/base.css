@@ -34,7 +34,8 @@ a:focus {
 
 a:focus,
 a:hover {
-    color: #03d665;
+    /* color: #03d665; */
+    color: #7329c2;
     text-decoration: none !important;
 }
 
@@ -42,7 +43,8 @@ a,
 button,
 input {
     outline: medium none !important;
-    color: #03d665;
+    /* color: #03d665; */
+    color: #7329c2;
 }
 
 *::-moz-selection {
