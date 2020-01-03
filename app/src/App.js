@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-
 import { Router, navigate } from '@reach/router';
+import { OnRouteChange, ScrollToTop } from 'routingHack.js';
 
+//
 import Cookies from 'js-cookie';
-
 import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
 
-// CSS
+// Compoenent CSS
 import 'react-input-range/lib/css/index.css';
 import '@reach/dialog/styles.css';
 import '@reach/menu-button/styles.css';
@@ -113,7 +113,7 @@ function App(props) {
 
         <div className="content-wrapper">
           {activeSession ? (
-            <Router primary={false}>
+            <Router>
               {/* Auth required */}
               <CreateQuery2 path="/addquery" />
               <Response path="/response/:responseId" />
@@ -130,7 +130,7 @@ function App(props) {
               <LandingPage path="/" />
             </Router>
           ) : (
-            <Router primary={false}>
+            <Router>
               <LinkedInPopUp exact path="/linkedin/callback" />
               <Login path="/login" />
 
@@ -142,6 +142,12 @@ function App(props) {
               <LandingPage path="/" />
             </Router>
           )}
+
+          <OnRouteChange
+            action={() => {
+              window.scrollTo(0, 0);
+            }}
+          ></OnRouteChange>
         </div>
 
         <Footer />
