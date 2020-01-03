@@ -98,12 +98,11 @@ const LinkSchema = new mongoose.Schema(
       type: Number,
       default: 0
     },
-
     isBuried: {
       type: Boolean,
       default: false
     },
-
+    total_bonus: Number,
     target_bonus: Number,
     network_bonus: Number,
     payoffs: [],

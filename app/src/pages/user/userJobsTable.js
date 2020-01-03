@@ -10,7 +10,7 @@ class JobTable extends Component {
             <tr>
               <th>Job Title</th>
               <th>Promoters</th>
-              <th>Views</th>
+              <th>Applicants</th>
               <th>Applications</th>
             </tr>
           </thead>
@@ -22,8 +22,10 @@ class JobTable extends Component {
                     <Link to={'/link/' + link.linkId}>{link.title}</Link>
                   </td>
                   <td>{link.children.length}</td>
-                  <td>{link.views}</td>
-                  <td>{link.shares}</td>
+                  <td>{link.responses.length}</td>
+                  <td>
+                    <Link to={'/link/' + link.linkId}>View</Link>
+                  </td>
                 </tr>
               );
             })}

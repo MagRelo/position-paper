@@ -12,7 +12,7 @@ function CreateJob(props) {
 
   const [salaryRange, setSalaryRange] = useState({ min: 75000, max: 125000 });
   const debouncedRange = useDebounce(salaryRange, 333);
-  const [networkBonus, setNetworkBonus] = useState(0);
+  const [totalBonus, setTotalBonus] = useState(0);
 
   // Sync networkBonus with salary
   useEffect(() => {
@@ -21,7 +21,7 @@ function CreateJob(props) {
       100
     );
     // network => 10% of salary
-    setNetworkBonus(roundToNearest(salaryAverage * 0.1, 100));
+    setTotalBonus(roundToNearest(salaryAverage * 0.1, 100));
   }, [debouncedRange]);
 
   function createQuery(event) {
@@ -33,6 +33,11 @@ function CreateJob(props) {
     formData.forEach((value, key) => {
       formObject[key] = value;
     });
+
+    // add network bonus
+    formObject.totalBonus = totalBonus;
+    formObject.networkBonus = roundToNearest(totalBonus * 0.4, 100);
+    formObject.targetBonus = roundToNearest(totalBonus * 0.4, 100);
 
     if (!activeSession) {
       alert('Please login!');
@@ -109,13 +114,13 @@ function CreateJob(props) {
         <fieldset>
           <legend>Network Incentives</legend>
           <div className="form-group">
-            <label htmlFor="location">Network Bonus</label>
+            <label htmlFor="network_bonus">Network Bonus</label>
             <input
               type="text"
               name="network_bonus"
               disabled={true}
               className="form-control"
-              value={formatCurrency(networkBonus)}
+              value={formatCurrency(totalBonus)}
             />
           </div>
         </fieldset>

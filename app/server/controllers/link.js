@@ -1,12 +1,6 @@
 // const payments = require('../integrations/payments');
 const getStream = require('../integrations/getstream');
 const elasticSearch = require('../integrations/elasticsearch');
-// const twitter = require('../integrations/twitter');
-// const sendgrid = require('../integrations/sendgrid');
-
-// const UserModel = require('../models').UserModel;
-// const PaymentModel = require('../models').PaymentModel;
-// const ShareModel = require('../models').ShareModel;
 
 const ResponseModel = require('../models').ResponseModel;
 const LinkModel = require('../models').LinkModel;
@@ -25,6 +19,7 @@ exports.createQuery = async function(req, res) {
       parentLink: null,
       isQueryOwner: true,
       generation: 0,
+      total_bonus: query.totalBonus,
       target_bonus: query.targetBonus,
       network_bonus: query.networkBonus,
       title: query.jobTitle,
