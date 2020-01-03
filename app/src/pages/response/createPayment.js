@@ -6,7 +6,7 @@ import { CardElement, injectStripe } from 'react-stripe-elements';
 // stripe
 import { StripeProvider } from 'react-stripe-elements';
 
-import { formatCurrency, lineItem } from 'components/util/random';
+import { formatCurrency, lineItem } from 'components/random';
 
 const cardElementStyle = () => {
   return {

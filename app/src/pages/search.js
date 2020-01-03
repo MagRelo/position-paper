@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useDebounce } from 'components/util/random';
+import { useDebounce } from 'components/random';
 // import { Helmet } from 'react-helmet';
 
 import JobSearchForm from 'networkData/searchForm';

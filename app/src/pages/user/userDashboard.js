@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Link } from '@reach/router';
 
 import { Tabs, TabList, TabPanels, TabPanel } from '@reach/tabs';
-import { formatCurrency, CoolTab, Loading } from 'components/util/random';
+import { formatCurrency, CoolTab, Loading } from 'components/random';
 
 // import PaymentsTable from './userPaymentsTable';
 import ResponseList from './userResponseTable';

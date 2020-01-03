@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 // import { navigate } from '@reach/router';
 // import InputRange from 'react-input-range';
-import { useDebounce } from 'components/util/random';
+import { useDebounce } from 'components/random';
 
 function AlphaSignup() {
   const [loading, setLoading] = useState(false);

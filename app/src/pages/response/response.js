@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import PaymentForm from './createPayment';
 import ResponseStatus from './responseStatus';
 
-import { formatCurrency, lineItem } from 'components/util/random';
+import { formatCurrency, lineItem } from 'components/random';
 
 function getTotal(targetPayouts, networkPayouts) {
   const targetTotal = targetPayouts.reduce((acc, payout) => {

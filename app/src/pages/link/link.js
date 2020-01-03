@@ -12,7 +12,7 @@ import ResponseStatus from 'pages/response/responseStatus';
 
 import ApplyButton from './applyButton';
 
-import { Loading, formatCurrency } from 'components/util/random';
+import { Loading, formatCurrency } from 'components/random';
 
 function LinkPage(props) {
   const { activeSession, clearSession } = useContext(AuthContext);

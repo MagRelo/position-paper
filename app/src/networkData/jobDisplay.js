@@ -1,5 +1,5 @@
 import React from 'react';
-import { formatCurrency } from '../components/util/random';
+import { formatCurrency } from 'components/random';
 // import { Link } from '@reach/router';
 // import FollowButton from 'components/followButton';
 

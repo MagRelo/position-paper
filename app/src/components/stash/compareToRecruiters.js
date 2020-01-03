@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import InputRange from 'react-input-range';
-import { useDebounce, formatCurrency } from 'components/util/random';
+import { useDebounce, formatCurrency } from 'components/random';
 
 import BarChart from 'components/barChart';
 // import LinkPayoutDisplayFixed from 'pages/link/linkDisplayBarFixed';
@@ -29,49 +29,43 @@ function CostDisplayForm(props) {
   });
 
   // Sync target and network with salary
-  useEffect(
-    () => {
-      // network => 3.5%
-      // set mix, max, default for network
-      const networkShare = roundToNearest(salaryRange.min * 0.035, 250);
-      setNetworkBonus({
-        min: Math.round(networkShare - networkShare * 0.3),
-        max: Math.round(networkShare + networkShare * 1.7),
-        value: networkShare
-      });
+  useEffect(() => {
+    // network => 3.5%
+    // set mix, max, default for network
+    const networkShare = roundToNearest(salaryRange.min * 0.035, 250);
+    setNetworkBonus({
+      min: Math.round(networkShare - networkShare * 0.3),
+      max: Math.round(networkShare + networkShare * 1.7),
+      value: networkShare
+    });
 
-      // target => 6.5%
-      // set mix, max, default for target
-      const targetShare = roundToNearest(salaryRange.min * 0.065, 250);
-      setTargetBonus({
-        min: Math.round(targetShare - targetShare * 0.3),
-        max: Math.round(targetShare + targetShare * 1.7),
-        value: targetShare
-      });
-    },
-    [debouncedRange]
-  );
+    // target => 6.5%
+    // set mix, max, default for target
+    const targetShare = roundToNearest(salaryRange.min * 0.065, 250);
+    setTargetBonus({
+      min: Math.round(targetShare - targetShare * 0.3),
+      max: Math.round(targetShare + targetShare * 1.7),
+      value: targetShare
+    });
+  }, [debouncedRange]);
 
   const [totalCost, setTotalCost] = useState({});
   // Sync total with target and network
-  useEffect(
-    () => {
-      const subTotal = targetBonus.value + networkBonus.value;
-      const platformFee = Math.round(subTotal * 0.1);
-      const averageSalary = Math.round((salaryRange.min + salaryRange.max) / 2);
-      const recruiterFee = roundToNearest(averageSalary * 0.2, 100);
+  useEffect(() => {
+    const subTotal = targetBonus.value + networkBonus.value;
+    const platformFee = Math.round(subTotal * 0.1);
+    const averageSalary = Math.round((salaryRange.min + salaryRange.max) / 2);
+    const recruiterFee = roundToNearest(averageSalary * 0.2, 100);
 
-      setTotalCost({
-        targetBonus: targetBonus.value,
-        networkBonus: networkBonus.value,
-        subTotal: subTotal,
-        recruiterFee: recruiterFee,
-        platformFee: platformFee,
-        total: subTotal + platformFee
-      });
-    },
-    [targetBonus, networkBonus]
-  );
+    setTotalCost({
+      targetBonus: targetBonus.value,
+      networkBonus: networkBonus.value,
+      subTotal: subTotal,
+      recruiterFee: recruiterFee,
+      platformFee: platformFee,
+      total: subTotal + platformFee
+    });
+  }, [targetBonus, networkBonus]);
 
   return (
     <React.Fragment>

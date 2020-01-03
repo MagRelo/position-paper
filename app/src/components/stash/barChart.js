@@ -1,6 +1,6 @@
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
-import { formatCurrency } from 'components/util/random';
+import { formatCurrency } from 'components/random';
 
 function CostBarChart({
   employeeCost,

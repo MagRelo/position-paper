@@ -1,13 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
 // import { Link } from '@reach/router';
 
-import { Tabs, TabList, TabPanels, TabPanel } from '@reach/tabs';
-import { formatCurrency, CoolTab, Loading } from 'components/util/random';
+// import { Tabs, TabList, TabPanels, TabPanel } from '@reach/tabs';
+import { formatCurrency, Loading } from 'components/random';
 
-// import PaymentsTable from './userPaymentsTable';
-import ResponseList from './userResponseTable';
-import JobTable from './userJobsTable';
-import LinksTable from './userLinksTable';
 import StreamList from './userStream';
 
 import { AuthContext } from 'App';
@@ -17,10 +13,10 @@ function User(props) {
 
   const [isLoading, setIsLoading] = useState(true);
   const [userData, setUserData] = useState(user);
-  const [links, setLinks] = useState([]);
-  const [jobs, setJobs] = useState([]);
+  // const [links, setLinks] = useState([]);
+  // const [jobs, setJobs] = useState([]);
   // const [payments, setPayments] = useState([]);
-  const [responses, setResponses] = useState([]);
+  // const [responses, setResponses] = useState([]);
   const [stream, setStream] = useState([]);
 
   useEffect(() => {
@@ -31,10 +27,10 @@ function User(props) {
     getUser(clearSession).then(body => {
       if (isSubscribed) {
         setUserData(body.user);
-        setJobs(body.links.filter(link => link.generation === 0));
-        setLinks(body.links.filter(link => link.generation !== 0));
+        // setJobs(body.links.filter(link => link.generation === 0));
+        // setLinks(body.links.filter(link => link.generation !== 0));
         setStream(body.stream);
-        setResponses(body.responses);
+        // setResponses(body.responses);
         // setPayments(body.payments);
         setIsLoading(false);
       }

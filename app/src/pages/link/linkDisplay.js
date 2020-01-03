@@ -1,7 +1,7 @@
 import React from 'react';
 // import { Link } from '@reach/router';
 
-import { formatCurrency } from 'components/util/random';
+import { formatCurrency } from 'components/random';
 
 import LinkButton from 'pages/link/linkButton';
 

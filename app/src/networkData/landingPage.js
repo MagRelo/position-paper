@@ -1,19 +1,24 @@
-import React from 'react';
-// import Hire from 'images/undraw_hire.svg';
-// import Success from 'images/undraw_success_factors.svg';
-import FinishLine from 'images/undraw_finish_line.svg';
-// import Party from 'images/undraw_celebration.svg';
-// import Network from 'images/undraw_career_development.svg';
+import React, { useContext } from 'react';
+import { AuthContext } from 'App';
+// import { Link } from '@reach/router';
 
+// hero
+import FinishLine from 'images/undraw_finish_line.svg';
+
+// How it works
 import OnlineAd from 'images/undraw_online_ad.svg';
 import TeamChat from 'images/undraw_team_chat.svg';
 import Destinations from 'images/undraw_destinations.svg';
 import Organizer from 'images/undraw_online_organizer.svg';
 
+// Employers
 import Runner from 'images/undraw_runner.svg';
 import Friends from 'images/undraw_friends_online.svg';
+import StatusUpdate from 'images/undraw_status_update.svg';
 
 function LandingPage() {
+  const { activeSession } = useContext(AuthContext);
+
   return (
     <React.Fragment>
       {/* HERO */}
@@ -35,12 +40,14 @@ function LandingPage() {
                 <h1 className="mb-4">
                   Recruiting just got a lot easier. (also cheaper, faster)
                 </h1>
+
                 <p className="lead mb-4">
-                  Talent Relay aligns everyone in your network in order to{' '}
-                  <b>super-charge</b> your talent search. You're probably{' '}
-                  <b>already connected</b> to your next great hire – you just
-                  don't know it yet.
-                </p>{' '}
+                  Talent Relay <b>super-charges</b> your talent search. We
+                  combine cash incentives, social networking, and human
+                  judgement to provide a steady stream of{' '}
+                  <b>high-quality, pre-screened candidates</b>.
+                </p>
+
                 <a className="btn btn-theme" href="/#how">
                   <span>Learn More</span>
                 </a>
@@ -94,7 +101,7 @@ function LandingPage() {
         </section>
 
         <div style={{ textAlign: 'center' }}>
-          <h2 id="how">How does it Work?</h2>
+          <h2 id="how">How It Works</h2>
           <p>We redirect recruiting fees to the people that matter:</p>
         </div>
 
@@ -118,9 +125,10 @@ function LandingPage() {
                     <div className="right-bdr"></div>
                   </div>
                   <p className="mb-0">
-                    The candidate is the most important person! Apply for any
-                    job through Talent Relay and collect a nice bonus when
-                    you're hired.
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Quia architecto ipsa vitae in error enim aliquam deleniti!
+                    Animi, nostrum vel? Dignissimos autem minima beatae id
+                    earum, quo saepe totam quod.
                   </p>
                 </div>
 
@@ -151,9 +159,11 @@ function LandingPage() {
                     <div className="right-bdr"></div>
                   </div>
                   <p className="mb-0">
-                    [By using our innovative technology, we find the best
-                    candidates talent that other search services can’t. Then we
-                    deliver them to that to you at a fraction of the price.]
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                    Libero quo a dolores tempore iusto necessitatibus alias
+                    fugit provident ipsum nulla, esse minima molestias
+                    repudiandae enim voluptatibus quisquam consequuntur
+                    distinctio corrupti?
                   </p>
                 </div>
                 <div className="mb-4">
@@ -237,21 +247,23 @@ function LandingPage() {
                     <div className="right-bdr"></div>
                   </div> */}
                   <p className="mb-0">
-                    By using our innovative technology, we find the best
-                    candidates talent that other search services can’t. Then we
-                    deliver them to that to you at a fraction of the price.
+                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                    Fugiat nesciunt culpa architecto iure, eligendi blanditiis
+                    dolorum accusamus a, ratione voluptatibus hic corrupti
+                    deleniti odit enim explicabo voluptatum ipsam at
+                    necessitatibus.
                   </p>
                 </div>
 
                 <div className="mb-4">
                   <ul className="list-unstyled list-icon">
                     <li className="mb-3">
-                      <i className="fas fa-check-circle"></i> Pay nothing until
-                      after the employee has completed a 90-day trial period
+                      <i className="fas fa-check-circle"></i> [Pay nothing until
+                      after the employee has completed a 90-day trial period]
                     </li>
                     <li className="mb-3">
-                      <i className="fas fa-check-circle"></i> Cost only a
-                      fraction of other services: just 5% of the annual salary
+                      <i className="fas fa-check-circle"></i> [Cost only a
+                      fraction of other services: just 5% of the annual salary]
                     </li>
                   </ul>
                 </div>
@@ -266,7 +278,7 @@ function LandingPage() {
           </div>
         </section>
 
-        <h2 id="how" style={{ textAlign: 'center' }}>
+        <h2 id="employers" style={{ textAlign: 'center' }}>
           Employers
         </h2>
 
@@ -281,9 +293,11 @@ function LandingPage() {
                   </h2>
 
                   <p className="mb-0">
-                    [Experience, interest, and culture fit? Tell us about what
-                    you are looking for and we’ll identify and send the best
-                    candidates your way.]
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                    Distinctio impedit magnam id doloremque, velit ad vitae quo
+                    voluptatibus odio dignissimos nihil quaerat voluptatem
+                    consequatur tempore optio accusamus, itaque magni
+                    laboriosam.
                   </p>
                 </div>
 
@@ -314,7 +328,7 @@ function LandingPage() {
           </div>
         </section>
 
-        {/* Activate Your Network */}
+        {/* PRE-SCREENING */}
         <section>
           <div className="container">
             <div className="row align-items-center">
@@ -327,51 +341,94 @@ function LandingPage() {
               <div className="col-lg-6 col-md-12 md-mt-5">
                 <div className="section-title">
                   <h2 className="title">
-                    <span>Activate</span> your Existing Networks
+                    We <span>Pre-Screen</span> All Applications
                   </h2>
                   {/* <div className="title-bdr">
                     <div className="left-bdr"></div>
                     <div className="right-bdr"></div>
                   </div> */}
                   <p className="mb-0">
-                    By using our innovative technology, we find the best
-                    candidates talent that other search services can’t. Then we
-                    deliver them to that to you at a fraction of the price.
+                    We use our innovative technology to find the best candidates
+                    talent that other search services can’t. Then we deliver
+                    them to that to you at a fraction of the price.
                   </p>
                 </div>
                 <div className="row mb-4">
                   <div className="col-md-6">
                     <ul className="list-unstyled list-icon">
                       <li className="mb-3">
-                        <i className="fas fa-check-circle"></i> It is a long
-                        established
+                        <i className="fas fa-check-circle"></i> Education &
+                        Experience
                       </li>
                       <li className="mb-3">
-                        <i className="fas fa-check-circle"></i> Distinctively
-                        innovation
+                        <i className="fas fa-check-circle"></i> Verify
+                        References
                       </li>
                       <li>
-                        <i className="fas fa-check-circle"></i> You need there
-                        anything
+                        <i className="fas fa-check-circle"></i> Pre-Interview
                       </li>
                     </ul>
                   </div>
                   <div className="col-md-6 sm-mt-2">
                     <ul className="list-unstyled list-icon">
                       <li className="mb-3">
-                        <i className="fas fa-check-circle"></i> The standard of
-                        Sassaht
+                        <i className="fas fa-check-circle"></i> Residency &
+                        Eligibility Check
                       </li>
                       <li className="mb-3">
-                        <i className="fas fa-check-circle"></i> Sassaht
-                        Powerfull Template
+                        <i className="fas fa-check-circle"></i> Background Check
                       </li>
+
                       <li>
-                        <i className="fas fa-check-circle"></i> Recently desktop
-                        publishing
+                        <i className="fas fa-check-circle"></i> Credit Scoring
                       </li>
                     </ul>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* EVERYONE IS RECRUITER */}
+        <section>
+          <div className="container">
+            <div className="row align-items-center">
+              <div className="col-lg-6 col-md-12 md-mt-5">
+                <div className="section-title">
+                  <h2 className="title">
+                    <span>Everyone</span> is a Recruiter
+                  </h2>
+
+                  <p className="mb-0">
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                    Vel suscipit voluptates sequi, quos voluptatibus earum
+                    placeat deserunt dicta, corporis nobis numquam molestiae
+                    esse officiis tempore ratione reiciendis minima, rem velit.
+                  </p>
+                </div>
+
+                <div className="mb-4">
+                  <ul className="list-unstyled list-icon">
+                    <li className="mb-3">
+                      <i className="fas fa-check-circle"></i> [Pay nothing until
+                      after the employee has completed a 90-day trial period]
+                    </li>
+                    <li className="mb-3">
+                      <i className="fas fa-check-circle"></i> [Cost only a
+                      fraction of other services: just 5% of the annual salary]
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div className="col-lg-6 col-md-12">
+                <div className="landing-image-container">
+                  <img
+                    src={StatusUpdate}
+                    alt=""
+                    className="landing-image"
+                    style={{ transform: 'RotateY(180deg)', width: '360px' }}
+                  />
                 </div>
               </div>
             </div>
@@ -387,35 +444,17 @@ function LandingPage() {
                   <h2 className="title">
                     Try <span>Talent Relay</span> today
                   </h2>
+                </div>
 
-                  <p>
-                    Get started for 1 Month free trial No Purchace required.
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="row text-center">
-              <div className="col-lg-8 col-md-10 ml-auto mr-auto">
-                <div className="subscribe-form">
-                  <form
-                    id="mc-form"
-                    className="group d-md-flex align-items-center"
-                  >
-                    <input
-                      type="email"
-                      name="EMAIL"
-                      className="email"
-                      id="mc-email"
-                      placeholder="Enter Email Address"
-                      required=""
-                    />
-                    <input
-                      className="btn btn-theme"
-                      type="submit"
-                      name="subscribe"
-                    />
-                  </form>
-                </div>
+                {activeSession ? (
+                  <a className="btn btn-theme" href="/dashboard">
+                    <span>Dashboard</span>
+                  </a>
+                ) : (
+                  <a className="btn btn-theme" href="/login">
+                    <span>Login</span>
+                  </a>
+                )}
               </div>
             </div>
           </div>

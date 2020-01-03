@@ -84,13 +84,13 @@ function Header(props) {
                     <ul className="navbar-nav ml-auto mr-auto">
                       <React.Fragment>
                         <li className="nav-item">
-                          <a className="nav-link" href="/#customers">
-                            Customers
+                          <a className="nav-link" href="/#how">
+                            How It Works
                           </a>
                         </li>
                         <li className="nav-item">
-                          <a className="nav-link" href="/#how">
-                            How It Works
+                          <a className="nav-link" href="/#employers">
+                            Employers
                           </a>
                         </li>
                         <li className="nav-item">

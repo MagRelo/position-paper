@@ -1,6 +1,6 @@
 import React from 'react';
 
-// import { formatCurrency } from 'components/util/random';
+// import { formatCurrency } from 'components/random';
 
 const steps = [
   { status: 'open', label: 'Response Sent', complete: true },

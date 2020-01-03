@@ -7,7 +7,7 @@ import {
   IoIosPeople
 } from 'react-icons/io';
 
-import { formatCurrency } from 'components/util/random';
+import { formatCurrency } from 'components/random';
 
 const iconStyle = {
   color: '#6c6d6f',

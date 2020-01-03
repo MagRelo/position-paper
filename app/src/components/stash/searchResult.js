@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from '@reach/router';
 import { useTrail, animated } from 'react-spring';
 
-import { formatCurrency } from 'components/util/random';
+import { formatCurrency } from 'components/random';
 // import LinkButton from 'components/linkButton';
 // import ResponseButton from 'components/responseButton';
 

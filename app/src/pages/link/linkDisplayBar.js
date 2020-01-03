@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { formatCurrency } from 'components/util/random';
+import { formatCurrency } from 'components/random';
 
 function linkDisplay(props) {
   return (

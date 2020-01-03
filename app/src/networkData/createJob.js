@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { navigate } from '@reach/router';
 import InputRange from 'react-input-range';
-import { useDebounce, formatCurrency } from 'components/util/random';
+import { useDebounce, formatCurrency } from 'components/random';
 
 // import LinkPayoutDisplayFixed from 'pages/link/linkDisplayBarFixed';
 

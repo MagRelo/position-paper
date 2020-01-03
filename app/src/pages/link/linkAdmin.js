@@ -5,7 +5,7 @@ import {
   formatCurrency,
   lineItem,
   copyTextToClipboard
-} from 'components/util/random';
+} from 'components/random';
 
 // import LinkPayoutDisplayFixed from './linkDisplayBarFixed';
 // import LinkMap from './linkMap';

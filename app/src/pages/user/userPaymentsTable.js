@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from '@reach/router';
 
-import { formatCurrency, formatDate } from 'components/util/random';
+import { formatCurrency, formatDate } from 'components/random';
 
 export default PaymentTable;
 
