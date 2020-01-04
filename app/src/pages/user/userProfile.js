@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 // import { Link } from '@reach/router';
-
 // import { Tabs, TabList, TabPanels, TabPanel } from '@reach/tabs';
+
+import UserBankAccount from 'pages/user/userBankAccount';
 import { formatCurrency, Loading } from 'components/random';
 
 import StreamList from './userStream';
@@ -75,8 +76,11 @@ function User(props) {
                 </div>
               </div>
 
-              <h2>Account</h2>
-              <h2>Payments</h2>
+              <h2>Accounts & Payments</h2>
+
+              <p>Add Payment Source</p>
+
+              <p>table</p>
             </div>
           )}
         </div>

@@ -120,10 +120,12 @@ function LandingPage() {
                   <h2 className="title">
                     Get a Job → <span>Get Paid</span>
                   </h2>
-                  <div className="title-bdr">
+
+                  {/* <div className="title-bdr">
                     <div className="left-bdr"></div>
                     <div className="right-bdr"></div>
-                  </div>
+                  </div> */}
+
                   <p className="mb-0">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit.
                     Quia architecto ipsa vitae in error enim aliquam deleniti!
@@ -154,10 +156,12 @@ function LandingPage() {
                   <h2 className="title">
                     Refer a Candidate → <span>Get Paid</span>
                   </h2>
-                  <div className="title-bdr">
+
+                  {/* <div className="title-bdr">
                     <div className="left-bdr"></div>
                     <div className="right-bdr"></div>
-                  </div>
+                  </div> */}
+
                   <p className="mb-0">
                     Lorem ipsum dolor sit, amet consectetur adipisicing elit.
                     Libero quo a dolores tempore iusto necessitatibus alias

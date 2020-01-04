@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Router, navigate } from '@reach/router';
-import { OnRouteChange, ScrollToTop } from 'routingHack.js';
+import { OnRouteChange } from 'routingHack.js';
 
 //
 import Cookies from 'js-cookie';
 import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
+
+import { Loading } from 'components/random';
 
 // Compoenent CSS
 import 'react-input-range/lib/css/index.css';
@@ -68,6 +70,7 @@ import Admin from 'pages/admin';
 export const AuthContext = React.createContext({});
 
 function App(props) {
+  const [loadingSession, setLoadingSession] = useState(true);
   const [activeSession, setActiveSession] = useState(false);
   const [user, setUser] = useState({});
 
@@ -79,12 +82,16 @@ function App(props) {
         if (!!user) {
           setUser(user);
           setActiveSession(true);
+          setLoadingSession(false);
         } else {
           Cookies.remove('servesa-auth-token');
           setActiveSession(false);
+          setLoadingSession(false);
         }
       });
     }
+    // no cookie
+    setLoadingSession(false);
   }, [activeSession]);
 
   function createSession(user, redirect) {
@@ -108,50 +115,53 @@ function App(props) {
     <AuthContext.Provider
       value={{ activeSession, createSession, clearSession, user }}
     >
-      <div className="page-wrapper">
-        <Header />
+      {loadingSession ? (
+        <Loading />
+      ) : (
+        <div className="page-wrapper">
+          <Header />
+          <div className="content-wrapper">
+            {activeSession ? (
+              <Router>
+                {/* Auth required */}
+                <CreateQuery2 path="/addquery" />
+                <Response path="/response/:responseId" />
+                <Respond path="/respond/:linkId" />
+                <UserBankAccount path="/user/account" />
+                <Dashboard path="/dashboard" />
+                <Profile path="/profile" />
+                <Admin path="/admin" />
 
-        <div className="content-wrapper">
-          {activeSession ? (
-            <Router>
-              {/* Auth required */}
-              <CreateQuery2 path="/addquery" />
-              <Response path="/response/:responseId" />
-              <Respond path="/respond/:linkId" />
-              <UserBankAccount path="/user/account" />
-              <Dashboard path="/dashboard" />
-              <Profile path="/profile" />
-              <Admin path="/admin" />
+                <Search path="/search" />
+                <LinkPage path="/link/:linkId" />
+                <Terms path="/terms" />
+                <About path="/about" />
+                <LandingPage path="/" />
+              </Router>
+            ) : (
+              <Router>
+                <LinkedInPopUp exact path="/linkedin/callback" />
+                <Login path="/login" />
 
-              <Search path="/search" />
-              <LinkPage path="/link/:linkId" />
-              <Terms path="/terms" />
-              <About path="/about" />
-              <LandingPage path="/" />
-            </Router>
-          ) : (
-            <Router>
-              <LinkedInPopUp exact path="/linkedin/callback" />
-              <Login path="/login" />
+                <Search path="/search" />
+                <LinkPage path="/link/:linkId" />
+                <Terms path="/terms" />
+                <About path="/about" />
+                <Signup path="/signup" />
+                <LandingPage path="/" />
+              </Router>
+            )}
 
-              <Search path="/search" />
-              <LinkPage path="/link/:linkId" />
-              <Terms path="/terms" />
-              <About path="/about" />
-              <Signup path="/signup" />
-              <LandingPage path="/" />
-            </Router>
-          )}
+            <OnRouteChange
+              action={() => {
+                window.scrollTo(0, 0);
+              }}
+            ></OnRouteChange>
+          </div>
 
-          <OnRouteChange
-            action={() => {
-              window.scrollTo(0, 0);
-            }}
-          ></OnRouteChange>
+          <Footer />
         </div>
-
-        <Footer />
-      </div>
+      )}
     </AuthContext.Provider>
   );
 }

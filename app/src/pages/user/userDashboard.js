@@ -64,12 +64,12 @@ function User(props) {
               <TabPanels>
                 {/* Links */}
                 <TabPanel style={{ outline: 'none' }}>
-                  <h3>Find the right Candidate → Get Paid</h3>
+                  <h3>Refer a Candidate → Get Paid</h3>
                   <p>You can promote any job on Talent Relay. You can </p>
 
                   <LinksTable links={links} />
 
-                  <div>
+                  <div style={{ textAlign: 'center' }}>
                     <Link to="/search" className="btn btn-theme btn-sm">
                       Search for Jobs
                     </Link>
@@ -84,7 +84,7 @@ function User(props) {
                     land the job.
                   </p>
                   <ResponseList responses={responses} />
-                  <div>
+                  <div style={{ textAlign: 'center' }}>
                     <Link to="/search" className="btn btn-theme btn-sm">
                       Search for Jobs
                     </Link>
@@ -96,7 +96,7 @@ function User(props) {
                   <h3>Find Great Candidates, Fast</h3>
                   <p>Just post your job and watch the community go to work</p>
                   <JobTable links={jobs} />
-                  <div>
+                  <div style={{ textAlign: 'center' }}>
                     <Link to="/addquery" className="btn btn-theme btn-sm">
                       Post a Job
                     </Link>
@@ -111,22 +111,13 @@ function User(props) {
         <div className="col-lg-4">
           <div>
             <div className="user-profile">
-              <button
-                style={{ float: 'right' }}
-                className="btn btn-sm btn-theme"
-                onClick={() => {
-                  clearSession();
-                }}
-              >
-                Log Out
-              </button>
               <img src={userData.avatar} alt="avatar" className="user-avatar" />
               <div className="user-info">
                 <div className="user-name">
                   <Link to="/profile">{userData.name}</Link>
                 </div>
                 <div className="user-location">
-                  Earnings: {formatCurrency(userData.pending || 0)}
+                  Earnings: {formatCurrency(0)}
                 </div>
               </div>
             </div>

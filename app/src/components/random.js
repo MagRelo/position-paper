@@ -22,9 +22,9 @@ function abbreviateNumber(number) {
 }
 
 export function formatCurrency(input, isShorthand) {
-  if (!input) {
-    return '';
-  }
+  // if (!input) {
+  //   return '';
+  // }
   // type checks
   let inputNum = 0;
   if (typeof input === 'string') {
@@ -195,13 +195,7 @@ export function usePromise(promiseOrFunction, defaultValue) {
 }
 
 export function Loading() {
-  return (
-    <div className="spinner" style={{ margin: '0 auto' }}>
-      <div className="bounce1" />
-      <div className="bounce2" />
-      <div className="bounce3" />
-    </div>
-  );
+  return <div className="lds-dual-ring" style={{ margin: '0 auto' }}></div>;
 }
 
 function fallbackCopyTextToClipboard(text) {
