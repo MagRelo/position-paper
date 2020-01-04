@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Router, navigate } from '@reach/router';
 import { OnRouteChange } from 'routingHack.js';
 
+import Helmet from 'react-helmet';
+
 //
 import Cookies from 'js-cookie';
 import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
@@ -44,6 +46,7 @@ import './css/talent-relay.css';
 // Header
 import Header from 'components/header';
 import Footer from 'components/footer';
+import NotFound from 'pages/404';
 
 // Routes
 import LandingPage from 'networkData/landingPage';
@@ -119,6 +122,7 @@ function App(props) {
         <Loading />
       ) : (
         <div className="page-wrapper">
+          {MetaData()}
           <Header />
           <div className="content-wrapper">
             {activeSession ? (
@@ -137,6 +141,7 @@ function App(props) {
                 <Terms path="/terms" />
                 <About path="/about" />
                 <LandingPage path="/" />
+                <NotFound default />
               </Router>
             ) : (
               <Router>
@@ -149,6 +154,7 @@ function App(props) {
                 <About path="/about" />
                 <Signup path="/signup" />
                 <LandingPage path="/" />
+                <NotFound default />
               </Router>
             )}
 
@@ -179,4 +185,36 @@ async function getUser() {
       console.error(error);
       return false;
     });
+}
+
+function MetaData() {
+  return (
+    <Helmet>
+      <title>Talent Relay</title>
+      <meta
+        name="description"
+        content="Talent Relay super-charges your talent search. We combine cash incentives, social networking, and human judgement to provide a steady stream of high-quality, pre-screened candidates."
+      />
+      <link rel="canonical" href={'https://talentrelay.app'} />
+
+      <meta property="og:site_name" content="Talent Relay" />
+      <meta property="og:type" content="website" />
+      <meta property="og:url" content={'https://talentrelay.app'} />
+
+      {/* <meta property="og:image" content="" /> */}
+      {/* <meta property="og:image:secure_url" content="" /> */}
+      {/* <meta property="og:image:type" content="jpeg" /> */}
+      {/* <meta property="og:image:height" content="606" /> */}
+      {/* <meta property="og:image:width" content="808" /> */}
+
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:site" content="@i_dot_e" />
+      <meta name="twitter:title" content="TalentRelay" />
+      <meta
+        name="twitter:description"
+        content="Talent Relay super-charges your talent search. We combine cash incentives, social networking, and human judgement to provide a steady stream of high-quality, pre-screened candidates."
+      />
+      {/* <meta name="twitter:image" content="" /> */}
+    </Helmet>
+  );
 }

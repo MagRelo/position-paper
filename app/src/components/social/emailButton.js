@@ -21,6 +21,7 @@ function EmailButton(props) {
         className="button-unstyled"
         name="toAddress"
         onClick={() => setSocialFormOpen(true)}
+        disabled={!props.enabled}
       >
         <span
           className="icon"

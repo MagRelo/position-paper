@@ -18,6 +18,7 @@ function SocialButton(props) {
         className="button-unstyled"
         name={props.company}
         onClick={() => setSocialFormOpen(true)}
+        disabled={!props.enabled}
       >
         <span
           className="icon"

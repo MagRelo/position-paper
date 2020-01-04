@@ -30,27 +30,29 @@ function SearchFlow() {
   }
 
   return (
-    <div className="container">
-      <h1>
-        Search
-        <button
-          className="btn btn-theme btn-sm"
-          style={{ float: 'right', fontSize: 'small' }}
-          onClick={() => {
-            toggleForm();
-          }}
-        >
-          {isOpen ? 'Close' : 'Filter'}
-        </button>
-      </h1>
+    <div className="page-container">
+      <div className="container">
+        <h1>
+          Search
+          <button
+            className="btn btn-theme btn-sm"
+            style={{ float: 'right', fontSize: 'small' }}
+            onClick={() => {
+              toggleForm();
+            }}
+          >
+            {isOpen ? 'Close' : 'Filter'}
+          </button>
+        </h1>
 
-      {isOpen ? (
-        <div style={{ marginBottom: '2em' }}>
-          <JobSearchForm submit={submit} />
-        </div>
-      ) : null}
+        {isOpen ? (
+          <div style={{ marginBottom: '2em' }}>
+            <JobSearchForm submit={submit} />
+          </div>
+        ) : null}
 
-      <SearchResults results={results} />
+        <SearchResults results={results} />
+      </div>
     </div>
   );
 }

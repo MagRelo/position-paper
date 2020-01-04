@@ -2,11 +2,13 @@ import React, { useContext } from 'react';
 import { AuthContext } from 'App';
 // import { Link } from '@reach/router';
 
+import testimonialFace from 'images/face.png';
+
 // hero
 import FinishLine from 'images/undraw_finish_line.svg';
 
 // How it works
-import OnlineAd from 'images/undraw_online_ad.svg';
+import OnlineAd from 'images/undraw_get_job.svg';
 import TeamChat from 'images/undraw_team_chat.svg';
 import Destinations from 'images/undraw_destinations.svg';
 import Organizer from 'images/undraw_online_organizer.svg';
@@ -74,9 +76,10 @@ function LandingPage() {
                     <div className="testimonial style-2">
                       <div className="testimonial-img">
                         <img
+                          style={{ width: '260px' }}
                           className="img-center"
-                          src="images/testimonial/01.jpg"
-                          alt=""
+                          src={testimonialFace}
+                          alt="woman face"
                         />
                       </div>
                       <div className="testimonial-content">
@@ -84,12 +87,13 @@ function LandingPage() {
                           <i className="fas fa-quote-left"></i>
                         </div>
                         <p>
-                          We realized that there was a lot of money to be made.
-                          It seems so obvious in retrospect...
+                          We use Talent Relay to include our employees in our
+                          recruiting proceess, and it's been amazing. We never
+                          would have found those candidates any other way.
                         </p>
                         <div className="testimonial-caption">
-                          <h5>Matt Lovan</h5>
-                          <label>Founder of Talent Relay</label>
+                          <h5>Candice Blous</h5>
+                          <label>Founder of Party Time</label>
                         </div>
                       </div>
                     </div>

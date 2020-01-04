@@ -107,8 +107,7 @@ function PromotePanel({ link, user, activeSession, traffic }) {
           {!activeSession ? (
             <Link
               className="btn btn-sm btn-theme"
-              to="/login"
-              redirect={'/link/' + link.linkId}
+              to={'/login?link=' + link.linkId}
             >
               {'Promote @ ' +
                 formatCurrency(
@@ -198,10 +197,10 @@ function AdminPanel({ link, user, stream, traffic }) {
           </div>
         </div>
 
-        <label>Social</label>
+        <label>Share on Social (coming soon)</label>
         <div className="social-grid">
-          <EmailButton enabled={true} link={link} />
-          <LinkedinButton enabled={true} link={link} />
+          <EmailButton enabled={false} link={link} />
+          <LinkedinButton enabled={false} link={link} />
           <TwitterButton enabled={false} link={link} />
           <InstaButton enabled={false} link={link} />
         </div>

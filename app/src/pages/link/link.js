@@ -51,7 +51,7 @@ function LinkPage(props) {
   }, [props.linkId]);
 
   return (
-    <div className="link-container">
+    <div className="page-container">
       {isLoading ? (
         <div style={{ marginTop: '2em' }}>
           <Loading />
@@ -143,8 +143,7 @@ function ApplyPanel({ link, user, activeSession }) {
         <Link
           className="btn btn-sm btn-theme"
           label={'Apply Now'}
-          to="/login"
-          redirect={'/link/' + link.linkId}
+          to={'/login?link=' + link.linkId}
         >
           Apply Now
         </Link>

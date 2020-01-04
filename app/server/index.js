@@ -31,6 +31,7 @@ const passport = require('passport');
 
 // routes
 const httpApi = require('./api');
+const routesApi = require('./routes');
 
 // require('./utils/seedDb');
 
@@ -54,7 +55,11 @@ mongoose.connection.on('error', function(err) {
 // *
 
 // configure express middleware
-app.use(express.static('build'));
+app.use(
+  express.static('build', {
+    index: false
+  })
+);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ limit: '1mb' }));
 app.use(cookieParser());
@@ -77,13 +82,11 @@ app.use(
   })
 );
 
-// add http routing
+// api routing
 app.use('/api', httpApi);
 
-// serve the frontend for all non-api requests
-app.get('/*', function(req, res) {
-  res.sendFile('index.html', { root: './build' });
-});
+// page routing
+app.use('/', routesApi);
 
 // start server
 server.listen(8080, () => {

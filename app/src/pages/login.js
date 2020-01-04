@@ -4,6 +4,9 @@ import LinkedInLogin from 'components/linkedinLogin';
 import background from 'images/01.png';
 
 function Login(props) {
+  const redirect = getRedirect(props.location);
+  console.log(redirect);
+
   return (
     <React.Fragment>
       <section className="" data-bg-color="#d2f9fe">
@@ -18,7 +21,7 @@ function Login(props) {
                 <span>Login</span> with LinkedIn
               </h1>
               <p>We'll never post anything without your permission.</p>
-              <LinkedInLogin redirect={props.redirect} />
+              <LinkedInLogin redirect={redirect} />
             </div>
           </div>
         </div>
@@ -28,3 +31,24 @@ function Login(props) {
 }
 
 export default Login;
+
+function getRedirect(location) {
+  if (!location.search) {
+    return '';
+  }
+
+  const params = getJsonFromUrl(location.search);
+  if (params.link) return '/link/' + params.link;
+
+  return '';
+}
+
+function getJsonFromUrl(search) {
+  var query = search.substr(1);
+  var result = {};
+  query.split('&').forEach(function(part) {
+    var item = part.split('=');
+    result[item[0]] = decodeURIComponent(item[1]);
+  });
+  return result;
+}
