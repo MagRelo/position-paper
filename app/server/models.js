@@ -19,9 +19,12 @@ const UserSchema = new mongoose.Schema(
       select: false
     },
     stripeCustomer: { type: Object, select: false },
+    stripeCustomerLabel: String,
+
     stripeAccount: { type: Object, select: false },
     stripeAccountLabel: String,
     metaData: Object,
+
     follows: [String],
     balance: Number,
     payments: { type: mongoose.Schema.Types.ObjectId, ref: 'Payment' }

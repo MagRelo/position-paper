@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Loading } from 'components/random';
+import { GiConsoleController } from 'react-icons/gi';
 
 //Plaid api info
 const clientName = 'Incentive Engine';
@@ -102,6 +103,7 @@ function UserBankAccount(props) {
       setLoading(false);
       setConnected(true);
     } catch (error) {
+      console.log(error);
       setSuccess(false);
       setComplete(true);
       setLoading(false);

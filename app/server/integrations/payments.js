@@ -27,26 +27,16 @@ const stripe = require('stripe')(stripeApiKey);
 // Methods
 //
 
+// https://stripe.com/docs/api/customers/create
 exports.createStripeCustomer = async function(userData) {
   const userObject = {
-    name: userData.name,
+    name: userData.firstname + ' ' + userData.lastname,
     email: userData.email,
-    description: '(' + (process.env.STRIPE_TEST_MODE ? 'TEST' : 'LIVE') + ')'
+    description: '(' + (process.env.STRIPE_TEST_MODE ? 'TEST' : 'LIVE') + ')',
+    source: userData.token.id
   };
-
-  // if bank account token, then attach as "source"
-  if (userData.token) {
-    // get stripe token from plaid
-    const item = await plaidClient.exchangePublicToken(userData.token);
-    const bankToken = await plaidClient.createStripeToken(
-      item.access_token,
-      userData.account
-    );
-    // add bank account as "source" to userObject
-    userObject.source = bankToken.stripe_bank_account_token;
-  }
-
   // create stripe customer and attach
+  console.log('createStripeCustomer', userObject);
   return await stripe.customers.create(userObject);
 };
 

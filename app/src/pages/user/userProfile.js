@@ -87,7 +87,11 @@ function User(props) {
 
               <hr />
               <h2>Payment Source</h2>
-              <UserPaymentSource />
+              <p>Add a payment source in order to post jobs.</p>
+              <UserPaymentSource
+                hasPaymentSource={userData.hasPaymentSource}
+                sourceLabel={userData.stripeCustomerLabel}
+              />
 
               <hr />
               <h2>Payments</h2>

@@ -18,7 +18,8 @@ const {
   getUserFriends,
   sendTweet,
   sendEmail,
-  addAccount
+  addAccount,
+  addCustomer
 } = require('./controllers/user');
 const { createQuery, getLink, createChildLink } = require('./controllers/link');
 const {
@@ -122,6 +123,7 @@ router.get('/user/friends', getToken, authenticate, getUser, getUserFriends);
 router.post('/user/tweet', getToken, authenticate, getUser, sendTweet);
 router.post('/user/email', getToken, authenticate, getUser, sendEmail);
 router.post('/user/account', getToken, authenticate, getUser, addAccount);
+router.post('/user/customer', getToken, authenticate, getUser, addCustomer);
 
 //
 // LINK

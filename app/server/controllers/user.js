@@ -1,6 +1,5 @@
 const payments = require('../integrations/payments');
 const getStream = require('../integrations/getstream');
-// const elasticSearch = require('../integrations/elasticsearch');
 const twitter = require('../integrations/twitter');
 const sendgrid = require('../integrations/sendgrid');
 
@@ -26,7 +25,9 @@ exports.populateUser = async function(req, res) {
       avatar: req.user.avatar,
       location: req.user.location,
       hasAccount: !!req.user.stripeAccountLabel,
-      stripeAccountLabel: req.user.stripeAccountLabel
+      stripeAccountLabel: req.user.stripeAccountLabel,
+      hasPaymentSource: !!req.user.stripeCustomerLabel,
+      stripeCustomerLabel: req.user.stripeCustomerLabel
     },
     follows: req.user.follows,
     links: [],
@@ -205,6 +206,38 @@ exports.addAccount = async function(req, res) {
 
     // send user
     return res.status(200).send({ connected: true });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send(error);
+  }
+};
+
+// add payment source/customer to stripe
+exports.addCustomer = async function(req, res) {
+  const userData = req.user;
+  userData.token = req.body;
+
+  console.log(userData);
+
+  try {
+    // register with plaid
+    const stripeCustomer = await payments.createStripeCustomer(userData);
+    const label =
+      stripeCustomer.sources.data[0].brand +
+      ' – ' +
+      stripeCustomer.sources.data[0].last4;
+
+    // update user
+    await UserModel.updateOne(
+      { _id: req.user._id },
+      {
+        stripeCustomer: stripeCustomer,
+        stripeCustomerLabel: label
+      }
+    );
+
+    // send user
+    return res.status(200).send({ connected: true, label: label });
   } catch (error) {
     console.log(error);
     return res.status(500).send(error);

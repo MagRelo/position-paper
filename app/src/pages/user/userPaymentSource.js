@@ -1,47 +1,102 @@
-import React, { Component } from 'react';
-import { Elements } from 'react-stripe-elements';
+import React, { useState } from 'react';
+import { Loading } from 'components/random';
+
 import {
+  Elements,
   StripeProvider,
   injectStripe,
   CardElement
 } from 'react-stripe-elements';
 
-class CheckoutForm extends Component {
-  constructor(props) {
-    super(props);
-    this.submit = this.submit.bind(this);
+// https://stripe.com/docs/testing#cards
+
+function PaymentSource(props) {
+  const [sourceLabel, setSourceLabel] = useState(props.sourceLabel);
+  const [connected, setConnected] = useState(props.hasPaymentSource);
+  const [loading, setLoading] = useState(false);
+  const [complete, setComplete] = useState(false);
+  const [isSuccess, setSuccess] = useState(false);
+
+  async function onSubmit(event) {
+    event.preventDefault();
+
+    let { token } = await props.stripe.createToken({ name: 'Name' });
+
+    // don't submit without the bank account info (token)
+    // if (!token) {
+    //   return flashBankAccountButton();
+    // }
+
+    // submit
+    try {
+      setLoading(true);
+
+      // send
+      const { label } = await addPaymentSource(token);
+
+      // update UI
+      setSourceLabel(label);
+      setSuccess(true);
+      setComplete(true);
+      setLoading(false);
+      setConnected(true);
+    } catch (error) {
+      setSuccess(false);
+      setComplete(true);
+      setLoading(false);
+    }
   }
 
-  async submit(event) {
-    let { token } = await this.props.stripe.createToken({ name: 'Name' });
-    let response = await fetch('/charge', {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain' },
-      body: token.id
-    });
+  return (
+    <div className="form-wrapper">
+      {connected ? (
+        <div>
+          <span>Connected: {sourceLabel}</span>
+        </div>
+      ) : (
+        <div>
+          <CardElement />
 
-    if (response.ok) console.log('Purchase Complete!');
-  }
+          <hr />
 
-  render() {
-    return (
-      <div className="form-wrapper">
-        <CardElement />
-
-        <hr />
-        <button
-          className="pure-button pure-button-primary btn btn-theme btn-sm"
-          onClick={this.submit}
-        >
-          Add Payment Source
-        </button>
-      </div>
-    );
-  }
+          {loading ? (
+            <div style={{ margin: '0 auto' }}>
+              <Loading />
+            </div>
+          ) : (
+            <div>
+              {complete ? (
+                <div>
+                  {isSuccess ? (
+                    <p>Success!</p>
+                  ) : (
+                    <p
+                      onClick={() => {
+                        setComplete(false);
+                      }}
+                    >
+                      Error
+                    </p>
+                  )}
+                </div>
+              ) : (
+                <button
+                  className="pure-button pure-button-primary btn btn-theme btn-sm"
+                  onClick={onSubmit}
+                >
+                  Add Payment Source
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
 }
 
-const InjectedCheckoutForm = injectStripe(CheckoutForm);
-
+// wrap to get stripe methods
+const InjectedCheckoutForm = injectStripe(PaymentSource);
 function StripeWrapper(props) {
   return (
     <StripeProvider apiKey="pk_test_dMv1AAldL0wj69FLCG4c8jce00J8jWxWg9">
@@ -53,3 +108,19 @@ function StripeWrapper(props) {
 }
 
 export default StripeWrapper;
+
+async function addPaymentSource(formObject) {
+  return fetch('/api/user/customer', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(formObject)
+  }).then(response => {
+    if (response.status === 200) {
+      return response.json();
+    }
+
+    throw Error(response.status);
+  });
+}
