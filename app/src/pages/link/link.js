@@ -107,6 +107,7 @@ async function getLink(linkId, clearSession) {
     if (response.status === 401) {
       console.log('logging out...');
       clearSession();
+      return {};
     }
   });
 }

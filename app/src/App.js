@@ -87,8 +87,7 @@ function App(props) {
           setActiveSession(true);
           setLoadingSession(false);
         } else {
-          Cookies.remove('servesa-auth-token');
-          setActiveSession(false);
+          clearSession();
           setLoadingSession(false);
         }
       });
@@ -118,11 +117,11 @@ function App(props) {
     <AuthContext.Provider
       value={{ activeSession, createSession, clearSession, user }}
     >
+      {MetaData()}
       {loadingSession ? (
         <Loading />
       ) : (
         <div className="page-wrapper">
-          {MetaData()}
           <Header />
           <div className="content-wrapper">
             {activeSession ? (
@@ -200,12 +199,11 @@ function MetaData() {
       <meta property="og:site_name" content="Talent Relay" />
       <meta property="og:type" content="website" />
       <meta property="og:url" content={'https://talentrelay.app'} />
-
-      {/* <meta property="og:image" content="" /> */}
-      {/* <meta property="og:image:secure_url" content="" /> */}
-      {/* <meta property="og:image:type" content="jpeg" /> */}
-      {/* <meta property="og:image:height" content="606" /> */}
-      {/* <meta property="og:image:width" content="808" /> */}
+      <meta property="og:image:secure_url" content="https://talentrelay.app" />
+      <meta property="og:image" content="https://talentrelay.app/logo.png" />
+      <meta property="og:image:type" content="png" />
+      <meta property="og:image:height" content="201" />
+      <meta property="og:image:width" content="630" />
 
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:site" content="@i_dot_e" />
@@ -214,7 +212,7 @@ function MetaData() {
         name="twitter:description"
         content="Talent Relay super-charges your talent search. We combine cash incentives, social networking, and human judgement to provide a steady stream of high-quality, pre-screened candidates."
       />
-      {/* <meta name="twitter:image" content="" /> */}
+      <meta name="twitter:image" content="https://talentrelay.app/logo.png" />
     </Helmet>
   );
 }

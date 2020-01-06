@@ -1,52 +1,106 @@
 import React, { useState } from 'react';
-import PlaidLink from './plaidButton';
+import { Loading } from 'components/random';
+
+//Plaid api info
+const clientName = 'Incentive Engine';
+const env = 'sandbox';
+const publicKey = '2b3f9221802f14178deef36cd7f168';
+const products = ['auth'];
+const institution = null;
 
 function UserBankAccount(props) {
   const [token, setToken] = useState('');
   const [metaData, setMetaData] = useState('');
-  const [bankLabel, setBankLabel] = useState('');
+  const [bankLabel, setBankLabel] = useState(props.bankLabel);
+  const [flashBankButton, setFlashBankButton] = useState(false);
 
   // status
+  const [connected, setConnected] = useState(props.hasAccount);
   const [loading, setLoading] = useState(false);
   const [complete, setComplete] = useState(false);
   const [isSuccess, setSuccess] = useState(false);
 
-  function getToken(token, metaData) {
-    setToken(token);
-    setMetaData(metaData);
-    setBankLabel(metaData.accounts[0].name + ' – ' + metaData.institution.name);
+  function formatBankLabel(metaData) {
+    // console.log('format meta:', metaData);
+    let label = '';
 
-    console.log({ token, bankLabel });
+    if (metaData.accounts && metaData.accounts[0]) {
+      label += metaData.accounts[0].name + ' – ';
+    }
+    if (metaData.institution && metaData.institution.name) {
+      label += metaData.institution.name;
+    }
+
+    return label;
   }
 
-  function onSubmit(event) {
+  function plaidSuccess(token, metaData) {
+    // console.log('plaid success', token, metaData);
+
+    setToken(token);
+    setMetaData(metaData);
+    setBankLabel(formatBankLabel(metaData));
+  }
+
+  function plaidExit() {
+    console.log('exit');
+  }
+
+  function launchPlaid(event) {
     event.preventDefault();
 
-    setLoading(true);
-
-    // format form data
-    const formData = new FormData(event.target);
-    const formObj = {};
-    formData.forEach((value, key) => {
-      formObj[key] = value;
+    // setup plaid link
+    window.linkHandler = window.Plaid.create({
+      selectAccount: true,
+      env: env,
+      clientName: clientName,
+      key: publicKey,
+      product: products,
+      onExit: plaidExit,
+      onSuccess: plaidSuccess
     });
 
-    // add token stuff
-    formObj.token = token;
-    formObj.metaData = metaData;
-    formObj.bankAccountLabel = bankLabel;
-    formObj.tos = {
-      date: Math.floor(Date.now() / 1000),
-      user_agent: window.navigator.userAgent
-    };
+    if (window.linkHandler) {
+      window.linkHandler.open(institution);
+    }
+  }
 
+  async function onSubmit(event) {
+    event.preventDefault();
+
+    // don't submit without the bank account info (token)
+    if (!token) {
+      return flashBankAccountButton();
+    }
+
+    // submit
     try {
-      // send
-      addBankAccount(formObj).then(response => {
-        setSuccess(true);
-        setComplete(true);
-        setLoading(false);
+      setLoading(true);
+
+      // format form data
+      const formData = new FormData(event.target);
+      const formObj = {};
+      formData.forEach((value, key) => {
+        formObj[key] = value;
       });
+
+      // add token stuff
+      formObj.token = token;
+      formObj.metaData = metaData;
+      formObj.bankAccountLabel = bankLabel;
+      formObj.tos = {
+        date: Math.floor(Date.now() / 1000),
+        user_agent: window.navigator.userAgent
+      };
+
+      // send
+      await addBankAccount(formObj);
+
+      // update UI
+      setSuccess(true);
+      setComplete(true);
+      setLoading(false);
+      setConnected(true);
     } catch (error) {
       setSuccess(false);
       setComplete(true);
@@ -54,89 +108,122 @@ function UserBankAccount(props) {
     }
   }
 
+  function flashBankAccountButton() {
+    setFlashBankButton(true);
+    setTimeout(() => {
+      setFlashBankButton(false);
+    }, 450);
+  }
+
   return (
-    <form className="pure-form" name="userBankAccount" onSubmit={onSubmit}>
-      <legend>Link Bank Account</legend>
-      <fieldset>
-        <div className="row row-2">
-          <div>
-            <label htmlFor="first_name">First Name </label>
-            <input
-              className="pure-input-1"
-              type="text"
-              id="first_name"
-              name="first_name"
-            />
-          </div>
-          <div>
-            <label htmlFor="last_name">Last Name </label>
-            <input
-              className="pure-input-1"
-              type="text"
-              id="last_name"
-              name="last_name"
-            />
-          </div>
-        </div>
-        <div className="row row-3">
-          <div>
-            <label htmlFor="dob">Date of Birth </label>
-            <input className="pure-input-1" type="date" id="dob" name="dob" />
-          </div>
-          <div>
-            <label htmlFor="ssn">Last 4 Digits of SSN </label>
-            <input className="pure-input-1" type="text" id="ssn" name="ssn" />
-          </div>
-          <div>
-            <label htmlFor="bank">Bank Account</label>
-            {token ? <p>{bankLabel}</p> : <PlaidLink getToken={getToken} />}
-          </div>
-        </div>
-
-        <label>Terms of Service</label>
-        <small>
-          Payment processing services for users on Incentive Exchange are
-          provided by Stripe and are subject to the Stripe Connected Account
-          Agreement, which includes the Stripe Terms of Service (collectively,
-          the “Stripe Services Agreement”). By agreeing to these terms or
-          continuing to operate as a user on Incentive Exchange, you agree to be
-          bound by the Stripe Services Agreement, as the same may be modified by
-          Stripe from time to time. As a condition of Incentive Exchange
-          enabling payment processing services through Stripe, you agree to
-          provide Incentive Exchange accurate and complete information about you
-          and your business, and you authorize Incentive Exchange to share it
-          and transaction information related to your use of the payment
-          processing services provided by Stripe.
-        </small>
-        <br />
-        <label htmlFor="tos_agree">
-          <input
-            style={{ marginRight: '0.667em' }}
-            type="checkbox"
-            name="tos_agree"
-          />{' '}
-          I Agree
-        </label>
-      </fieldset>
-
-      {loading ? (
-        <div className="spinner" style={{ margin: '0 auto' }}>
-          <div className="bounce1" />
-          <div className="bounce2" />
-          <div className="bounce3" />
+    <div className="form-wrapper">
+      {connected ? (
+        <div>
+          <span>Connected: {bankLabel}</span>
         </div>
       ) : (
-        <div>
-          {complete ? (
-            <div>{isSuccess ? <p>Success!</p> : <p>Error</p>}</div>
+        <form name="userBankAccount" onSubmit={onSubmit}>
+          <fieldset>
+            <div className="grid grid-2">
+              <div className="form-group">
+                <label htmlFor="first_name">First Name </label>
+                <input
+                  className="form-control"
+                  type="text"
+                  id="first_name"
+                  name="first_name"
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="last_name">Last Name </label>
+                <input
+                  className="form-control"
+                  type="text"
+                  id="last_name"
+                  name="last_name"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-3">
+              <div className="form-group">
+                <label htmlFor="dob">Date of Birth </label>
+                <input
+                  className="form-control"
+                  type="date"
+                  id="dob"
+                  name="dob"
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="ssn">Last 4 Digits of SSN </label>
+                <input
+                  className="form-control"
+                  type="number"
+                  maxLength="4"
+                  minLength="4"
+                  id="ssn"
+                  name="ssn"
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="bank">Bank Account</label>
+                {token ? (
+                  <p>{bankLabel}</p>
+                ) : (
+                  <button
+                    style={
+                      flashBankButton ? { backgroundColor: '#7329c2' } : {}
+                    }
+                    className="pure-button pure-button-primary btn btn-theme btn-sm"
+                    onClick={launchPlaid}
+                    type="button"
+                  >
+                    Connect Bank Account
+                  </button>
+                )}
+              </div>
+            </div>
+          </fieldset>
+          <hr />
+          {loading ? (
+            <div style={{ margin: '0 auto' }}>
+              <Loading />
+            </div>
           ) : (
-            <button type="submit" className="pure-button pure-button-primary">
-              Submit
-            </button>
+            <div>
+              {complete ? (
+                <div>
+                  {isSuccess ? (
+                    <p>Success!</p>
+                  ) : (
+                    <p
+                      onClick={() => {
+                        setComplete(false);
+                      }}
+                    >
+                      Error
+                    </p>
+                  )}
+                </div>
+              ) : (
+                <button
+                  type="submit"
+                  className="pure-button pure-button-primary btn btn-theme btn-sm"
+                >
+                  Submit
+                </button>
+              )}
+            </div>
           )}
-        </div>
+        </form>
       )}
-    </form>
+    </div>
   );
 }
 
@@ -149,5 +236,11 @@ async function addBankAccount(formObject) {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(formObject)
-  }).then(response => response.json());
+  }).then(response => {
+    if (response.status === 200) {
+      return response.json();
+    }
+
+    throw Error(response.status);
+  });
 }

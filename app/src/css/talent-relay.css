@@ -154,7 +154,7 @@ h3 {
 .user-avatar {
     border-radius: 50%;
     float: left;
-    border: solid 1px gray;
+    border: solid 1px #7329c2;
     width: 60px;
     height: 60px;
 }
@@ -484,8 +484,8 @@ h3 {
     height: 64px;
     margin: 8px;
     border-radius: 50%;
-    border: 6px solid #fff;
-    border-color: #fff transparent #fff transparent;
+    border: 6px solid #7329c2;
+    border-color: #7329c2 transparent #03d665 transparent;
     animation: lds-dual-ring 1.2s linear infinite;
 }
 

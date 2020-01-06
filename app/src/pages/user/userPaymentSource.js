@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { Elements } from 'react-stripe-elements';
-import { CardElement, injectStripe } from 'react-stripe-elements';
+import {
+  StripeProvider,
+  injectStripe,
+  CardElement
+} from 'react-stripe-elements';
 
 class CheckoutForm extends Component {
   constructor(props) {
@@ -21,30 +25,31 @@ class CheckoutForm extends Component {
 
   render() {
     return (
-      <div className="checkout">
+      <div className="form-wrapper">
         <CardElement />
 
+        <hr />
         <button
-          className="pure-button pure-button-primary"
+          className="pure-button pure-button-primary btn btn-theme btn-sm"
           onClick={this.submit}
         >
-          Save
+          Add Payment Source
         </button>
       </div>
     );
   }
 }
 
-const Injected = injectStripe(CheckoutForm);
+const InjectedCheckoutForm = injectStripe(CheckoutForm);
 
-class Element extends Component {
-  render() {
-    return (
+function StripeWrapper(props) {
+  return (
+    <StripeProvider apiKey="pk_test_dMv1AAldL0wj69FLCG4c8jce00J8jWxWg9">
       <Elements>
-        <Injected />
+        <InjectedCheckoutForm {...props} />
       </Elements>
-    );
-  }
+    </StripeProvider>
+  );
 }
 
-export default Element;
+export default StripeWrapper;

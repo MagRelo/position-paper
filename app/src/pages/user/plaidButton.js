@@ -37,7 +37,7 @@ function PlaidLinkWrapper(props) {
   return (
     <React.Fragment>
       <button
-        className="pure-button pure-button-primary"
+        className="pure-button pure-button-primary btn btn-theme btn-sm"
         onClick={handleOnClick}
         type="button"
       >
