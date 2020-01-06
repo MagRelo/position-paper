@@ -100,9 +100,9 @@ function getContent(activityType, isUser, data) {
       break;
 
     case 'addResponse':
-      urlPath = '/response';
+      urlPath = '/link';
       label = isUser ? `${data.link.title}` : `${data.link.title}`;
-      id = `/${data._id}`;
+      id = `/${data.link.linkId}`;
       break;
 
     default:
