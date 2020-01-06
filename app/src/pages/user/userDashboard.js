@@ -97,9 +97,24 @@ function User(props) {
                   <p>Just post your job and watch the community go to work</p>
                   <JobTable links={jobs} />
                   <div style={{ textAlign: 'center' }}>
-                    <Link to="/addquery" className="btn btn-theme btn-sm">
-                      Post a Job
-                    </Link>
+                    {userData.hasPaymentSource ? (
+                      <Link to="/addquery" className="btn btn-theme btn-sm">
+                        Post a Job
+                      </Link>
+                    ) : (
+                      <div>
+                        <p>
+                          <i>
+                            Add a payment source to you{' '}
+                            <Link to="/profile">profile</Link> in order to post
+                            a job
+                          </i>
+                        </p>
+                        <button disabled className="btn btn-theme btn-sm">
+                          Post a Job
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </TabPanel>
               </TabPanels>

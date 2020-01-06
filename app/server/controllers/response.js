@@ -34,7 +34,7 @@ exports.createResponse = async function(req, res) {
     // add new response
     const newResponse = new ResponseModel({
       link: link._id,
-      originLink: link.originLink,
+      originLink: link.originLink || link._id,
       target_bonus: link.target_bonus,
       targetPayouts: [
         {
@@ -51,11 +51,19 @@ exports.createResponse = async function(req, res) {
     });
     await newResponse.save();
 
-    // add response to gen-0 link
-    await LinkModel.updateOne(
-      { _id: { $in: link.parents }, generation: 0 },
-      { $push: { responses: newResponse._id } }
-    );
+    if (link.originLink) {
+      // add response to gen-0 link
+      await LinkModel.updateOne(
+        { _id: { $in: link.parents }, generation: 0 },
+        { $push: { responses: newResponse._id } }
+      );
+    } else {
+      // this is origin, update origin
+      await LinkModel.updateOne(
+        { _id: link._id },
+        { $push: { responses: newResponse._id } }
+      );
+    }
 
     // add getStream activity "addResponse"
     await getStream.addResponse(req.user, link, newResponse);

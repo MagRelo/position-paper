@@ -24,7 +24,7 @@ class JobTable extends Component {
                   <td>{link.children.length}</td>
                   <td>{link.responses.length}</td>
                   <td>
-                    <Link to={'/link/' + link.linkId}>View</Link>
+                    <Link to={'/applications/' + link.linkId}>View</Link>
                   </td>
                 </tr>
               );

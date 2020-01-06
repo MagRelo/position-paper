@@ -21,7 +21,12 @@ const {
   addAccount,
   addCustomer
 } = require('./controllers/user');
-const { createQuery, getLink, createChildLink } = require('./controllers/link');
+const {
+  createQuery,
+  getLink,
+  createChildLink,
+  getApplications
+} = require('./controllers/link');
 const {
   createResponse,
   getResponse,
@@ -132,6 +137,7 @@ router.post('/user/customer', getToken, authenticate, getUser, addCustomer);
 router.post('/query/add', getToken, authenticate, getUser, createQuery);
 router.get('/link/:linkId', getToken, getUser, getLink);
 router.post('/link/add', getToken, authenticate, getUser, createChildLink);
+router.get('/applications/:linkId', getToken, getUser, getApplications);
 
 //
 // RESPONSE

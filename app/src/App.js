@@ -58,6 +58,7 @@ import Employers from 'pages/employer';
 // Maybe Auth
 import Search from 'pages/search';
 import LinkPage from 'pages/link/link';
+import Applications from 'pages/link/applications';
 
 // Auth
 import Profile from 'pages/user/userProfile';
@@ -135,8 +136,10 @@ function App(props) {
                 <Profile path="/profile" />
                 <Admin path="/admin" />
 
-                <Search path="/search" />
                 <LinkPage path="/link/:linkId" />
+                <Applications path="/applications/:linkId" />
+
+                <Search path="/search" />
                 <Terms path="/terms" />
                 <About path="/about" />
                 <Employers path="/employers" />
@@ -148,8 +151,9 @@ function App(props) {
                 <LinkedInPopUp exact path="/linkedin/callback" />
                 <Login path="/login" />
 
-                <Search path="/search" />
                 <LinkPage path="/link/:linkId" />
+
+                <Search path="/search" />
                 <Terms path="/terms" />
                 <About path="/about" />
                 <Employers path="/employers" />

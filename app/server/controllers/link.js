@@ -196,6 +196,32 @@ exports.createChildLink = async function(req, res) {
   }
 };
 
+// create link
+exports.getApplications = async function(req, res) {
+  // auth-only
+  if (!req.user) {
+    return res.status(401).send();
+  }
+
+  // get link _id
+  const link = await LinkModel.findOne({ linkId: req.params.linkId });
+
+  // get all responses for this link
+  const responses = await ResponseModel.find({ originLink: link._id }).populate(
+    'user'
+  );
+
+  try {
+    res.status(200).send({
+      link: link,
+      applications: responses
+    });
+  } catch (error) {
+    console.log('API Error:', error);
+    res.status(500).send(error);
+  }
+};
+
 // used when adding a link
 function calcLinkPayouts(bonus, generation) {
   // take 10% of bonus per generation
