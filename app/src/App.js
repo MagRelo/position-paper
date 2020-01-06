@@ -52,8 +52,8 @@ import NotFound from 'pages/404';
 import LandingPage from 'networkData/landingPage';
 import Terms from 'pages/legal';
 import About from 'pages/about';
-import Signup from 'components/stash/alphaSignup';
 import Login from 'pages/login';
+import Employers from 'pages/employer';
 
 // Maybe Auth
 import Search from 'pages/search';
@@ -139,6 +139,7 @@ function App(props) {
                 <LinkPage path="/link/:linkId" />
                 <Terms path="/terms" />
                 <About path="/about" />
+                <Employers path="/employers" />
                 <LandingPage path="/" />
                 <NotFound default />
               </Router>
@@ -151,7 +152,7 @@ function App(props) {
                 <LinkPage path="/link/:linkId" />
                 <Terms path="/terms" />
                 <About path="/about" />
-                <Signup path="/signup" />
+                <Employers path="/employers" />
                 <LandingPage path="/" />
                 <NotFound default />
               </Router>

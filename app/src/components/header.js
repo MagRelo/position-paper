@@ -3,6 +3,9 @@ import { AuthContext } from 'App';
 
 import { Link } from '@reach/router';
 
+// temp
+import logo from 'images/logo.png';
+
 // import {
 //   Menu,
 //   MenuList,
@@ -11,29 +14,26 @@ import { Link } from '@reach/router';
 //   MenuItem
 // } from '@reach/menu-button';
 
-// const NavLink = props => (
-//   <Link
-//     {...props}
-//     getProps={({ isCurrent }) => {
-//       // the object returned here is passed to the
-//       // anchor element's props
+const NavLink = props => (
+  <Link
+    {...props}
+    getProps={({ isCurrent }) => {
+      // the object returned here is passed to the
+      // anchor element's props
 
-//       // return {
-//       //   style: {
-//       //     borderBottom: isCurrent ? 'solid 1px' : null,
-//       //     color: isCurrent ? 'white' : null
-//       //   }
-//       // };
+      // return {
+      //   style: {
+      //     borderBottom: isCurrent ? 'solid 1px' : null,
+      //     color: isCurrent ? 'white' : null
+      //   }
+      // };
 
-//       return {
-//         className: isCurrent ? 'nav-link active' : 'active'
-//       };
-//     }}
-//   />
-// );
-
-// temp
-import logo from 'images/logo.png';
+      return {
+        className: isCurrent ? 'nav-link active' : 'nav-link'
+      };
+    }}
+  />
+);
 
 function Header(props) {
   const { activeSession } = useContext(AuthContext);
@@ -72,15 +72,7 @@ function Header(props) {
                   className="collapse navbar-collapse"
                   id="navbarNavDropdown"
                 >
-                  {activeSession ? (
-                    <ul className="navbar-nav ml-auto">
-                      <li className="nav-item">
-                        <Link className="nav-link" to="/search">
-                          Search
-                        </Link>
-                      </li>
-                    </ul>
-                  ) : (
+                  {activeSession ? null : (
                     <ul className="navbar-nav ml-auto mr-auto">
                       <React.Fragment>
                         <li className="nav-item">
@@ -89,14 +81,14 @@ function Header(props) {
                           </a>
                         </li>
                         <li className="nav-item">
-                          <a className="nav-link" href="/#employers">
-                            Employers
-                          </a>
-                        </li>
-                        <li className="nav-item">
                           <a className="nav-link" href="/#getstarted">
                             Get Started
                           </a>
+                        </li>
+                        <li className="nav-item">
+                          <NavLink className="nav-link" to="/employers">
+                            Employers
+                          </NavLink>
                         </li>
                       </React.Fragment>
                     </ul>
@@ -106,6 +98,9 @@ function Header(props) {
                 {/* Login/Logout */}
 
                 <div className="right-nav align-items-center d-flex justify-content-end list-inline">
+                  <Link className="nav-link" to="/search">
+                    Search Jobs
+                  </Link>
                   {activeSession ? (
                     <Link className="btn btn-theme btn-sm" to="/dashboard">
                       <span>Dashboard</span>

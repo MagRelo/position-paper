@@ -195,7 +195,11 @@ export function usePromise(promiseOrFunction, defaultValue) {
 }
 
 export function Loading() {
-  return <div className="lds-dual-ring" style={{ margin: '0 auto' }}></div>;
+  return (
+    <div style={{ textAlign: 'center', marginTop: '1em' }}>
+      <div className="lds-dual-ring"></div>
+    </div>
+  );
 }
 
 function fallbackCopyTextToClipboard(text) {

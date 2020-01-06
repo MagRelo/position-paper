@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Loading } from 'components/random';
-import { GiConsoleController } from 'react-icons/gi';
 
 //Plaid api info
 const clientName = 'Incentive Engine';
