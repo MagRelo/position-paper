@@ -25,7 +25,7 @@ const UserSchema = new mongoose.Schema(
     stripeAccountLabel: String,
     metaData: Object,
 
-    follows: [String],
+    follows: { type: Array, default: [] },
     balance: Number,
     payments: { type: mongoose.Schema.Types.ObjectId, ref: 'Payment' }
   },
@@ -71,8 +71,8 @@ const LinkSchema = new mongoose.Schema(
 
     status: {
       type: String,
-      enum: ['open', 'pending', 'closed'],
-      default: 'open'
+      enum: ['Active', 'Pending', 'Closed'],
+      default: 'Active'
     }
   },
   { timestamps: true }

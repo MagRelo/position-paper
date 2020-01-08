@@ -58,17 +58,16 @@ import Employers from 'pages/employer';
 // Maybe Auth
 import Search from 'pages/search';
 import LinkPage from 'pages/link/link';
+import AddLink from 'networkData/jobForm';
+import EditLink from 'pages/link/editLink';
 import Applications from 'pages/link/applications';
 
 // Auth
 import Profile from 'pages/user/userProfile';
 import Dashboard from 'pages/user/userDashboard';
-import UserBankAccount from 'pages/user/userBankAccount';
-import Response from 'pages/response/response';
-import CreateQuery2 from 'networkData/createJob';
-import Respond from 'pages/response/respond';
-
-import Admin from 'pages/admin';
+// import UserBankAccount from 'pages/user/userBankAccount';
+// import Response from 'pages/response/response';
+// import Respond from 'pages/response/respond';
 
 // Setup Auth context
 export const AuthContext = React.createContext({});
@@ -128,13 +127,11 @@ function App(props) {
             {activeSession ? (
               <Router>
                 {/* Auth required */}
-                <CreateQuery2 path="/addquery" />
-                <Response path="/response/:responseId" />
-                <Respond path="/respond/:linkId" />
-                <UserBankAccount path="/user/account" />
+                <AddLink path="/addquery" />
+                <EditLink path="/link/:linkId/edit" />
+
                 <Dashboard path="/dashboard" />
                 <Profile path="/profile" />
-                <Admin path="/admin" />
 
                 <LinkPage path="/link/:linkId" />
                 <Applications path="/applications/:linkId" />

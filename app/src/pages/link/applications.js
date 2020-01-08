@@ -72,9 +72,9 @@ function LinkPage(props) {
                 )}
 
                 <React.Fragment>
-                  <div className="grid-label">Link</div>
+                  <div className="grid-label">Job Page</div>
                   <div>
-                    <Link to={'/link/' + link.linkId}>View</Link>
+                    <Link to={'/link/' + link.linkId}>View Job</Link>
                   </div>
                 </React.Fragment>
               </div>

@@ -9,13 +9,14 @@ const products = ['auth'];
 const institution = null;
 
 function UserBankAccount(props) {
+  const [connected, setConnected] = useState(props.hasAccount);
+  const [bankLabel, setBankLabel] = useState(props.bankLabel);
+
   const [token, setToken] = useState('');
   const [metaData, setMetaData] = useState('');
-  const [bankLabel, setBankLabel] = useState(props.bankLabel);
   const [flashBankButton, setFlashBankButton] = useState(false);
 
   // status
-  const [connected, setConnected] = useState(props.hasAccount);
   const [loading, setLoading] = useState(false);
   const [complete, setComplete] = useState(false);
   const [isSuccess, setSuccess] = useState(false);

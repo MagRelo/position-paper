@@ -36,7 +36,7 @@ exports.createStripeCustomer = async function(userData) {
     source: userData.token.id
   };
   // create stripe customer and attach
-  console.log('createStripeCustomer', userObject);
+  // console.log('createStripeCustomer', userObject);
   return await stripe.customers.create(userObject);
 };
 

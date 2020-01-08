@@ -5,12 +5,39 @@ const elasticSearch = require('../integrations/elasticsearch');
 const ResponseModel = require('../models').ResponseModel;
 const LinkModel = require('../models').LinkModel;
 
+function roundToNearest(input, step) {
+  return Math.round(input / step) * step;
+}
+
+function calcSplit(salaryMin, salaryMax) {
+  // network bonus
+  const salaryAverage = roundToNearest((salaryMin + salaryMax) / 2, 100);
+  const totalBonus = roundToNearest(salaryAverage * 0.1, 100);
+  const networkBonus = roundToNearest(totalBonus * 0.4, 100);
+  const targetBonus = roundToNearest(totalBonus * 0.4, 100);
+
+  return {
+    salaryAverage,
+    totalBonus,
+    networkBonus,
+    targetBonus
+  };
+}
+
 exports.createQuery = async function(req, res) {
   // check auth
   if (!req.user) {
     return res.status(401).send({ error: 'no user' });
   }
-  const query = req.body;
+
+  const jobData = req.body;
+
+  // validate feilds
+
+  const { salaryAverage, totalBonus, networkBonus, targetBonus } = calcSplit(
+    jobData.salaryRange.min,
+    jobData.salaryRange.max
+  );
 
   try {
     // create link
@@ -19,14 +46,16 @@ exports.createQuery = async function(req, res) {
       parentLink: null,
       isQueryOwner: true,
       generation: 0,
-      total_bonus: query.totalBonus,
-      target_bonus: query.targetBonus,
-      network_bonus: query.networkBonus,
-      title: query.jobTitle,
+      salaryRange: jobData.salaryRange,
+      salaryAverage: salaryAverage,
+      total_bonus: totalBonus,
+      target_bonus: targetBonus,
+      network_bonus: networkBonus,
+      payoffs: calcLinkPayouts(networkBonus, 0),
+      potentialPayoffs: calcLinkPayouts(networkBonus, 1),
+      title: jobData.jobTitle,
       type: 'job',
-      data: query,
-      payoffs: calcLinkPayouts(query.networkBonus, 0),
-      potentialPayoffs: calcLinkPayouts(query.networkBonus, 1)
+      data: jobData
     });
     await newLink.save();
 
@@ -34,6 +63,44 @@ exports.createQuery = async function(req, res) {
     await getStream.addQuery(req.user, newLink._id);
 
     res.status(200).send(newLink);
+  } catch (error) {
+    console.log('API Error:', error);
+    res.status(500).send(error);
+  }
+};
+
+exports.updateQuery = async function(req, res) {
+  // check auth
+  if (!req.user) {
+    return res.status(401).send({ error: 'no user' });
+  }
+
+  // get link or 404
+  const link = await LinkModel.findOne({ linkId: req.params.linkId });
+  if (!link) {
+    return res.status(404).send();
+  }
+
+  // check owner, originDoc
+  if (!req.user === link.user) {
+    return res.status(401).send({ error: 'not owner' });
+  }
+
+  try {
+    // neet to update originDoc & ALL children
+    await LinkModel.updateMany(
+      { $or: [{ _id: link._id }, { _id: { $in: link.children } }] },
+      {
+        $set: {
+          title: req.body.jobTitle,
+          data: req.body,
+          status: req.body.status
+        }
+      }
+    );
+
+    // console.log(result);
+    res.status(200).send(link);
   } catch (error) {
     console.log('API Error:', error);
     res.status(500).send(error);
@@ -69,7 +136,8 @@ exports.getLink = async function(req, res) {
         parentLink: link.parentLink,
         children: link.children,
         payoffs: link.payoffs,
-        potentialPayoffs: link.potentialPayoffs
+        potentialPayoffs: link.potentialPayoffs,
+        status: link.status
       }
     };
 
@@ -92,9 +160,10 @@ exports.getLink = async function(req, res) {
 
     // display indicators
     const isFollowingLink =
-      req.user && req.user.follows.indexOf(link._id.toString()) > -1;
+      req.user.follows && req.user.follows.indexOf(link._id.toString()) > -1;
     const isFollowingUser =
-      req.user && req.user.follows.indexOf(link.user._id.toString()) > -1;
+      req.user.follows &&
+      req.user.follows.indexOf(link.user._id.toString()) > -1;
     const isLinkOwner = req.user._id.equals(link.user._id);
 
     let isQueryOwner = false;

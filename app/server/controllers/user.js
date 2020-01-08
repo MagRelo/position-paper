@@ -217,7 +217,7 @@ exports.addCustomer = async function(req, res) {
   const userData = req.user;
   userData.token = req.body;
 
-  console.log(userData);
+  // console.log(userData);
 
   try {
     // register with plaid

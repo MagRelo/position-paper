@@ -23,6 +23,7 @@ const {
 } = require('./controllers/user');
 const {
   createQuery,
+  updateQuery,
   getLink,
   createChildLink,
   getApplications
@@ -135,6 +136,14 @@ router.post('/user/customer', getToken, authenticate, getUser, addCustomer);
 //
 
 router.post('/query/add', getToken, authenticate, getUser, createQuery);
+router.put(
+  '/query/update/:linkId',
+  getToken,
+  authenticate,
+  getUser,
+  updateQuery
+);
+
 router.get('/link/:linkId', getToken, getUser, getLink);
 router.post('/link/add', getToken, authenticate, getUser, createChildLink);
 router.get('/applications/:linkId', getToken, getUser, getApplications);

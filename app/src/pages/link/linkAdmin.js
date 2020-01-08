@@ -89,7 +89,7 @@ export default LinkAdmin;
 //   );
 // }
 
-function PromotePanel({ link, user, activeSession, traffic }) {
+function PromotePanel({ link, user, activeSession }) {
   return (
     <div>
       {user.isLinkOwner ? null : (
@@ -218,10 +218,13 @@ function AdminPanel({ link, user, stream, traffic }) {
         <div>
           <hr />
           <h3>Edit Job</h3>
-
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
-            <button className="btn btn-theme btn-sm">Edit Job (d)</button>
-          </div>
+          {lineItem('Status', link.status)}
+          <Link
+            className="btn btn-theme btn-sm"
+            to={'/link/' + link.linkId + '/edit'}
+          >
+            Edit Job
+          </Link>
         </div>
       ) : null}
     </div>
