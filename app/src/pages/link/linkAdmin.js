@@ -41,54 +41,6 @@ function LinkAdmin({ link, user, stream, traffic, activeSession }) {
 
 export default LinkAdmin;
 
-// function LinkOwnerMessage(props) {
-//   return (
-//     <div>
-//       <h4 className="section-header">Direct Links</h4>
-//       <div>
-//         <p>
-//           You will be paid{' '}
-//           <b>
-//             {formatCurrency(
-//               props.link.payoffs && props.link.payoffs[props.link.generation]
-//             )}
-//           </b>{' '}
-//           if the candidate responds through this link and the candidate bonus is
-//           paid.
-//         </p>
-
-//         <LinkPayoutDisplayFixed
-//           employer={props.link.data.employer}
-//           showLink={true}
-//           linkPayout={props.link.payoffs[props.link.generation]}
-//           showChild={false}
-//         />
-//       </div>
-
-//       <h4 className="section-header">Network Links</h4>
-//       <p>
-//         You will be paid{' '}
-//         <b>
-//           {formatCurrency(
-//             props.link.potentialPayoffs &&
-//               props.link.potentialPayoffs[props.link.generation]
-//           )}
-//         </b>{' '}
-//         if the candidate responds through a child of this link and the candidate
-//         bonus is paid.
-//       </p>
-
-//       <LinkPayoutDisplayFixed
-//         employer={props.link.data.employer}
-//         showLink={true}
-//         linkPayout={props.link.potentialPayoffs[props.link.generation]}
-//         showChild={true}
-//         childPayout={props.link.potentialPayoffs[props.link.generation + 1]}
-//       />
-//     </div>
-//   );
-// }
-
 function PromotePanel({ link, user, activeSession }) {
   return (
     <div>
@@ -230,16 +182,3 @@ function AdminPanel({ link, user, stream, traffic }) {
     </div>
   );
 }
-
-// function QueryOwnerMessage(props) {
-//   return (
-//     <div>
-//       <p>This is the owner message.</p>
-
-//       <ul>
-//         <li>Target Bonus Cost: {formatCurrency(props.link.target_bonus)}</li>
-//         <li>Network Bonus Cost: {formatCurrency(props.link.network_bonus)}</li>
-//       </ul>
-//     </div>
-//   );
-// }

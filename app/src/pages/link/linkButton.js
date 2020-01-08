@@ -12,21 +12,19 @@ function LinkButton(props) {
   }
 
   return (
-    <React.Fragment>
-      <button
-        className="btn btn-theme btn-sm"
-        onClick={handleClick}
-        disabled={props.disabled}
-      >
-        {isLoading ? (
-          <div className="spinner">
-            <div />
-          </div>
-        ) : (
-          <React.Fragment>{props.label}</React.Fragment>
-        )}
-      </button>
-    </React.Fragment>
+    <button
+      className="btn btn-theme btn-sm"
+      onClick={handleClick}
+      disabled={props.disabled}
+    >
+      {isLoading ? (
+        <div className="spinner">
+          <div />
+        </div>
+      ) : (
+        <span>{props.label}</span>
+      )}
+    </button>
   );
 }
 

@@ -86,9 +86,9 @@ router.get('/search', getToken, getUser, async function(req, res) {
           // logged in
           responseObj.user = {
             isFollowingLink:
-              req.user && req.user.follows.indexOf(link._id) > -1,
+              req.user.follows && req.user.follows.indexOf(link._id) > -1,
             isFollowingUser:
-              req.user && req.user.follows.indexOf(link.user._id) > -1,
+              req.user.follows && req.user.follows.indexOf(link.user._id) > -1,
             isQueryOwner: false,
             isLinkOwner: req.user._id.equals(link.user._id),
             isLoggedIn: true
