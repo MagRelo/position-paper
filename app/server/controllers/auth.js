@@ -62,8 +62,7 @@ exports.linkedinAuth = async function(req, res, next) {
     // get profile data
     const profileURI =
       'https://api.linkedin.com/v2/me?projection=(id,firstName,lastName,profilePicture(displayImage~:playableStreams))';
-    // const profileURI = 'https://api.linkedin.com/v2/me?projection=(id,firstName,lastName)';
-    const meResponse = await fetch(profileURI, {
+    const profile = await fetch(profileURI, {
       method: 'GET',
       headers: {
         Connection: 'Keep-Alive',
@@ -79,14 +78,27 @@ exports.linkedinAuth = async function(req, res, next) {
     });
 
     // upsert user
-    const newUser = await UserModel.upsertLinkedinUser(
-      accessTokenResponse.access_token,
-      meResponse
+    req.user = await UserModel.findOneAndUpdate(
+      {
+        'linkedinProvider.id': profile.id
+      },
+      {
+        firstname: profile.firstName.localized.en_US,
+        lastname: profile.lastName.localized.en_US,
+        avatar:
+          profile.profilePicture['displayImage~'].elements[1].identifiers[0]
+            .identifier,
+        linkedinProvider: {
+          id: profile.id,
+          access_token: accessTokenResponse.access_token
+        }
+      },
+      { new: true, upsert: true }
     );
 
-    req.user = newUser.toObject();
     next();
   } catch (error) {
+    console.log(error);
     res.status(500).send(error);
   }
 };
@@ -145,7 +157,7 @@ exports.linkedinAuth = async function(req, res, next) {
 
 exports.sendToken = function(req, res) {
   if (!req.user) {
-    return res.send(401, 'User Not Authenticated');
+    return res.status(401).send('User Not Authenticated');
   }
 
   // create token

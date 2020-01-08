@@ -32,55 +32,6 @@ const UserSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-UserSchema.statics.upsertLinkedinUser = function(access_token, profile) {
-  var that = this;
-  return this.findOne(
-    {
-      'linkedinProvider.id': profile.id
-    },
-    async function(err, user) {
-      // no user was found, lets create a new one
-      if (!user) {
-        var newUser = new that({
-          firstname: profile.firstName.localized.en_US,
-          lastname: profile.lastName.localized.en_US,
-          avatar:
-            profile.profilePicture['displayImage~'].elements[1].identifiers[0]
-              .identifier,
-          linkedinProvider: {
-            id: profile.id,
-            access_token: access_token
-          }
-        });
-
-        await newUser.save(function(error, savedUser) {
-          if (error) {
-            console.log(error);
-          }
-        });
-
-        return newUser;
-      } else {
-        // update
-        user.firstname = profile.firstName.localized.en_US;
-        user.lastname = profile.lastName.localized.en_US;
-        user.avatar =
-          profile.profilePicture[
-            'displayImage~'
-          ].elements[1].identifiers[0].identifier;
-
-        await user.save(function(error, savedUser) {
-          if (error) {
-            console.log(error);
-          }
-        });
-
-        return user;
-      }
-    }
-  );
-};
-
 exports.UserModel = mongoose.model('User', UserSchema);
 
 //
