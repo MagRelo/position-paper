@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 
 import { Loading } from 'components/random';
 
-// import { LinkDisplay } from 'networkData/jobDisplay';
 import CreateResponse from 'pages/response/createResponse';
 import { AuthContext } from 'App';
 

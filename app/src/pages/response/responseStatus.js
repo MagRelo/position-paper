@@ -13,7 +13,7 @@ function stageDisplay(index, responseStatus) {
   return index <= steps.map(step => step.status).indexOf(responseStatus);
 }
 
-function linkDisplay(props) {
+function ResponseStatus(props) {
   return (
     <ul className="progressbar">
       {steps.map((item, index) => {
@@ -60,4 +60,4 @@ function linkDisplay(props) {
   );
 }
 
-export default linkDisplay;
+export default ResponseStatus;

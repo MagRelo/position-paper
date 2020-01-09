@@ -1,9 +1,21 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { Link } from '@reach/router';
 
 // network Data
 import { AuthContext } from 'App';
 import { JobDisplay } from 'networkData/jobDisplay.js';
-import LinkAdmin from './linkAdmin';
+import {
+  formatCurrency,
+  lineItem,
+  copyTextToClipboard
+} from 'components/random';
+
+import LinkButton from './linkButton';
+
+import EmailButton from 'components/social/emailButton';
+import TwitterButton from 'components/social/twitterButton';
+import LinkedinButton from 'components/social/linkedinButton';
+import InstaButton from 'components/social/instagramButton';
 import ApplyPanel from './applyPanel';
 
 import { Loading } from 'components/random';
@@ -68,14 +80,21 @@ function LinkPage(props) {
 
               <div className="col-lg-4">
                 <div className="link-display">
-                  <LinkAdmin
-                    link={link}
-                    traffic={traffic}
-                    stream={stream}
-                    user={user}
-                    childLinks={link.children}
-                    activeSession={activeSession}
-                  />
+                  {user.isLinkOwner ? (
+                    <AdminPanel
+                      activeSession={activeSession}
+                      user={user}
+                      link={link}
+                      stream={stream}
+                      traffic={traffic}
+                    ></AdminPanel>
+                  ) : (
+                    <PromotePanel
+                      link={link}
+                      user={user}
+                      activeSession={activeSession}
+                    />
+                  )}
                 </div>
               </div>
             </div>
@@ -106,48 +125,145 @@ async function getLink(linkId, clearSession) {
   });
 }
 
-// function ApplyPanel({ link, user, activeSession }) {
+function PromotePanel({ link, user, activeSession }) {
+  // Will show if logged out, or logged in & not a link owner
+  return (
+    <div>
+      <div>
+        <h3>Promote this Job</h3>
+        <p>
+          Create your own link to this position and collect up to{' '}
+          {formatCurrency(
+            link.potentialPayoffs && link.potentialPayoffs[link.generation + 1]
+          )}{' '}
+          if the candidate responds through your link.
+        </p>
 
-//   // const
-//   return (
-//     <div id="apply">
-//       {activeSession ? (
-//         <React.Fragment>
-//           {user.hasApplied ? (
-//             <div>
-//               <h3 className="section-header">Application Status</h3>
-//               <p>You applied to this job on Jan, 12th 2019.</p>
-//               <ResponseStatus status={'open'} />
-//             </div>
-//           ) : (
-//             <div>
-//               <h2>Apply for this Job</h2>
-//               <p>
-//                 Apply for this position. We'll pay you{' '}
-//                 {formatCurrency(link.target_bonus)} if you're hired.
-//               </p>
-//               <ApplyButton
-//                 linkId={link.linkId}
-//                 userId={user._id}
-//                 label="Apply Now"
-//                 disabled={user.isLinkOwner}
-//               />
-//             </div>
-//           )}
-//         </React.Fragment>
-//       ) : (
-//         // login link
-//         <Link
-//           className="btn btn-sm btn-theme"
-//           label={'Apply Now'}
-//           to={'/login?link=' + link.linkId}
-//         >
-//           Apply Now
-//         </Link>
-//       )}
-//     </div>
-//   );
-// }
+        {!activeSession ? (
+          <Link
+            className="btn btn-sm btn-theme"
+            to={'/login?link=' + link.linkId}
+          >
+            {'Promote @ ' +
+              formatCurrency(
+                link.potentialPayoffs &&
+                  link.potentialPayoffs[link.generation + 1]
+              )}
+          </Link>
+        ) : (
+          <LinkButton
+            parentLink={link.linkId}
+            disabled={user._id === 0 || user.isLinkOwner || user.isPromoting}
+            label={
+              'Promote @ ' +
+              formatCurrency(
+                link.potentialPayoffs &&
+                  link.potentialPayoffs[link.generation + 1]
+              )
+            }
+          />
+        )}
+      </div>
+    </div>
+  );
+}
+
+function AdminPanel({ link, user, stream, traffic }) {
+  const domain = window.location.origin || 'http://localhost:3000';
+
+  return (
+    <div>
+      <div className="share">
+        <h3>Promote this Job</h3>
+
+        {user.isQueryOwner ? null : (
+          <div>
+            <p className="p-tight">
+              This is your link. If a candidate gets the job using this link
+              then you will be paid{' '}
+              <b>{formatCurrency(link.payoffs[link.generation])}</b>.
+            </p>
+
+            <p className="p-tight">
+              You can also recruit other people to promote this job. If they
+              find the candidate then you will be paid{' '}
+              <b>{formatCurrency(link.potentialPayoffs[link.generation])}</b>.
+            </p>
+
+            <p className="p-tight">
+              <a href="/#how">Learn more about earning on Talent Relay...</a>
+            </p>
+          </div>
+        )}
+
+        <div>
+          <label htmlFor="inlineFormInputGroup">URL</label>
+
+          <div className="input-group mb-2">
+            <input
+              type="text"
+              className="form-control"
+              style={{ border: 'none' }}
+              id="inlineFormInputGroup"
+              placeholder="Username"
+              disabled={true}
+              value={domain + '/link/' + link.linkId}
+            />
+            <div className="input-group-append">
+              <div
+                className="input-group-text"
+                style={{
+                  fontSize: 'smaller',
+                  border: 'none'
+                }}
+              >
+                <button
+                  className="button-unstyled"
+                  onClick={() => {
+                    const text = `${domain}/link/${link.linkId}`;
+                    copyTextToClipboard(text);
+                  }}
+                >
+                  (copy)
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <label>Share on Social (coming soon)</label>
+        <div className="social-grid">
+          <EmailButton enabled={false} link={link} />
+          <LinkedinButton enabled={false} link={link} />
+          <TwitterButton enabled={false} link={link} />
+          <InstaButton enabled={false} link={link} />
+        </div>
+      </div>
+
+      <div>
+        <hr />
+        <h3>Job Activity</h3>
+        {lineItem('Views', traffic.last30days)}
+        {lineItem('Promoters', link.children ? link.children.length : 0)}
+        {lineItem('Applications', link.responses ? link.responses.length : 0)}
+      </div>
+
+      {user.isQueryOwner ? (
+        <div>
+          <hr />
+          <h3>Edit Job</h3>
+          {lineItem('Status', link.status)}
+          <Link
+            className="btn btn-theme btn-sm"
+            to={'/link/' + link.linkId + '/edit'}
+          >
+            Edit Job
+          </Link>
+        </div>
+      ) : null}
+    </div>
+  );
+}
 
 // <MetaData link={link} user={user} queryData={queryData} />
 // function MetaData({ queryData, link }) {

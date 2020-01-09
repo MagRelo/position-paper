@@ -16,7 +16,7 @@ const iconStyle = {
   marginTop: '4px'
 };
 
-function linkDisplay(props) {
+function LinkDisplayBarFixed(props) {
   // count of tiles for spacing
   let count = 2;
   if (props.showChild) {
@@ -104,4 +104,4 @@ function linkDisplay(props) {
   );
 }
 
-export default linkDisplay;
+export default LinkDisplayBarFixed;

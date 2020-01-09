@@ -3,7 +3,6 @@ import InputRange from 'react-input-range';
 import { useDebounce, formatCurrency } from 'components/random';
 
 import BarChart from 'components/barChart';
-// import LinkPayoutDisplayFixed from 'pages/link/linkDisplayBarFixed';
 
 const opacity = 0.8;
 const recruiterColor = `rgb(125,125,125, 0.6)`;

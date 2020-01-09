@@ -2,7 +2,7 @@ import React from 'react';
 
 import { formatCurrency } from 'components/random';
 
-function linkDisplay(props) {
+function LinkDisplayBar(props) {
   return (
     <ul className="progressbar">
       {props.payoffs &&
@@ -49,4 +49,4 @@ function linkDisplay(props) {
   );
 }
 
-export default linkDisplay;
+export default LinkDisplayBar;
