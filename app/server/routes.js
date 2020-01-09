@@ -34,7 +34,7 @@ router.get('/link/:linkId', function(req, res) {
     );
     const result = data.replace(
       /\$OG_IMAGE/g,
-      'https://' + req.hostname + '/logo.png'
+      'https://' + req.hostname + '/logo_share.png'
     );
     res.send(result);
   });
@@ -61,7 +61,7 @@ router.get('*', function(req, res) {
     );
     const result = data.replace(
       /\$OG_IMAGE/g,
-      'https://' + req.hostname + '/logo.png'
+      'https://' + req.hostname + '/logo_share.png'
     );
 
     console.log(result);

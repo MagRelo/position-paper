@@ -185,7 +185,10 @@ exports.getLink = async function(req, res) {
     });
 
     // user has applied
-    const userResponse = await ResponseModel.findOne({ user: req.user._id });
+    const userResponse = await ResponseModel.findOne({
+      user: req.user._id,
+      $or: [{ link: originLinkId }, { originLink: originLinkId }]
+    });
     const applyDate = userResponse ? userResponse.updatedAt : '';
     const applyStatus = userResponse ? userResponse.status : '';
 
