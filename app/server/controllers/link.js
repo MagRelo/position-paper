@@ -147,6 +147,7 @@ exports.getLink = async function(req, res) {
         isQueryOwner: false,
         isLinkOwner: false,
         hasApplied: false,
+        isPromoting: false,
         isFollowingUser: false,
         isFollowingLink: false
       };
@@ -158,16 +159,16 @@ exports.getLink = async function(req, res) {
     // User is logged in
     //
 
-    // display indicators
+    // user is following indicators
     const isFollowingLink =
       req.user.follows && req.user.follows.indexOf(link._id.toString()) > -1;
     const isFollowingUser =
       req.user.follows &&
       req.user.follows.indexOf(link.user._id.toString()) > -1;
-    const isLinkOwner = req.user._id.equals(link.user._id);
 
+    // user is owner indicators
+    const isLinkOwner = req.user._id.equals(link.user._id);
     let isQueryOwner = false;
-    // display indicators
     if (link.originLink) {
       // this is a secondary link
       isQueryOwner = req.user._id.equals(link.originLink.user._id);
@@ -176,6 +177,14 @@ exports.getLink = async function(req, res) {
       isQueryOwner = req.user._id.equals(link.user._id);
     }
 
+    // user is promoting
+    const originLinkId = link.originLink ? link.originLink._id : link._id;
+    const userPromoting = await ResponseModel.findOne({
+      user: req.user._id,
+      parents: originLinkId
+    });
+
+    // user has applied
     const userResponse = await ResponseModel.findOne({ user: req.user._id });
 
     // user
@@ -183,9 +192,9 @@ exports.getLink = async function(req, res) {
       _id: req.user._id,
       name: req.user.name,
       avatar: req.user.avatar,
-
       isQueryOwner: isQueryOwner,
       isLinkOwner: isLinkOwner,
+      isPromoting: userPromoting,
       hasApplied: !!userResponse,
       userResponse: userResponse,
       isFollowingUser: isFollowingUser,

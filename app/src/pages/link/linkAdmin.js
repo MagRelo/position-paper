@@ -70,7 +70,7 @@ function PromotePanel({ link, user, activeSession }) {
           ) : (
             <LinkButton
               parentLink={link.linkId}
-              disabled={user._id === 0 || user.isLinkOwner}
+              disabled={user._id === 0 || user.isLinkOwner || user.isPromoting}
               label={
                 'Promote @ ' +
                 formatCurrency(
