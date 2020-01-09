@@ -22,7 +22,7 @@ exports.getToken = expressJwt({
 });
 
 exports.authenticate = function(req, res, next) {
-  if (req.user && !req.user.id) {
+  if (!req.user || !req.user.id) {
     console.log('getUser - no user id');
     return res.status(401).send({ error: 'getUser - no user id' });
   }

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { navigate } from '@reach/router';
 
+import { Loading } from 'components/random';
+
 function LinkButton(props) {
   const [isLoading, setIsLoading] = useState(false);
   function handleClick() {
@@ -12,19 +14,19 @@ function LinkButton(props) {
   }
 
   return (
-    <button
-      className="btn btn-theme btn-sm"
-      onClick={handleClick}
-      disabled={props.disabled}
-    >
+    <React.Fragment>
       {isLoading ? (
-        <div className="spinner">
-          <div />
-        </div>
+        <Loading />
       ) : (
-        <span>{props.label}</span>
+        <button
+          className="btn btn-theme btn-sm"
+          onClick={handleClick}
+          disabled={props.disabled}
+        >
+          <span>{props.label}</span>
+        </button>
       )}
-    </button>
+    </React.Fragment>
   );
 }
 

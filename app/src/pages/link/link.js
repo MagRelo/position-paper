@@ -1,18 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Link } from '@reach/router';
-// import { Helmet } from 'react-helmet';
-
-import { AuthContext } from 'App';
 
 // network Data
+import { AuthContext } from 'App';
 import { JobDisplay } from 'networkData/jobDisplay.js';
 import LinkAdmin from './linkAdmin';
+import ApplyPanel from './applyPanel';
 
-import ResponseStatus from 'pages/response/responseStatus';
-
-import ApplyButton from './applyButton';
-
-import { Loading, formatCurrency } from 'components/random';
+import { Loading } from 'components/random';
 
 function LinkPage(props) {
   const { activeSession, clearSession } = useContext(AuthContext);
@@ -112,46 +106,48 @@ async function getLink(linkId, clearSession) {
   });
 }
 
-function ApplyPanel({ link, user, activeSession }) {
-  return (
-    <div id="apply">
-      {activeSession ? (
-        <React.Fragment>
-          {user.hasApplied ? (
-            <div>
-              <h3 className="section-header">Application Status</h3>
-              <p>You applied to this job on Jan, 12th 2019.</p>
-              <ResponseStatus status={'open'} />
-            </div>
-          ) : (
-            <div>
-              <h2>Apply for this Job</h2>
-              <p>
-                Apply for this position. We'll pay you{' '}
-                {formatCurrency(link.target_bonus)} if you're hired.
-              </p>
-              <ApplyButton
-                linkId={link.linkId}
-                userId={user._id}
-                label="Apply Now"
-                disabled={user.isLinkOwner}
-              />
-            </div>
-          )}
-        </React.Fragment>
-      ) : (
-        // login link
-        <Link
-          className="btn btn-sm btn-theme"
-          label={'Apply Now'}
-          to={'/login?link=' + link.linkId}
-        >
-          Apply Now
-        </Link>
-      )}
-    </div>
-  );
-}
+// function ApplyPanel({ link, user, activeSession }) {
+
+//   // const
+//   return (
+//     <div id="apply">
+//       {activeSession ? (
+//         <React.Fragment>
+//           {user.hasApplied ? (
+//             <div>
+//               <h3 className="section-header">Application Status</h3>
+//               <p>You applied to this job on Jan, 12th 2019.</p>
+//               <ResponseStatus status={'open'} />
+//             </div>
+//           ) : (
+//             <div>
+//               <h2>Apply for this Job</h2>
+//               <p>
+//                 Apply for this position. We'll pay you{' '}
+//                 {formatCurrency(link.target_bonus)} if you're hired.
+//               </p>
+//               <ApplyButton
+//                 linkId={link.linkId}
+//                 userId={user._id}
+//                 label="Apply Now"
+//                 disabled={user.isLinkOwner}
+//               />
+//             </div>
+//           )}
+//         </React.Fragment>
+//       ) : (
+//         // login link
+//         <Link
+//           className="btn btn-sm btn-theme"
+//           label={'Apply Now'}
+//           to={'/login?link=' + link.linkId}
+//         >
+//           Apply Now
+//         </Link>
+//       )}
+//     </div>
+//   );
+// }
 
 // <MetaData link={link} user={user} queryData={queryData} />
 // function MetaData({ queryData, link }) {

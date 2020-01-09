@@ -68,7 +68,11 @@ exports.createResponse = async function(req, res) {
     // add getStream activity "addResponse"
     await getStream.addResponse(req.user, link, newResponse);
 
-    res.status(200).send(newResponse);
+    res.status(200).send({
+      hasApplied: true,
+      applyStatus: newResponse.status,
+      applyDate: newResponse.updatedAt
+    });
   } catch (error) {
     console.log('API Error:', error);
     res.status(500).send(error);

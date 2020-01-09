@@ -179,13 +179,15 @@ exports.getLink = async function(req, res) {
 
     // user is promoting
     const originLinkId = link.originLink ? link.originLink._id : link._id;
-    const userPromoting = await ResponseModel.findOne({
+    const userPromoting = await LinkModel.findOne({
       user: req.user._id,
       parents: originLinkId
     });
 
     // user has applied
     const userResponse = await ResponseModel.findOne({ user: req.user._id });
+    const applyDate = userResponse ? userResponse.updatedAt : '';
+    const applyStatus = userResponse ? userResponse.status : '';
 
     // user
     responseObj.user = {
@@ -194,9 +196,10 @@ exports.getLink = async function(req, res) {
       avatar: req.user.avatar,
       isQueryOwner: isQueryOwner,
       isLinkOwner: isLinkOwner,
-      isPromoting: userPromoting,
+      isPromoting: !!userPromoting,
       hasApplied: !!userResponse,
-      userResponse: userResponse,
+      applyDate: applyDate,
+      applyStatus: applyStatus,
       isFollowingUser: isFollowingUser,
       isFollowingLink: isFollowingLink
     };
