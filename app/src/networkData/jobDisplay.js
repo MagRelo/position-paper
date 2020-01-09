@@ -13,6 +13,10 @@ function jobDataItem(label, value) {
   );
 }
 
+function createMarkup(markup) {
+  return { __html: markup };
+}
+
 export function JobDisplay({ data }) {
   const salaryString = `${formatCurrency(
     data.salaryMin,
@@ -26,8 +30,11 @@ export function JobDisplay({ data }) {
         {jobDataItem('Employer', data.employer)}
         {jobDataItem('Location', data.location)}
         {jobDataItem('Salary', salaryString)}
-        {jobDataItem('', data.description)}
       </div>
+      <div
+        style={{ color: 'black', marginTop: '1em' }}
+        dangerouslySetInnerHTML={createMarkup(data.renderedHtml)}
+      />
     </div>
   );
 }

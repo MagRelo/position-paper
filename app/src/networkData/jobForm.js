@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { navigate } from '@reach/router';
 import InputRange from 'react-input-range';
+
+import { createEditorState, Editor } from 'medium-draft';
+import mediumDraftExporter from 'medium-draft/lib/exporter';
+import 'medium-draft/lib/index.css';
+import { convertToRaw } from 'draft-js';
+
 import { useDebounce, formatCurrency } from 'components/random';
 
 function roundToNearest(input, step) {
@@ -17,17 +23,22 @@ function JobForm(props) {
   const [jobTitle, setJobTitle] = useState('');
   const [employer, setEmployer] = useState('');
   const [location, setLocation] = useState('');
-  const [description, setDescription] = useState('');
+
+  // const [description, setDescription] = useState('');
+
   const [salaryRange, setSalaryRange] = useState({ min: 75000, max: 125000 });
   const debouncedRange = useDebounce(salaryRange, 333);
   const [totalBonus, setTotalBonus] = useState(0);
+
+  const [editorState, setEditorState] = useState(createEditorState());
+  const refsEditor = React.createRef();
 
   useEffect(() => {
     if (props.formData) {
       setJobTitle(props.formData.jobTitle);
       setEmployer(props.formData.employer);
       setLocation(props.formData.location);
-      setDescription(props.formData.description);
+      setEditorState(createEditorState(props.formData.rawState));
       setSalaryRange(props.formData.salaryRange);
     }
   }, [props.formData]);
@@ -46,17 +57,20 @@ function JobForm(props) {
     event.preventDefault();
 
     // get and format form data
+    var formObject = {
+      editorState: editorState,
+      rawState: convertToRaw(editorState.getCurrentContent()),
+      renderedHtml: mediumDraftExporter(editorState.getCurrentContent()),
+      salaryRange: salaryRange
+    };
+
     const formData = new FormData(event.target);
-    var formObject = {};
     formData.forEach((value, key) => {
       formObject[key] = value;
     });
 
-    // add salaryRange
-    formObject.salaryRange = salaryRange;
-
     // send to server
-    console.log(formObject);
+    // console.log(formObject);
     try {
       submitJob(isEditing, formObject, linkId).then(link => {
         // redirect
@@ -116,16 +130,12 @@ function JobForm(props) {
 
           <div className="form-group">
             <label htmlFor="location">Description</label>
-            <textarea
-              type="text"
-              name="description"
-              required={true}
-              className="form-control"
-              rows="4"
-              value={description}
-              onChange={e => {
-                setDescription(e.target.value);
-              }}
+            <Editor
+              ref={refsEditor}
+              editorState={editorState}
+              onChange={setEditorState}
+              sideButtons={[]}
+              placeholder="Add the job description here! (highlight text to format)"
             />
           </div>
         </fieldset>
