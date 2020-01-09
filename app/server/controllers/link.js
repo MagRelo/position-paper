@@ -266,7 +266,7 @@ exports.createChildLink = async function(req, res) {
 };
 
 // create link
-exports.getApplications = async function(req, res) {
+exports.getApplicationsByLink = async function(req, res) {
   // auth-only
   if (!req.user) {
     return res.status(401).send();
@@ -285,6 +285,25 @@ exports.getApplications = async function(req, res) {
       link: link,
       applications: responses
     });
+  } catch (error) {
+    console.log('API Error:', error);
+    res.status(500).send(error);
+  }
+};
+
+exports.getApplicationById = async function(req, res) {
+  // auth-only
+  if (!req.user) {
+    return res.status(401).send();
+  }
+
+  // get link _id
+  const application = await ResponseModel.findOne({
+    _id: req.params.responseId
+  }).populate('user link');
+
+  try {
+    res.status(200).send(application);
   } catch (error) {
     console.log('API Error:', error);
     res.status(500).send(error);

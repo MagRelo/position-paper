@@ -18,7 +18,7 @@ function User(props) {
   const [userData, setUserData] = useState(user);
   // const [links, setLinks] = useState([]);
   // const [jobs, setJobs] = useState([]);
-  // const [payments, setPayments] = useState([]);
+  const [payments, setPayments] = useState([]);
   // const [responses, setResponses] = useState([]);
   const [stream, setStream] = useState([]);
 
@@ -34,7 +34,7 @@ function User(props) {
         // setLinks(body.links.filter(link => link.generation !== 0));
         setStream(body.stream);
         // setResponses(body.responses);
-        // setPayments(body.payments);
+        setPayments(body.payments);
         setIsLoading(false);
       }
     });
@@ -95,7 +95,7 @@ function User(props) {
 
               <hr />
               <h2>Payments</h2>
-              <UserPaymentTable />
+              <UserPaymentTable payments={payments} />
             </div>
           )}
         </div>

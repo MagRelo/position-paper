@@ -232,7 +232,8 @@ exports.addCustomer = async function(req, res) {
       { _id: req.user._id },
       {
         stripeCustomer: stripeCustomer,
-        stripeCustomerLabel: label
+        stripeCustomerLabel: label,
+        stripeCustomerToken: stripeCustomer.sources.data[0].id
       }
     );
 

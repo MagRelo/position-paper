@@ -8,7 +8,7 @@ import { AuthContext } from 'App';
 // import { JobDisplay } from 'networkData/jobDisplay.js';
 // import LinkAdmin from './linkAdmin';
 
-// import ResponseStatus from 'pages/response/responseStatus';
+import PaymentForm from 'pages/link/applicationPaymentForm';
 // import ApplyButton from './applyButton';
 
 import { Loading } from 'components/random';
@@ -22,23 +22,25 @@ function jobDataItem(label, value) {
   );
 }
 
-function LinkPage(props) {
+function ApplicationPayment(props) {
   const { activeSession, clearSession } = useContext(AuthContext);
 
   const [isLoading, setIsLoading] = useState(true);
 
   const [link, setLink] = useState({});
-  const [applications, setApplications] = useState([]);
+  const [user, setUser] = useState({});
+  const [responseId, setResponseId] = useState('');
 
   useEffect(() => {
     setIsLoading(true);
     let isSubscribed = true;
 
-    getApplications(props.linkId, clearSession).then(body => {
+    getApplications(props.linkId, clearSession).then(response => {
       if (isSubscribed) {
         // display & admin
-        setLink(body.link);
-        setApplications(body.applications);
+        setLink(response.link);
+        setUser(response.user);
+        setResponseId(response._id);
 
         setIsLoading(false);
       }
@@ -48,7 +50,7 @@ function LinkPage(props) {
     return () => {
       isSubscribed = false;
     };
-  }, [props.linkId]);
+  }, [props.responseId]);
 
   return (
     <div className="page-container">
@@ -79,45 +81,20 @@ function LinkPage(props) {
                 </React.Fragment>
               </div>
 
-              <h2>Applications</h2>
-
-              <table className="table table-striped">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Profile</th>
-                    <th>Status</th>
-                    <th>Select</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {applications.map(application => {
-                    return (
-                      <tr key={application._id}>
-                        <td>
-                          {application.user.firstname +
-                            ' ' +
-                            application.user.lastname}
-                        </td>
-                        <td>
-                          <a
-                            href="http://linkedin.com"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            View
-                          </a>
-                        </td>
-                        <td>{application.status}</td>
-                        <td>
-                          <Link to={'/payment/' + application._id}>Pay</Link>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+              <div className="grid grid-2">
+                <div>
+                  <h3>Application</h3>
+                  <p>user: {user.firstname + ' ' + user.lastname}</p>
+                </div>
+                <div>
+                  <h3>Payment</h3>
+                  <PaymentForm
+                    total={10000}
+                    paymentSourceLabel={user.stripeCustomerLabel}
+                    responseId={responseId}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -126,10 +103,10 @@ function LinkPage(props) {
   );
 }
 
-export default LinkPage;
+export default ApplicationPayment;
 
-async function getApplications(linkId, clearSession) {
-  return await fetch('/api/applications/' + linkId).then(response => {
+async function getApplications(responseId, clearSession) {
+  return await fetch('/api/application/' + responseId).then(response => {
     if (response.status === 200) {
       return response.json();
     }

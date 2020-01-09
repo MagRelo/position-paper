@@ -20,6 +20,7 @@ const UserSchema = new mongoose.Schema(
     },
     stripeCustomer: { type: Object, select: false },
     stripeCustomerLabel: String,
+    stripeCustomerToken: String,
 
     stripeAccount: { type: Object, select: false },
     stripeAccountLabel: String,

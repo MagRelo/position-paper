@@ -82,14 +82,14 @@ exports.closeResponse = async function(req, res) {
   }
 
   // validate input
-  if (!req.params.responseId) {
+  if (!req.body.responseId) {
     return res.status(400).send({ error: 'must set responseId' });
   }
 
   try {
     // get response
     const response = await ResponseModel.findOne({
-      _id: req.params.responseId
+      _id: req.body.responseId
     })
       .populate({
         path: 'user'
@@ -111,15 +111,35 @@ exports.closeResponse = async function(req, res) {
         .send({ error: 'response not found: ' + req.params.responseId });
     }
 
+    // get origin link
+    const originLinkId = response.link.originLink
+      ? response.link.originLink
+      : response.link._id;
+    const originLink = await LinkModel.findOne({ _id: originLinkId }).populate(
+      'user'
+    );
+
     // auth - must be query owner
-    // if (!req.user._id.equals(response.query.user._id)) {
-    //   return res.status(401).send();
-    // }
+    if (!req.user._id.equals(originLink.user._id)) {
+      return res.status(400).send({ error: 'not query owner' });
+    }
+
+    // must have payment source
+    const user = await await UserModel.findOne({ _id: req.user }).select(
+      'stripeCustomer stripeCustomerToken stripeCustomerLabel'
+    );
+    if (!user.stripeCustomerToken) {
+      return res.status(400).send({ error: 'no payment source' });
+    }
 
     // make stripe payment from principal
+    const amount_in_cents = originLink.total_bonus * 100;
+
+    console.log(originLink.total_bonus, amount_in_cents);
     const paymentResponse = await payments.createStripeCharge(
-      req.body.tokenData,
-      req.body.amount_in_cents,
+      user.stripeCustomer.id,
+      user.stripeCustomerToken,
+      amount_in_cents,
       response._id.toString()
     );
 
@@ -128,21 +148,9 @@ exports.closeResponse = async function(req, res) {
       response.link._id,
       req.user._id,
       response._id,
-      req.body.amount_in_cents * -1,
+      amount_in_cents * -1,
       paymentResponse,
       'closed'
-    );
-
-    // update response with payment detail
-    await ResponseModel.updateOne(
-      { _id: response._id },
-      { payment: paymentResponse, status: 'closed' }
-    );
-
-    // update links to 'closed' status
-    await LinkModel.updateMany(
-      { _id: { $in: [...response.link.parents, response.link._id] } },
-      { status: 'closed' }
     );
 
     // create target payouts to users
@@ -169,7 +177,19 @@ exports.closeResponse = async function(req, res) {
       })
     );
 
-    res.status(200).send(paymentResponse);
+    // update response with payment detail
+    await ResponseModel.updateOne(
+      { _id: response._id },
+      { payment: paymentResponse, status: 'closed' }
+    );
+
+    // update links to 'closed' status
+    await LinkModel.updateMany(
+      { _id: { $in: [...response.link.parents, response.link._id] } },
+      { status: 'closed' }
+    );
+
+    res.status(200).send(true);
   } catch (error) {
     console.log('API Error:', error);
     res.status(500).send(error);

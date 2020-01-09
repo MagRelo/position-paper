@@ -82,17 +82,28 @@ exports.createStripeAccount = async function(userData, ipAddress) {
 };
 
 exports.createStripeCharge = async function(
-  tokenData,
+  stripeCustomerId,
+  stripeToken,
   amount_in_cents,
   responseId
 ) {
-  return stripe.charges.create({
+  const chargeObject = {
     amount: amount_in_cents,
     currency: 'usd',
+    customer: stripeCustomerId,
+    source: stripeToken,
     description: 'Test payment',
-    source: tokenData.token.id,
     metadata: {
       responseId: responseId
     }
-  });
+  };
+
+  if (process.env.STRIPE_TEST_MODE) {
+    delete chargeObject.customer;
+    chargeObject.source = 'tok_visa';
+  }
+
+  console.log('Payment:', chargeObject);
+
+  return stripe.charges.create(chargeObject);
 };

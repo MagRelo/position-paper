@@ -26,7 +26,8 @@ const {
   updateQuery,
   getLink,
   createChildLink,
-  getApplications
+  getApplicationsByLink,
+  getApplicationById
 } = require('./controllers/link');
 const {
   createResponse,
@@ -146,7 +147,9 @@ router.put(
 
 router.get('/link/:linkId', getToken, getUser, getLink);
 router.post('/link/add', getToken, authenticate, getUser, createChildLink);
-router.get('/applications/:linkId', getToken, getUser, getApplications);
+router.get('/applications/:linkId', getToken, getUser, getApplicationsByLink);
+router.get('/application/:responseId', getToken, getUser, getApplicationById);
+router.post('/application/payment', getToken, getUser, closeResponse);
 
 //
 // RESPONSE

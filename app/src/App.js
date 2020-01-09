@@ -61,6 +61,7 @@ import LinkPage from 'pages/link/link';
 import AddLink from 'networkData/jobForm';
 import EditLink from 'pages/link/editLink';
 import Applications from 'pages/link/applications';
+import ApplicationPayment from 'pages/link/applicationPayment';
 
 // Auth
 import Profile from 'pages/user/userProfile';
@@ -91,9 +92,11 @@ function App(props) {
           setLoadingSession(false);
         }
       });
+    } else {
+      // no cookie
+      setLoadingSession(false);
     }
     // no cookie
-    setLoadingSession(false);
   }, [activeSession]);
 
   function createSession(user, redirect) {
@@ -135,6 +138,7 @@ function App(props) {
 
                 <LinkPage path="/link/:linkId" />
                 <Applications path="/applications/:linkId" />
+                <ApplicationPayment path="/payment/:linkId" />
 
                 <Search path="/search" />
                 <Terms path="/terms" />
