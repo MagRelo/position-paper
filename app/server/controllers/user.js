@@ -27,7 +27,8 @@ exports.populateUser = async function(req, res) {
       hasAccount: !!req.user.stripeAccountLabel,
       stripeAccountLabel: req.user.stripeAccountLabel,
       hasPaymentSource: !!req.user.stripeCustomerLabel,
-      stripeCustomerLabel: req.user.stripeCustomerLabel
+      stripeCustomerLabel: req.user.stripeCustomerLabel,
+      stripeCustomerBrand: req.user.stripeCustomerBrand
     },
     follows: req.user.follows,
     links: [],
@@ -213,6 +214,39 @@ exports.addAccount = async function(req, res) {
 };
 
 // add payment source/customer to stripe
+exports.deleteAccountSource = async function(req, res) {
+  try {
+    const { stripeAccount } = await UserModel.findOne({
+      _id: req.user.id
+    }).select('stripeAccount');
+
+    // remove payment source
+    const { deleted } = await payments.deleteStripeAccountSource(
+      stripeAccount.id,
+      stripeAccount.external_accounts.data[0].id
+    );
+    if (!deleted) {
+      throw new Error('Delete Source Error');
+    }
+
+    // update user
+    await UserModel.updateOne(
+      { _id: req.user._id },
+      {
+        stripeAccount: null,
+        stripeAccountLabel: ''
+      }
+    );
+
+    // send user
+    return res.status(200).send({ connected: false, label: '', brand: '' });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send(error);
+  }
+};
+
+// add payment source/customer to stripe
 exports.addCustomer = async function(req, res) {
   const userData = req.user;
   userData.token = req.body;
@@ -226,19 +260,57 @@ exports.addCustomer = async function(req, res) {
       stripeCustomer.sources.data[0].brand +
       ' – ' +
       stripeCustomer.sources.data[0].last4;
-
+    const brand = stripeCustomer.sources.data[0].brand;
     // update user
     await UserModel.updateOne(
       { _id: req.user._id },
       {
         stripeCustomer: stripeCustomer,
         stripeCustomerLabel: label,
+        stripeCustomerBrand: brand,
         stripeCustomerToken: stripeCustomer.sources.data[0].id
       }
     );
 
     // send user
-    return res.status(200).send({ connected: true, label: label });
+    return res
+      .status(200)
+      .send({ connected: true, label: label, brand: brand });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send(error);
+  }
+};
+
+// add payment source/customer to stripe
+exports.deleteCustomerPaymentSource = async function(req, res) {
+  try {
+    const { stripeCustomer, stripeCustomerToken } = await UserModel.findOne({
+      _id: req.user.id
+    }).select('stripeCustomer stripeCustomerToken');
+
+    // remove payment source
+    const { deleted } = await payments.deleteCustomerPaymentSource(
+      stripeCustomer.id,
+      stripeCustomerToken
+    );
+    if (!deleted) {
+      throw new Error('Delete Card Error');
+    }
+
+    // update user
+    await UserModel.updateOne(
+      { _id: req.user._id },
+      {
+        stripeCustomer: null,
+        stripeCustomerLabel: '',
+        stripeCustomerBrand: '',
+        stripeCustomerToken: ''
+      }
+    );
+
+    // send user
+    return res.status(200).send({ connected: false, label: '', brand: '' });
   } catch (error) {
     console.log(error);
     return res.status(500).send(error);

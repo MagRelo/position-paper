@@ -19,7 +19,9 @@ const {
   sendTweet,
   sendEmail,
   addAccount,
-  addCustomer
+  deleteAccountSource,
+  addCustomer,
+  deleteCustomerPaymentSource
 } = require('./controllers/user');
 const {
   createQuery,
@@ -123,14 +125,23 @@ router.get('/auth/status', getToken, authenticate, getUser, userStatus);
 // USER
 //
 
-// get user
 router.get('/user', getToken, authenticate, getUser, populateUser);
 router.post('/user/follow', getToken, authenticate, getUser, updateFollow);
 router.get('/user/friends', getToken, authenticate, getUser, getUserFriends);
 router.post('/user/tweet', getToken, authenticate, getUser, sendTweet);
 router.post('/user/email', getToken, authenticate, getUser, sendEmail);
+
+// Stripe APis
 router.post('/user/account', getToken, authenticate, getUser, addAccount);
+router.delete(
+  '/user/account',
+  getToken,
+  authenticate,
+  getUser,
+  deleteAccountSource
+);
 router.post('/user/customer', getToken, authenticate, getUser, addCustomer);
+router.delete('/user/customer', getToken, getUser, deleteCustomerPaymentSource);
 
 //
 // LINK

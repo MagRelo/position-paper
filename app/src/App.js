@@ -44,12 +44,15 @@ import './css/responsive.css';
 import './css/talent-relay.css';
 
 // Header
-import Header from 'components/header';
-import Footer from 'components/footer';
+// import Header from 'components/header';
+import Header from 'components/tempHeader';
+// import Footer from 'components/footer';
+import Footer from 'components/tempFooter';
+
 import NotFound from 'pages/404';
 
 // Routes
-import LandingPage from 'networkData/landingPage';
+import LandingPage from 'pages/landingPage';
 import Terms from 'pages/legal';
 import About from 'pages/about';
 import Login from 'pages/login';

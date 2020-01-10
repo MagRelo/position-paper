@@ -11,6 +11,7 @@ const UserSchema = new mongoose.Schema(
     lastname: String,
     avatar: String,
     location: String,
+
     linkedinProvider: {
       type: {
         id: String,
@@ -18,17 +19,20 @@ const UserSchema = new mongoose.Schema(
       },
       select: false
     },
-    stripeCustomer: { type: Object, select: false },
-    stripeCustomerLabel: String,
-    stripeCustomerToken: String,
 
+    stripeCustomer: { type: Object, select: false },
+    stripeCustomerBrand: String,
+    stripeCustomerLabel: String,
+    stripeCustomerToken: { type: String, select: false },
+
+    balance: Number,
     stripeAccount: { type: Object, select: false },
     stripeAccountLabel: String,
-    metaData: Object,
 
-    follows: { type: Array, default: [] },
-    balance: Number,
-    payments: { type: mongoose.Schema.Types.ObjectId, ref: 'Payment' }
+    payments: { type: mongoose.Schema.Types.ObjectId, ref: 'Payment' },
+
+    metaData: Object,
+    follows: { type: Array, default: [] }
   },
   { timestamps: true }
 );

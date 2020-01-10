@@ -22,8 +22,8 @@ function jobDataItem(label, value) {
   );
 }
 
-function LinkPage(props) {
-  const { activeSession, clearSession } = useContext(AuthContext);
+function Applications(props) {
+  const { clearSession } = useContext(AuthContext);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -126,7 +126,7 @@ function LinkPage(props) {
   );
 }
 
-export default LinkPage;
+export default Applications;
 
 async function getApplications(linkId, clearSession) {
   return await fetch('/api/applications/' + linkId).then(response => {

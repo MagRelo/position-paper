@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Loading } from 'components/random';
 
+import Bank from 'components/social/bank';
+
 //Plaid api info
 const clientName = 'Incentive Engine';
 const env = 'sandbox';
@@ -66,6 +68,28 @@ function UserBankAccount(props) {
     }
   }
 
+  async function onRemove(event) {
+    // submit
+    try {
+      setLoading(true);
+
+      // send
+      const { connected, label } = await removeBankAccount();
+
+      setConnected(connected);
+      setBankLabel(label);
+
+      // update UI
+      setSuccess(true);
+      setComplete(true);
+      setLoading(false);
+    } catch (error) {
+      setSuccess(false);
+      setComplete(true);
+      setLoading(false);
+    }
+  }
+
   async function onSubmit(event) {
     event.preventDefault();
 
@@ -120,11 +144,20 @@ function UserBankAccount(props) {
   return (
     <div className="form-wrapper">
       {connected ? (
-        <div>
-          <span>Connected: {bankLabel}</span>
+        <div style={{ display: 'grid', gridTemplateColumns: 'auto auto 1fr' }}>
+          <Bank />
+          <span style={{ padding: '10px 10px 10px 30px', color: 'black' }}>
+            {bankLabel}
+          </span>
+          <div style={{ textAlign: 'right' }}>
+            <button className="btn btn-sm" onClick={onRemove}>
+              Remove
+            </button>
+          </div>
         </div>
       ) : (
         <form name="userBankAccount" onSubmit={onSubmit}>
+          <p>Link a bank account in order to receive deposits.</p>
           <fieldset>
             <div className="grid grid-2">
               <div className="form-group">
@@ -238,6 +271,18 @@ async function addBankAccount(formObject) {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(formObject)
+  }).then(response => {
+    if (response.status === 200) {
+      return response.json();
+    }
+
+    throw Error(response.status);
+  });
+}
+
+async function removeBankAccount() {
+  return fetch('/api/user/account', {
+    method: 'DELETE'
   }).then(response => {
     if (response.status === 200) {
       return response.json();

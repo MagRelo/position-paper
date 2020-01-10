@@ -26,6 +26,32 @@ const stripe = require('stripe')(stripeApiKey);
 //
 // Methods
 //
+exports.createStripeCharge = async function(
+  stripeCustomerId,
+  stripeToken,
+  amount_in_cents,
+  responseId
+) {
+  const chargeObject = {
+    amount: amount_in_cents,
+    currency: 'usd',
+    customer: stripeCustomerId,
+    source: stripeToken,
+    description: 'Test payment',
+    metadata: {
+      responseId: responseId
+    }
+  };
+
+  if (process.env.STRIPE_TEST_MODE) {
+    delete chargeObject.customer;
+    chargeObject.source = 'tok_visa';
+  }
+
+  console.log('Payment:', chargeObject);
+
+  return stripe.charges.create(chargeObject);
+};
 
 // https://stripe.com/docs/api/customers/create
 exports.createStripeCustomer = async function(userData) {
@@ -35,9 +61,20 @@ exports.createStripeCustomer = async function(userData) {
     description: '(' + (process.env.STRIPE_TEST_MODE ? 'TEST' : 'LIVE') + ')',
     source: userData.token.id
   };
-  // create stripe customer and attach
-  // console.log('createStripeCustomer', userObject);
-  return await stripe.customers.create(userObject);
+
+  // add or update
+  if (userData.stripeCustomerLabel) {
+    console.log('update');
+    // update
+    // return await stripe.customers.create(userObject);
+  } else {
+    // add
+    return await stripe.customers.create(userObject);
+  }
+};
+
+exports.deleteCustomerPaymentSource = async function(customerId, cardId) {
+  return await stripe.customers.deleteSource(customerId, cardId);
 };
 
 exports.createStripeAccount = async function(userData, ipAddress) {
@@ -81,29 +118,7 @@ exports.createStripeAccount = async function(userData, ipAddress) {
   return account;
 };
 
-exports.createStripeCharge = async function(
-  stripeCustomerId,
-  stripeToken,
-  amount_in_cents,
-  responseId
-) {
-  const chargeObject = {
-    amount: amount_in_cents,
-    currency: 'usd',
-    customer: stripeCustomerId,
-    source: stripeToken,
-    description: 'Test payment',
-    metadata: {
-      responseId: responseId
-    }
-  };
-
-  if (process.env.STRIPE_TEST_MODE) {
-    delete chargeObject.customer;
-    chargeObject.source = 'tok_visa';
-  }
-
-  console.log('Payment:', chargeObject);
-
-  return stripe.charges.create(chargeObject);
+// https://stripe.com/docs/api/external_account_bank_accounts/delete
+exports.deleteStripeAccountSource = async function(accountId, sourceId) {
+  return await stripe.accounts.deleteExternalAccount(accountId, sourceId);
 };

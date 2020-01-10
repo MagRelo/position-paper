@@ -23,7 +23,7 @@ function jobDataItem(label, value) {
 }
 
 function ApplicationPayment(props) {
-  const { activeSession, clearSession } = useContext(AuthContext);
+  const { clearSession } = useContext(AuthContext);
 
   const [isLoading, setIsLoading] = useState(true);
 

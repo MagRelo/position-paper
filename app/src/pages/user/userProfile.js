@@ -79,18 +79,19 @@ function User(props) {
               </div>
 
               <h2>Bank Account</h2>
-              <p>Link a bank account in order to receive deposits.</p>
               <UserBankAccount
                 hasAccount={userData.hasAccount}
                 bankLabel={userData.stripeAccountLabel}
+                bankBrand={userData.stripeAccountBrand}
               />
 
               <hr />
               <h2>Payment Source</h2>
-              <p>Add a payment source in order to post jobs.</p>
+
               <UserPaymentSource
                 hasPaymentSource={userData.hasPaymentSource}
                 sourceLabel={userData.stripeCustomerLabel}
+                sourceBrand={userData.stripeCustomerBrand}
               />
 
               <hr />
