@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Loading } from 'components/random';
 
-// import Bank from 'components/social/bank';
-
-function UserBankAccount(props) {
-  const [source, setSource] = useState(props.source || 'default');
+function EmailForm(props) {
+  const [source] = useState(props.source || 'default');
+  const [caption] = useState(props.caption || 'Sign up Now!');
+  const [buttonCaption] = useState(props.buttonCaption || 'Submit!');
 
   // status
   const [loading, setLoading] = useState(false);
@@ -29,10 +29,10 @@ function UserBankAccount(props) {
       formObj.source = source;
 
       // send
-      await addBankAccount(formObj);
+      const { success } = await signUpWithEmail(formObj);
 
       // update UI
-      setSuccess(true);
+      setSuccess(success);
       setLoading(false);
       setComplete(true);
     } catch (error) {
@@ -43,12 +43,51 @@ function UserBankAccount(props) {
     }
   }
 
+  function ErrorPanel({ message, caption }) {
+    const error = message || 'There has been an error! Please try again soon.';
+
+    return (
+      <div
+        style={{
+          borderColor: 'gray',
+          display: 'grid',
+          gridTemplateColumns: '1fr auto'
+        }}
+      >
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center'
+          }}
+        >
+          {error}
+        </div>
+
+        <button
+          className="btn btn-sm btn-theme"
+          onClick={() => {
+            setComplete(false);
+          }}
+        >
+          Close
+        </button>
+      </div>
+    );
+  }
+
+  function SuccessPanel({ message }) {
+    const successMessage = message || "Success, you're in!";
+    return <div style={{ textAlign: 'center' }}>{successMessage}</div>;
+  }
+
   return (
-    <div className="form-wrapper" style={{ textAlign: 'center' }}>
+    <div className="form-wrapper">
       <form name="emailForm" onSubmit={onSubmit}>
+        <p style={{ textAlign: 'center' }}>{caption}</p>
         {/* <fieldset className="form-group">
-          <div className="grid grid-2">
-            <div>
+          <div className="grid grid-2" >
+            <div style={{ textAlign: 'center' }}>
               <div className="form-check">
                 <label>
                   <input
@@ -90,15 +129,23 @@ function UserBankAccount(props) {
                 name="email"
                 placeholder="Your Email Address"
                 required
+                disabled={loading || complete}
               />
             </div>
 
-            <div>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center'
+              }}
+            >
               <button
                 type="submit"
                 className="pure-button pure-button-primary btn btn-theme btn-sm"
+                disabled={loading || complete}
               >
-                Get Started
+                {buttonCaption}
               </button>
             </div>
           </div>
@@ -111,18 +158,16 @@ function UserBankAccount(props) {
         ) : (
           <div>
             {complete ? (
-              <div>
-                {isSuccess ? (
-                  <p>Success!</p>
-                ) : (
-                  <p
-                    onClick={() => {
-                      setComplete(false);
-                    }}
-                  >
-                    Error
-                  </p>
-                )}
+              <div
+                style={{
+                  marginTop: '20px',
+                  padding: '1em',
+                  border: 'solid 1px',
+                  borderColor: isSuccess ? '#03d665' : 'gray',
+                  borderRadius: '7px'
+                }}
+              >
+                {isSuccess ? <SuccessPanel /> : <ErrorPanel />}
               </div>
             ) : null}
           </div>
@@ -132,10 +177,10 @@ function UserBankAccount(props) {
   );
 }
 
-export default UserBankAccount;
+export default EmailForm;
 
-async function addBankAccount(formObject) {
-  return fetch('/api/user/account', {
+async function signUpWithEmail(formObject) {
+  return fetch('/api/signup', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

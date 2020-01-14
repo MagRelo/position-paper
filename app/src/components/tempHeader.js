@@ -37,34 +37,32 @@ function Header(props) {
                   <span></span>
                 </button>
 
+                */}
+
                 <div
                   className="collapse navbar-collapse"
                   id="navbarNavDropdown"
                 >
-                  {activeSession ? null : (
-                    <ul className="navbar-nav ml-auto mr-auto">
-                      <React.Fragment>
-                        <li className="nav-item">
-                          <a className="nav-link" href="/#how">
-                            How It Works
-                          </a>
-                        </li>
-                        <li className="nav-item">
-                          <a className="nav-link" href="/#getstarted">
-                            Get Started
-                          </a>
-                        </li>
-                        <li className="nav-item">
-                          <NavLink className="nav-link" to="/employers">
-                            Employers
-                          </NavLink>
-                        </li>
-                      </React.Fragment>
-                    </ul>
-                  )}
+                  <ul className="navbar-nav ml-auto mr-auto">
+                    <li className="nav-item">
+                      <a className="nav-link" href="/#employers">
+                        For Employers
+                      </a>
+                    </li>
+                    <li className="nav-item">
+                      <a className="nav-link" href="/#how">
+                        How It Works
+                      </a>
+                    </li>
+
+                    <li className="nav-item">
+                      <a className="nav-link" href="/#getstarted">
+                        Get Started
+                      </a>
+                    </li>
+                  </ul>
                 </div>
 
-              
                 {/* Login/Logout
 
                 <div className="right-nav align-items-center d-flex justify-content-end list-inline">

@@ -158,15 +158,11 @@ const ShareSchema = new mongoose.Schema(
 );
 exports.ShareModel = mongoose.model('Share', ShareSchema);
 
-const AlphaSchema = new mongoose.Schema(
+const Signup = new mongoose.Schema(
   {
-    company: String,
-    website: String,
-    employeeCount: String,
-    openPositions: String,
-    contactName: String,
-    contactEmail: String
+    source: String,
+    email: String
   },
   { timestamps: true }
 );
-exports.AlphaModel = mongoose.model('Alpha', AlphaSchema);
+exports.SignupModel = mongoose.model('Signup', Signup);

@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 
 // Controllers
-
 const {
   linkedinAuth,
   sendToken,
@@ -40,11 +39,13 @@ const {
 const { getAllData } = require('./controllers/admin');
 
 const LinkModel = require('./models').LinkModel;
-const AlphaModel = require('./models').AlphaModel;
+const SignupModel = require('./models').SignupModel;
 
 //
 // MISC
 //
+
+const SendGrid = require('./integrations/sendgrid');
 
 // search
 router.get('/search', getToken, getUser, async function(req, res) {
@@ -108,10 +109,25 @@ router.get('/search', getToken, getUser, async function(req, res) {
   }
 });
 
-router.post('/alpha', async function(req, res) {
-  const newUser = new AlphaModel(req.body);
-  await newUser.save();
-  res.status(200).send();
+router.post('/signup', async function(req, res) {
+  try {
+    // const Signup = new SignupModel(req.body);
+    // const dbResponse = await Signup.save();
+
+    const response = await SignupModel.update(
+      { email: req.body.email },
+      req.body,
+      { upsert: true }
+    );
+    console.log(response);
+
+    // send to sendgrid
+    // const sendGridResponse = await SendGrid.addContact(req.body);
+
+    res.status(200).send({ success: true });
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
 });
 
 router.get('/admin', getToken, authenticate, getUser, getAllData);

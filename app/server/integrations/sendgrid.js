@@ -1,3 +1,5 @@
+const fetch = require('node-fetch');
+
 const formatCurrency = require('format-currency');
 let opts = { format: '%s%v', symbol: '$' };
 
@@ -42,4 +44,28 @@ exports.sendNewLink = async function(fromUser, messageData, link) {
       statusMessage: response.statusMessage
     };
   });
+};
+
+exports.addContact = async function(emailAddress, data) {
+  // setup http request
+  const url = 'https://api.sendgrid.com/v3/contactdb/recipients';
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer ' + process.env.SENDGRID_API_KEY
+  };
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: headers,
+    body: {
+      email: emailAddress,
+      data: data
+    }
+  });
+
+  if (!response.ok) {
+    throw new Error(response.statusText);
+  }
+
+  return response.ok;
 };

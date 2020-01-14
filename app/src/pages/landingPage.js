@@ -7,7 +7,7 @@ import React from 'react';
 import FinishLine from 'images/undraw_finish_line.svg';
 
 // How it works
-import OnlineAd from 'images/undraw_get_job.svg';
+import OnlineAd from 'images/undraw_online_ad_purple.svg';
 import TeamChat from 'images/undraw_team_chat.svg';
 import Destinations from 'images/undraw_destinations.svg';
 // import Organizer from 'images/undraw_online_organizer.svg';
@@ -24,7 +24,7 @@ function LandingPage() {
   return (
     <React.Fragment>
       {/* HERO */}
-      <section id="home" className="hero-container">
+      <div id="home" className="hero-container">
         {/* <div id="particles-js"></div> */}
         <div className="center-container">
           <div className="container">
@@ -34,6 +34,7 @@ function LandingPage() {
                   <img src={FinishLine} alt="" className="landing-image" />
                 </div>
               </div>
+
               <div
                 className="col-lg-6 col-md-12 md-mt-5 wow fadeInRight"
                 data-wow-duration="2.5s"
@@ -44,21 +45,19 @@ function LandingPage() {
                 </h1>
 
                 <p className="lead mb-4">
-                  Talent Relay <b>super-charges your talent search</b> by [how].
-                  []... provide employers with a steady stream of{' '}
+                  Talent Relay <b>super-charges your talent search</b> by using
+                  the wisdom of the crowd to deliver{' '}
                   <b>high-quality, pre-screened candidates</b>.
                 </p>
-
-                <EmailForm />
               </div>
             </div>
           </div>
         </div>
-      </section>
+      </div>
 
       <div className="page-content">
         {/* QUOTE
-        <section id="customers">
+        <div id="customers">
           <div className="container">
             <div className="row">
               <div className="col-lg-12 col-md-12">
@@ -99,33 +98,38 @@ function LandingPage() {
               </div>
             </div>
           </div>
-        </section>
-         */}
+        </div>
+        */}
 
-        <h2 id="employers" style={{ textAlign: 'center' }}>
-          Employers
-        </h2>
-
-        {/* NOTHING UPFRONT */}
-        <section>
+        <section id="employers">
           <div className="container">
-            <div className="grid grid-2 align-items-center">
+            <div style={{ textAlign: 'center' }}>
+              <h2>For Employers</h2>
+              <p>Get Connected to the Best Candidates</p>
+            </div>
+
+            {/* NOTHING UPFRONT */}
+
+            <div className="grid grid-2 landing-grid align-items-center">
               <div className="swap-order">
                 <div className="landing-image-container">
                   <img
                     src={Runner}
                     alt=""
                     className="landing-image"
-                    style={{ transform: 'RotateY(180deg)', maxWidth: '360px' }}
+                    style={{
+                      transform: 'RotateY(180deg)',
+                      maxWidth: '360px'
+                    }}
                   />
                 </div>
               </div>
 
               <div>
-                <div className="section-title">
-                  <h2 className="title">
+                <div className="div-title">
+                  <h3>
                     Pay <span>Nothing</span> up Front
-                  </h2>
+                  </h3>
                 </div>
 
                 <div className="mb-4">
@@ -143,13 +147,9 @@ function LandingPage() {
                 </div>
               </div>
             </div>
-          </div>
-        </section>
 
-        {/* PRE-SCREENING */}
-        <section>
-          <div className="container">
-            <div className="grid grid-2 align-items-center">
+            {/* PRE-SCREENING */}
+            <div className="grid grid-2 landing-grid align-items-center">
               <div>
                 <div className="landing-image-container">
                   <img src={TeamChat} alt="" className="landing-image" />
@@ -157,146 +157,152 @@ function LandingPage() {
               </div>
 
               <div>
-                <div className="section-title">
-                  <h2 className="title">
-                    We <span>Pre-Screen</span> All Applications
-                  </h2>
-                  {/* <div className="title-bdr">
+                <div className="div-title">
+                  <h3>Only the Best Candidates</h3>
+                </div>
+                <p className="mb-0">
+                  We use our innovative technology to find the candidates talent
+                  that other search services can’t. We send you only the best,
+                  most-qualified candidates.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="landing-grid">
+            <EmailForm
+              source="employer"
+              caption={`We're launching soon – sign up now to save your spot in line!`}
+              buttonCaption={'Learn More'}
+            />
+          </div>
+        </section>
+
+        <section id="how">
+          <div className="container" style={{ textAlign: 'center' }}>
+            <h2>How It Works</h2>
+            <p>Good People know Good People</p>
+          </div>
+
+          {/* REFER A CANDIDATE */}
+          <div>
+            <div className="container">
+              <div className="grid grid-2 landing-grid align-items-center">
+                <div className="swap-order">
+                  <div className="landing-image-container">
+                    <img src={Friends} alt="" className="landing-image" />
+                  </div>
+                </div>
+
+                <div>
+                  <div className="div-title">
+                    <h3>
+                      Refer A Candidate → <span>Get Paid</span>
+                    </h3>
+                  </div>
+                  <div className="mb-4">
+                    <ul className="list-unstyled list-icon">
+                      <li className="mb-3">
+                        <i className="fas fa-check-circle"></i> Every job on
+                        Talent Relay includes a <b>referral bonus</b>
+                      </li>
+
+                      <li className="mb-3">
+                        <i className="fas fa-check-circle"></i>Great source of
+                        revenue for meetups, blogs, newsletters...
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* FIND RECRUITERS */}
+          <div>
+            <div className="container">
+              <div className="grid grid-2 landing-grid align-items-center">
+                <div>
+                  <div className="landing-image-container">
+                    <img src={Destinations} alt="" className="landing-image" />
+                  </div>
+                </div>
+
+                <div>
+                  <div className="div-title">
+                    <h3>
+                      Promote A Job → <span>Get Paid</span>
+                    </h3>
+                    {/* <div className="title-bdr">
                     <div className="left-bdr"></div>
                     <div className="right-bdr"></div>
                   </div> */}
-                  <p className="mb-0">
-                    We use our innovative technology to find the candidates
-                    talent that other search services can’t. We send you only
-                    the best, most-qualified candidates.
+                  </div>
+                  <p>
+                    We also keep track of the <b>chain of referrals </b>
+                    so you can earn money by finding candidates OR referrers.
+                    Share your links with friends, on social networks, on job
+                    boards - anywhere! We make sure everyone gets a fair cut
+                    when the candidate is hired.
                   </p>
                 </div>
-                <div className="row mb-4"></div>
               </div>
             </div>
           </div>
-        </section>
 
-        <div style={{ textAlign: 'center' }}>
-          <h2 id="how">How It Works</h2>
-          <p>We redirect recruiting fees to the people that matter:</p>
-        </div>
-
-        {/* GET A JOB */}
-        <section>
-          <div className="container">
-            <div className="grid grid-2 align-items-center">
-              <div className="swap-order">
-                <div className="landing-image-container">
-                  <img src={OnlineAd} alt="" className="landing-image" />
-                </div>
-              </div>
-
-              <div>
-                <div className="section-title">
-                  <h2 className="title">
-                    Get Hired → <span>Get Paid</span>
-                  </h2>
+          {/* GET A JOB */}
+          <div>
+            <div className="container">
+              <div className="grid grid-2 landing-grid align-items-center">
+                <div className="swap-order">
+                  <div className="landing-image-container">
+                    <img src={OnlineAd} alt="" className="landing-image" />
+                  </div>
                 </div>
 
-                <div className="mb-4">
-                  <ul className="list-unstyled list-icon">
-                    <li className="mb-3">
-                      <i className="fas fa-check-circle"></i> Every job on
-                      Talent Relay includes a <b>cash hiring bonus</b>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+                <div>
+                  <div className="div-title">
+                    <h3>
+                      Get Hired → <span>Get Paid</span>
+                    </h3>
+                  </div>
 
-        {/* REFER A CANDIDATE */}
-        <section>
-          <div className="container">
-            <div className="grid grid-2 align-items-center">
-              <div>
-                <div className="landing-image-container">
-                  <img src={Friends} alt="" className="landing-image" />
-                </div>
-              </div>
-
-              <div>
-                <div className="section-title">
-                  <h2 className="title">
-                    Refer A Candidate → <span>Get Paid</span>
-                  </h2>
-                </div>
-                <div className="mb-4">
-                  <ul className="list-unstyled list-icon">
-                    <li className="mb-3">
-                      <i className="fas fa-check-circle"></i> Every job on
-                      Talent Relay includes a <b>cash referral bonus</b>
-                    </li>
-
-                    <li className="mb-3">
-                      <i className="fas fa-check-circle"></i> We keep track of
-                      the deal and deposit cash in your account when your
-                      candiate is hired.
-                    </li>
-                  </ul>
+                  <div className="mb-4">
+                    <ul className="list-unstyled list-icon">
+                      <li className="mb-3">
+                        <i className="fas fa-check-circle"></i> Every job on
+                        Talent Relay includes a <b>hiring bonus</b>
+                      </li>
+                      <li>
+                        <i className="fas fa-check-circle"></i> Apply to jobs
+                        with one-click – we'll make sure your application gets
+                        in the right hands
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </section>
 
-        {/* FIND RECRUITERS */}
-        <section>
-          <div className="container">
-            <div className="grid grid-2 align-items-center">
-              <div className="swap-order">
-                <div className="landing-image-container">
-                  <img src={Destinations} alt="" className="landing-image" />
-                </div>
-              </div>
-
-              <div>
-                <div className="section-title">
-                  <h2 className="title">
-                    Promote A Job → <span>Get Paid</span>
-                  </h2>
-                  {/* <div className="title-bdr">
-                    <div className="left-bdr"></div>
-                    <div className="right-bdr"></div>
-                  </div> */}
-                </div>
-                <p>
-                  We also keep track of the <b>chain of referrals </b>
-                  so you can earn money by finding candidates OR referrers.
-                  Share your links with friends, on social networks, on job
-                  boards - anywhere! We make sure everyone gets a fair cut when
-                  the candidate is hired.
-                </p>
-
-                <div className="mb-4">
-                  <ul className="list-unstyled list-icon">
-                    <li className="mb-3">
-                      <i className="fas fa-check-circle"></i>Great source of
-                      revenue for meetups, blogs, newsletters...
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+          <div className="landing-grid" id="getstarted">
+            <EmailForm
+              source="connector"
+              caption={`We're launching soon – sign up now to save your spot in line!`}
+              buttonCaption={'Learn More'}
+            />
           </div>
         </section>
 
         {/* Onboard Employers 
-        <section>
+        <div>
           <div className="container">
             <div className="row align-items-center">
               <div className="col-lg-6 col-md-12">
-                <div className="section-title">
-                  <h2 className="title">
+                <div className="div-title">
+                  <h3 >
                     Onboard Employers → <span>Get Paid</span>
-                  </h2>
+                  </h3>
                   <p className="mb-0">
                     Lorem ipsum dolor sit amet consectetur, adipisicing elit.
                     Fugiat nesciunt culpa architecto iure, eligendi blanditiis
@@ -327,35 +333,8 @@ function LandingPage() {
               </div>
             </div>
           </div>
-        </section>
+        </div>
       */}
-
-        {/* CTA - Employers... */}
-        <section id="getstarted">
-          <div className="container">
-            <div className="row text-center">
-              <div className="col-lg-8 col-md-12 ml-auto mr-auto">
-                <div className="section-title">
-                  <h2 className="title">
-                    Try <span>Talent Relay</span> today
-                  </h2>
-                </div>
-                {/* 
-                {activeSession ? (
-                  <a className="btn btn-theme" href="/dashboard">
-                    <span>Dashboard</span>
-                  </a>
-                ) : (
-                  <a className="btn btn-theme" href="/login">
-                    <span>Login</span>
-                  </a>
-                )} */}
-
-                <EmailForm />
-              </div>
-            </div>
-          </div>
-        </section>
       </div>
     </React.Fragment>
   );

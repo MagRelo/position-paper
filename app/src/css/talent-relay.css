@@ -209,8 +209,8 @@ h3 {
     max-width: 48em;
     margin: 0 auto;
 
-    border: solid #dddddd 1px;
-    border-radius: 1em;
+    box-shadow: 0 8px 40px -5px rgba(9, 31, 67, .1);
+    border-radius: 7px;
     padding: 2em;
 }
 
@@ -402,7 +402,7 @@ h3 {
     grid-gap: 2em 0;
 }
 
-@media screen and (min-width: 992px) {
+@media screen and (min-width: 700px) {
 
     /* swap grid order to alternate images */
     .swap-order {
@@ -467,6 +467,10 @@ h3 {
 
 /* Landing Imaegs */
 
+.landing-grid {
+    padding: 40px 0;
+}
+
 .landing-image-container {
     display: flex;
     flex-direction: column;
@@ -476,6 +480,10 @@ h3 {
 
 .landing-image {
     width: 250px;
+}
+
+.list-icon li i {
+    top: 1px;
 }
 
 @media screen and (min-width: 992px) {
@@ -525,6 +533,19 @@ h3 {
 }
 
 
+
+.form-control::-moz-placeholder {
+    color: #7f7f7f;
+}
+
+.form-control:-ms-input-placeholder {
+    color: #7f7f7f;
+}
+
+.form-control::-webkit-input-placeholder {
+    color: #7f7f7f;
+}
+
 .form-radio {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -561,4 +582,22 @@ h3 {
 .form-radio:checked {
     color: #03d665;
     border: solid 1px #03d665;
+}
+
+/* remove padding used for mobile menu */
+@media (max-width: 576px) {
+    .navbar {
+        padding-top: 0;
+    }
+}
+
+
+section {
+    padding: 0 0 80px
+}
+
+@media screen and (min-width: 700px) {
+    section {
+        padding: 80px 0
+    }
 }
