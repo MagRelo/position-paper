@@ -112,9 +112,12 @@ const ResponseSchema = new mongoose.Schema(
     payment: Object,
     status: {
       type: String,
-      enum: ['open', 'pending', 'closed'],
-      default: 'open'
-    }
+      enum: ['Applied', 'Submitted', 'Closed'],
+      default: 'Applied'
+    },
+    applyDate: Date,
+    submitDate: Date,
+    closeDate: Date
   },
   { timestamps: true }
 );

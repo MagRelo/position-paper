@@ -47,7 +47,8 @@ exports.createResponse = async function(req, res) {
       network_bonus: link.network_bonus,
       networkPayouts: createPayoutArray(link, link.parents),
       user: req.user._id,
-      message: req.body.message
+      message: req.body.message,
+      applyDate: new Date()
     });
     await newResponse.save();
 
@@ -68,10 +69,28 @@ exports.createResponse = async function(req, res) {
     // add getStream activity "addResponse"
     await getStream.addResponse(req.user, link, newResponse);
 
+    const applySteps = [
+      {
+        status: 'Applied',
+        label: 'Application Received',
+        date: newResponse.applyDate
+      },
+      {
+        status: 'Submitted',
+        label: 'Sent To Employer',
+        date: newResponse.submitDate
+      },
+      {
+        status: 'Closed',
+        label: 'Application Closed',
+        date: newResponse.closeDate
+      }
+    ];
+
     res.status(200).send({
       hasApplied: true,
       applyStatus: newResponse.status,
-      applyDate: newResponse.updatedAt
+      applySteps: applySteps
     });
   } catch (error) {
     console.log('API Error:', error);

@@ -1,19 +1,13 @@
 import React from 'react';
+import { formatDate } from 'components/random';
 
-// import { formatCurrency } from 'components/random';
-
-const steps = [
-  { status: 'open', label: 'Response Sent', complete: true },
-  { status: 'closed', label: 'Employer Confirm & Pay', complete: true },
-  { status: 'closed', label: 'Network Paid', complete: true }
-];
-
-function stageDisplay(index, responseStatus) {
+function stageDisplay(index, responseStatus, steps) {
   // is current status later than this step?
   return index <= steps.map(step => step.status).indexOf(responseStatus);
 }
 
-function ResponseStatus(props) {
+function ResponseStatus({ status, steps }) {
+  console.log(status, steps);
   return (
     <ul className="progressbar">
       {steps.map((item, index) => {
@@ -25,7 +19,7 @@ function ResponseStatus(props) {
         // const isCurrentLink = index === props.generation;
         // const isNextLink = index === props.generation + 1;
 
-        const stageComplete = stageDisplay(index, props.status);
+        const stageComplete = stageDisplay(index, status, steps);
 
         // styles
         const circleStyle = {
@@ -34,7 +28,7 @@ function ResponseStatus(props) {
         };
         const lineStyle = {
           // background: isNextLink ? 'inherit' : null,
-          borderTop: stageComplete ? '2px solid #bdbdbd' : '2px dashed #bdbdbd'
+          borderTop: stageComplete ? '2px solid #55b776' : '2px dashed #bdbdbd'
         };
 
         return (
@@ -49,7 +43,9 @@ function ResponseStatus(props) {
             </span>
 
             {/* Label */}
-            <span>{item.label}</span>
+            <span>
+              {item.label} <br></br> {item.date ? formatDate(item.date) : ''}
+            </span>
 
             {/* line to previous dot */}
             {isFirstItem ? null : <span className="line" style={lineStyle} />}

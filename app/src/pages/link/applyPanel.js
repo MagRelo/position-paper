@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Link } from '@reach/router';
-import { Loading, formatCurrency, formatDate } from 'components/random';
+import { Loading, formatCurrency } from 'components/random';
 
 import { AuthContext } from 'App';
 
@@ -10,8 +10,8 @@ function ApplyPanel({ link, user }) {
   const { activeSession } = useContext(AuthContext);
 
   const [hasApplied, setHasApplied] = useState(user.hasApplied || false);
-  const [applyDate, setApplyDate] = useState(user.applyDate || '');
   const [status, setStatus] = useState(user.applyStatus || '');
+  const [applySteps, setApplySteps] = useState(user.applySteps || []);
 
   const [loading, setLoading] = useState(false);
 
@@ -23,15 +23,15 @@ function ApplyPanel({ link, user }) {
       setLoading(true);
 
       // send
-      const { hasApplied, status, applyDate } = await createApplication(
+      const { hasApplied, applySteps, applyStatus } = await createApplication(
         link.linkId,
         user._id
       );
 
       // update UI
       setHasApplied(hasApplied);
-      setApplyDate(applyDate);
-      setStatus(status);
+      setApplySteps(applySteps);
+      setStatus(applyStatus);
 
       setLoading(false);
     } catch (error) {
@@ -40,14 +40,13 @@ function ApplyPanel({ link, user }) {
   }
 
   return (
-    <div id="apply">
+    <div id="apply" style={{ margin: '2em 0' }}>
       {activeSession ? (
         <React.Fragment>
           {hasApplied ? (
             <div>
               <h3 className="section-header">Application Status</h3>
-              <p>You applied to this job on {formatDate(applyDate)}</p>
-              <ResponseStatus status={status} />
+              <ResponseStatus status={status} steps={applySteps} />
             </div>
           ) : (
             <div>

@@ -188,8 +188,25 @@ exports.getLink = async function(req, res) {
       user: req.user._id,
       $or: [{ link: originLinkId }, { originLink: originLinkId }]
     });
-    const applyDate = userResponse ? userResponse.updatedAt : '';
+
     const applyStatus = userResponse ? userResponse.status : '';
+    const applySteps = [
+      {
+        status: 'Applied',
+        label: 'Application Received',
+        date: userResponse ? userResponse.applyDate : null
+      },
+      {
+        status: 'Submitted',
+        label: 'Sent To Employer',
+        date: userResponse ? userResponse.submitDate : null
+      },
+      {
+        status: 'Closed',
+        label: 'Application Closed',
+        date: userResponse ? userResponse.closeDate : null
+      }
+    ];
 
     // user
     responseObj.user = {
@@ -200,8 +217,8 @@ exports.getLink = async function(req, res) {
       isLinkOwner: isLinkOwner,
       isPromoting: !!userPromoting,
       hasApplied: !!userResponse,
-      applyDate: applyDate,
       applyStatus: applyStatus,
+      applySteps: applySteps,
       isFollowingUser: isFollowingUser,
       isFollowingLink: isFollowingLink
     };
