@@ -12,25 +12,18 @@ const ShareModel = require('../models').ShareModel;
 // get user
 exports.populateUser = async function(req, res) {
   try {
-    const user = await UserModel.findOne({ _id: req.user.id }).select(
-      'firstname lastname avatar jobBoardId stripeAccountLabel stripeCustomerLabel stripeCustomerBrand'
-    );
+    const user = await UserModel.findOne({ _id: req.user.id })
+      .select(
+        'firstname lastname avatar displayName linkedInProfile jobBoardUrl jobBoardId stripeAccountLabel stripeCustomerLabel stripeCustomerBrand'
+      )
+      .lean();
 
     // get queries and links
     const userObject = {
       user: {
-        _id: user._id,
-        name: user.firstname + ' ' + user.lastname,
-        email: user.email,
-        avatar: user.avatar,
-        jobBoardId: user.jobBoardId,
-
         hasAccount: !!user.stripeAccountLabel,
-        stripeAccountLabel: user.stripeAccountLabel,
-
         hasPaymentSource: !!user.stripeCustomerLabel,
-        stripeCustomerLabel: user.stripeCustomerLabel,
-        stripeCustomerBrand: user.stripeCustomerBrand
+        ...user
       },
       follows: user.follows,
       links: [],
@@ -312,6 +305,19 @@ exports.deleteCustomerPaymentSource = async function(req, res) {
 
     // send user
     return res.status(200).send({ connected: false, label: '', brand: '' });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send(error);
+  }
+};
+
+exports.updateProfile = async function(req, res) {
+  try {
+    // update user
+    await UserModel.updateOne({ _id: req.user._id }, req.body);
+
+    // send user
+    return res.status(200).send({});
   } catch (error) {
     console.log(error);
     return res.status(500).send(error);

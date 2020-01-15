@@ -85,6 +85,10 @@ exports.linkedinAuth = async function(req, res, next) {
       {
         firstname: profile.firstName.localized.en_US,
         lastname: profile.lastName.localized.en_US,
+        displayName:
+          profile.firstName.localized.en_US +
+          ' ' +
+          profile.lastName.localized.en_US,
         avatar:
           profile.profilePicture['displayImage~'].elements[1].identifiers[0]
             .identifier,

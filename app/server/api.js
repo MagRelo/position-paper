@@ -20,7 +20,8 @@ const {
   addAccount,
   deleteAccountSource,
   addCustomer,
-  deleteCustomerPaymentSource
+  deleteCustomerPaymentSource,
+  updateProfile
 } = require('./controllers/user');
 const {
   createQuery,
@@ -170,6 +171,7 @@ router.post('/user/follow', getToken, authenticate, getUser, updateFollow);
 router.get('/user/friends', getToken, authenticate, getUser, getUserFriends);
 router.post('/user/tweet', getToken, authenticate, getUser, sendTweet);
 router.post('/user/email', getToken, authenticate, getUser, sendEmail);
+router.post('/user/profile', getToken, authenticate, getUser, updateProfile);
 
 // Stripe APis
 router.post('/user/account', getToken, authenticate, getUser, addAccount);

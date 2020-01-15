@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Tab } from '@reach/tabs';
+import { FaExternalLinkAlt, FaRegCopy } from 'react-icons/fa';
 
 var SI_SYMBOL = ['', 'k', 'M', 'G', 'T', 'P', 'E'];
 
@@ -239,9 +240,9 @@ export function JobBoard({ userData }) {
   return (
     <div style={{ margin: '1em 0 ' }}>
       <div className="input-group mb-2">
-        <div class="input-group-prepend">
+        <div className="input-group-prepend">
           <div
-            class="input-group-text"
+            className="input-group-text"
             style={{
               fontSize: 'smaller',
               border: 'none'
@@ -268,13 +269,15 @@ export function JobBoard({ userData }) {
               border: 'none'
             }}
           >
-            <a
-              href={`${domain}/jobs/${userData.jobBoardId}`}
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              className="button-unstyled"
+              onClick={() => {
+                const text = `${domain}/jobs/${userData.jobBoardId}`;
+                copyTextToClipboard(text);
+              }}
             >
-              View
-            </a>
+              Copy <FaRegCopy />
+            </button>
           </div>
         </div>
 
@@ -286,15 +289,13 @@ export function JobBoard({ userData }) {
               border: 'none'
             }}
           >
-            <button
-              className="button-unstyled"
-              onClick={() => {
-                const text = `${domain}/jobs/${userData.jobBoardId}`;
-                copyTextToClipboard(text);
-              }}
+            <a
+              href={`${domain}/jobs/${userData.jobBoardId}`}
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              Copy Url
-            </button>
+              View <FaExternalLinkAlt />
+            </a>
           </div>
         </div>
       </div>

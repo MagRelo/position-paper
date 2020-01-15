@@ -14,6 +14,9 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: () => nanoid()
     },
+    displayName: String,
+    linkedInProfile: String,
+    jobBoardUrl: String,
 
     linkedinProvider: {
       type: {

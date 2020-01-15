@@ -8,6 +8,7 @@ import { formatCurrency, Loading, JobBoard } from 'components/random';
 import UserBankAccount from 'pages/user/userBankAccount';
 import UserPaymentSource from 'pages/user/userPaymentSource';
 import UserPaymentTable from 'pages/user/userPaymentTable';
+import UserProfileForm from 'pages/user/userProfileForm';
 
 import StreamList from './userStream';
 
@@ -51,8 +52,6 @@ function User(props) {
     <div className="container user-container">
       <div className="row">
         <div className="col-lg-8">
-          <h2>Profile</h2>
-
           {isLoading ? (
             <Loading />
           ) : (
@@ -73,34 +72,41 @@ function User(props) {
                   className="user-avatar"
                 />
                 <div className="user-info">
-                  <div className="user-name">{userData.name}</div>
+                  <div className="user-name">{userData.displayName}</div>
 
                   <div className="user-location">
                     Earnings: {formatCurrency(userData.pending || 0)}
                   </div>
-                  <JobBoard userData={userData} />
                 </div>
               </div>
 
-              <h2>Bank Account</h2>
-              <UserBankAccount
-                hasAccount={userData.hasAccount}
-                bankLabel={userData.stripeAccountLabel}
-                bankBrand={userData.stripeAccountBrand}
-              />
+              <div style={{ margin: '2em 0 ' }}>
+                <h2>Bank Account</h2>
+                <UserBankAccount
+                  hasAccount={userData.hasAccount}
+                  bankLabel={userData.stripeAccountLabel}
+                  bankBrand={userData.stripeAccountBrand}
+                />
+              </div>
 
-              <hr />
-              <h2>Payment Source</h2>
+              <div style={{ margin: '2em 0 ' }}>
+                <h2>Payment Source</h2>
+                <UserPaymentSource
+                  hasPaymentSource={userData.hasPaymentSource}
+                  sourceLabel={userData.stripeCustomerLabel}
+                  sourceBrand={userData.stripeCustomerBrand}
+                />
+              </div>
 
-              <UserPaymentSource
-                hasPaymentSource={userData.hasPaymentSource}
-                sourceLabel={userData.stripeCustomerLabel}
-                sourceBrand={userData.stripeCustomerBrand}
-              />
+              <div style={{ margin: '2em 0 ' }}>
+                <h2>Edit Profile</h2>
+                <UserProfileForm user={userData} />
+              </div>
 
-              <hr />
-              <h2>Payments</h2>
-              <UserPaymentTable payments={payments} />
+              <div style={{ margin: '2em 0 ' }}>
+                <h2>Payments</h2>
+                <UserPaymentTable payments={payments} />
+              </div>
             </div>
           )}
         </div>
