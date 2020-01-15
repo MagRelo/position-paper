@@ -29,11 +29,10 @@ exports.createQuery = async function(req, res) {
   if (!req.user) {
     return res.status(401).send({ error: 'no user' });
   }
-
   const jobData = req.body;
-
   // validate feilds
 
+  // calc bonuses
   const { salaryAverage, totalBonus, networkBonus, targetBonus } = calcSplit(
     jobData.salaryRange.min,
     jobData.salaryRange.max

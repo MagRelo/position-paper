@@ -73,14 +73,20 @@ function ApplyPanel({ link, user }) {
           )}
         </React.Fragment>
       ) : (
-        // login link
-        <Link
-          className="btn btn-sm btn-theme"
-          label={'Apply Now'}
-          to={'/login?link=' + link.linkId}
-        >
-          Apply Now
-        </Link>
+        <React.Fragment>
+          <h2>Apply for this Job</h2>
+          <p>
+            Apply for this position. We'll pay you{' '}
+            {formatCurrency(link.target_bonus)} if you're hired.
+          </p>
+          <Link
+            className="btn btn-sm btn-theme"
+            label={'Apply Now'}
+            to={'/login?link=' + link.linkId}
+          >
+            Apply Now
+          </Link>
+        </React.Fragment>
       )}
     </div>
   );

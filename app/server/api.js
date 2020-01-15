@@ -45,7 +45,7 @@ const SignupModel = require('./models').SignupModel;
 // MISC
 //
 
-const SendGrid = require('./integrations/sendgrid');
+// const SendGrid = require('./integrations/sendgrid');
 
 // search
 router.get('/search', getToken, getUser, async function(req, res) {

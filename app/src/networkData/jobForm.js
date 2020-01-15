@@ -38,8 +38,15 @@ function JobForm(props) {
       setJobTitle(props.formData.jobTitle);
       setEmployer(props.formData.employer);
       setLocation(props.formData.location);
-      setEditorState(createEditorState(props.formData.rawState));
       setSalaryRange(props.formData.salaryRange);
+
+      // On save, if "rawState.entityMap" was empty object then MongoDb will drops the property key(?)
+      // This hack makes sure the "entityMap" property exists on the rawState object
+      const rawStateHack = props.formData.rawState;
+      rawStateHack.entityMap = rawStateHack.entityMap
+        ? rawStateHack.entityMap
+        : {};
+      setEditorState(createEditorState(props.formData.rawState));
     }
   }, [props.formData]);
 

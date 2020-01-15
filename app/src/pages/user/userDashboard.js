@@ -105,7 +105,7 @@ function User(props) {
                       <div>
                         <p>
                           <i>
-                            Add a payment source to you{' '}
+                            Add a payment source to your{' '}
                             <Link to="/profile">profile</Link> in order to post
                             a job
                           </i>
