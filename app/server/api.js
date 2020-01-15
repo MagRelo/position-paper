@@ -64,11 +64,8 @@ router.get('/search', getToken, getUser, async function(req, res) {
               postedBy: link.user.displayName,
               userId: link.user._id,
               createdAt: link.createdAt,
-              respondBonus: link.target_bonus,
-              promoteBonus: link.potentialPayoffs[link.generation + 1]
-            },
-            query: {
-              _id: null,
+              target_bonus: link.target_bonus,
+              network_bonus: link.potentialPayoffs[link.generation + 1],
               title: link.title,
               bonus: link.bonus,
               type: link.type,
@@ -147,7 +144,9 @@ router.get('/user/jobs/:jobBoardId', async function(req, res) {
   try {
     res.status(200).send({
       user: user,
-      jobs: results
+      jobs: results.map(job => {
+        return { link: job };
+      })
     });
   } catch (error) {
     console.log(req.path, error);

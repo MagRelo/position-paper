@@ -33,13 +33,11 @@ function jobDataItem(label, value) {
   );
 }
 
-function activityTile(link) {
-  const query = link || { data: {} };
-
+function activityTile({ link, user }) {
   const salaryString = `${formatCurrency(
-    query.data.salaryMin,
+    link.data.salaryMin,
     true
-  )} – ${formatCurrency(query.data.salaryMax, true)}`;
+  )} – ${formatCurrency(link.data.salaryMax, true)}`;
 
   return (
     <div className="search-tile">
@@ -55,12 +53,12 @@ function activityTile(link) {
           className="section-header"
           style={{ color: 'initial', fontSize: '18px', marginTop: 0 }}
         >
-          {query.data.jobTitle}
+          {link.data.jobTitle}
         </p>
 
         <div className="grid-left">
-          {jobDataItem('Employer', query.data.employer)}
-          {jobDataItem('Location', query.data.location)}
+          {jobDataItem('Employer', link.data.employer)}
+          {jobDataItem('Location', link.data.location)}
           {jobDataItem('Salary', salaryString)}
         </div>
       </div>
