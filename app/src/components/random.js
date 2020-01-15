@@ -234,3 +234,70 @@ export function copyTextToClipboard(text) {
     }
   );
 }
+export function JobBoard({ userData }) {
+  const domain = window.location.origin || 'http://localhost:3000';
+  return (
+    <div style={{ margin: '1em 0 ' }}>
+      <div className="input-group mb-2">
+        <div class="input-group-prepend">
+          <div
+            class="input-group-text"
+            style={{
+              fontSize: 'smaller',
+              border: 'none'
+            }}
+          >
+            Job Board
+          </div>
+        </div>
+        <input
+          type="text"
+          className="form-control"
+          style={{ border: 'none' }}
+          id="inlineFormInputGroup"
+          placeholder="Username"
+          disabled={true}
+          value={`${domain}/jobs/${userData.jobBoardId}`}
+        />
+
+        <div className="input-group-append">
+          <div
+            className="input-group-text"
+            style={{
+              fontSize: 'smaller',
+              border: 'none'
+            }}
+          >
+            <a
+              href={`${domain}/jobs/${userData.jobBoardId}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View
+            </a>
+          </div>
+        </div>
+
+        <div className="input-group-append">
+          <div
+            className="input-group-text"
+            style={{
+              fontSize: 'smaller',
+              border: 'none'
+            }}
+          >
+            <button
+              className="button-unstyled"
+              onClick={() => {
+                const text = `${domain}/jobs/${userData.jobBoardId}`;
+                copyTextToClipboard(text);
+              }}
+            >
+              Copy Url
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -40,7 +40,7 @@ const { getAllData } = require('./controllers/admin');
 
 const LinkModel = require('./models').LinkModel;
 const SignupModel = require('./models').SignupModel;
-
+const UserModel = require('./models').UserModel;
 //
 // MISC
 //
@@ -127,6 +127,30 @@ router.post('/signup', async function(req, res) {
     res.status(200).send({ success: true });
   } catch (error) {
     res.status(500).send({ error: error.message });
+  }
+});
+
+router.get('/user/jobs/:jobBoardId', async function(req, res) {
+  const user = await UserModel.findOne({ jobBoardId: req.params.jobBoardId });
+
+  if (!user) {
+    res.status(404).send({});
+  }
+
+  const results = await LinkModel.find({
+    user: user._id,
+    isBuried: false,
+    status: 'Active'
+  });
+
+  try {
+    res.status(200).send({
+      user: user,
+      jobs: results
+    });
+  } catch (error) {
+    console.log(req.path, error);
+    res.status(500).send(error);
   }
 });
 

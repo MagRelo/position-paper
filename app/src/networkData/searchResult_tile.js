@@ -33,7 +33,9 @@ function jobDataItem(label, value) {
   );
 }
 
-function activityTile({ link, query, user }) {
+function activityTile(link) {
+  const query = link || { data: {} };
+
   const salaryString = `${formatCurrency(
     query.data.salaryMin,
     true
@@ -77,13 +79,13 @@ function activityTile({ link, query, user }) {
         <div style={{ borderRight: '1px solid #cbcbcb' }}>
           <span className="label">Network</span>
           <div style={{ color: '#0ea51d' }}>
-            {formatCurrency(link.promoteBonus)}
+            {formatCurrency(link.network_bonus)}
           </div>
         </div>
         <div>
           <span className="label">Employee</span>
           <div style={{ color: '#0ea51d' }}>
-            {formatCurrency(link.respondBonus)}
+            {formatCurrency(link.target_bonus)}
           </div>
         </div>
       </div>

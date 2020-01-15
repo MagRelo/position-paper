@@ -93,7 +93,7 @@ exports.linkedinAuth = async function(req, res, next) {
           access_token: accessTokenResponse.access_token
         }
       },
-      { new: true, upsert: true }
+      { new: true, upsert: true, setDefaultsOnInsert: true }
     );
 
     next();

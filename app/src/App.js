@@ -55,11 +55,12 @@ import NotFound from 'pages/404';
 import LandingPage from 'pages/landingPage';
 import Terms from 'pages/legal';
 import About from 'pages/about';
-import Login from 'pages/login';
 import Employers from 'pages/employer';
 
 // Maybe Auth
+import Login from 'pages/login';
 import Search from 'pages/search';
+import UserJobs from 'pages/user/userJobBoard';
 import LinkPage from 'pages/link/link';
 import AddLink from 'networkData/jobForm';
 import EditLink from 'pages/link/editLink';
@@ -143,6 +144,7 @@ function App(props) {
                 <Applications path="/applications/:linkId" />
                 <ApplicationPayment path="/payment/:linkId" />
 
+                <UserJobs path="/jobs/:userId" />
                 <Search path="/search" />
                 <Terms path="/terms" />
                 <About path="/about" />
@@ -157,6 +159,7 @@ function App(props) {
 
                 <LinkPage path="/link/:linkId" />
 
+                <UserJobs path="/jobs/:userId" />
                 <Search path="/search" />
                 <Terms path="/terms" />
                 <About path="/about" />

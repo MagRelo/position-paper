@@ -2,7 +2,12 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Link } from '@reach/router';
 
 import { Tabs, TabList, TabPanels, TabPanel } from '@reach/tabs';
-import { formatCurrency, CoolTab, Loading } from 'components/random';
+import {
+  formatCurrency,
+  CoolTab,
+  Loading,
+  copyTextToClipboard
+} from 'components/random';
 
 // import PaymentsTable from './userPaymentsTable';
 import ResponseList from './userResponseTable';
@@ -46,6 +51,74 @@ function User(props) {
     };
   }, []);
 
+  function JobBoard({ userData }) {
+    const domain = window.location.origin || 'http://localhost:3000';
+    return (
+      <div style={{ margin: '1em 0 ' }}>
+        <div className="input-group mb-2">
+          <div class="input-group-prepend">
+            <div
+              class="input-group-text"
+              style={{
+                fontSize: 'smaller',
+                border: 'none'
+              }}
+            >
+              Job Board
+            </div>
+          </div>
+          <input
+            type="text"
+            className="form-control"
+            style={{ border: 'none' }}
+            id="inlineFormInputGroup"
+            placeholder="Username"
+            disabled={true}
+            value={`${domain}/jobs/${userData.jobBoardId}`}
+          />
+
+          <div className="input-group-append">
+            <div
+              className="input-group-text"
+              style={{
+                fontSize: 'smaller',
+                border: 'none'
+              }}
+            >
+              <a
+                href={`${domain}/jobs/${userData.jobBoardId}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                View
+              </a>
+            </div>
+          </div>
+
+          <div className="input-group-append">
+            <div
+              className="input-group-text"
+              style={{
+                fontSize: 'smaller',
+                border: 'none'
+              }}
+            >
+              <button
+                className="button-unstyled"
+                onClick={() => {
+                  const text = `${domain}/jobs/${userData.jobBoardId}`;
+                  copyTextToClipboard(text);
+                }}
+              >
+                Copy Url
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="container user-container">
       <div className="row">
@@ -66,6 +139,7 @@ function User(props) {
                 <TabPanel style={{ outline: 'none' }}>
                   <h3>Refer a Candidate → Get Paid</h3>
                   <p>You can promote any job on Talent Relay. You can </p>
+                  <JobBoard userData={userData} />
 
                   <LinksTable links={links} />
 
@@ -95,6 +169,7 @@ function User(props) {
                 <TabPanel style={{ outline: 'none' }}>
                   <h3>Find Great Candidates, Fast</h3>
                   <p>Just post your job and watch the community go to work</p>
+                  <JobBoard userData={userData} />
                   <JobTable links={jobs} />
                   <div style={{ textAlign: 'center' }}>
                     {userData.hasPaymentSource ? (

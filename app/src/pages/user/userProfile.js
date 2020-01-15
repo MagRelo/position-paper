@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
 // import { Link } from '@reach/router';
 // import { Tabs, TabList, TabPanels, TabPanel } from '@reach/tabs';
-import { formatCurrency, Loading } from 'components/random';
+// import { formatCurrency, Loading } from 'components/random';
+
+import { formatCurrency, Loading, JobBoard } from 'components/random';
 
 import UserBankAccount from 'pages/user/userBankAccount';
 import UserPaymentSource from 'pages/user/userPaymentSource';
@@ -72,9 +74,11 @@ function User(props) {
                 />
                 <div className="user-info">
                   <div className="user-name">{userData.name}</div>
+
                   <div className="user-location">
                     Earnings: {formatCurrency(userData.pending || 0)}
                   </div>
+                  <JobBoard userData={userData} />
                 </div>
               </div>
 

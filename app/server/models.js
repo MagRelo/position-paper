@@ -10,7 +10,10 @@ const UserSchema = new mongoose.Schema(
     firstname: String,
     lastname: String,
     avatar: String,
-    location: String,
+    jobBoardId: {
+      type: String,
+      default: () => nanoid()
+    },
 
     linkedinProvider: {
       type: {
@@ -21,18 +24,20 @@ const UserSchema = new mongoose.Schema(
     },
 
     stripeCustomer: { type: Object, select: false },
-    stripeCustomerBrand: String,
-    stripeCustomerLabel: String,
     stripeCustomerToken: { type: String, select: false },
+    stripeCustomerBrand: { type: String, select: false },
+    stripeCustomerLabel: { type: String, select: false },
 
-    balance: Number,
+    accountBalance: { type: Number, select: false },
     stripeAccount: { type: Object, select: false },
-    stripeAccountLabel: String,
+    stripeAccountLabel: { type: String, select: false },
 
-    payments: { type: mongoose.Schema.Types.ObjectId, ref: 'Payment' },
-
-    metaData: Object,
-    follows: { type: Array, default: [] }
+    payments: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Payment',
+      select: false
+    },
+    follows: { type: Array, default: [], select: false }
   },
   { timestamps: true }
 );

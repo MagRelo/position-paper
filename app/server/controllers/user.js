@@ -11,32 +11,33 @@ const ShareModel = require('../models').ShareModel;
 
 // get user
 exports.populateUser = async function(req, res) {
-  // check auth
-  if (!req.user) {
-    return res.status(401).send({ error: 'no user' });
-  }
-
-  // get queries and links
-  const userObject = {
-    user: {
-      _id: req.user._id,
-      name: req.user.firstname + ' ' + req.user.lastname,
-      email: req.user.email,
-      avatar: req.user.avatar,
-      location: req.user.location,
-      hasAccount: !!req.user.stripeAccountLabel,
-      stripeAccountLabel: req.user.stripeAccountLabel,
-      hasPaymentSource: !!req.user.stripeCustomerLabel,
-      stripeCustomerLabel: req.user.stripeCustomerLabel,
-      stripeCustomerBrand: req.user.stripeCustomerBrand
-    },
-    follows: req.user.follows,
-    links: [],
-    responses: [],
-    payments: []
-  };
-
   try {
+    const user = await UserModel.findOne({ _id: req.user.id }).select(
+      'firstname lastname avatar jobBoardId stripeAccountLabel stripeCustomerLabel stripeCustomerBrand'
+    );
+
+    // get queries and links
+    const userObject = {
+      user: {
+        _id: user._id,
+        name: user.firstname + ' ' + user.lastname,
+        email: user.email,
+        avatar: user.avatar,
+        jobBoardId: user.jobBoardId,
+
+        hasAccount: !!user.stripeAccountLabel,
+        stripeAccountLabel: user.stripeAccountLabel,
+
+        hasPaymentSource: !!user.stripeCustomerLabel,
+        stripeCustomerLabel: user.stripeCustomerLabel,
+        stripeCustomerBrand: user.stripeCustomerBrand
+      },
+      follows: user.follows,
+      links: [],
+      responses: [],
+      payments: []
+    };
+
     userObject.links = await LinkModel.find({ user: req.user._id }).lean();
 
     userObject.payments = await PaymentModel.find({ user: req.user._id })
