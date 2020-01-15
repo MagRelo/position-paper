@@ -52,15 +52,15 @@ function getLabel(activityType, isUser, data) {
     case 'addUser':
       return isUser ? `Welcome!` : `New User`;
     case 'addQuery':
-      return isUser ? `You Added a Query` : `Query Added`;
+      return isUser ? `You Posted a Job` : `Job Posted`;
     case 'addLink':
-      return isUser ? `You Added a Link` : `Child Link Created`;
+      return isUser ? `You Promoted a Job` : `New Promoter`;
     case 'addResponse':
-      return isUser ? `You responded to a query` : `Response to your query`;
+      return isUser ? `You applied to a job` : `New Application`;
     case 'addFollow:User':
       return isUser ? `New Follower Added` : `New Follower`;
     case 'addFollow:Link':
-      return isUser ? `You Followed a query` : `New Follower for query`;
+      return isUser ? `You Followed a Job` : `New Follower for Job`;
     default:
       return 'New activity';
   }
