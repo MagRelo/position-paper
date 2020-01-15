@@ -61,7 +61,7 @@ router.get('/search', getToken, getUser, async function(req, res) {
             link: {
               _id: link._id,
               linkId: link.linkId,
-              postedBy: link.user.name,
+              postedBy: link.user.displayName,
               userId: link.user._id,
               createdAt: link.createdAt,
               respondBonus: link.target_bonus,

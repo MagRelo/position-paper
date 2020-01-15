@@ -26,7 +26,7 @@ exports.sendNewLink = async function(fromUser, messageData, link) {
       candidate_bonus: formatCurrency(link.target_bonus, opts),
       network_bonus: formatCurrency(link.network_bonus, opts),
       message: messageData.message,
-      messageFrom: fromUser.name
+      messageFrom: fromUser.displayName
     }
   };
 

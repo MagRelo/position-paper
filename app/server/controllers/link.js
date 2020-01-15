@@ -194,7 +194,7 @@ exports.getLink = async function(req, res) {
     // user
     responseObj.user = {
       _id: req.user._id,
-      name: req.user.name,
+      name: req.user.displayName,
       avatar: req.user.avatar,
       isQueryOwner: isQueryOwner,
       isLinkOwner: isLinkOwner,

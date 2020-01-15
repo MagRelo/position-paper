@@ -39,7 +39,7 @@ exports.createResponse = async function(req, res) {
       targetPayouts: [
         {
           _id: req.user._id,
-          email: req.user.name,
+          email: req.user.displayName,
           amount: link.target_bonus,
           linkId: link._id
         }
@@ -207,7 +207,7 @@ function createPayoutArray(link, parents) {
     if (parent.generation > 0) {
       payoutArray.push({
         _id: parent.user._id,
-        email: parent.user.name,
+        email: parent.user.displayName,
         amount: link.payoffs[parent.generation],
         linkId: link._id
       });
@@ -218,7 +218,7 @@ function createPayoutArray(link, parents) {
   if (link.generation > 0) {
     payoutArray.push({
       _id: link.user._id,
-      email: link.user.name,
+      email: link.user.displayName,
       amount: link.payoffs[link.generation],
       linkId: link._id
     });
