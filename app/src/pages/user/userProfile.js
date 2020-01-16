@@ -3,7 +3,7 @@ import React, { useState, useEffect, useContext } from 'react';
 // import { Tabs, TabList, TabPanels, TabPanel } from '@reach/tabs';
 // import { formatCurrency, Loading } from 'components/random';
 
-import { formatCurrency, Loading, JobBoard } from 'components/random';
+import { formatCurrency, Loading } from 'components/random';
 
 import UserBankAccount from 'pages/user/userBankAccount';
 import UserPaymentSource from 'pages/user/userPaymentSource';
