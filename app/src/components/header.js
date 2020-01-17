@@ -53,6 +53,8 @@ function Header(props) {
                     alt="logo"
                   ></img>
                 </Link>
+
+                {/* Mobile button 
                 <button
                   className="navbar-toggler"
                   type="button"
@@ -66,8 +68,9 @@ function Header(props) {
                   <span></span>
                   <span></span>
                 </button>
+                */}
 
-                {/* Menu */}
+                {/* Menu 
                 <div
                   className="collapse navbar-collapse"
                   id="navbarNavDropdown"
@@ -94,8 +97,9 @@ function Header(props) {
                     </ul>
                   )}
                 </div>
+                */}
 
-                {/* Login/Logout */}
+                {/* Login/Logout 
 
                 <div className="right-nav align-items-center d-flex justify-content-end list-inline">
                   <Link className="nav-link" to="/search">
@@ -111,6 +115,7 @@ function Header(props) {
                     </Link>
                   )}
                 </div>
+                */}
               </nav>
             </div>
           </div>

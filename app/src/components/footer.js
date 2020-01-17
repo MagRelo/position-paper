@@ -27,6 +27,7 @@ function Footer(props) {
                 </p>
               </div>
 
+              {/* Links
               <div className="col-lg-6 col-md-6 sm-mt-5">
                 <h4 className="mb-4 text-white">Useful Links</h4>
                 <div className="footer-list justify-content-between d-flex">
@@ -55,6 +56,7 @@ function Footer(props) {
                   </ul>
                 </div>
               </div>
+               */}
             </div>
           </div>
         </div>

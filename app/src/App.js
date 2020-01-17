@@ -45,9 +45,7 @@ import './css/talent-relay.css';
 
 // Header
 import Header from 'components/header';
-// import Header from 'components/tempHeader';
 import Footer from 'components/footer';
-// import Footer from 'components/tempFooter';
 
 import NotFound from 'pages/404';
 
