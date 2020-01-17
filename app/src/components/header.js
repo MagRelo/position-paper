@@ -53,6 +53,8 @@ function Header(props) {
                     alt="logo"
                   ></img>
                 </Link>
+
+                {/* Mobile button
                 <button
                   className="navbar-toggler"
                   type="button"
@@ -66,6 +68,7 @@ function Header(props) {
                   <span></span>
                   <span></span>
                 </button>
+                 */}
 
                 {/* Menu */}
                 <div
