@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from '@reach/router';
+import LinkedInLogin from 'components/linkedinLogin';
 
 // network Data
 import { AuthContext } from 'App';
@@ -54,7 +55,7 @@ function LinkPage(props) {
     return () => {
       isSubscribed = false;
     };
-  }, [props.linkId]);
+  }, [props.linkId, activeSession]);
 
   return (
     <div className="page-container">
@@ -126,41 +127,31 @@ async function getLink(linkId, clearSession) {
 }
 
 function PromotePanel({ link, user, activeSession }) {
+  const promoteBonus = formatCurrency(
+    link.potentialPayoffs && link.potentialPayoffs[link.generation + 1]
+  );
+
+  const promoteButtonLabel = `Promote @ ${promoteBonus}`;
+
   // Will show if logged out, or logged in & not a link owner
   return (
     <div>
       <div>
         <h3>Promote this Job</h3>
         <p>
-          Create your own link to this position and collect up to{' '}
-          {formatCurrency(
-            link.potentialPayoffs && link.potentialPayoffs[link.generation + 1]
-          )}{' '}
-          if the candidate responds through your link.
+          {`Create your own link to this position and collect up to ${promoteBonus} if the candidate responds through your link.`}
         </p>
 
         {!activeSession ? (
-          <Link
-            className="btn btn-sm btn-theme"
-            to={'/login?link=' + link.linkId}
-          >
-            {'Promote @ ' +
-              formatCurrency(
-                link.potentialPayoffs &&
-                  link.potentialPayoffs[link.generation + 1]
-              )}
-          </Link>
+          <LinkedInLogin redirect={'/link/' + link.linkId}>
+            {promoteButtonLabel}
+          </LinkedInLogin>
         ) : (
           <LinkButton
             parentLink={link.linkId}
             disabled={user._id === 0 || user.isLinkOwner || user.isPromoting}
-            label={
-              'Promote @ ' +
-              formatCurrency(
-                link.potentialPayoffs &&
-                  link.potentialPayoffs[link.generation + 1]
-              )
-            }
+            label={promoteButtonLabel}
+            executeButton={false}
           />
         )}
       </div>

@@ -1,11 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { navigate } from '@reach/router';
 
 import { Loading } from 'components/random';
 
 function LinkButton(props) {
   const [isLoading, setIsLoading] = useState(false);
-  function handleClick() {
+
+  useEffect(() => {
+    if (props.executeButton) {
+      console.log('executing...', props);
+      setIsLoading(true);
+      executeLinkButton();
+    }
+  }, [props.executeButton]);
+
+  function executeLinkButton() {
     setIsLoading(true);
     createLink(props.parentLink).then(link => {
       setIsLoading(false);
@@ -20,7 +29,7 @@ function LinkButton(props) {
       ) : (
         <button
           className="btn btn-theme btn-sm"
-          onClick={handleClick}
+          onClick={executeLinkButton}
           disabled={props.disabled}
         >
           <span>{props.label}</span>

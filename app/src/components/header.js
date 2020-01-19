@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { AuthContext } from 'App';
+import LinkedInLogin from 'components/linkedinLogin';
 
 import { Link } from '@reach/router';
 
@@ -109,9 +110,7 @@ function Header(props) {
                       <span>Dashboard</span>
                     </Link>
                   ) : (
-                    <Link className="btn btn-theme btn-sm" to="/login">
-                      <span>Login</span>
-                    </Link>
+                    <LinkedInLogin>Login</LinkedInLogin>
                   )}
                 </div>
               </nav>
