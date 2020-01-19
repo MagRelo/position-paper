@@ -122,6 +122,7 @@ h3 {
 }
 
 .stream p {
+    margin-top: 6px;
     margin-bottom: 0;
     padding-left: 0.66em;
 }
@@ -612,4 +613,14 @@ section {
     font-size: 22px;
     font-weight: 400;
     color: black;
+}
+
+.nav-link {
+    padding: .25rem 0.75rem;
+    margin-right: 0.5rem;
+}
+
+.nav-link.active {
+    border-bottom: solid 1px #7329c2;
+    transition: none;
 }

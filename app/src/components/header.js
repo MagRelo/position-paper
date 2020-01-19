@@ -1,4 +1,6 @@
 import React, { useContext } from 'react';
+import { FaSearch } from 'react-icons/fa';
+
 import { AuthContext } from 'App';
 import LinkedInLogin from 'components/linkedinLogin';
 
@@ -102,15 +104,26 @@ function Header(props) {
                 {/* Login/Logout */}
 
                 <div className="right-nav align-items-center d-flex justify-content-end list-inline">
-                  <Link className="nav-link" to="/search">
-                    Search Jobs
-                  </Link>
+                  <NavLink className="nav-link" to="/search">
+                    Search Jobs <FaSearch />
+                  </NavLink>
+
                   {activeSession ? (
-                    <Link className="btn btn-theme btn-sm" to="/dashboard">
-                      <span>Dashboard</span>
-                    </Link>
+                    <React.Fragment>
+                      <span className="nav-link">|</span>
+
+                      <NavLink className="nav-link" to="/dashboard">
+                        Dashboard
+                      </NavLink>
+
+                      <NavLink className="nav-link" to="/profile">
+                        Profile
+                      </NavLink>
+                    </React.Fragment>
                   ) : (
-                    <LinkedInLogin>Login</LinkedInLogin>
+                    <span className="nav-link">
+                      <LinkedInLogin>Login</LinkedInLogin>
+                    </span>
                   )}
                 </div>
               </nav>

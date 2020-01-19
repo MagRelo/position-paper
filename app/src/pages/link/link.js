@@ -187,10 +187,25 @@ function AdminPanel({ link, user, stream, traffic }) {
           </div>
         )}
 
-        <div>
-          <label htmlFor="inlineFormInputGroup">URL</label>
-
-          <div className="input-group mb-2">
+        <div
+          style={{
+            margin: '1em 0',
+            border: 'solid 1px #cbcbcb',
+            borderRadius: '4px'
+          }}
+        >
+          <div className="input-group">
+            <div className="input-group-prepend">
+              <div
+                className="input-group-text"
+                style={{
+                  fontSize: 'smaller',
+                  border: 'none'
+                }}
+              >
+                URL
+              </div>
+            </div>
             <input
               type="text"
               className="form-control"
@@ -222,7 +237,6 @@ function AdminPanel({ link, user, stream, traffic }) {
           </div>
         </div>
 
-        <label>Share on Social (coming soon)</label>
         <div className="social-grid">
           <EmailButton enabled={false} link={link} />
           <LinkedinButton enabled={false} link={link} />

@@ -56,37 +56,9 @@ function User(props) {
             <Loading />
           ) : (
             <div>
-              <div className="user-profile">
-                <button
-                  style={{ float: 'right' }}
-                  className="btn btn-sm btn-theme"
-                  onClick={() => {
-                    clearSession();
-                  }}
-                >
-                  Log Out
-                </button>
-                <img
-                  src={userData.avatar}
-                  alt="avatar"
-                  className="user-avatar"
-                />
-                <div className="user-info">
-                  <div className="user-name">{userData.displayName}</div>
-
-                  <div className="user-location">
-                    Earnings: {formatCurrency(userData.pending || 0)}
-                  </div>
-                </div>
-              </div>
-
               <div style={{ margin: '2em 0 ' }}>
-                <h2>Bank Account</h2>
-                <UserBankAccount
-                  hasAccount={userData.hasAccount}
-                  bankLabel={userData.stripeAccountLabel}
-                  bankBrand={userData.stripeAccountBrand}
-                />
+                <h2>Edit Profile</h2>
+                <UserProfileForm user={userData} />
               </div>
 
               <div style={{ margin: '2em 0 ' }}>
@@ -99,8 +71,12 @@ function User(props) {
               </div>
 
               <div style={{ margin: '2em 0 ' }}>
-                <h2>Edit Profile</h2>
-                <UserProfileForm user={userData} />
+                <h2>Bank Account</h2>
+                <UserBankAccount
+                  hasAccount={userData.hasAccount}
+                  bankLabel={userData.stripeAccountLabel}
+                  bankBrand={userData.stripeAccountBrand}
+                />
               </div>
 
               <div style={{ margin: '2em 0 ' }}>
@@ -113,7 +89,26 @@ function User(props) {
 
         {/* stream */}
         <div className="col-lg-4">
-          <h2>Activity</h2>
+          <div className="user-profile">
+            <button
+              style={{ float: 'right' }}
+              className="btn btn-sm btn-theme"
+              onClick={() => {
+                clearSession();
+              }}
+            >
+              Log Out
+            </button>
+            <img src={userData.avatar} alt="avatar" className="user-avatar" />
+            <div className="user-info">
+              <div className="user-name">{userData.displayName}</div>
+
+              <div className="user-location">
+                Earnings: {formatCurrency(userData.pending || 0)}
+              </div>
+            </div>
+          </div>
+
           <StreamList stream={stream} userId={userData._id} />
         </div>
       </div>
