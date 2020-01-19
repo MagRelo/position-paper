@@ -50,7 +50,6 @@ function User(props) {
     <div className="container user-container">
       <div className="row">
         <div className="col-lg-8">
-          <h2>Dashboard</h2>
           {isLoading ? (
             <Loading />
           ) : (
@@ -64,8 +63,10 @@ function User(props) {
               <TabPanels>
                 {/* Links */}
                 <TabPanel style={{ outline: 'none' }}>
-                  <h3>Refer a Candidate → Get Paid</h3>
-                  <p>You can promote any job on Talent Relay. You can </p>
+                  <div className="tab-panel-title">
+                    Refer a Candidate → Get Paid
+                  </div>
+                  <p>You can promote any job on Talent Relay</p>
 
                   <LinksTable links={links} />
 
@@ -78,7 +79,7 @@ function User(props) {
 
                 {/* Responses */}
                 <TabPanel style={{ outline: 'none' }}>
-                  <h3>Get a Job → Get Paid</h3>
+                  <div className="tab-panel-title">Get a Job → Get Paid</div>
                   <p>
                     Every job on Talent Relay includes a cash bonus once you
                     land the job.
@@ -93,7 +94,9 @@ function User(props) {
 
                 {/* Jobs */}
                 <TabPanel style={{ outline: 'none' }}>
-                  <h3>Find Great Candidates, Fast</h3>
+                  <div className="tab-panel-title">
+                    Find Great Candidates, Fast
+                  </div>
                   <p>Just post your job and watch the community go to work</p>
                   <JobTable links={jobs} />
                   <div style={{ textAlign: 'center' }}>

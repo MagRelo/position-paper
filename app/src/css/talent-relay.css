@@ -606,3 +606,10 @@ section {
         padding: 80px 0
     }
 }
+
+.tab-panel-title {
+    line-height: 30px;
+    font-size: 22px;
+    font-weight: 400;
+    color: black;
+}

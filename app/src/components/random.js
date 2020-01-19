@@ -99,9 +99,11 @@ export function CoolTab(props) {
         color: '#7329c2',
         fontSize: '16px',
         background: 'none',
+        paddingLeft: 0,
+        paddingRight: 0,
         border: 'none',
         borderBottom: isSelected ? 'solid 1px #7329c2' : 'none',
-        marginRight: '1em',
+        marginRight: '26px',
         transition: 'none'
       }}
     >
