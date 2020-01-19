@@ -146,26 +146,6 @@ export function lineItem(label, value) {
   );
 }
 
-export async function callAPI(method, endpoint, data) {
-  const response = await fetch(endpoint, {
-    method: method,
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
-  });
-
-  if (response.status === 200) {
-    return response.json();
-  }
-
-  if (response.status === 401) {
-    // redirect
-  }
-
-  throw new Error(response.message);
-}
-
 export function usePromise(promiseOrFunction, defaultValue) {
   const [state, setState] = React.useState({
     value: defaultValue,
@@ -240,8 +220,14 @@ export function copyTextToClipboard(text) {
 export function JobBoard({ userData }) {
   const domain = window.location.origin || 'http://localhost:3000';
   return (
-    <div style={{ margin: '1em 0 ' }}>
-      <div className="input-group mb-2">
+    <div
+      style={{
+        margin: '1em 0',
+        border: 'solid 1px #cbcbcb',
+        borderRadius: '4px'
+      }}
+    >
+      <div className="input-group">
         <div className="input-group-prepend">
           <div
             className="input-group-text"

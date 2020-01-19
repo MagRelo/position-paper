@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
-import { Link } from '@reach/router';
+// import { Link } from '@reach/router';
 import { Loading, formatCurrency } from 'components/random';
+import LinkedInLogin from 'components/linkedinLogin';
 
 import { AuthContext } from 'App';
 
@@ -78,13 +79,10 @@ function ApplyPanel({ link, user }) {
             Apply for this position. We'll pay you{' '}
             {formatCurrency(link.target_bonus)} if you're hired.
           </p>
-          <Link
-            className="btn btn-sm btn-theme"
-            label={'Apply Now'}
-            to={'/login?link=' + link.linkId}
-          >
+
+          <LinkedInLogin redirect={'/link/' + link.linkId}>
             Apply Now
-          </Link>
+          </LinkedInLogin>
         </React.Fragment>
       )}
     </div>
