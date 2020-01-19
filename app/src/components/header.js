@@ -82,6 +82,11 @@ function Header(props) {
                     <ul className="navbar-nav ml-auto mr-auto">
                       <React.Fragment>
                         <li className="nav-item">
+                          <a className="nav-link" href="/#employers">
+                            Employers
+                          </a>
+                        </li>
+                        <li className="nav-item">
                           <a className="nav-link" href="/#how">
                             How It Works
                           </a>
@@ -90,11 +95,6 @@ function Header(props) {
                           <a className="nav-link" href="/#getstarted">
                             Get Started
                           </a>
-                        </li>
-                        <li className="nav-item">
-                          <NavLink className="nav-link" to="/employers">
-                            Employers
-                          </NavLink>
                         </li>
                       </React.Fragment>
                     </ul>

@@ -50,68 +50,39 @@ function User(props) {
 
   return (
     <div className="container user-container">
-      <div className="row">
-        <div className="col-lg-8">
-          {isLoading ? (
-            <Loading />
-          ) : (
-            <div>
-              <div style={{ margin: '2em 0 ' }}>
-                <h2>Edit Profile</h2>
-                <UserProfileForm user={userData} />
-              </div>
-
-              <div style={{ margin: '2em 0 ' }}>
-                <h2>Payment Source</h2>
-                <UserPaymentSource
-                  hasPaymentSource={userData.hasPaymentSource}
-                  sourceLabel={userData.stripeCustomerLabel}
-                  sourceBrand={userData.stripeCustomerBrand}
-                />
-              </div>
-
-              <div style={{ margin: '2em 0 ' }}>
-                <h2>Bank Account</h2>
-                <UserBankAccount
-                  hasAccount={userData.hasAccount}
-                  bankLabel={userData.stripeAccountLabel}
-                  bankBrand={userData.stripeAccountBrand}
-                />
-              </div>
-
-              <div style={{ margin: '2em 0 ' }}>
-                <h2>Payments</h2>
-                <UserPaymentTable payments={payments} />
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* stream */}
-        <div className="col-lg-4">
-          <div className="user-profile">
-            <button
-              style={{ float: 'right' }}
-              className="btn btn-sm btn-theme"
-              onClick={() => {
-                clearSession();
-              }}
-            >
-              Log Out
-            </button>
-            <img src={userData.avatar} alt="avatar" className="user-avatar" />
-            <div className="user-info">
-              <div className="user-name">{userData.displayName}</div>
-
-              <div className="user-location">
-                Earnings: {formatCurrency(userData.pending || 0)}
-              </div>
-            </div>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <div>
+          <div style={{ margin: '2em 0 ' }}>
+            <h2>Edit Profile</h2>
+            <UserProfileForm user={userData} />
           </div>
 
-          <StreamList stream={stream} userId={userData._id} />
+          <div style={{ margin: '2em 0 ' }}>
+            <h2>Payment Source</h2>
+            <UserPaymentSource
+              hasPaymentSource={userData.hasPaymentSource}
+              sourceLabel={userData.stripeCustomerLabel}
+              sourceBrand={userData.stripeCustomerBrand}
+            />
+          </div>
+
+          <div style={{ margin: '2em 0 ' }}>
+            <h2>Bank Account</h2>
+            <UserBankAccount
+              hasAccount={userData.hasAccount}
+              bankLabel={userData.stripeAccountLabel}
+              bankBrand={userData.stripeAccountBrand}
+            />
+          </div>
+
+          <div style={{ margin: '2em 0 ' }}>
+            <h2>Payments</h2>
+            <UserPaymentTable payments={payments} />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

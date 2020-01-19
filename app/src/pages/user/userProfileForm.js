@@ -50,6 +50,22 @@ function UserProfileForm({ user }) {
   return (
     <div className="form-wrapper">
       <form name="userBankAccount" onSubmit={onSubmit}>
+        <div className="user-profile">
+          {/* <button
+              style={{ float: 'right' }}
+              className="btn btn-sm btn-theme"
+              onClick={() => {
+                clearSession();
+              }}
+            >
+              Log Out
+            </button> */}
+          <img src={avatar} alt="avatar" className="user-avatar" />
+          <div className="user-info">
+            <div className="user-name">{displayName}</div>
+          </div>
+        </div>
+
         <fieldset>
           <div className="form-group">
             <label htmlFor="first_name">Display Name </label>
