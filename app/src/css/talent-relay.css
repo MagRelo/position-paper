@@ -624,3 +624,11 @@ section {
     border-bottom: solid 1px #7329c2;
     transition: none;
 }
+
+#header-wrap {
+    padding: 0;
+}
+
+.btn.btn-sm:not(.btn-theme) {
+    border: solid #ddd 1px;
+}

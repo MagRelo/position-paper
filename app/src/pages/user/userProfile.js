@@ -47,6 +47,17 @@ function User(props) {
       ) : (
         <div className="grid grid-3-5">
           <div style={{ margin: '2em 0 ' }}>
+            <button
+              className="btn btn-sm"
+              style={{ float: 'right' }}
+              onClick={() => {
+                console.log('hit');
+                return clearSession();
+              }}
+            >
+              log out
+            </button>
+
             <h2>Edit Profile</h2>
             <UserProfileForm user={userData} />
           </div>
