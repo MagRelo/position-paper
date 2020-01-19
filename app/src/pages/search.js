@@ -34,7 +34,7 @@ function SearchFlow() {
       <div className="container">
         <h1>
           Search
-          <button
+          {/* <button
             className="btn btn-theme btn-sm"
             style={{ float: 'right', fontSize: 'small' }}
             onClick={() => {
@@ -42,14 +42,14 @@ function SearchFlow() {
             }}
           >
             {isOpen ? 'Close' : 'Filter'}
-          </button>
+          </button> */}
         </h1>
-
+        {/* 
         {isOpen ? (
           <div style={{ marginBottom: '2em' }}>
             <JobSearchForm submit={submit} />
           </div>
-        ) : null}
+        ) : null} */}
 
         <SearchResults results={results} />
       </div>

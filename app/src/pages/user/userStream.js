@@ -127,9 +127,9 @@ function activityTile(item, user) {
 
   const isUser = user === item.actor;
   const userHighlightColor = '#7329c2';
-  const userShadow = '0px 2px 5px 0px rgba(119, 137, 166, 0.58)';
+  // const userShadow = '0px 2px 5px 0px rgba(119, 137, 166, 0.58)';
   const otherColor = '#7329c2';
-  const otherShadow = '0px 2px 5px 0px rgba(112, 148, 116, 0.58)';
+  // const otherShadow = '0px 2px 5px 0px rgba(112, 148, 116, 0.58)';
 
   return (
     <div
@@ -138,8 +138,7 @@ function activityTile(item, user) {
         marginTop: '1rem',
         borderTop: isUser
           ? `solid 2px ${userHighlightColor}`
-          : `solid 2px ${otherColor}`,
-        boxShadow: isUser ? `${userShadow}` : `${otherShadow}`
+          : `solid 2px ${otherColor}`
       }}
     >
       <div className="stream-label">
