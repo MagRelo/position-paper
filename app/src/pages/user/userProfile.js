@@ -3,14 +3,14 @@ import React, { useState, useEffect, useContext } from 'react';
 // import { Tabs, TabList, TabPanels, TabPanel } from '@reach/tabs';
 // import { formatCurrency, Loading } from 'components/random';
 
-import { formatCurrency, Loading } from 'components/random';
+import { Loading } from 'components/random';
 
 import UserBankAccount from 'pages/user/userBankAccount';
 import UserPaymentSource from 'pages/user/userPaymentSource';
 import UserPaymentTable from 'pages/user/userPaymentTable';
 import UserProfileForm from 'pages/user/userProfileForm';
 
-import StreamList from './userStream';
+// import StreamList from './userStream';
 
 import { AuthContext } from 'App';
 
@@ -19,11 +19,7 @@ function User(props) {
 
   const [isLoading, setIsLoading] = useState(true);
   const [userData, setUserData] = useState(user);
-  // const [links, setLinks] = useState([]);
-  // const [jobs, setJobs] = useState([]);
   const [payments, setPayments] = useState([]);
-  // const [responses, setResponses] = useState([]);
-  const [stream, setStream] = useState([]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -33,10 +29,6 @@ function User(props) {
     getUser(clearSession).then(body => {
       if (isSubscribed) {
         setUserData(body.user);
-        // setJobs(body.links.filter(link => link.generation === 0));
-        // setLinks(body.links.filter(link => link.generation !== 0));
-        setStream(body.stream);
-        // setResponses(body.responses);
         setPayments(body.payments);
         setIsLoading(false);
       }
@@ -53,33 +45,35 @@ function User(props) {
       {isLoading ? (
         <Loading />
       ) : (
-        <div>
+        <div className="grid grid-3-5">
           <div style={{ margin: '2em 0 ' }}>
             <h2>Edit Profile</h2>
             <UserProfileForm user={userData} />
           </div>
 
-          <div style={{ margin: '2em 0 ' }}>
-            <h2>Payment Source</h2>
-            <UserPaymentSource
-              hasPaymentSource={userData.hasPaymentSource}
-              sourceLabel={userData.stripeCustomerLabel}
-              sourceBrand={userData.stripeCustomerBrand}
-            />
-          </div>
+          <div>
+            <div style={{ margin: '2em 0 ' }}>
+              <h2>Payment Source</h2>
+              <UserPaymentSource
+                hasPaymentSource={userData.hasPaymentSource}
+                sourceLabel={userData.stripeCustomerLabel}
+                sourceBrand={userData.stripeCustomerBrand}
+              />
+            </div>
 
-          <div style={{ margin: '2em 0 ' }}>
-            <h2>Bank Account</h2>
-            <UserBankAccount
-              hasAccount={userData.hasAccount}
-              bankLabel={userData.stripeAccountLabel}
-              bankBrand={userData.stripeAccountBrand}
-            />
-          </div>
+            <div style={{ margin: '2em 0 ' }}>
+              <h2>Bank Account</h2>
+              <UserBankAccount
+                hasAccount={userData.hasAccount}
+                bankLabel={userData.stripeAccountLabel}
+                bankBrand={userData.stripeAccountBrand}
+              />
+            </div>
 
-          <div style={{ margin: '2em 0 ' }}>
-            <h2>Payments</h2>
-            <UserPaymentTable payments={payments} />
+            <div style={{ margin: '2em 0 ' }}>
+              <h2>Payments</h2>
+              <UserPaymentTable payments={payments} />
+            </div>
           </div>
         </div>
       )}
