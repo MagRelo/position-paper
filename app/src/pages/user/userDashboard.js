@@ -2,7 +2,13 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Link } from '@reach/router';
 
 import { Tabs, TabList, TabPanels, TabPanel } from '@reach/tabs';
-import { formatCurrency, CoolTab, Loading, JobBoard } from 'components/random';
+import {
+  formatCurrency,
+  CoolTab,
+  Loading,
+  JobBoard,
+  ProfilePic
+} from 'components/random';
 
 // import PaymentsTable from './userPaymentsTable';
 import ResponseList from './userResponseTable';
@@ -129,7 +135,7 @@ function User(props) {
         <div className="col-lg-4">
           <div>
             <div className="user-profile">
-              <img src={userData.avatar} alt="avatar" className="user-avatar" />
+              <ProfilePic avatarUrl={userData.avatar} />
               <div className="user-info">
                 <div className="user-name">
                   <Link to="/profile">{userData.displayName}</Link>

@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Tab } from '@reach/tabs';
 import { FaExternalLinkAlt, FaRegCopy } from 'react-icons/fa';
+import Img from 'react-image';
+
+import { AiOutlineUser } from 'react-icons/ai';
 
 var SI_SYMBOL = ['', 'k', 'M', 'G', 'T', 'P', 'E'];
 
@@ -288,5 +291,36 @@ export function JobBoard({ userData }) {
         </div>
       </div>
     </div>
+  );
+}
+
+export function ProfilePic({ avatarUrl }) {
+  const defaultPic = () => {
+    return (
+      <div className="user-avatar">
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100%',
+            fontSize: '24px',
+            color: '#7329c2'
+          }}
+          alt="avatar"
+        >
+          <AiOutlineUser />
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <Img
+      className="user-avatar"
+      src={[avatarUrl]}
+      loader={defaultPic()}
+      unloader={defaultPic()}
+    />
   );
 }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Loading } from 'components/random';
+import { Loading, ProfilePic } from 'components/random';
 
 function UserProfileForm({ user }) {
   const [displayName, setDisplayName] = useState(user.displayName || '');
@@ -60,7 +60,8 @@ function UserProfileForm({ user }) {
             >
               Log Out
             </button> */}
-          <img src={avatar} alt="avatar" className="user-avatar" />
+
+          <ProfilePic avatarUrl={avatar} />
           <div className="user-info">
             <div className="user-name">{displayName}</div>
           </div>

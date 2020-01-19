@@ -1,33 +1,34 @@
+// import React from 'react';
 import React, { useState, useEffect } from 'react';
 import { useDebounce } from 'components/random';
 // import { Helmet } from 'react-helmet';
 
-import JobSearchForm from 'networkData/searchForm';
+// import JobSearchForm from 'networkData/searchForm';
 import SearchResults from 'networkData/searchResult_tile';
 
 function SearchFlow() {
   // search data
   const [searchTerm, setSearchTerm] = useState('');
   const [results, setResults] = useState([]);
-  // const [isSearching, setIsSearching] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
+  // const [isOpen, setIsOpen] = useState(false);
 
   const debouncedSearchTerm = useDebounce(searchTerm, 333);
   useEffect(() => {
-    // setIsSearching(true);
+    setIsSearching(true);
     getSearchResults(debouncedSearchTerm).then(results => {
       setResults(results);
-      // setIsSearching(false);
+      setIsSearching(false);
     });
   }, [debouncedSearchTerm]);
 
-  function toggleForm() {
-    setIsOpen(!isOpen);
-  }
+  // function toggleForm() {
+  //   setIsOpen(!isOpen);
+  // }
 
-  function submit(queryObject) {
-    setSearchTerm(queryObject);
-  }
+  // function submit(queryObject) {
+  //   setSearchTerm(queryObject);
+  // }
 
   return (
     <div className="page-container">
