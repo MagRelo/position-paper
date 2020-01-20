@@ -8,11 +8,14 @@ function LinkedInLogin(props) {
 
   async function handleSuccess(data) {
     const user = await sendAuthCode(data);
+
+    // execute promote, apply?
+
     createSession(user, props.redirect);
   }
 
   function handleError(error) {
-    alert(error);
+    alert(error.message);
   }
 
   const domain = window.location.origin || 'http://localhost:3000';
@@ -45,6 +48,48 @@ async function sendAuthCode(data) {
     },
     body: JSON.stringify({
       access_code: data.code
+    })
+  })
+    .then(r => {
+      return r.status === 200 ? r.json() : {};
+    })
+    .catch(error => {
+      console.error(error);
+      return {};
+    });
+}
+
+async function createLink(parentLink) {
+  const apiEndpoint = '/api/link/add';
+
+  return await fetch(apiEndpoint, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      parentLink: parentLink
+    })
+  })
+    .then(r => {
+      return r.status === 200 ? r.json() : {};
+    })
+    .catch(error => {
+      console.error(error);
+      return {};
+    });
+}
+async function createApplication(linkId, userId) {
+  const apiEndpoint = '/api/response/add';
+
+  return await fetch(apiEndpoint, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      linkId,
+      userId
     })
   })
     .then(r => {

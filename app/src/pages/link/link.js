@@ -8,7 +8,8 @@ import { JobDisplay } from 'networkData/jobDisplay.js';
 import {
   formatCurrency,
   lineItem,
-  copyTextToClipboard
+  copyTextToClipboard,
+  Loading
 } from 'components/random';
 
 import LinkButton from './linkButton';
@@ -19,19 +20,18 @@ import LinkedinButton from 'components/social/linkedinButton';
 import InstaButton from 'components/social/instagramButton';
 import ApplyPanel from './applyPanel';
 
-import { Loading } from 'components/random';
-
 function LinkPage(props) {
-  const { activeSession, clearSession } = useContext(AuthContext);
+  const { activeSession, clearSession, user } = useContext(AuthContext);
 
   const [isLoading, setIsLoading] = useState(true);
 
-  const [user, setUser] = useState({});
+  const [userData, setUserData] = useState(user);
   const [link, setLink] = useState({});
   const [queryData, setQueryData] = useState({});
   const [traffic, setTraffic] = useState({});
   const [stream, setStream] = useState([]);
 
+  // sync page with linkId
   useEffect(() => {
     setIsLoading(true);
     let isSubscribed = true;
@@ -39,14 +39,12 @@ function LinkPage(props) {
     getLink(props.linkId, clearSession).then(body => {
       if (isSubscribed) {
         // display & admin
-        setUser(body.user);
+        setUserData(body.user);
         setLink(body.link);
-
         // admin only
         setQueryData(body.link.data);
         setTraffic(body.traffic);
         setStream(body.stream);
-
         setIsLoading(false);
       }
     });
@@ -74,17 +72,17 @@ function LinkPage(props) {
 
                 <ApplyPanel
                   link={link}
-                  user={user}
+                  user={userData}
                   activeSession={activeSession}
                 />
               </div>
 
               <div className="col-lg-4">
                 <div className="link-display">
-                  {user.isLinkOwner ? (
+                  {userData.isLinkOwner ? (
                     <AdminPanel
                       activeSession={activeSession}
-                      user={user}
+                      user={userData}
                       link={link}
                       stream={stream}
                       traffic={traffic}
@@ -92,7 +90,7 @@ function LinkPage(props) {
                   ) : (
                     <PromotePanel
                       link={link}
-                      user={user}
+                      user={userData}
                       activeSession={activeSession}
                     />
                   )}
@@ -151,7 +149,6 @@ function PromotePanel({ link, user, activeSession }) {
             parentLink={link.linkId}
             disabled={user._id === 0 || user.isLinkOwner || user.isPromoting}
             label={promoteButtonLabel}
-            executeButton={false}
           />
         )}
       </div>
@@ -159,7 +156,7 @@ function PromotePanel({ link, user, activeSession }) {
   );
 }
 
-function AdminPanel({ link, user, stream, traffic }) {
+function AdminPanel({ link, user, traffic }) {
   const domain = window.location.origin || 'http://localhost:3000';
 
   return (

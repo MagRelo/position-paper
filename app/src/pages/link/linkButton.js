@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { navigate } from '@reach/router';
 
 import { Loading } from 'components/random';
@@ -6,19 +6,13 @@ import { Loading } from 'components/random';
 function LinkButton(props) {
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    if (props.executeButton) {
-      console.log('executing...', props);
-      setIsLoading(true);
-      executeLinkButton();
-    }
-  }, [props.executeButton]);
-
   function executeLinkButton() {
     setIsLoading(true);
     createLink(props.parentLink).then(link => {
+      if (link && link.linkId) {
+        navigate('/link/' + link.linkId);
+      }
       setIsLoading(false);
-      navigate('/link/' + link.linkId);
     });
   }
 

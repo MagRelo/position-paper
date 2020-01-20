@@ -255,6 +255,15 @@ exports.createChildLink = async function(req, res) {
       return res.status(404).send({ error: 'parent link not found' });
     }
 
+    // user is promoting
+    const userPromoting = await LinkModel.findOne({
+      user: req.user._id,
+      parents: parentLink._id
+    });
+    if (userPromoting) {
+      return res.status(400).send({ error: 'user is promoting' });
+    }
+
     // set up generation
     const thisGen = parentLink.generation + 1;
     const nextGen = parentLink.generation + 2;
