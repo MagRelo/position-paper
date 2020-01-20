@@ -24,6 +24,7 @@ function LinkPage(props) {
   const { activeSession, clearSession, user } = useContext(AuthContext);
 
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
 
   const [userData, setUserData] = useState(user);
   const [link, setLink] = useState({});
@@ -36,18 +37,24 @@ function LinkPage(props) {
     setIsLoading(true);
     let isSubscribed = true;
 
-    getLink(props.linkId, clearSession).then(body => {
-      if (isSubscribed) {
-        // display & admin
-        setUserData(body.user);
-        setLink(body.link);
-        // admin only
-        setQueryData(body.link.data);
-        setTraffic(body.traffic);
-        setStream(body.stream);
+    getLink(props.linkId, clearSession)
+      .then(body => {
+        if (isSubscribed) {
+          // display & admin
+          setUserData(body.user);
+          setLink(body.link);
+          // admin only
+          setQueryData(body.link.data);
+          setTraffic(body.traffic);
+          setStream(body.stream);
+          setIsLoading(false);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        setError(error.toString());
         setIsLoading(false);
-      }
-    });
+      });
 
     // cleanup
     return () => {
@@ -61,7 +68,11 @@ function LinkPage(props) {
         <div style={{ marginTop: '2em' }}>
           <Loading />
         </div>
-      ) : (
+      ) : null}
+
+      {error ? <p style={{ textAlign: 'center' }}>{error}</p> : null}
+
+      {!isLoading && !error ? (
         <div>
           <div className="container">
             <div className="row">
@@ -99,7 +110,7 @@ function LinkPage(props) {
             </div>
           </div>
         </div>
-      )}
+      ) : null}
     </div>
   );
 }
@@ -107,20 +118,21 @@ function LinkPage(props) {
 export default LinkPage;
 
 async function getLink(linkId, clearSession) {
-  return await fetch('/api/link/' + linkId).then(response => {
+  return fetch('/api/link/' + linkId).then(response => {
     if (response.status === 200) {
       return response.json();
     }
 
     // some type of error has occured...
-    console.log(response.status, response.message);
+    console.log(response.status, response.statusText);
 
     // clearSession if 401
     if (response.status === 401) {
       console.log('logging out...');
       clearSession();
-      return {};
     }
+
+    throw new Error(response.statusText);
   });
 }
 
@@ -137,12 +149,13 @@ function PromotePanel({ link, user, activeSession }) {
       <div>
         <h3>Promote this Job</h3>
         <p>
-          {`Create your own link to this position and collect up to ${promoteBonus} if the candidate responds through your link.`}
+          Create your own link to this position and collect up to{' '}
+          <b>{promoteBonus}</b> if the candidate responds through your link.
         </p>
 
         {!activeSession ? (
           <LinkedInLogin redirect={'/link/' + link.linkId}>
-            {promoteButtonLabel}
+            {'(Login to Promote)'}
           </LinkedInLogin>
         ) : (
           <LinkButton

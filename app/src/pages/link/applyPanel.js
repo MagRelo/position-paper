@@ -54,7 +54,7 @@ function ApplyPanel({ link, user }) {
               <h2>Apply for this Job</h2>
               <p>
                 Apply for this position. We'll pay you{' '}
-                {formatCurrency(link.target_bonus)} if you're hired.
+                <b>{formatCurrency(link.target_bonus)}</b> if you're hired.
               </p>
               {loading ? (
                 <Loading />
@@ -77,11 +77,11 @@ function ApplyPanel({ link, user }) {
           <h2>Apply for this Job</h2>
           <p>
             Apply for this position. We'll pay you{' '}
-            {formatCurrency(link.target_bonus)} if you're hired.
+            <b>{formatCurrency(link.target_bonus)}</b> if you're hired.
           </p>
 
           <LinkedInLogin redirect={'/link/' + link.linkId}>
-            Apply Now
+            {'(Login to Apply)'}
           </LinkedInLogin>
         </React.Fragment>
       )}
