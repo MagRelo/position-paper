@@ -184,7 +184,7 @@ exports.userStatus = async function(req, res) {
     return res.status(401).send({ error: 'no user' });
   }
   return res.status(200).send({
-    name: req.user.firstname + ' ' + req.user.lastname,
+    displayName: req.user.displayName,
     avatar: req.user.avatar
   });
 };
