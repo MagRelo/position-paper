@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { navigate } from '@reach/router';
 import InputRange from 'react-input-range';
 
@@ -7,19 +7,25 @@ import mediumDraftExporter from 'medium-draft/lib/exporter';
 import 'medium-draft/lib/index.css';
 import { convertToRaw } from 'draft-js';
 
-import { useDebounce, formatCurrency } from 'components/random';
+import { AuthContext } from 'App';
+
+import { useDebounce, formatCurrency, Loading } from 'components/random';
 
 function roundToNearest(input, step) {
   return Math.round(input / step) * step;
 }
 
 function JobForm(props) {
-  // console.log(props);
+  // user
+  const { clearSession } = useContext(AuthContext);
 
-  // form status
+  // form
+  const [formStatus, setFormStatus] = useState('new');
   const [isEditing] = useState(props.isEditing || false);
+  const [error, setError] = useState('');
   const [linkId] = useState(props.linkId);
 
+  // form data
   const [jobTitle, setJobTitle] = useState('');
   const [employer, setEmployer] = useState('');
   const [location, setLocation] = useState('');
@@ -33,6 +39,7 @@ function JobForm(props) {
   const [editorState, setEditorState] = useState(createEditorState());
   const refsEditor = React.createRef();
 
+  // sync form with props
   useEffect(() => {
     if (props.formData) {
       setJobTitle(props.formData.jobTitle);
@@ -63,28 +70,32 @@ function JobForm(props) {
   function submit(event) {
     event.preventDefault();
 
-    // get and format form data
-    var formObject = {
-      editorState: editorState,
-      rawState: convertToRaw(editorState.getCurrentContent()),
-      renderedHtml: mediumDraftExporter(editorState.getCurrentContent()),
-      salaryRange: salaryRange
-    };
-
-    const formData = new FormData(event.target);
-    formData.forEach((value, key) => {
-      formObject[key] = value;
-    });
+    // loading
+    setFormStatus('loading');
 
     // send to server
-    // console.log(formObject);
     try {
-      submitJob(isEditing, formObject, linkId).then(link => {
+      // get and format form data
+      var formObject = {
+        editorState: editorState,
+        rawState: convertToRaw(editorState.getCurrentContent()),
+        renderedHtml: mediumDraftExporter(editorState.getCurrentContent()),
+        salaryRange: salaryRange
+      };
+
+      const formData = new FormData(event.target);
+      formData.forEach((value, key) => {
+        formObject[key] = value;
+      });
+
+      submitJob(formObject, linkId, clearSession).then(link => {
         // redirect
         navigate('/link/' + link.linkId);
       });
     } catch (error) {
-      alert(error);
+      console.log(error);
+      setError(error.toString());
+      setFormStatus('error');
     }
   }
 
@@ -188,9 +199,23 @@ function JobForm(props) {
 
         <hr />
         <div style={{ textAlign: 'right' }}>
-          <button className="btn btn-theme" type="submit">
-            {isEditing ? 'Save' : 'Post Job'}
-          </button>
+          {formStatus === 'new' ? (
+            <button className="btn btn-theme" type="submit">
+              Post Job
+            </button>
+          ) : null}
+
+          {formStatus === 'editing' ? (
+            <button className="btn btn-theme" type="submit">
+              Save
+            </button>
+          ) : null}
+
+          {formStatus === 'loading' ? <Loading /> : null}
+
+          {formStatus === 'error' ? (
+            <p style={{ textAlign: 'center' }}>{error}</p>
+          ) : null}
         </div>
       </form>
     </div>
@@ -199,9 +224,12 @@ function JobForm(props) {
 
 export default JobForm;
 
-async function submitJob(isEditing, queryData, linkId) {
-  const endPoint = isEditing ? '/api/query/update/' + linkId : '/api/query/add';
-  const method = isEditing ? 'PUT' : 'POST';
+async function submitJob(queryData, linkId, clearSession) {
+  // if we have a linkId then it's an update
+  const method = linkId ? 'PUT' : 'POST';
+  const endPoint = linkId ? '/api/query/update/' + linkId : '/api/query/add';
+
+  console.log(method, endPoint, queryData);
 
   return fetch(endPoint, {
     method: method,
@@ -209,5 +237,20 @@ async function submitJob(isEditing, queryData, linkId) {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(queryData)
-  }).then(response => response.json());
+  }).then(response => {
+    if (response.status === 200) {
+      return response.json();
+    }
+
+    // some type of error has occured...
+    console.log(response.status, response.statusText);
+
+    // clearSession if 401
+    if (response.status === 401) {
+      console.log('logging out...');
+      clearSession();
+    }
+
+    throw new Error(response.statusText);
+  });
 }

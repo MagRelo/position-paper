@@ -110,12 +110,11 @@ function AnimatedSearchResults(props) {
   });
 
   return (
-    <div className="row">
+    <div className="grid grid-3">
       {trail.map(({ x, height, ...rest }, index) => {
         return (
           <animated.div
             key={index}
-            className="col-lg-4"
             style={{
               ...rest,
               transform: x.interpolate(x => `translate3d(0,${x}px,0)`)
