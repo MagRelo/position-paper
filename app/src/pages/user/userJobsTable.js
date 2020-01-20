@@ -12,6 +12,7 @@ class JobTable extends Component {
               <th>Status</th>
               <th>Promoters</th>
               <th>Applicants</th>
+              <th>View</th>
             </tr>
           </thead>
           <tbody>
@@ -23,10 +24,9 @@ class JobTable extends Component {
                   </td>
                   <td>{link.status}</td>
                   <td>{link.children.length}</td>
+                  <td>{link.responses.length}</td>
                   <td>
-                    <Link to={'/applications/' + link.linkId}>
-                      {link.responses.length} - View
-                    </Link>
+                    <Link to={'/applications/' + link.linkId}>View</Link>
                   </td>
                 </tr>
               );
