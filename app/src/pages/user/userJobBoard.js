@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Loading } from 'components/random';
 // import { Helmet } from 'react-helmet';
 
-import SearchResults from 'networkData/searchResult_tile';
+import SearchResults from 'pages/search/searchResult_tile';
 
 function SearchFlow({ userId }) {
   const [isLoading, setIsLoading] = useState(false);

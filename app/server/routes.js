@@ -64,7 +64,7 @@ router.get('*', function(req, res) {
       'https://' + req.hostname + '/logo_share.png'
     );
 
-    console.log(result);
+    // console.log(result);
     res.send(result);
   });
 });

@@ -188,6 +188,18 @@ export function Loading() {
   );
 }
 
+export function Bouncing() {
+  return (
+    <div style={{ textAlign: 'center', marginTop: '1em' }}>
+      <div className="spinner">
+        <div className="bounce1"></div>
+        <div className="bounce2"></div>
+        <div className="bounce3"></div>
+      </div>
+    </div>
+  );
+}
+
 function fallbackCopyTextToClipboard(text) {
   var textArea = document.createElement('textarea');
   textArea.value = text;

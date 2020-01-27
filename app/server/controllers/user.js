@@ -18,6 +18,10 @@ exports.populateUser = async function(req, res) {
       )
       .lean();
 
+    if (!user) {
+      return res.status(401).send({ error: 'no user' });
+    }
+
     // get queries and links
     const userObject = {
       user: {

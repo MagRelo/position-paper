@@ -57,13 +57,14 @@ import Employers from 'pages/employer';
 
 // Maybe Auth
 import Login from 'pages/login';
-import Search from 'pages/search';
+import Search from 'pages/search/search';
 import UserJobs from 'pages/user/userJobBoard';
 import LinkPage from 'pages/link/link';
-import AddLink from 'networkData/jobForm';
 import EditLink from 'pages/link/editLink';
 import Applications from 'pages/link/applications';
 import ApplicationPayment from 'pages/link/applicationPayment';
+
+import AddLink from 'networkData/jobForm';
 
 // Auth
 import Profile from 'pages/user/userProfile';

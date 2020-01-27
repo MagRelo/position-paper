@@ -1,58 +1,77 @@
 // import React from 'react';
 import React, { useState, useEffect } from 'react';
-import { useDebounce } from 'components/random';
 // import { Helmet } from 'react-helmet';
 
-// import JobSearchForm from 'networkData/searchForm';
-import SearchResults from 'networkData/searchResult_tile';
+import { useTrail, animated } from 'react-spring';
+
+import JobSearchForm from 'pages/search/searchForm';
+import ActivityTile from 'pages/search/searchResult_tile';
 
 function SearchFlow() {
   // search data
+  const [isSearching, setIsSearching] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [results, setResults] = useState([]);
-  const [isSearching, setIsSearching] = useState(false);
-  // const [isOpen, setIsOpen] = useState(false);
+  const [error, setError] = useState('');
 
-  const debouncedSearchTerm = useDebounce(searchTerm, 333);
+  //searchTerm
   useEffect(() => {
     setIsSearching(true);
-    getSearchResults(debouncedSearchTerm).then(results => {
-      setResults(results);
-      setIsSearching(false);
-    });
-  }, [debouncedSearchTerm]);
+    setError('');
 
-  // function toggleForm() {
-  //   setIsOpen(!isOpen);
-  // }
+    getSearchResults(searchTerm)
+      .then(results => {
+        setResults(results);
+        setIsSearching(false);
+      })
+      .catch(error => {
+        console.log(error);
+        setError(error.toString());
+        setIsSearching(false);
+      });
+  }, [searchTerm]);
 
-  // function submit(queryObject) {
-  //   setSearchTerm(queryObject);
-  // }
+  function submit(searchText) {
+    setSearchTerm(searchText);
+  }
+
+  const config = { mass: 5, tension: 2000, friction: 200 };
+  const trail = useTrail(results.length, {
+    config,
+    opacity: 1,
+    x: 0,
+    height: 80,
+    from: { opacity: 0, x: 20, height: 0 }
+  });
 
   return (
     <div className="page-container">
       <div className="container">
-        <h1>
-          Search
-          {/* <button
-            className="btn btn-theme btn-sm"
-            style={{ float: 'right', fontSize: 'small' }}
-            onClick={() => {
-              toggleForm();
-            }}
-          >
-            {isOpen ? 'Close' : 'Filter'}
-          </button> */}
-        </h1>
-        {/* 
-        {isOpen ? (
-          <div style={{ marginBottom: '2em' }}>
-            <JobSearchForm submit={submit} />
-          </div>
-        ) : null} */}
+        <div style={{ marginBottom: '2rem' }}>
+          <JobSearchForm submit={submit} />
+        </div>
 
-        <SearchResults results={results} />
+        {error ? <p style={{ textAlign: 'center' }}>{error}</p> : null}
+
+        {!results.length ? (
+          <p style={{ textAlign: 'center' }}>No Results</p>
+        ) : null}
+
+        <div className="grid grid-3">
+          {trail.map(({ x, height, ...rest }, index) => {
+            return (
+              <animated.div
+                key={index}
+                style={{
+                  ...rest,
+                  transform: x.interpolate(x => `translate3d(0,${x}px,0)`)
+                }}
+              >
+                {ActivityTile(results[index])}
+              </animated.div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
@@ -61,15 +80,19 @@ function SearchFlow() {
 export default SearchFlow;
 
 async function getSearchResults(searchTerm, days) {
-  const queryString = `?searchTerm=${searchTerm}&days=${days}`;
-  return await fetch('/api/search' + queryString, {
+  const queryString = `?searchTerm=${searchTerm}`;
+  return fetch('/api/search' + queryString, {
     method: 'GET'
-  })
-    .then(r => r.json())
-    .catch(error => {
-      console.error(error);
-      return [];
-    });
+  }).then(response => {
+    if (response.status === 200) {
+      return response.json();
+    }
+
+    // some type of error has occured...
+    console.log(response.status, response.statusText);
+
+    throw new Error(response.statusText);
+  });
 }
 
 // <MetaData />

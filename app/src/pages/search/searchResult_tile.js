@@ -33,7 +33,7 @@ function jobDataItem(label, value) {
   );
 }
 
-function activityTile({ link, user }) {
+function activityTile({ link }) {
   const salaryString = `${formatCurrency(
     link.data.salaryMin,
     true
@@ -48,19 +48,17 @@ function activityTile({ link, user }) {
         {formatDate(link.createdAt)}
       </span>
 
-      <div>
-        <p
-          className="section-header"
-          style={{ color: 'initial', fontSize: '18px', marginTop: 0 }}
-        >
-          {link.data.jobTitle}
-        </p>
+      <p
+        className="section-header"
+        style={{ color: 'initial', fontSize: '18px', marginTop: 0 }}
+      >
+        {link.data.jobTitle}
+      </p>
 
-        <div className="grid-left">
-          {jobDataItem('Employer', link.data.employer)}
-          {jobDataItem('Location', link.data.location)}
-          {jobDataItem('Salary', salaryString)}
-        </div>
+      <div className="grid-left">
+        {jobDataItem('Employer', link.data.employer)}
+        {jobDataItem('Location', link.data.location)}
+        {jobDataItem('Salary', salaryString)}
       </div>
 
       <div
@@ -99,33 +97,4 @@ function activityTile({ link, user }) {
   );
 }
 
-function AnimatedSearchResults(props) {
-  const config = { mass: 5, tension: 2000, friction: 200 };
-  const trail = useTrail(props.results.length, {
-    config,
-    opacity: 1,
-    x: 0,
-    height: 80,
-    from: { opacity: 0, x: 20, height: 0 }
-  });
-
-  return (
-    <div className="grid grid-3">
-      {trail.map(({ x, height, ...rest }, index) => {
-        return (
-          <animated.div
-            key={index}
-            style={{
-              ...rest,
-              transform: x.interpolate(x => `translate3d(0,${x}px,0)`)
-            }}
-          >
-            {activityTile(props.results[index])}
-          </animated.div>
-        );
-      })}
-    </div>
-  );
-}
-
-export default AnimatedSearchResults;
+export default activityTile;

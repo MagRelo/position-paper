@@ -91,6 +91,8 @@ const LinkSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+LinkSchema.index({ title: 'text' });
+
 exports.LinkModel = mongoose.model('Link', LinkSchema);
 
 //

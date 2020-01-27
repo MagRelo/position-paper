@@ -210,6 +210,18 @@ h3 {
   box-shadow: 0 8px 40px -5px rgba(9, 31, 67, 0.1);
 }
 
+.search-form-wrapper {
+  border: solid 1px #dfdfdf;
+  border-radius: 7px;
+  box-shadow: 0 8px 40px -5px rgba(9, 31, 67, 0.1);
+}
+
+.search-form-title {
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+}
+
 .link-display {
   position: sticky;
   top: 48px;
@@ -493,7 +505,7 @@ table {
   }
 }
 
-/* Landing Images */
+/* Loaders */
 
 .lds-dual-ring {
   display: inline-block;
@@ -522,6 +534,65 @@ table {
     transform: rotate(360deg);
   }
 }
+
+.spinner {
+  /* margin: 100px auto 0; */
+  width: 70px;
+  text-align: center;
+}
+
+.spinner>div {
+  width: 18px;
+  height: 18px;
+  background-color: #7329c2;
+  ;
+
+  border-radius: 100%;
+  display: inline-block;
+  -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+
+.spinner .bounce1 {
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+
+.spinner .bounce2 {
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+  background-color: #03d665;
+}
+
+@-webkit-keyframes sk-bouncedelay {
+
+  0%,
+  80%,
+  100% {
+    -webkit-transform: scale(0)
+  }
+
+  40% {
+    -webkit-transform: scale(1.0)
+  }
+}
+
+@keyframes sk-bouncedelay {
+
+  0%,
+  80%,
+  100% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  }
+
+  40% {
+    -webkit-transform: scale(1.0);
+    transform: scale(1.0);
+  }
+}
+
+/* Loaders */
 
 .hero-container {
   padding-top: 40px;
