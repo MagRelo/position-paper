@@ -25,18 +25,16 @@ function LinkedInLogin(props) {
   const domain = window.location.origin || 'http://localhost:3000';
 
   return (
-    <div>
-      <LinkedIn
-        clientId="77b8hpip0vzxo9"
-        onFailure={handleError}
-        onSuccess={handleSuccess}
-        scope="r_liteprofile r_emailaddress w_member_social"
-        redirectUri={domain + '/linkedin/callback'}
-        className="btn btn-theme btn-sm"
-      >
-        {props.children}
-      </LinkedIn>
-    </div>
+    <LinkedIn
+      clientId="77b8hpip0vzxo9"
+      onFailure={handleError}
+      onSuccess={handleSuccess}
+      scope="r_liteprofile r_emailaddress w_member_social"
+      redirectUri={domain + '/linkedin/callback'}
+      className="btn btn-theme btn-sm"
+    >
+      {props.children}
+    </LinkedIn>
   );
 }
 

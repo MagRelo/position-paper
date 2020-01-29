@@ -44,7 +44,7 @@ import './css/responsive.css';
 import './css/talent-relay.css';
 
 // Header
-import Header from 'components/header';
+import Header from 'components/header-2';
 import Footer from 'components/footer';
 
 import NotFound from 'pages/404';
