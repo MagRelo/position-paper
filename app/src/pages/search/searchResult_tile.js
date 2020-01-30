@@ -3,8 +3,6 @@ import { Link } from '@reach/router';
 
 import { formatCurrency } from 'components/random';
 
-import { useTrail, animated } from 'react-spring';
-
 // Load locale-specific relative date/time formatting rules.
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';

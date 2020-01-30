@@ -9,25 +9,25 @@ import ActivityTile from 'pages/search/searchResult_tile';
 
 function SearchFlow() {
   // search data
-  const [isSearching, setIsSearching] = useState(false);
+  // const [isSearching, setIsSearching] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [results, setResults] = useState([]);
   const [error, setError] = useState('');
 
   //searchTerm
   useEffect(() => {
-    setIsSearching(true);
+    // setIsSearching(true);
     setError('');
 
     getSearchResults(searchTerm)
       .then(results => {
         setResults(results);
-        setIsSearching(false);
+        // setIsSearching(false);
       })
       .catch(error => {
         console.log(error);
         setError(error.toString());
-        setIsSearching(false);
+        // setIsSearching(false);
       });
   }, [searchTerm]);
 

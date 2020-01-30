@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Loading } from 'components/random';
 // import { Helmet } from 'react-helmet';
 
-import SearchResults from 'pages/search/searchResult_tile';
+import { useTrail, animated } from 'react-spring';
+
+import ActivityTile from 'pages/search/searchResult_tile';
 
 function SearchFlow({ userId }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -19,6 +21,15 @@ function SearchFlow({ userId }) {
     });
   }, [userId]);
 
+  const config = { mass: 5, tension: 2000, friction: 200 };
+  const trail = useTrail(results.length, {
+    config,
+    opacity: 1,
+    x: 0,
+    height: 80,
+    from: { opacity: 0, x: 20, height: 0 }
+  });
+
   return (
     <div className="page-container">
       <div className="container">
@@ -29,7 +40,25 @@ function SearchFlow({ userId }) {
           </div>
         </div>
 
-        {isLoading ? <Loading /> : <SearchResults results={results} />}
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <div className="grid grid-3">
+            {trail.map(({ x, height, ...rest }, index) => {
+              return (
+                <animated.div
+                  key={index}
+                  style={{
+                    ...rest,
+                    transform: x.interpolate(x => `translate3d(0,${x}px,0)`)
+                  }}
+                >
+                  {ActivityTile(results[index])}
+                </animated.div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );

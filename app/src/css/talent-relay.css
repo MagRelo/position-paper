@@ -238,6 +238,7 @@ h3 {
   border-radius: 7px;
   box-shadow: 0 8px 40px -5px rgba(9, 31, 67, 0.1);
   border-top: solid 2px #03d665;
+  color: #3a3a3a;
 }
 
 .search-tile-header {
@@ -696,6 +697,7 @@ header {
 .nav-list-container {
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 
