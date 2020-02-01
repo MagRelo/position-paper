@@ -32,6 +32,7 @@
     "nanoid": "^2.0.3",
     "newrelic": "^5.11.0",
     "node-fetch": "^2.6.0",
+    "node-sass": "^4.13.1",
     "passport": "^0.4.0",
     "passport-linkedin-oauth2": "^2.0.0",
     "passport-local": "^1.0.0",

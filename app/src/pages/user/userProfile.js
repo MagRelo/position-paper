@@ -46,7 +46,7 @@ function User(props) {
         <Loading />
       ) : (
         <div className="grid grid-3-5">
-          <div style={{ margin: '2em 0 ' }}>
+          <div>
             <button
               className="btn btn-sm"
               style={{ float: 'right' }}
@@ -63,7 +63,7 @@ function User(props) {
           </div>
 
           <div>
-            <div style={{ margin: '2em 0 ' }}>
+            <div>
               <h2>Payment Source</h2>
               <UserPaymentSource
                 hasPaymentSource={userData.hasPaymentSource}
@@ -72,7 +72,7 @@ function User(props) {
               />
             </div>
 
-            <div style={{ margin: '2em 0 ' }}>
+            <div>
               <h2>Bank Account</h2>
               <UserBankAccount
                 hasAccount={userData.hasAccount}
@@ -81,7 +81,7 @@ function User(props) {
               />
             </div>
 
-            <div style={{ margin: '2em 0 ' }}>
+            <div>
               <h2>Payments</h2>
               <UserPaymentTable payments={payments} />
             </div>

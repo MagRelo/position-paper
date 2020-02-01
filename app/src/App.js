@@ -3,11 +3,7 @@ import { Router, navigate } from '@reach/router';
 import { OnRouteChange } from 'routingHack.js';
 
 import Helmet from 'react-helmet';
-
-//
 import Cookies from 'js-cookie';
-import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
-
 import { Loading } from 'components/random';
 
 // Compoenent CSS
@@ -19,29 +15,12 @@ import '@reach/menu-button/styles.css';
 
 // bootstrap -->
 import './css/bootstrap.min.css';
-// <!--== animate -->
-import './css/animate.css';
-// <!--== fontawesome -->
 import './css/fontawesome-all.css';
-// <!--== line-awesome -->
-import './css/line-awesome.min.css';
-// <!--== magnific-popup -->
-// import './css/magnific-popup/magnific-popup.css';
-// <!--== owl-carousel -->
-// import './css/owl-carousel/owl.carousel.css';
-// <!--== base -->
-import './css/base.css';
-// <!--== shortcodes -->
-import './css/shortcodes.css';
-// <!--== default-theme -->
-import './css/style.css';
-// <!--== responsive -->
-import './css/responsive.css';
 
 //
 // Template Overides
 //
-import './css/talent-relay.css';
+import './css/talent-relay.scss';
 
 // Header
 import Header from 'components/header-2';
@@ -67,8 +46,9 @@ import ApplicationPayment from 'pages/link/applicationPayment';
 import AddLink from 'networkData/jobForm';
 
 // Auth
+import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
 import Profile from 'pages/user/userProfile';
-import Dashboard from 'pages/user/userDashboard';
+import Dashboard from 'pages/user/userDashboard-2';
 // import UserBankAccount from 'pages/user/userBankAccount';
 // import Response from 'pages/response/response';
 // import Respond from 'pages/response/respond';

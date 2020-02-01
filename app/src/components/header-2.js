@@ -7,7 +7,7 @@ import LinkedInLogin from 'components/linkedinLogin';
 import { Link } from '@reach/router';
 
 // temp
-import logo from 'images/logo.png';
+// import logo from 'images/logo.png';
 
 const NavLink = props => (
   <Link
@@ -35,18 +35,19 @@ function Header(props) {
 
   return (
     <header>
-      <div>
-        <Link to="/">
-          <img
-            id="logo-img"
-            className=" logo-img img-center"
-            src={logo}
-            alt="logo"
-          ></img>
-        </Link>
+      <div className="header-container">
+        <div>
+          <Link to="/">
+            <span>
+              <span className="header-title">Talent</span>
+              &#8201;
+              <span className="header-title">Relay</span>
+            </span>
+          </Link>
+        </div>
       </div>
 
-      <div className="nav-list-container">
+      <div className="header-container">
         <ul className="nav-list">
           <li>
             <NavLink className="nav-link" to="/search">

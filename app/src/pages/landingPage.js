@@ -40,9 +40,7 @@ function LandingPage() {
                 data-wow-duration="2.5s"
               >
                 <h5 className="title-theme-bg">Welcome To Talent Relay</h5>
-                <h1 className="mb-4">
-                  Hiring just got a lot easier (also cheaper, faster)
-                </h1>
+                <h1 className="mb-4">Build Your Own Job Board</h1>
 
                 <p className="lead mb-4">
                   Talent Relay <b>super-charges your talent search</b> by using
@@ -208,7 +206,7 @@ function LandingPage() {
                       </li>
 
                       <li className="mb-3">
-                        <i className="fas fa-check-circle"></i>Great source of
+                        <i className="fas fa-check-circle"></i> Great source of
                         revenue for meetups, blogs, newsletters...
                       </li>
                     </ul>
