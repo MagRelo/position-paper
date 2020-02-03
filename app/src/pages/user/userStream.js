@@ -126,9 +126,9 @@ function activityTile(item, user) {
   if (!item.data) return <div>error: no data</div>;
 
   const isUser = user === item.actor;
-  const userHighlightColor = '#7329c2';
+  const userHighlightColor = '#FFA400';
   // const userShadow = '0px 2px 5px 0px rgba(119, 137, 166, 0.58)';
-  const otherColor = '#7329c2';
+  const otherColor = '#1E68BC';
   // const otherShadow = '0px 2px 5px 0px rgba(112, 148, 116, 0.58)';
 
   return (

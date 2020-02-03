@@ -37,6 +37,7 @@ function SearchFlow({ userId }) {
           <img src={user.avatar} alt="avatar" className="user-avatar" />
           <div className="user-info">
             <div className="user-name">{user.displayName}</div>
+            <p>{user.description}</p>
           </div>
         </div>
 

@@ -21,6 +21,7 @@ import './css/fontawesome-all.css';
 // Template Overides
 //
 import './css/talent-relay.scss';
+import './css/stars.scss';
 
 // Header
 import Header from 'components/header-2';

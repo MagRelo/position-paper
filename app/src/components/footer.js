@@ -3,10 +3,19 @@ import React from 'react';
 function Footer(props) {
   return (
     <footer>
+      <div id="stars"></div>
+      <div id="stars2"></div>
+      <div id="stars3"></div>
       <div className="container">
         <div className="grid grid-2">
-          <div>
-            <div className="footer-logo">Talent Relay</div>
+          <div style={{ zIndex: 1 }}>
+            <div className="footer-logo">
+              <span>
+                <span className="footer-title">Talent</span>
+                &#8201;
+                <span className="footer-title">Relay</span>
+              </span>
+            </div>
             <p>
               TalentRelay is the easiest way to hire the best Software
               Developers, DevOps Engineers, and Engineering Leaders that others
@@ -16,7 +25,7 @@ function Footer(props) {
             </p>
           </div>
 
-          <div>
+          <div style={{ zIndex: 1 }}>
             <div
               style={{
                 height: '70px',
@@ -59,7 +68,7 @@ function Footer(props) {
 
       <div className="mt-5 text-center">
         <div className="container">
-          <div className="copyright">
+          <div className="copyright" style={{ zIndex: 1 }}>
             <span>Talent Relay | 2020</span>
           </div>
         </div>

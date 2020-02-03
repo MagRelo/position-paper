@@ -8,12 +8,12 @@ import FinishLine from 'images/undraw_finish_line.svg';
 
 // How it works
 import OnlineAd from 'images/undraw_online_ad_purple.svg';
-import TeamChat from 'images/undraw_team_chat.svg';
+// import TeamChat from 'images/undraw_team_chat.svg';
 import Destinations from 'images/undraw_destinations.svg';
-// import Organizer from 'images/undraw_online_organizer.svg';
+import Organizer from 'images/undraw_online_organizer.svg';
 
 // Employers
-import Runner from 'images/undraw_runner.svg';
+// import Runner from 'images/undraw_runner.svg';
 import Friends from 'images/undraw_friends_online.svg';
 // import StatusUpdate from 'images/undraw_status_update.svg';
 
@@ -28,17 +28,14 @@ function LandingPage() {
         {/* <div id="particles-js"></div> */}
         <div className="center-container">
           <div className="container">
-            <div className="row align-items-center">
-              <div className="col-lg-6 col-md-12">
+            <div className="grid grid-3-5 align-items-center">
+              <div>
                 <div className="landing-image-container">
                   <img src={FinishLine} alt="" className="landing-image" />
                 </div>
               </div>
 
-              <div
-                className="col-lg-6 col-md-12 md-mt-5 wow fadeInRight"
-                data-wow-duration="2.5s"
-              >
+              <div>
                 <h5 className="title-theme-bg">Welcome To Talent Relay</h5>
                 <h1 className="mb-4">Build Your Own Job Board</h1>
 
@@ -99,6 +96,7 @@ function LandingPage() {
         </div>
         */}
 
+        {/* Employers 
         <section id="employers">
           <div className="container">
             <div style={{ textAlign: 'center' }}>
@@ -106,7 +104,7 @@ function LandingPage() {
               <p>Get Connected to the Best Candidates</p>
             </div>
 
-            {/* NOTHING UPFRONT */}
+            
 
             <div className="grid grid-2 landing-grid align-items-center">
               <div className="swap-order">
@@ -146,7 +144,7 @@ function LandingPage() {
               </div>
             </div>
 
-            {/* PRE-SCREENING */}
+            
             <div className="grid grid-2 landing-grid align-items-center">
               <div>
                 <div className="landing-image-container">
@@ -176,8 +174,10 @@ function LandingPage() {
           </div>
         </section>
 
+*/}
+
         <section id="how">
-          <div className="container" style={{ textAlign: 'center' }}>
+          <div className="container section-title">
             <h2>How It Works</h2>
             <p>Good People know Good People</p>
           </div>
@@ -283,6 +283,44 @@ function LandingPage() {
             </div>
           </div>
 
+          {/* Onboard Employers  */}
+          <div>
+            <div className="container">
+              <div className="grid grid-2 landing-grid align-items-center">
+                <div>
+                  <div className="landing-image-container">
+                    <img src={Organizer} alt="" className="landing-image" />
+                  </div>
+                </div>
+
+                <div>
+                  <div className="div-title">
+                    <h3>
+                      Onboard Employers → <span>Get Paid</span>
+                    </h3>
+                  </div>
+
+                  <div className="mb-4">
+                    <ul className="list-unstyled list-icon">
+                      <li className="mb-3">
+                        <i className="fas fa-check-circle"></i> [Pay nothing
+                        until after the employee has completed a 90-day trial
+                        period]
+                      </li>
+                      <li className="mb-3">
+                        <i className="fas fa-check-circle"></i> [Cost only a
+                        fraction of other services: just 5% of the annual
+                        salary]
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
           <div className="landing-grid" id="getstarted">
             <EmailForm
               source="connector"
@@ -291,48 +329,6 @@ function LandingPage() {
             />
           </div>
         </section>
-
-        {/* Onboard Employers 
-        <div>
-          <div className="container">
-            <div className="row align-items-center">
-              <div className="col-lg-6 col-md-12">
-                <div className="div-title">
-                  <h3 >
-                    Onboard Employers → <span>Get Paid</span>
-                  </h3>
-                  <p className="mb-0">
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                    Fugiat nesciunt culpa architecto iure, eligendi blanditiis
-                    dolorum accusamus a, ratione voluptatibus hic corrupti
-                    deleniti odit enim explicabo voluptatum ipsam at
-                    necessitatibus.
-                  </p>
-                </div>
-
-                <div className="mb-4">
-                  <ul className="list-unstyled list-icon">
-                    <li className="mb-3">
-                      <i className="fas fa-check-circle"></i> [Pay nothing until
-                      after the employee has completed a 90-day trial period]
-                    </li>
-                    <li className="mb-3">
-                      <i className="fas fa-check-circle"></i> [Cost only a
-                      fraction of other services: just 5% of the annual salary]
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              <div className="col-lg-6 col-md-12 md-mt-5">
-                <div className="landing-image-container">
-                  <img src={Organizer} alt="" className="landing-image" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      */}
       </div>
     </React.Fragment>
   );

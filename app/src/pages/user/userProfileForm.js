@@ -8,6 +8,7 @@ function UserProfileForm({ user }) {
     user.linkedInProfile || ''
   );
   const [jobBoardId, setJobBoardId] = useState(user.jobBoardId || '');
+  const [description, setDescription] = useState(user.description || '');
 
   // const [token, setToken] = useState('');
   // const [metaData, setMetaData] = useState('');
@@ -51,16 +52,6 @@ function UserProfileForm({ user }) {
     <div className="form-wrapper">
       <form name="userBankAccount" onSubmit={onSubmit}>
         <div className="user-profile">
-          {/* <button
-              style={{ float: 'right' }}
-              className="btn btn-sm btn-theme"
-              onClick={() => {
-                clearSession();
-              }}
-            >
-              Log Out
-            </button> */}
-
           <ProfilePic avatarUrl={avatar} />
           <div className="user-info">
             <div className="user-name">{displayName}</div>
@@ -78,6 +69,20 @@ function UserProfileForm({ user }) {
               value={displayName}
               onChange={e => {
                 setDisplayName(e.target.value);
+              }}
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="first_name">Description </label>
+            <textarea
+              className="form-control"
+              type="text"
+              id="description"
+              name="description"
+              value={description}
+              onChange={e => {
+                setDescription(e.target.value);
               }}
             />
           </div>

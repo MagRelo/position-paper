@@ -9,6 +9,7 @@ import UserBankAccount from 'pages/user/userBankAccount';
 import UserPaymentSource from 'pages/user/userPaymentSource';
 import UserPaymentTable from 'pages/user/userPaymentTable';
 import UserProfileForm from 'pages/user/userProfileForm';
+import StreamList from './userStream';
 
 // import StreamList from './userStream';
 
@@ -20,6 +21,7 @@ function User(props) {
   const [isLoading, setIsLoading] = useState(true);
   const [userData, setUserData] = useState(user);
   const [payments, setPayments] = useState([]);
+  const [stream, setStream] = useState([]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -31,6 +33,7 @@ function User(props) {
         setUserData(body.user);
         setPayments(body.payments);
         setIsLoading(false);
+        setStream(body.stream);
       }
     });
 
@@ -45,24 +48,25 @@ function User(props) {
       {isLoading ? (
         <Loading />
       ) : (
-        <div className="grid grid-3-5">
+        <div className="grid grid-5-3">
           <div>
-            <button
-              className="btn btn-sm"
-              style={{ float: 'right' }}
-              onClick={() => {
-                console.log('hit');
-                return clearSession();
-              }}
-            >
-              log out
-            </button>
+            <div>
+              <button
+                className="btn btn-sm"
+                style={{ float: 'right' }}
+                onClick={() => {
+                  console.log('hit');
+                  return clearSession();
+                }}
+              >
+                log out
+              </button>
 
-            <h2>Edit Profile</h2>
-            <UserProfileForm user={userData} />
-          </div>
+              <h2>Edit Profile</h2>
+              <UserProfileForm user={userData} />
+            </div>
+            <div className="mb-4"></div>
 
-          <div>
             <div>
               <h2>Payment Source</h2>
               <UserPaymentSource
@@ -71,6 +75,7 @@ function User(props) {
                 sourceBrand={userData.stripeCustomerBrand}
               />
             </div>
+            <div className="mb-4"></div>
 
             <div>
               <h2>Bank Account</h2>
@@ -80,11 +85,17 @@ function User(props) {
                 bankBrand={userData.stripeAccountBrand}
               />
             </div>
+            <div className="mb-4"></div>
 
             <div>
               <h2>Payments</h2>
               <UserPaymentTable payments={payments} />
             </div>
+          </div>
+
+          <div>
+            <h2>Recent Activity</h2>
+            <StreamList stream={stream} userId={userData._id} />
           </div>
         </div>
       )}

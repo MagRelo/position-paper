@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Tab } from '@reach/tabs';
-import { FaExternalLinkAlt, FaRegCopy } from 'react-icons/fa';
+import {
+  FaExternalLinkAlt,
+  FaRegCopy,
+  // FaEdit,
+  FaGlobeAmericas
+} from 'react-icons/fa';
 import Img from 'react-image';
 
 import { AiOutlineUser } from 'react-icons/ai';
@@ -232,16 +237,10 @@ export function copyTextToClipboard(text) {
     }
   );
 }
-export function JobBoard({ userData }) {
+export function JobBoard({ jobBoardId }) {
   const domain = window.location.origin || 'http://localhost:3000';
   return (
-    <div
-      style={{
-        margin: '1em 0',
-        border: 'solid 1px #cbcbcb',
-        borderRadius: '4px'
-      }}
-    >
+    <div className="grid grid-2-x">
       <div className="input-group">
         <div className="input-group-prepend">
           <div
@@ -251,17 +250,17 @@ export function JobBoard({ userData }) {
               border: 'none'
             }}
           >
-            Job Board
+            <FaGlobeAmericas />
+            &#8239; URL
           </div>
         </div>
         <input
           type="text"
           className="form-control"
           style={{ border: 'none' }}
-          id="inlineFormInputGroup"
           placeholder="Username"
           disabled={true}
-          value={`${domain}/jobs/${userData.jobBoardId}`}
+          value={`${domain}/jobs/${jobBoardId}`}
         />
 
         <div className="input-group-append">
@@ -275,7 +274,7 @@ export function JobBoard({ userData }) {
             <button
               className="button-unstyled"
               onClick={() => {
-                const text = `${domain}/jobs/${userData.jobBoardId}`;
+                const text = `${domain}/jobs/${jobBoardId}`;
                 copyTextToClipboard(text);
               }}
             >
@@ -283,24 +282,17 @@ export function JobBoard({ userData }) {
             </button>
           </div>
         </div>
+      </div>
 
-        <div className="input-group-append">
-          <div
-            className="input-group-text"
-            style={{
-              fontSize: 'smaller',
-              border: 'none'
-            }}
-          >
-            <a
-              href={`${domain}/jobs/${userData.jobBoardId}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              View <FaExternalLinkAlt />
-            </a>
-          </div>
-        </div>
+      <div>
+        <a
+          className="btn btn-theme btn-sm"
+          href={`${domain}/jobs/${jobBoardId}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View Job Board <FaExternalLinkAlt />
+        </a>
       </div>
     </div>
   );
