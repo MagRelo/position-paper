@@ -132,7 +132,7 @@ router.get('/user/jobs/:jobBoardId', async function(req, res) {
   const user = await UserModel.findOne({ jobBoardId: req.params.jobBoardId });
 
   if (!user) {
-    res.status(404).send({});
+    return res.status(404).send({});
   }
 
   const results = await LinkModel.find({
