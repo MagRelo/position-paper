@@ -31,67 +31,61 @@ function jobDataItem(label, value) {
   );
 }
 
-function activityTile({ link }) {
+function activityTile(link) {
   const salaryString = `${formatCurrency(
     link.data.salaryMin,
     true
   )} – ${formatCurrency(link.data.salaryMax, true)}`;
 
   return (
-    <div className="search-tile">
-      <span
-        className="label"
-        style={{ float: 'right', lineHeight: '36px', marginLeft: '2em' }}
-      >
-        {formatDate(link.createdAt)}
-      </span>
+    <Link to={'/link/' + link.linkId}>
+      <div className="search-tile">
+        <span
+          className="label"
+          style={{ float: 'right', lineHeight: '36px', marginLeft: '2em' }}
+        >
+          {formatDate(link.createdAt)}
+        </span>
 
-      <p
-        className="section-header"
-        style={{ color: 'initial', fontSize: '18px', marginTop: 0 }}
-      >
-        {link.data.jobTitle}
-      </p>
+        <p
+          className="section-header"
+          style={{ color: 'initial', fontSize: '18px', marginTop: 0 }}
+        >
+          {link.data.jobTitle}
+        </p>
 
-      <div className="grid-left">
-        {jobDataItem('Employer', link.data.employer)}
-        {jobDataItem('Location', link.data.location)}
-        {jobDataItem('Salary', salaryString)}
-      </div>
+        <div className="grid-left">
+          {jobDataItem('Employer', link.data.employer)}
+          {jobDataItem('Location', link.data.location)}
+          {jobDataItem('Salary', salaryString)}
+        </div>
 
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          textAlign: 'center',
-          borderTop: '1px solid #cbcbcb',
-          borderBottom: '1px solid #cbcbcb',
-          margin: '1em 0',
-          padding: '0.5em 0'
-        }}
-      >
-        <div style={{ borderRight: '1px solid #cbcbcb' }}>
-          <span className="label">Network</span>
-          <div style={{ color: '#0ea51d' }}>
-            {formatCurrency(link.network_bonus)}
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            textAlign: 'center',
+            borderTop: '1px solid #cbcbcb',
+            // borderBottom: '1px solid #cbcbcb',
+            margin: '1em 0 0',
+            padding: '0.5em 0'
+          }}
+        >
+          <div style={{ borderRight: '1px solid #cbcbcb' }}>
+            <span className="label">Job Board</span>
+            <div style={{ color: '#0ea51d' }}>
+              {formatCurrency(link.network_bonus)}
+            </div>
+          </div>
+          <div>
+            <span className="label">Employee</span>
+            <div style={{ color: '#0ea51d' }}>
+              {formatCurrency(link.target_bonus)}
+            </div>
           </div>
         </div>
-        <div>
-          <span className="label">Employee</span>
-          <div style={{ color: '#0ea51d' }}>
-            {formatCurrency(link.target_bonus)}
-          </div>
-        </div>
       </div>
-
-      <Link
-        className="btn btn-theme btn-sm"
-        style={{ color: 'white', width: '100%' }}
-        to={'/link/' + link.linkId}
-      >
-        View
-      </Link>
-    </div>
+    </Link>
   );
 }
 

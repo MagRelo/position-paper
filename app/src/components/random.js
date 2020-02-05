@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Tab } from '@reach/tabs';
 import {
-  FaExternalLinkAlt,
+  // FaExternalLinkAlt,
   FaRegCopy,
   // FaEdit,
   FaGlobeAmericas
@@ -240,7 +240,7 @@ export function copyTextToClipboard(text) {
 export function JobBoard({ jobBoardId }) {
   const domain = window.location.origin || 'http://localhost:3000';
   return (
-    <div className="grid grid-2-x">
+    <div>
       <div className="input-group">
         <div className="input-group-prepend">
           <div
@@ -282,17 +282,6 @@ export function JobBoard({ jobBoardId }) {
             </button>
           </div>
         </div>
-      </div>
-
-      <div>
-        <a
-          className="btn btn-theme btn-sm"
-          href={`${domain}/jobs/${jobBoardId}`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          View Job Board <FaExternalLinkAlt />
-        </a>
       </div>
     </div>
   );

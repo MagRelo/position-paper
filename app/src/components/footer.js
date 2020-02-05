@@ -17,11 +17,10 @@ function Footer(props) {
               </span>
             </div>
             <p>
-              TalentRelay is the easiest way to hire the best Software
-              Developers, DevOps Engineers, and Engineering Leaders that others
-              can't. By using our innovative technology, we find the best
-              candidates talent that other search services can’t. Then we
-              deliver them to that to you at a fraction of the price.
+              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+              Excepturi totam possimus dicta tenetur nesciunt cupiditate
+              mollitia consequatur, dolores asperiores fugiat aut iusto delectus
+              architecto quibusdam hic est rem? Deleniti, illum.
             </p>
           </div>
 
@@ -40,24 +39,6 @@ function Footer(props) {
             <div className="footer-list justify-content-between d-flex">
               <ul className="list-unstyled w-100">
                 <li>
-                  <a href="about-us.html">About Us</a>
-                </li>
-                <li>
-                  <a href="team.html">Team</a>
-                </li>
-                <li>
-                  <a href="contact.html">Contact Us</a>
-                </li>
-              </ul>
-              <ul className="list-unstyled w-100">
-                <li>
-                  <a href="faq.html">FAQ</a>
-                </li>
-
-                <li>
-                  <a href="privacy-policy.html">Privacy Policy</a>
-                </li>
-                <li>
                   <a href="/terms">Terms</a>
                 </li>
               </ul>
@@ -68,7 +49,10 @@ function Footer(props) {
 
       <div className="mt-5 text-center">
         <div className="container">
-          <div className="copyright" style={{ zIndex: 1 }}>
+          <div
+            className="copyright"
+            style={{ position: 'relative', zIndex: 1 }}
+          >
             <span>Talent Relay | 2020</span>
           </div>
         </div>

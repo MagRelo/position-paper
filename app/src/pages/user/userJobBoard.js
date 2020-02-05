@@ -7,6 +7,7 @@ import { useTrail, animated } from 'react-spring';
 import ActivityTile from 'pages/search/searchResult_tile';
 
 function SearchFlow({ userId }) {
+  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState([]);
   const [user, setUser] = useState({});
@@ -14,11 +15,17 @@ function SearchFlow({ userId }) {
   useEffect(() => {
     setIsLoading(true);
 
-    getUserJobs(userId).then(results => {
-      setResults(results.jobs);
-      setUser(results.user);
-      setIsLoading(false);
-    });
+    getUserJobs(userId)
+      .then(results => {
+        setResults(results.jobs);
+        setUser(results.user);
+        setIsLoading(false);
+      })
+      .catch(error => {
+        console.log(error);
+        setError(error.toString());
+        setIsLoading(false);
+      });
   }, [userId]);
 
   const config = { mass: 5, tension: 2000, friction: 200 };
@@ -33,32 +40,42 @@ function SearchFlow({ userId }) {
   return (
     <div className="page-container">
       <div className="container">
-        <div className="user-profile">
-          <img src={user.avatar} alt="avatar" className="user-avatar" />
-          <div className="user-info">
-            <div className="user-name">{user.displayName}</div>
-            <p>{user.description}</p>
-          </div>
-        </div>
-
         {isLoading ? (
           <Loading />
         ) : (
-          <div className="grid grid-3">
-            {trail.map(({ x, height, ...rest }, index) => {
-              return (
-                <animated.div
-                  key={index}
-                  style={{
-                    ...rest,
-                    transform: x.interpolate(x => `translate3d(0,${x}px,0)`)
-                  }}
-                >
-                  {ActivityTile(results[index])}
-                </animated.div>
-              );
-            })}
-          </div>
+          <React.Fragment>
+            {error ? (
+              <p style={{ textAlign: 'center' }}>{error}</p>
+            ) : (
+              <React.Fragment>
+                <div className="user-profile">
+                  <img src={user.avatar} alt="avatar" className="user-avatar" />
+                  <div className="user-info">
+                    <div className="user-name">{user.displayName}</div>
+                    <p>{user.description}</p>
+                  </div>
+                </div>
+
+                <div className="grid grid-3">
+                  {trail.map(({ x, height, ...rest }, index) => {
+                    return (
+                      <animated.div
+                        key={index}
+                        style={{
+                          ...rest,
+                          transform: x.interpolate(
+                            x => `translate3d(0,${x}px,0)`
+                          )
+                        }}
+                      >
+                        {ActivityTile(results[index])}
+                      </animated.div>
+                    );
+                  })}
+                </div>
+              </React.Fragment>
+            )}
+          </React.Fragment>
         )}
       </div>
     </div>
@@ -72,12 +89,16 @@ async function getUserJobs(userId) {
 
   return await fetch('/api/user/jobs/' + userId, {
     method: 'GET'
-  })
-    .then(r => r.json())
-    .catch(error => {
-      console.error(error);
-      return [];
-    });
+  }).then(response => {
+    if (response.status === 200) {
+      return response.json();
+    }
+
+    // some type of error has occured...
+    console.log(response.status, response.statusText);
+
+    throw new Error(response.statusText);
+  });
 }
 
 // <MetaData />

@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from '@reach/router';
+import { useTrail, animated } from 'react-spring';
 
-import { FaEdit } from 'react-icons/fa';
+import { FaEdit, FaExternalLinkAlt } from 'react-icons/fa';
+
+import ActivityTile from 'pages/search/searchResult_tile';
 
 import {
   // formatCurrency,
@@ -13,13 +16,15 @@ import {
 // import PaymentsTable from './userPaymentsTable';
 // import ResponseList from './userResponseTable';
 // import JobTable from './userJobsTable';
-import LinksTable from './userLinksTable';
+// import LinksTable from './userLinksTable';
 // import UserProfileForm from 'pages/user/userProfileForm';
 
 import { AuthContext } from 'App';
 
 function User(props) {
   const { clearSession, user } = useContext(AuthContext);
+
+  const [error, setError] = useState('');
 
   const [isLoading, setIsLoading] = useState(true);
   const [userData, setUserData] = useState(user);
@@ -33,17 +38,22 @@ function User(props) {
     let isSubscribed = true;
 
     // hit user API route, get all data
-    getUser(clearSession).then(body => {
-      if (isSubscribed) {
-        setUserData(body.user);
-        // setJobs(body.links.filter(link => link.generation === 0));
-        setLinks(body.links.filter(link => link.generation !== 0));
+    getUser(clearSession)
+      .then(body => {
+        if (isSubscribed) {
+          setUserData(body.user);
+          // setJobs(body.links.filter(link => link.generation === 0));
+          setLinks(body.links.filter(link => link.generation !== 0));
 
-        // setResponses(body.responses);
-        // setPayments(body.payments);
-        setIsLoading(false);
-      }
-    });
+          // setResponses(body.responses);
+          // setPayments(body.payments);
+          setIsLoading(false);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        setError(error.toString());
+      });
 
     // cleanup
     return () => {
@@ -51,16 +61,46 @@ function User(props) {
     };
   }, []);
 
+  const config = { mass: 5, tension: 2000, friction: 200 };
+  const trail = useTrail(links.length, {
+    config,
+    opacity: 1,
+    x: 0,
+    height: 80,
+    from: { opacity: 0, x: 20, height: 0 }
+  });
+  const domain = window.location.origin || 'http://localhost:3000';
   return (
     <div className="container user-container">
-      <div className="grid grid-x-2">
+      {error ? <p style={{ textAlign: 'center' }}>{error}</p> : null}
+
+      <div className="grid grid-x-3-x">
         <div>
           <h1 style={{ margin: 0 }}>Your Job Board</h1>
         </div>
         <div>
           <JobBoard jobBoardId={userData.jobBoardId} />
         </div>
+        <div>
+          <a
+            className="btn btn-theme btn-sm"
+            href={`${domain}/jobs/${userData.jobBoardId}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View Job Board <FaExternalLinkAlt />
+          </a>
+        </div>
       </div>
+
+      <div className="mb-4"></div>
+
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid,
+        exercitationem quidem adipisci consequatur vitae molestias maxime
+        perferendis dolorum debitis blanditiis iusto beatae. Et, nulla! Minus
+        corporis inventore illo beatae dignissimos.
+      </p>
 
       <div className="mb-4"></div>
 
@@ -87,11 +127,32 @@ function User(props) {
                   </div>
                 </div>
 
-                <LinksTable links={links} />
+                {isLoading ? (
+                  <Loading />
+                ) : (
+                  <div className="grid grid-3">
+                    {trail.map(({ x, height, ...rest }, index) => {
+                      return (
+                        <animated.div
+                          key={index}
+                          style={{
+                            ...rest,
+                            transform: x.interpolate(
+                              x => `translate3d(0,${x}px,0)`
+                            )
+                          }}
+                        >
+                          {ActivityTile(links[index])}
+                        </animated.div>
+                      );
+                    })}
+                  </div>
+                )}
 
                 <div style={{ textAlign: 'center' }}>
+                  <div className="mb-4"></div>
                   <Link to="/search" className="btn btn-theme btn-sm">
-                    Search for Jobs
+                    Find Jobs To Add
                   </Link>
                 </div>
               </div>
@@ -108,6 +169,9 @@ function User(props) {
                     <p>
                       <i>Sign-up Employers and get 5% of every job posted.</i>
                     </p>
+                    <div>
+                      <JobBoard jobBoardId={userData.jobBoardId} />
+                    </div>
                   </div>
 
                   <div className="panel">
@@ -115,6 +179,9 @@ function User(props) {
                     <p>
                       <i>Sign-up Employers and get 5% of every job posted.</i>
                     </p>
+                    <div>
+                      <JobBoard jobBoardId={userData.jobBoardId} />
+                    </div>
                   </div>
 
                   <div className="panel">

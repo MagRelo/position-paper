@@ -7,20 +7,13 @@ $orange: #FFA400;
 $primaryLight: #1E68BC;
 $white: #FDFFFC;
 
-// Dark Gray 3a3a3a
+// Dark $lightText 3a3a3a
 $darkText: #3a3a3a;
-
-html,
-body,
-#root,
-.page-wrapper {
-  min-height: 100vh;
-  box-sizing: border-box;
-  background-color: $white;
-}
+$lightText: $darkText;
 
 
 html {
+  background-color: $primaryColor;
   scroll-behavior: smooth;
 }
 
@@ -29,6 +22,15 @@ html {
     scroll-behavior: auto;
   }
 }
+
+body,
+#root,
+.page-wrapper {
+  min-height: 100vh;
+  box-sizing: border-box;
+  background-color: $white;
+}
+
 
 
 @import url('https://fonts.googleapis.com/css?family=Nunito:300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&display=swap');
@@ -39,7 +41,7 @@ body {
   font-style: normal;
   font-size: 15px;
   line-height: 1.5;
-  color: #7f7f7f;
+  color: $lightText;
   letter-spacing: 1px;
 }
 
@@ -55,6 +57,49 @@ body {
 
 section {
   padding: 80px 0 0;
+}
+
+section.section-dark {
+  background-color: $primaryColor;
+  border-top: $primaryLight solid 2px;
+  border-bottom: $primaryLight solid 2px;
+
+  padding: 60px 0 70px;
+
+  // for the stars animation...
+  overflow: hidden;
+}
+
+section.section-dark h2 span {
+  color: $white;
+  background-color: $primaryColor;
+
+  // for the stars animation...
+  position: relative;
+  z-index: 1;
+}
+
+section.section-dark p span {
+  color: $secondaryColor;
+  background-color: $primaryColor;
+
+  // for the stars animation...
+  position: relative;
+  z-index: 1;
+}
+
+section.section-dark .panel {
+  background: $white;
+  border-color: $secondaryColor;
+
+  // for the stars animation...
+  position: relative;
+  z-index: 1;
+}
+
+section.section-dark .panel h4 {
+  color: $darkText;
+  text-align: center;
 }
 
 @media screen and (min-width: 700px) {
@@ -180,7 +225,7 @@ a {
 }
 
 .btn.btn-sm:not(.btn-theme) {
-  color: gray;
+  color: $lightText;
 }
 
 .btn.btn-theme {
@@ -238,7 +283,6 @@ a {
 }
 
 .user-profile {
-  margin: 0 0 24px;
   color: #5e5e5e;
 }
 
@@ -254,10 +298,13 @@ a {
   border: solid 1px $primaryColor;
   width: 60px;
   height: 60px;
+
+  margin-right: 1em;
+  margin-bottom: 10px;
 }
 
 .user-info {
-  padding-left: 72px;
+  // padding-left: 72px;
 }
 
 .user-name {
@@ -275,7 +322,7 @@ a {
 }
 
 .input-range__label {
-  color: gray;
+  color: $lightText;
 }
 
 .input-range__track--active {
@@ -442,7 +489,7 @@ iframe {
   border: solid 1px #dfdfdf;
   border-radius: 7px;
   box-shadow: 0 8px 40px -5px rgba(9, 31, 67, 0.1);
-  border-top: solid 2px $secondaryColor;
+  border-top: solid 2px $primaryLight;
   color: #3a3a3a;
 }
 
@@ -472,7 +519,7 @@ iframe {
   margin-bottom: 0.5em;
   display: block;
   text-transform: uppercase;
-  color: gray;
+  color: $lightText;
   font-size: small;
 }
 
@@ -486,7 +533,7 @@ iframe {
 .grid-label {
   text-transform: uppercase;
   font-size: smaller;
-  color: gray;
+  color: $lightText;
   text-align: right;
   margin-top: 2px;
 }
@@ -566,7 +613,7 @@ iframe {
 }
 
 .panel {
-  padding: 1em 1em 1em;
+  padding: 1rem;
   border: solid 1px #dfdfdf;
   border-radius: 7px;
   box-shadow: 0 8px 40px -5px rgba(9, 31, 67, 0.1);
@@ -602,6 +649,10 @@ table {
 
 @media screen and (min-width: 700px) {
 
+  .panel {
+    padding: 2rem;
+  }
+
   /* swap grid order to alternate images */
   .swap-order {
     order: 2;
@@ -614,6 +665,11 @@ table {
 
   .grid-x-2 {
     grid-template-columns: auto 1fr;
+    grid-gap: 2em;
+  }
+
+  .grid-x-3-x {
+    grid-template-columns: auto 1fr auto;
     grid-gap: 2em;
   }
 
@@ -681,6 +737,7 @@ table {
 
 .list-icon li i {
   top: 1px;
+  color: $primaryLight;
 }
 
 @media screen and (min-width: 992px) {
@@ -778,12 +835,12 @@ table {
 
 /* Hero */
 .hero-container {
-  padding-top: 40px;
+  // padding-top: 40px;
   display: flex;
   flex-direction: column;
   align-content: center;
   justify-content: center;
-  min-height: 70vh;
+  min-height: 100vh - 12vh;
 }
 
 .lead {
@@ -880,16 +937,17 @@ table {
 
 
 header {
-  padding: 0 2em;
+  padding: 1em 2em;
   text-align: center;
   background-color: $primaryColor;
+  border-bottom: $primaryLight solid 1px;
   overflow: hidden;
 }
 
 .header-grid {
-  min-height: 80px;
+  min-height: 12vh;
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 1fr;
   grid-gap: 0;
 }
 
@@ -898,6 +956,8 @@ header {
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  font-size: smaller;
 }
 
 
@@ -912,12 +972,14 @@ header {
 //   background-color: $secondaryColor;
 // }
 
-
-
 .logo-img {
   height: 70px;
 }
 
+
+.title-container {
+  grid-area: 2/1/2/3;
+}
 
 .header-title {
   font-size: 36px;
@@ -958,6 +1020,7 @@ a.nav-link {
 
   // to preserve spacing
   border-bottom: solid 1px $primaryColor;
+  background-color: $primaryColor;
 }
 
 a.nav-link:hover {
@@ -971,10 +1034,24 @@ a.nav-link.active:hover {
 }
 
 @media screen and (min-width: 700px) {
+
+  header {
+    padding: 0 2em;
+  }
+
+  .header-container {
+    font-size: initial;
+  }
+
   .header-grid {
     grid-template-columns: auto 1fr auto;
     grid-gap: 2em;
     text-align: initial;
+  }
+
+
+  .title-container {
+    grid-area: 1/1/1/2;
   }
 
   .nav-list>li {
@@ -992,10 +1069,18 @@ a.nav-link.active:hover {
 footer {
   position: relative;
   overflow: hidden;
-  background-color: $secondaryColor;
-  color: $primaryColor;
-  padding: 80px 0;
+  background-color: $primaryColor;
+  border-top: $primaryLight solid 2px;
+  color: $secondaryColor;
+  padding: 78px 0;
   font-size: 16px;
+}
+
+footer p,
+footer li a,
+footer .footer-logo,
+footer h4 {
+  background-color: $primaryColor
 }
 
 footer>.container {
@@ -1003,11 +1088,11 @@ footer>.container {
 }
 
 .footer-title:first-child {
-  color: $primaryColor;
+  color: $secondaryColor;
 }
 
 .footer-title:last-child {
-  color: $primaryColor
+  color: $secondaryColor
 }
 
 .footer-logo {
@@ -1063,7 +1148,7 @@ footer>.container {
   position: relative;
   font-size: 16px;
   font-weight: 400;
-  /* color: $white; */
+  color: $secondaryColor;
 }
 
 .footer-list .list-inline li {

@@ -31,18 +31,6 @@ function Header(props) {
 
       <div className="header-grid">
         <div className="header-container">
-          <div>
-            <Link to="/">
-              <span>
-                <span className="header-title">Talent</span>
-                &#8201;
-                <span className="header-title">Relay</span>
-              </span>
-            </Link>
-          </div>
-        </div>
-
-        <div className="header-container">
           <ul className="nav-list">
             <li>
               <NavLink className="nav-link" to="/search">
@@ -58,7 +46,7 @@ function Header(props) {
               <React.Fragment>
                 <li>
                   <NavLink className="nav-link" to="/dashboard">
-                    <FaClipboardList /> Job Board
+                    <FaClipboardList /> Dashboard
                   </NavLink>
                 </li>
 
@@ -74,6 +62,18 @@ function Header(props) {
               </li>
             )}
           </ul>
+        </div>
+
+        <div className="header-container title-container">
+          <div>
+            <Link to="/">
+              <span>
+                <span className="header-title">Talent</span>
+                &#8201;
+                <span className="header-title">Relay</span>
+              </span>
+            </Link>
+          </div>
         </div>
       </div>
     </header>

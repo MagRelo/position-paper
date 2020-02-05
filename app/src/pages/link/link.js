@@ -147,15 +147,15 @@ function PromotePanel({ link, user, activeSession }) {
   return (
     <div>
       <div>
-        <h3>Promote this Job</h3>
+        <h3>Add This Job</h3>
         <p>
-          Create your own link to this position and collect up to{' '}
-          <b>{promoteBonus}</b> if the candidate responds through your link.
+          Add this job to your Job Board and collect up to <b>{promoteBonus}</b>{' '}
+          if the candidate responds through your link.
         </p>
 
         {!activeSession ? (
           <LinkedInLogin redirect={'/link/' + link.linkId}>
-            {'(Login to Promote)'}
+            Add To Your Job Board
           </LinkedInLogin>
         ) : (
           <LinkButton

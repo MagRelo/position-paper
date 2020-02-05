@@ -67,7 +67,7 @@ function SearchFlow() {
                   transform: x.interpolate(x => `translate3d(0,${x}px,0)`)
                 }}
               >
-                {ActivityTile(results[index])}
+                {ActivityTile(results[index].link)}
               </animated.div>
             );
           })}

@@ -144,9 +144,7 @@ router.get('/user/jobs/:jobBoardId', async function(req, res) {
   try {
     res.status(200).send({
       user: user,
-      jobs: results.map(job => {
-        return { link: job };
-      })
+      jobs: results
     });
   } catch (error) {
     console.log(req.path, error);
