@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from '@reach/router';
 import { FaAngleDown, FaSearch } from 'react-icons/fa';
+import { IoMdPersonAdd } from 'react-icons/io';
+
 import { ProfilePic } from 'components/random';
 
 // hero
@@ -120,7 +122,7 @@ function LandingPage() {
           <div className="container">
             <div className="grid grid-3">
               <div className="panel">
-                <h4>Build Your Board</h4>
+                <h4>Build Your Job Board</h4>
                 <p>
                   Lorem ipsum, dolor sit amet consectetur adipisicing elit. Modi
                   minima quia iste eaque ipsa odio molestias distinctio
@@ -149,18 +151,16 @@ function LandingPage() {
             </div>
           </div>
 
-          <div style={{ marginTop: '2em' }}>
-            <div className="container text-center">
-              <Link to="/search" className="btn btn-theme">
-                View Jobs <FaSearch />
-              </Link>
-            </div>
+          <div className="container section-cta">
+            <Link to="/search" className="btn btn-theme">
+              View Jobs <FaSearch />
+            </Link>
           </div>
         </section>
 
         <section id="how">
           <div className="container section-title">
-            <h2>We Make Sure that Everyone Wins</h2>
+            <h2>A System Where Everyone Wins</h2>
             <p>Make Connections → Get Paid</p>
           </div>
 
@@ -230,46 +230,11 @@ function LandingPage() {
             </div>
           </div>
 
-          {/* GET A JOB */}
-          <div>
-            <div className="container">
-              <div className="grid grid-2 landing-grid align-items-center">
-                <div className="swap-order">
-                  <div className="landing-image-container">
-                    <img src={OnlineAd} alt="" className="landing-image" />
-                  </div>
-                </div>
-
-                <div>
-                  <div className="div-title">
-                    <h3>
-                      Get Hired → <span>Get Paid</span>
-                    </h3>
-                  </div>
-
-                  <div className="mb-4">
-                    <ul className="list-unstyled list-icon">
-                      <li className="mb-3">
-                        <i className="fas fa-check-circle"></i> Every job on
-                        Talent Relay includes a <b>hiring bonus</b>
-                      </li>
-                      <li>
-                        <i className="fas fa-check-circle"></i> Apply to jobs
-                        with one-click – we'll make sure your application gets
-                        in the right hands
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
           {/* Onboard Employers  */}
           <div>
             <div className="container">
               <div className="grid grid-2 landing-grid align-items-center">
-                <div>
+                <div className="swap-order">
                   <div className="landing-image-container">
                     <img src={Organizer} alt="" className="landing-image" />
                   </div>
@@ -305,7 +270,7 @@ function LandingPage() {
           <div>
             <div className="container">
               <div className="grid grid-2 landing-grid align-items-center">
-                <div className="swap-order">
+                <div>
                   <div className="landing-image-container">
                     <img src={TeamHang} alt="" className="landing-image" />
                   </div>
@@ -337,12 +302,46 @@ function LandingPage() {
             </div>
           </div>
 
-          <div style={{ marginTop: '2em' }}>
-            <div className="container text-center">
-              <Link to="/search" className="btn btn-theme">
-                View Jobs <FaSearch />
-              </Link>
+          {/* GET A JOB */}
+          <div>
+            <div className="container">
+              <div className="grid grid-2 landing-grid align-items-center">
+                <div className="swap-order">
+                  <div className="landing-image-container">
+                    <img src={OnlineAd} alt="" className="landing-image" />
+                  </div>
+                </div>
+
+                <div>
+                  <div className="div-title">
+                    <h3>
+                      Get Hired → <span>Get Paid</span>
+                    </h3>
+                  </div>
+
+                  <div className="mb-4">
+                    <ul className="list-unstyled list-icon">
+                      <li className="mb-3">
+                        <i className="fas fa-check-circle"></i> Every job on
+                        Talent Relay includes a <b>hiring bonus</b>
+                      </li>
+                      <li>
+                        <i className="fas fa-check-circle"></i> Apply to jobs
+                        with one-click – we'll make sure your application gets
+                        in the right hands
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
+
+          <div className="container section-cta">
+            <p>Make Connections → Get Paid</p>
+            <Link to="/search" className="btn btn-theme">
+              Create Account <IoMdPersonAdd />
+            </Link>
           </div>
         </section>
 
@@ -491,8 +490,10 @@ function LandingPage() {
             </div>
 
             <div>
-              <div className="container text-center">
-                <button className="btn btn-theme">Get Started!</button>
+              <div className="container section-cta">
+                <button className="btn btn-theme">
+                  Create Employer Account <IoMdPersonAdd />
+                </button>
               </div>
             </div>
           </div>

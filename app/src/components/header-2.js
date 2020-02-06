@@ -24,48 +24,14 @@ function Header(props) {
   const { activeSession } = useContext(AuthContext);
 
   return (
-    <header>
-      <div id="stars"></div>
-      <div id="stars2"></div>
-      <div id="stars3"></div>
+    <React.Fragment>
+      <header>
+        <div id="stars"></div>
+        <div id="stars2"></div>
+        <div id="stars3"></div>
 
-      <div className="header-grid">
-        <div className="header-container">
-          <ul className="nav-list">
-            <li>
-              <NavLink className="nav-link" to="/search">
-                Search Jobs <FaSearch />
-              </NavLink>
-            </li>
-          </ul>
-        </div>
-
-        <div className="header-container">
-          <ul className="nav-list">
-            {activeSession ? (
-              <React.Fragment>
-                <li>
-                  <NavLink className="nav-link" to="/dashboard">
-                    <FaClipboardList /> Dashboard
-                  </NavLink>
-                </li>
-
-                <li>
-                  <NavLink className="nav-link" to="/profile">
-                    <FaUserAlt /> Account
-                  </NavLink>
-                </li>
-              </React.Fragment>
-            ) : (
-              <li>
-                <LinkedInLogin>Login</LinkedInLogin>
-              </li>
-            )}
-          </ul>
-        </div>
-
-        <div className="header-container title-container">
-          <div>
+        <div className="header-grid">
+          <div className="header-container">
             <Link to="/">
               <span>
                 <span className="header-title">Talent</span>
@@ -74,9 +40,40 @@ function Header(props) {
               </span>
             </Link>
           </div>
+
+          {activeSession ? null : (
+            <div className="header-container">
+              <LinkedInLogin>Sign In</LinkedInLogin>
+            </div>
+          )}
+
+          <div className="header-container menu-container">
+            <ul className="nav-list">
+              <li>
+                <NavLink className="nav-link" to="/search">
+                  Search Jobs <FaSearch />
+                </NavLink>
+              </li>
+              {activeSession ? (
+                <React.Fragment>
+                  <li>
+                    <NavLink className="nav-link" to="/dashboard">
+                      <FaClipboardList /> Dashboard
+                    </NavLink>
+                  </li>
+
+                  <li>
+                    <NavLink className="nav-link" to="/profile">
+                      <FaUserAlt /> Account
+                    </NavLink>
+                  </li>
+                </React.Fragment>
+              ) : null}
+            </ul>
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
+    </React.Fragment>
   );
 }
 

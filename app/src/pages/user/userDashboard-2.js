@@ -74,33 +74,32 @@ function User(props) {
     <div className="container user-container">
       {error ? <p style={{ textAlign: 'center' }}>{error}</p> : null}
 
-      <div className="grid grid-x-3-x">
+      <div className="grid grid-5-3">
         <div>
-          <h1 style={{ margin: 0 }}>Your Job Board</h1>
+          <h1 style={{ margin: 0 }}>Build Your Job Board</h1>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid,
+            exercitationem quidem adipisci consequatur vitae molestias maxime
+            perferendis dolorum debitis blanditiis iusto beatae. Et, nulla!
+            Minus corporis inventore illo beatae dignissimos.
+          </p>
         </div>
         <div>
+          <div className="mb-3">
+            <a
+              className="btn btn-theme btn-sm"
+              href={`${domain}/jobs/${userData.jobBoardId}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View Job Board <FaExternalLinkAlt />
+            </a>
+          </div>
           <JobBoard jobBoardId={userData.jobBoardId} />
-        </div>
-        <div>
-          <a
-            className="btn btn-theme btn-sm"
-            href={`${domain}/jobs/${userData.jobBoardId}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            View Job Board <FaExternalLinkAlt />
-          </a>
         </div>
       </div>
 
       <div className="mb-4"></div>
-
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid,
-        exercitationem quidem adipisci consequatur vitae molestias maxime
-        perferendis dolorum debitis blanditiis iusto beatae. Et, nulla! Minus
-        corporis inventore illo beatae dignissimos.
-      </p>
 
       <div className="mb-4"></div>
 
