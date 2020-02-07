@@ -98,18 +98,13 @@ function User(props) {
           <JobBoard jobBoardId={userData.jobBoardId} />
         </div>
       </div>
-
-      <div className="mb-4"></div>
-
-      <div className="mb-4"></div>
-
       <div>
         <div>
           {isLoading ? (
             <Loading />
           ) : (
             <div>
-              <div className="panel">
+              <div className="user-panel">
                 <div className="user-profile">
                   <Link
                     to="/profile"
@@ -125,6 +120,8 @@ function User(props) {
                     <p>{userData.description}</p>
                   </div>
                 </div>
+
+                <div className="mb-4"></div>
 
                 {isLoading ? (
                   <Loading />
@@ -145,15 +142,28 @@ function User(props) {
                         </animated.div>
                       );
                     })}
+
+                    <div
+                      style={{
+                        border: 'dashed 2px #ddd',
+                        borderRadius: '7px',
+                        padding: '1rem'
+                      }}
+                    >
+                      <div style={{ textAlign: 'center' }}>
+                        <h4>Add More Jobs</h4>
+                        <p>
+                          Every job on Talent Relay includes a referral bonus
+                        </p>
+
+                        <div className="mb-4"></div>
+                        <Link to="/search" className="btn btn-theme btn-sm">
+                          Find Jobs To Add
+                        </Link>
+                      </div>
+                    </div>
                   </div>
                 )}
-
-                <div style={{ textAlign: 'center' }}>
-                  <div className="mb-4"></div>
-                  <Link to="/search" className="btn btn-theme btn-sm">
-                    Find Jobs To Add
-                  </Link>
-                </div>
               </div>
 
               <section>

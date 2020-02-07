@@ -1,18 +1,20 @@
 // https://coolors.co/00203f-adefd1-ffa400-009ffd-fdfffc
 
 /* Blue #00539CFF */
-$primaryColor: #00203FFF;
-$secondaryColor: #ADEFD1FF;
-$orange: #FFA400;
-$primaryLight: #1E68BC;
-$white: #FDFFFC;
+$primaryColor: #00203fff;
+$secondaryColor: #adefd1ff;
+$orange: #ffa400;
+$primaryLight: #1e68bc;
+$white: #fdfffc;
 
 $lightBlue: #e7f0f5;
 // Dark $lightText 3a3a3a
 $darkText: #3a3a3a;
-$lightText: lighten($color: $darkText, $amount: 15);
+$lightText: lighten(
+  $color: $darkText,
+  $amount: 15
+);
 $lightGray: #dfdfdf;
-
 
 html {
   background-color: $primaryColor;
@@ -32,8 +34,6 @@ body,
   box-sizing: border-box;
   background-color: $white;
 }
-
-
 
 @import url('https://fonts.googleapis.com/css?family=Nunito:300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&display=swap');
 
@@ -161,7 +161,6 @@ h3 {
   margin: 0 0 0.5em 0;
 }
 
-
 a {
   color: $primaryColor;
   text-decoration: none;
@@ -222,8 +221,6 @@ a {
   border: none;
   position: relative;
   z-index: 9;
-
-
 }
 
 .btn-sm {
@@ -249,17 +246,26 @@ a {
   background: $primaryLight;
 }
 
-
 .button-unstyled {
   background-color: inherit;
   border: none;
-  color: $lightGray;
+  color: $lightText;
 }
 
-.button-unstyled>* {
+.button-unstyled > * {
   pointer-events: none;
 }
 
+.btn.btn-menu,
+.btn.btn-menu:focus,
+.btn.btn-menu:hover {
+  border: none;
+  outline: none;
+
+  font-size: smaller;
+  text-transform: uppercase;
+  color: $lightGray;
+}
 
 /* getstream activity */
 .stream {
@@ -351,7 +357,6 @@ a {
   box-shadow: 0 8px 40px -5px rgba(9, 31, 67, 0.1);
 }
 
-
 .form-control {
   height: 50px;
   border-radius: 0;
@@ -359,7 +364,7 @@ a {
   color: $darkText;
   background: none;
   border: none;
-  border-bottom: 2px solid $secondaryColor;
+  border-bottom: 2px solid $primaryLight;
 }
 
 .theme-bg .form-control,
@@ -396,6 +401,30 @@ select.form-control {
   -webkit-appearance: none;
   appearance: none;
   height: 50px !important;
+}
+
+.employerOnboardingForm fieldset {
+  padding: 1em;
+  margin-bottom: 2rem;
+}
+
+.employerOnboardingForm .form-check {
+  padding-left: 0;
+}
+
+@media screen and (min-width: 700px) {
+  .employerOnboardingForm fieldset {
+    padding: 1em;
+    margin-bottom: 40px;
+    margin-bottom: 2em;
+  }
+}
+
+.stripeWrapper {
+  padding: 1.5em;
+  border: solid 1px $primaryLight;
+  border-radius: 10px;
+  margin-bottom: 1em;
 }
 
 #map {
@@ -602,7 +631,7 @@ iframe {
   font-variant-numeric: tabular-nums;
 }
 
-.progressbar li>span.line {
+.progressbar li > span.line {
   width: 100%;
   height: 2px;
   content: '';
@@ -623,6 +652,24 @@ iframe {
   border: solid 1px $lightGray;
   border-radius: 7px;
   box-shadow: 0 8px 40px -5px rgba(9, 31, 67, 0.1);
+}
+
+.user-panel {
+  margin-top: 1.5rem;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  box-shadow: 0;
+}
+
+@media screen and (min-width: 900px) {
+  .user-panel {
+    margin-top: 0;
+    padding: 2rem;
+    border: solid 1px $lightGray;
+    border-radius: 7px;
+    box-shadow: 0 8px 40px -5px rgba(9, 31, 67, 0.1);
+  }
 }
 
 table {
@@ -650,11 +697,10 @@ table {
 .grid-1-3,
 .grid-6-1 {
   grid-template-columns: 1fr;
-  grid-gap: 2em 0;
+  grid-gap: 1em 0;
 }
 
-@media screen and (min-width: 700px) {
-
+@media screen and (min-width: 900px) {
   .panel {
     padding: 2rem;
   }
@@ -788,7 +834,7 @@ table {
   text-align: center;
 }
 
-.spinner>div {
+.spinner > div {
   width: 18px;
   height: 18px;
   background-color: $primaryColor;
@@ -810,20 +856,18 @@ table {
 }
 
 @-webkit-keyframes sk-bouncedelay {
-
   0%,
   80%,
   100% {
-    -webkit-transform: scale(0)
+    -webkit-transform: scale(0);
   }
 
   40% {
-    -webkit-transform: scale(1.0)
+    -webkit-transform: scale(1);
   }
 }
 
 @keyframes sk-bouncedelay {
-
   0%,
   80%,
   100% {
@@ -832,8 +876,8 @@ table {
   }
 
   40% {
-    -webkit-transform: scale(1.0);
-    transform: scale(1.0);
+    -webkit-transform: scale(1);
+    transform: scale(1);
   }
 }
 
@@ -882,35 +926,39 @@ table {
   appearance: none;
   display: inline-block;
   position: relative;
-  background-color: $lightGray;
-  border: solid 1px $lightGray;
-  color: $lightText;
   top: 10px;
   height: 30px;
   width: 30px;
-  border: 0;
+  margin-right: 10px;
+  color: $lightText;
+  background-color: $white;
+  border: solid 1px $primaryLight;
   border-radius: 50px;
-  cursor: pointer;
-  margin-right: 7px;
+
   outline: none;
+  cursor: pointer;
+  transition: all 200ms;
 }
 
 .form-radio:checked::before {
   position: absolute;
   font: 13px/1 'Open Sans', sans-serif;
-  left: 11px;
-  top: 7px;
+  left: 10px;
+  top: 6px;
   content: '\02143';
   transform: rotate(40deg);
 }
 
 .form-radio:hover {
-  border: solid 1px $secondaryColor;
+  border: solid 1px $primaryLight;
+  color: $lightGray;
+  content: '\02143';
 }
 
 .form-radio:checked {
-  color: $secondaryColor;
-  border: solid 1px $secondaryColor;
+  color: $white;
+  background-color: $primaryLight;
+  border: solid 1px $primaryLight;
 }
 
 /* remove padding used for mobile menu */
@@ -926,7 +974,6 @@ table {
   }
 }
 
-
 /* remove, standardize? */
 .tab-panel-title {
   line-height: 30px;
@@ -934,8 +981,6 @@ table {
   font-weight: 400;
   color: black;
 }
-
-
 
 header {
   text-align: center;
@@ -961,13 +1006,11 @@ header {
   font-size: smaller;
 }
 
-
 // header .btn.btn-theme {
 //   background-color: $secondaryColor;
 //   color: $primaryColor;
 //   box-shadow: 4px 4px 0 $primaryLight;
 // }
-
 
 // header .btn.btn-theme:hover {
 //   background-color: $secondaryColor;
@@ -976,7 +1019,6 @@ header {
 .logo-img {
   height: 70px;
 }
-
 
 .menu-container {
   grid-area: 2/1/2/3;
@@ -987,14 +1029,18 @@ header a {
   border-bottom: solid 1px $primaryColor;
 }
 
+.header-title {
+  font-size: 32px;
+  background-color: $primaryColor;
+}
+
 .header-title:first-child {
   color: $secondaryColor;
 }
 
 .header-title:last-child {
-  color: $white
+  color: $white;
 }
-
 
 .nav-list {
   margin-top: 1rem;
@@ -1002,20 +1048,19 @@ header a {
   padding: 0;
 }
 
-.nav-list>li {
+.nav-list > li {
   display: block;
   margin-bottom: 1em;
 }
 
-.nav-list>li {
+.nav-list > li {
   display: block;
   margin-bottom: 1em;
 }
 
-.nav-list>li+li {
+.nav-list > li + li {
   margin-left: 0;
 }
-
 
 a.nav-link {
   padding: 0.33rem 0.67rem;
@@ -1027,7 +1072,7 @@ a.nav-link {
 }
 
 a.nav-link:hover {
-  border-bottom: solid 1px $secondaryColor
+  border-bottom: solid 1px $secondaryColor;
 }
 
 a.nav-link.active,
@@ -1037,7 +1082,6 @@ a.nav-link.active:hover {
 }
 
 @media screen and (min-width: 700px) {
-
   header {
     padding: 0 2em;
   }
@@ -1051,7 +1095,6 @@ a.nav-link.active:hover {
     grid-gap: 2em;
     text-align: initial;
   }
-
 
   .header-title {
     font-size: 36px;
@@ -1067,18 +1110,15 @@ a.nav-link.active:hover {
     padding: 0;
   }
 
-
-  .nav-list>li {
+  .nav-list > li {
     display: inline-block;
     margin-bottom: 0;
   }
 
-  .nav-list>li+li {
+  .nav-list > li + li {
     margin-left: 2em;
   }
-
 }
-
 
 footer {
   position: relative;
@@ -1094,10 +1134,10 @@ footer p,
 footer li a,
 footer .footer-logo,
 footer h4 {
-  background-color: $primaryColor
+  background-color: $primaryColor;
 }
 
-footer>.container {
+footer > .container {
   z-index: 1;
 }
 
@@ -1106,7 +1146,7 @@ footer>.container {
 }
 
 .footer-title:last-child {
-  color: $secondaryColor
+  color: $secondaryColor;
 }
 
 .footer-logo {
@@ -1172,7 +1212,7 @@ footer>.container {
 
 .copyright span {
   color: $primaryColor;
-  background: rgba(0, 0, 0, 0.030);
+  background: rgba(0, 0, 0, 0.03);
   padding: 5px;
   border-radius: 5px;
 }

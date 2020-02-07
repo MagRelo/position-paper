@@ -66,9 +66,8 @@ function activityTile(link) {
             gridTemplateColumns: '1fr 1fr',
             textAlign: 'center',
             borderTop: '1px solid #cbcbcb',
-            // borderBottom: '1px solid #cbcbcb',
             margin: '1em 0 0',
-            padding: '0.5em 0'
+            padding: '1em 0 0'
           }}
         >
           <div style={{ borderRight: '1px solid #cbcbcb' }}>

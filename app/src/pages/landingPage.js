@@ -491,9 +491,9 @@ function LandingPage() {
 
             <div>
               <div className="container section-cta">
-                <button className="btn btn-theme">
+                <Link to="/employer-account" className="btn btn-theme">
                   Create Employer Account <IoMdPersonAdd />
-                </button>
+                </Link>
               </div>
             </div>
           </div>

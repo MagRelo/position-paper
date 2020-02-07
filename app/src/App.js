@@ -50,7 +50,7 @@ import AddLink from 'networkData/jobForm';
 import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
 import Profile from 'pages/user/userProfile';
 import Dashboard from 'pages/user/userDashboard-2';
-// import UserBankAccount from 'pages/user/userBankAccount';
+import EmployeeOnboarding from 'pages/user/employerOnboardingForm';
 // import Response from 'pages/response/response';
 // import Respond from 'pages/response/respond';
 
@@ -128,7 +128,11 @@ function App(props) {
                 <Search path="/search" />
                 <Terms path="/terms" />
                 <About path="/about" />
+
                 <Employers path="/employers" />
+
+                <EmployeeOnboarding path="/employer-account" />
+
                 <LandingPage path="/" />
                 <NotFound default />
               </Router>
@@ -143,7 +147,10 @@ function App(props) {
                 <Search path="/search" />
                 <Terms path="/terms" />
                 <About path="/about" />
+
                 <Employers path="/employers" />
+                <EmployeeOnboarding path="/employer-account" />
+
                 <LandingPage path="/" />
                 <NotFound default />
               </Router>

@@ -55,7 +55,7 @@ function User(props) {
                 className="btn btn-sm"
                 style={{ float: 'right' }}
                 onClick={() => {
-                  console.log('hit');
+                  // console.log('hit');
                   return clearSession();
                 }}
               >
