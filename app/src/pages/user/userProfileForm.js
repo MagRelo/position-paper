@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Loading, ProfilePic } from 'components/random';
+import { Loading } from 'components/random';
 
 function UserProfileForm({ user }) {
   const [displayName, setDisplayName] = useState(user.displayName || '');
@@ -9,10 +9,8 @@ function UserProfileForm({ user }) {
   );
   const [jobBoardId, setJobBoardId] = useState(user.jobBoardId || '');
   const [description, setDescription] = useState(user.description || '');
-
-  // const [token, setToken] = useState('');
-  // const [metaData, setMetaData] = useState('');
-  // const [flashBankButton, setFlashBankButton] = useState(false);
+  const [location, setLocation] = useState(user.location || '');
+  const [email, setEmail] = useState(user.email || '');
 
   // status
   const [loading, setLoading] = useState(false);
@@ -51,16 +49,10 @@ function UserProfileForm({ user }) {
   return (
     <div className="form-wrapper">
       <form name="userBankAccount" onSubmit={onSubmit}>
-        <div className="user-profile">
-          <ProfilePic avatarUrl={avatar} />
-          <div className="user-info">
-            <div className="user-name">{displayName}</div>
-          </div>
-        </div>
-
+        <h4>Job Board Settings</h4>
         <fieldset>
           <div className="form-group">
-            <label htmlFor="first_name">Display Name </label>
+            <label htmlFor="displayName">Display Name </label>
             <input
               className="form-control"
               type="text"
@@ -74,21 +66,21 @@ function UserProfileForm({ user }) {
           </div>
 
           <div className="form-group">
-            <label htmlFor="first_name">Description </label>
-            <textarea
+            <label htmlFor="location">Location </label>
+            <input
               className="form-control"
               type="text"
-              id="description"
-              name="description"
-              value={description}
+              id="location"
+              name="location"
+              value={location}
               onChange={e => {
-                setDescription(e.target.value);
+                setLocation(e.target.value);
               }}
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="last_name">Avatar </label>
+            <label htmlFor="avatar">Avatar </label>
             <input
               className="form-control"
               type="text"
@@ -102,21 +94,21 @@ function UserProfileForm({ user }) {
           </div>
 
           <div className="form-group">
-            <label htmlFor="dob">LinkedIn Profile URL </label>
-            <input
+            <label htmlFor="description">Description </label>
+            <textarea
               className="form-control"
               type="text"
-              id="linkedInProfile"
-              name="linkedInProfile"
-              value={linkedInProfile}
+              id="description"
+              name="description"
+              value={description}
               onChange={e => {
-                setLinkedInProfile(e.target.value);
+                setDescription(e.target.value);
               }}
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="dob">Job Board URL </label>
+            <label htmlFor="jobBoardId">Job Board URL </label>
             <div style={{ margin: '1em 0 ' }}>
               <div className="input-group mb-2">
                 <div className="input-group-prepend">
@@ -133,7 +125,6 @@ function UserProfileForm({ user }) {
                 <input
                   type="text"
                   className="form-control"
-                  style={{ border: 'none' }}
                   id="jobBoardId"
                   name="jobBoardId"
                   placeholder="jobBoardId"
@@ -144,6 +135,34 @@ function UserProfileForm({ user }) {
                 />
               </div>
             </div>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="email">Email </label>
+            <input
+              className="form-control"
+              type="text"
+              id="email"
+              name="email"
+              value={email}
+              onChange={e => {
+                setEmail(e.target.value);
+              }}
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="linkedInProfile">LinkedIn Profile URL </label>
+            <input
+              className="form-control"
+              type="text"
+              id="linkedInProfile"
+              name="linkedInProfile"
+              value={linkedInProfile}
+              onChange={e => {
+                setLinkedInProfile(e.target.value);
+              }}
+            />
           </div>
         </fieldset>
         <hr />

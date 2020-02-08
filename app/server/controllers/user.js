@@ -14,7 +14,8 @@ exports.populateUser = async function(req, res) {
   try {
     const user = await UserModel.findOne({ _id: req.user.id })
       .select(
-        'firstname lastname avatar displayName description linkedInProfile jobBoardUrl jobBoardId stripeAccountLabel stripeCustomerLabel stripeCustomerBrand'
+        `firstname lastname avatar displayName description location email linkedInProfile 
+        jobBoardUrl jobBoardId stripeAccountLabel stripeCustomerLabel stripeCustomerBrand`
       )
       .lean();
 

@@ -16,6 +16,7 @@ const UserSchema = new mongoose.Schema(
     },
     displayName: String,
     description: String,
+    location: String,
     linkedInProfile: String,
     jobBoardUrl: String,
 
