@@ -1,10 +1,7 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { Link } from '@reach/router';
 
 import { FaSearch, FaUserAlt, FaClipboardList } from 'react-icons/fa';
-
-import { useSpring, animated } from 'react-spring';
-import useMeasure from 'react-use-measure';
 
 import { AuthContext } from 'App';
 import LinkedInLogin from 'components/linkedinLogin';
@@ -20,13 +17,8 @@ const NavLink = props => (
   />
 );
 
-function Header(props) {
+function Header() {
   const { activeSession } = useContext(AuthContext);
-
-  const [bind, { height }] = useMeasure();
-  const menuProps = useSpring({ height });
-
-  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <React.Fragment>

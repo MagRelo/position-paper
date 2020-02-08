@@ -43,7 +43,7 @@ router.get('/link/:linkId', function(req, res) {
 // serve the frontend for all non-api requests
 router.get('*', function(req, res) {
   // base route
-  console.log('base route');
+  // console.log('base route');
 
   // get index page and replace meta values
   const filePath = path.resolve(__dirname, '../build', 'index.html');
