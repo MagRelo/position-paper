@@ -27,7 +27,7 @@ function EmailButton(props) {
           className="icon"
           style={{
             fontSize: '18px',
-            background: props.enabled ? gmailColor : '#cbcbcb'
+            background: props.enabled ? gmailColor : '#dfdfdf'
           }}
         >
           <FaEnvelope />

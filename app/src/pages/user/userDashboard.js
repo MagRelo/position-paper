@@ -6,19 +6,7 @@ import { FaEdit } from 'react-icons/fa';
 
 import ActivityTile from 'pages/search/searchResult_tile';
 
-import {
-  // formatCurrency,
-  Loading,
-  JobBoard,
-  ProfilePic,
-  SocialGrid
-} from 'components/random';
-
-// import PaymentsTable from './userPaymentsTable';
-// import ResponseList from './userResponseTable';
-// import JobTable from './userJobsTable';
-// import LinksTable from './userLinksTable';
-// import UserProfileForm from 'pages/user/userProfileForm';
+import { Loading, JobBoard, UserProfile, SocialGrid } from 'components/random';
 
 import { AuthContext } from 'App';
 
@@ -30,9 +18,6 @@ function User(props) {
   const [isLoading, setIsLoading] = useState(true);
   const [userData, setUserData] = useState(user);
   const [links, setLinks] = useState([]);
-  // const [jobs, setJobs] = useState([]);
-  // const [payments, setPayments] = useState([]);
-  // const [responses, setResponses] = useState([]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -99,14 +84,7 @@ function User(props) {
                 <div className="mb-4"></div>
 
                 <div className="grid grid-5-3">
-                  <div className="user-profile">
-                    <ProfilePic avatarUrl={userData.avatar} />
-                    <div className="user-info">
-                      <div className="user-name">{userData.displayName}</div>
-                      <p>{userData.location}</p>
-                      <p>{userData.description}</p>
-                    </div>
-                  </div>
+                  <UserProfile user={userData} />
 
                   <div>
                     <div className="mb-3"></div>
@@ -246,6 +224,6 @@ async function getUser(clearSession) {
     }
 
     console.log(response.status);
-    return {};
+    throw new Error(response.statusText);
   });
 }

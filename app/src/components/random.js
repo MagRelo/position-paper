@@ -6,6 +6,8 @@ import {
   FaEdit,
   FaGlobeAmericas
 } from 'react-icons/fa';
+import { MdLocationOn } from 'react-icons/md';
+
 import Img from 'react-image';
 
 import { AiOutlineUser } from 'react-icons/ai';
@@ -354,6 +356,21 @@ export function ProfilePic({ avatarUrl }) {
       loader={defaultPic()}
       unloader={defaultPic()}
     />
+  );
+}
+
+export function UserProfile({ user }) {
+  return (
+    <div className="user-profile">
+      <ProfilePic avatarUrl={user.avatar} />
+      <div className="user-info">
+        <div className="user-name">{user.displayName}</div>
+        <p>
+          <MdLocationOn /> {user.location}
+        </p>
+        <p>{user.description}</p>
+      </div>
+    </div>
   );
 }
 

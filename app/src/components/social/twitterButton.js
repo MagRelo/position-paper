@@ -23,7 +23,7 @@ function SocialButton(props) {
         <span
           className="icon"
           style={{
-            background: props.enabled ? twitterColor : '#cbcbcb'
+            background: props.enabled ? twitterColor : '#dfdfdf'
           }}
         >
           <svg

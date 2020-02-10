@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Loading, ProfilePic, SocialGrid } from 'components/random';
+import { Loading, UserProfile, SocialGrid } from 'components/random';
 // import { Helmet } from 'react-helmet';
 
 import { useTrail, animated } from 'react-spring';
@@ -49,18 +49,8 @@ function SearchFlow({ userId }) {
             ) : (
               <React.Fragment>
                 <div className="grid grid-5-3">
-                  <div className="user-profile">
-                    <ProfilePic avatarUrl={user.avatar} />
-                    <div className="user-info">
-                      <div className="user-name">{user.displayName}</div>
-                      <p>{user.location}</p>
-                      <p>{user.description}</p>
-                    </div>
-                  </div>
-
-                  <div>
-                    <SocialGrid />
-                  </div>
+                  <UserProfile user={user} />
+                  <SocialGrid />
                 </div>
 
                 <div className="grid grid-3">

@@ -27,11 +27,10 @@ function LandingPage() {
     <React.Fragment>
       {/* HERO */}
       <div id="home" className="hero-container">
-        {/* <div id="particles-js"></div> */}
         <div className="center-container">
           <div className="container">
-            <div className="grid grid-3-5 align-items-center">
-              <div>
+            <div className="grid grid-2 align-items-center">
+              <div className="swap-order">
                 <div className="landing-image-container">
                   <img src={FinishLine} alt="" className="landing-image" />
                 </div>
@@ -122,8 +121,8 @@ function LandingPage() {
               <div className="panel">
                 <h4>Build Your Job Board</h4>
                 <p>
-                  Every job on Talent Relay includes a referral bonus – add jobs
-                  to your board with one click!
+                  Add jobs to your board with one click – every job on Talent
+                  Relay includes a referral bonus
                 </p>
               </div>
               <div className="panel">
@@ -356,7 +355,7 @@ function LandingPage() {
                   </div>
                 </div>
               </Link>
-              <Link to="/jobs/Q1ANr0Ch3Uz5aMzVSu2dX">
+              <Link to="/jobs/matt-lovan">
                 <div className="panel">
                   <div className="user-profile">
                     <ProfilePic
