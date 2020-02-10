@@ -1,0 +1,15 @@
+// https://coolors.co/00203f-adefd1-ffa400-009ffd-fdfffc
+
+$primaryColor: #00203fff;
+$primaryLight: #1e68bc;
+$lightBlue: #e6f6fe;
+
+$secondaryColor: #adefd1ff;
+$orange: #ffa400;
+
+$darkText: #3a3a3a;
+$lightText: lighten($color: $darkText, $amount: 15);
+$lighterText: lighten($color: $darkText, $amount: 25);
+
+$lightGray: #dfdfdf;
+$white: #fdfffc;

@@ -3,7 +3,7 @@ import { Tab } from '@reach/tabs';
 import {
   FaExternalLinkAlt,
   FaRegCopy,
-  FaEdit,
+  // FaEdit,
   FaGlobeAmericas
 } from 'react-icons/fa';
 import { MdLocationOn } from 'react-icons/md';
@@ -194,7 +194,12 @@ export function usePromise(promiseOrFunction, defaultValue) {
 
 export function Loading() {
   return (
-    <div style={{ textAlign: 'center', marginTop: '1em' }}>
+    <div
+      style={{
+        textAlign: 'center',
+        marginTop: '1em'
+      }}
+    >
       <div className="lds-dual-ring"></div>
     </div>
   );

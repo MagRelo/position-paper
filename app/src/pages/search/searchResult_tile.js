@@ -42,17 +42,19 @@ function activityTile(link) {
       <div className="search-tile">
         <span
           className="label"
-          style={{ float: 'right', lineHeight: '36px', marginLeft: '2em' }}
+          style={{ float: 'right', lineHeight: '27px', marginLeft: '2em' }}
         >
           {formatDate(link.createdAt)}
         </span>
 
-        <p
+        <div
           className="section-header"
           style={{ color: 'initial', fontSize: '18px', marginTop: 0 }}
         >
           {link.data.jobTitle}
-        </p>
+        </div>
+
+        <div className="mb-3"></div>
 
         <div className="grid-left">
           {jobDataItem('Employer', link.data.employer)}

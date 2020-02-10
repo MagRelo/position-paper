@@ -70,7 +70,11 @@ function Header() {
                   </NavLink>
                 </li>
               </React.Fragment>
-            ) : null}
+            ) : (
+              <li>
+                <LinkedInLogin>Sign In</LinkedInLogin>
+              </li>
+            )}
           </ul>
         </div>
 
@@ -86,29 +90,25 @@ function Header() {
               {activeSession ? (
                 <React.Fragment>
                   <li>
-                    <NavLink className="nav-link" to="/profile">
-                      <FaUserAlt /> Account
-                    </NavLink>
-                  </li>
-
-                  <li>
                     <NavLink className="nav-link" to="/dashboard">
                       <FaClipboardList /> Job Board
                     </NavLink>
                   </li>
+
+                  <li>
+                    <NavLink className="nav-link" to="/profile">
+                      <FaUserAlt /> Account
+                    </NavLink>
+                  </li>
                 </React.Fragment>
-              ) : null}
+              ) : (
+                <div className="button-wrapper">
+                  <LinkedInLogin>Sign In</LinkedInLogin>
+                </div>
+              )}
             </ul>
           ) : null}
         </div>
-
-        {!activeSession ? (
-          <div className="header-container">
-            <div className="button-wrapper">
-              <LinkedInLogin>Sign In</LinkedInLogin>
-            </div>
-          </div>
-        ) : null}
       </div>
     </header>
   );

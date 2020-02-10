@@ -1,4 +1,4 @@
-@import 'talent-relay.scss';
+@import 'variables.scss';
 
 header {
   position: relative;
@@ -10,9 +10,9 @@ header {
   border-bottom: $primaryLight solid 1px;
 }
 
-.header-grid {}
+// .header-grid {}
 
-.header-container {}
+// .header-container {}
 
 
 header a {
@@ -49,6 +49,8 @@ header a {
 }
 
 a.nav-link {
+  display: inline-block;
+
   padding: 0.33rem 0.67rem;
   color: $secondaryColor;
   background-color: $primaryColor;
@@ -103,7 +105,7 @@ a.nav-link.active:hover {
 
   .header-grid {
     display: grid;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: auto 1fr;
     grid-gap: 2em;
 
     min-height: 12vh;

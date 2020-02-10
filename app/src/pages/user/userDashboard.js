@@ -62,7 +62,16 @@ function User(props) {
             <Loading />
           ) : (
             <div>
+              <div className="mb-4"></div>
               <div className="user-panel">
+                <div className="grid grid-5-3">
+                  <UserProfile user={userData} />
+
+                  <SocialGrid />
+                </div>
+
+                <div className="mb-4"></div>
+
                 <div className="grid grid-2-x">
                   <div>
                     <JobBoard jobBoardId={userData.jobBoardId} />
@@ -78,17 +87,6 @@ function User(props) {
                     <Link to="/profile" className="btn btn-sm btn-unstyled">
                       Edit Profile <FaEdit />
                     </Link>
-                  </div>
-                </div>
-
-                <div className="mb-4"></div>
-
-                <div className="grid grid-5-3">
-                  <UserProfile user={userData} />
-
-                  <div>
-                    <div className="mb-3"></div>
-                    <SocialGrid />
                   </div>
                 </div>
 

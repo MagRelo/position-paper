@@ -1,21 +1,6 @@
-// https://coolors.co/00203f-adefd1-ffa400-009ffd-fdfffc
+// talent-relay.scss
 
-/* Blue #00539CFF */
-
-$primaryColor: #00203fff;
-$primaryLight: #1e68bc;
-$lightBlue: #e6f6fe;
-
-$secondaryColor: #adefd1ff;
-$orange: #ffa400;
-
-$darkText: #3a3a3a;
-$lightText: lighten($color: $darkText, $amount: 15);
-$lighterText: lighten($color: $darkText, $amount: 25);
-
-$lightGray: #dfdfdf;
-$white: #fdfffc;
-
+@import 'variables.scss';
 
 html {
   background-color: $primaryColor;
@@ -164,7 +149,7 @@ a:hover {
 
 svg {
   fill: currentColor;
-  margin: 0 1px 3px;
+  // margin: 0 1px 3px;
 }
 
 table {
@@ -296,7 +281,6 @@ table {
 
 /* user display */
 .user-container {
-  padding-top: 2em;
   min-height: 90vh;
 }
 
@@ -317,9 +301,9 @@ table {
   margin-bottom: 10px;
 }
 
-// .user-info {
-//   // padding-left: 72px;
-// }
+.user-info p {
+  margin-bottom: 0;
+}
 
 .user-name {
   font-size: 20px;
@@ -781,7 +765,7 @@ iframe {
 .grid {
   display: grid;
   grid-template-rows: 1fr;
-  grid-gap: 2em;
+  grid-gap: 1.5em 0;
 }
 
 .grid-2,
@@ -812,68 +796,68 @@ iframe {
 
   .grid-2 {
     grid-template-columns: 1fr 1fr;
-    grid-gap: 2em;
+    grid-gap: 1.5em;
   }
 
   .grid-x-2 {
     grid-template-columns: auto 1fr;
-    grid-gap: 2em;
+    grid-gap: 1.5em;
   }
 
   .grid-x-3-x {
     grid-template-columns: auto 1fr auto;
-    grid-gap: 2em;
+    grid-gap: 1.5em;
   }
 
 
   .grid-3-x-x {
     grid-template-columns: 1fr auto auto;
-    grid-gap: 2em;
+    grid-gap: 1.5em;
   }
 
   .grid-2-x {
     grid-template-columns: 1fr auto;
-    grid-gap: 2em;
+    grid-gap: 1.5em;
   }
 
   .grid-3 {
     grid-template-columns: 1fr 1fr 1fr;
-    grid-gap: 2em;
+    grid-gap: 1.5em;
   }
 
   .grid-4 {
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-gap: 2em;
+    grid-gap: 1.5em;
   }
 
   .grid-1-3 {
     grid-template-columns: 1fr 3fr;
-    grid-gap: 2em;
+    grid-gap: 1.5em;
   }
 
   .grid-2-3 {
     grid-template-columns: 1fr 2fr;
-    grid-gap: 2em;
+    grid-gap: 1.5em;
   }
 
   .grid-5-3 {
     grid-template-columns: 5fr 3fr;
-    grid-gap: 2em;
+    grid-gap: 1.5em;
   }
 
   .grid-3-5 {
     grid-template-columns: 3fr 5fr;
-    grid-gap: 2em;
+    grid-gap: 1.5em;
   }
 
   .grid-5 {
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    grid-gap: 2em;
+    grid-gap: 1.5em;
   }
 
   .grid-6-1 {
     grid-template-columns: 5fr 2fr;
-    grid-gap: 2em;
+    grid-gap: 1.5em;
   }
 }
 

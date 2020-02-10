@@ -45,6 +45,7 @@ function User(props) {
 
   return (
     <div className="container user-container">
+      <div className="mb-4"></div>
       {isLoading ? (
         <Loading />
       ) : (
