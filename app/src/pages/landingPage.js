@@ -38,7 +38,7 @@ function LandingPage() {
               </div>
 
               <div>
-                <h5 className="title-theme-bg">Welcome To Talent Relay</h5>
+                <h5 className="title-theme-bg">Welcome To Talent Relay!</h5>
 
                 <h1 className="mb-2">Build your personal Job Board</h1>
 
