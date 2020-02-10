@@ -49,7 +49,6 @@ function UserProfileForm({ user }) {
   return (
     <div className="form-wrapper">
       <form name="userBankAccount" onSubmit={onSubmit}>
-        <h4>Job Board Settings</h4>
         <fieldset>
           <div className="form-group">
             <label htmlFor="displayName">Display Name </label>
