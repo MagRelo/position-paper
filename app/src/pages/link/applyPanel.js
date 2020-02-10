@@ -41,17 +41,17 @@ function ApplyPanel({ link, user }) {
   }
 
   return (
-    <div id="apply" style={{ margin: '2em 0' }}>
+    <div id="apply">
       {activeSession ? (
         <React.Fragment>
           {hasApplied ? (
             <div>
-              <h3 className="section-header">Application Status</h3>
+              <h3>Application Status</h3>
               <ResponseStatus status={status} steps={applySteps} />
             </div>
           ) : (
             <div>
-              <h2>Apply for this Job</h2>
+              <h3>Apply Now</h3>
               <p>
                 Apply for this position. We'll pay you{' '}
                 <b>{formatCurrency(link.target_bonus)}</b> if you're hired.
@@ -74,14 +74,14 @@ function ApplyPanel({ link, user }) {
         </React.Fragment>
       ) : (
         <React.Fragment>
-          <h2>Apply for this Job</h2>
+          <h3>Apply Now</h3>
           <p>
             Apply for this position. We'll pay you{' '}
             <b>{formatCurrency(link.target_bonus)}</b> if you're hired.
           </p>
 
           <LinkedInLogin redirect={'/link/' + link.linkId}>
-            {'(Login to Apply)'}
+            Apply Now
           </LinkedInLogin>
         </React.Fragment>
       )}

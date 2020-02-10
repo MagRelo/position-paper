@@ -32,7 +32,7 @@ export function JobDisplay({ data }) {
         {jobDataItem('Salary', salaryString)}
       </div>
       <div
-        style={{ color: 'black', marginTop: '1em', padding: '0 2em' }}
+        className="job-description"
         dangerouslySetInnerHTML={createMarkup(data.renderedHtml)}
       />
     </div>

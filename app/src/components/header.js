@@ -1,36 +1,15 @@
 import React, { useContext } from 'react';
-import { FaSearch } from 'react-icons/fa';
+import { Link } from '@reach/router';
+
+import { FaSearch, FaUserAlt, FaClipboardList } from 'react-icons/fa';
 
 import { AuthContext } from 'App';
 import LinkedInLogin from 'components/linkedinLogin';
-
-import { Link } from '@reach/router';
-
-// temp
-import logo from 'images/logo.png';
-
-// import {
-//   Menu,
-//   MenuList,
-//   MenuLink,
-//   MenuButton,
-//   MenuItem
-// } from '@reach/menu-button';
 
 const NavLink = props => (
   <Link
     {...props}
     getProps={({ isCurrent }) => {
-      // the object returned here is passed to the
-      // anchor element's props
-
-      // return {
-      //   style: {
-      //     borderBottom: isCurrent ? 'solid 1px' : null,
-      //     color: isCurrent ? 'white' : null
-      //   }
-      // };
-
       return {
         className: isCurrent ? 'nav-link active' : 'nav-link'
       };
@@ -38,100 +17,61 @@ const NavLink = props => (
   />
 );
 
-function Header(props) {
+function Header() {
   const { activeSession } = useContext(AuthContext);
 
   return (
-    <header id="site-header" className="header">
-      <div id="header-wrap">
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-lg-12">
-              <nav className="navbar navbar-expand-lg">
-                <Link className="navbar-brand logo" to="/">
-                  <img
-                    id="logo-img"
-                    className="img-center"
-                    src={logo}
-                    alt="logo"
-                  ></img>
-                </Link>
+    <React.Fragment>
+      <header>
+        <div id="stars"></div>
+        <div id="stars2"></div>
+        <div id="stars3"></div>
 
-                {/* Mobile button
-                <button
-                  className="navbar-toggler"
-                  type="button"
-                  data-toggle="collapse"
-                  data-target="#navbarNavDropdown"
-                  aria-expanded="false"
-                  aria-label="Toggle navigation"
-                >
-                  {' '}
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                </button>
-                 */}
+        <div className="header-grid">
+          <div className="header-container">
+            <Link to="/">
+              <span>
+                <span className="header-title">Talent</span>
+                &#8201;
+                <span className="header-title">Relay</span>
+              </span>
+            </Link>
+          </div>
 
-                {/* Menu */}
-                <div
-                  className="collapse navbar-collapse"
-                  id="navbarNavDropdown"
-                >
-                  {activeSession ? null : (
-                    <ul className="navbar-nav ml-auto mr-auto">
-                      <React.Fragment>
-                        <li className="nav-item">
-                          <a className="nav-link" href="/#employers">
-                            Employers
-                          </a>
-                        </li>
-                        <li className="nav-item">
-                          <a className="nav-link" href="/#how">
-                            How It Works
-                          </a>
-                        </li>
-                        <li className="nav-item">
-                          <a className="nav-link" href="/#getstarted">
-                            Get Started
-                          </a>
-                        </li>
-                      </React.Fragment>
-                    </ul>
-                  )}
-                </div>
+          <div className="header-container">
+            <ul className="nav-list">
+              <li>
+                <NavLink className="nav-link" to="/search">
+                  Search Jobs <FaSearch />
+                </NavLink>
+              </li>
+            </ul>
+          </div>
 
-                {/* Login/Logout */}
-
-                <div className="right-nav align-items-center d-flex justify-content-end list-inline">
-                  <NavLink className="nav-link" to="/search">
-                    Search Jobs <FaSearch />
+          <div className="header-container">
+            {activeSession ? (
+              <ul className="nav-list">
+                <li>
+                  <NavLink className="nav-link" to="/dashboard">
+                    <FaClipboardList /> Job Board
                   </NavLink>
+                </li>
 
-                  {activeSession ? (
-                    <React.Fragment>
-                      <span className="nav-link">|</span>
-
-                      <NavLink className="nav-link" to="/dashboard">
-                        Dashboard
-                      </NavLink>
-
-                      <NavLink className="nav-link" to="/profile">
-                        Profile
-                      </NavLink>
-                    </React.Fragment>
-                  ) : (
-                    <span className="nav-link">
-                      <LinkedInLogin>Login</LinkedInLogin>
-                    </span>
-                  )}
-                </div>
-              </nav>
-            </div>
+                <li>
+                  <NavLink className="nav-link" to="/profile">
+                    <FaUserAlt /> Account
+                  </NavLink>
+                </li>
+              </ul>
+            ) : (
+              <li>
+                <LinkedInLogin>Sign In</LinkedInLogin>
+              </li>
+            )}
           </div>
         </div>
-      </div>
-    </header>
+      </header>
+    </React.Fragment>
   );
 }
 

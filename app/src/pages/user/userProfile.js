@@ -62,18 +62,8 @@ function User(props) {
                 log out
               </button>
 
-              <h2>Edit Profile</h2>
+              <h1>Your Account</h1>
               <UserProfileForm user={userData} />
-            </div>
-            <div className="mb-4"></div>
-
-            <div>
-              <h2>Payment Source</h2>
-              <UserPaymentSource
-                hasPaymentSource={userData.hasPaymentSource}
-                sourceLabel={userData.stripeCustomerLabel}
-                sourceBrand={userData.stripeCustomerBrand}
-              />
             </div>
             <div className="mb-4"></div>
 
@@ -83,6 +73,16 @@ function User(props) {
                 hasAccount={userData.hasAccount}
                 bankLabel={userData.stripeAccountLabel}
                 bankBrand={userData.stripeAccountBrand}
+              />
+            </div>
+            <div className="mb-4"></div>
+
+            <div>
+              <h2>Employer Account</h2>
+              <UserPaymentSource
+                hasPaymentSource={userData.hasPaymentSource}
+                sourceLabel={userData.stripeCustomerLabel}
+                sourceBrand={userData.stripeCustomerBrand}
               />
             </div>
             <div className="mb-4"></div>

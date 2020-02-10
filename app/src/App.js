@@ -12,28 +12,25 @@ import '@reach/dialog/styles.css';
 import '@reach/menu-button/styles.css';
 
 // Template CSS
-
-// bootstrap -->
 import './css/bootstrap.min.css';
 import './css/fontawesome-all.css';
 
-//
-// Template Overides
-//
+// Site CSS
 import './css/talent-relay.scss';
+import './css/header.scss';
+import './css/loaders.scss';
 import './css/stars.scss';
 
 // Header
-import Header from 'components/header-2';
+import Header from 'components/header';
 import Footer from 'components/footer';
-
-import NotFound from 'pages/404';
 
 // Routes
 import LandingPage from 'pages/landingPage';
 import Terms from 'pages/legal';
 import About from 'pages/about';
 import Employers from 'pages/employer';
+import NotFound from 'pages/404';
 
 // Maybe Auth
 import Login from 'pages/login';
@@ -49,7 +46,7 @@ import AddLink from 'networkData/jobForm';
 // Auth
 import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
 import Profile from 'pages/user/userProfile';
-import Dashboard from 'pages/user/userDashboard-2';
+import Dashboard from 'pages/user/userDashboard';
 import EmployeeOnboarding from 'pages/user/employerOnboardingForm';
 // import Response from 'pages/response/response';
 // import Respond from 'pages/response/respond';

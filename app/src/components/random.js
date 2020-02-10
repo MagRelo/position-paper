@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Tab } from '@reach/tabs';
 import {
-  // FaExternalLinkAlt,
+  FaExternalLinkAlt,
   FaRegCopy,
-  // FaEdit,
+  FaEdit,
   FaGlobeAmericas
 } from 'react-icons/fa';
 import Img from 'react-image';
 
 import { AiOutlineUser } from 'react-icons/ai';
+
+import EmailButton from 'components/social/emailButton';
+import TwitterButton from 'components/social/twitterButton';
+import LinkedinButton from 'components/social/linkedinButton';
+import InstaButton from 'components/social/instagramButton';
 
 var SI_SYMBOL = ['', 'k', 'M', 'G', 'T', 'P', 'E'];
 
@@ -240,14 +245,13 @@ export function copyTextToClipboard(text) {
 export function JobBoard({ jobBoardId }) {
   const domain = window.location.origin || 'http://localhost:3000';
   return (
-    <div>
+    <div className="url-bar">
       <div className="input-group">
         <div className="input-group-prepend">
           <div
             className="input-group-text"
             style={{
-              fontSize: 'smaller',
-              border: 'none'
+              fontSize: 'smaller'
             }}
           >
             <FaGlobeAmericas />
@@ -257,18 +261,32 @@ export function JobBoard({ jobBoardId }) {
         <input
           type="text"
           className="form-control"
-          style={{ border: 'none' }}
           placeholder="Username"
           disabled={true}
           value={`${domain}/jobs/${jobBoardId}`}
         />
 
+        {/* Edit 
         <div className="input-group-append">
           <div
             className="input-group-text"
             style={{
-              fontSize: 'smaller',
-              border: 'none'
+              fontSize: 'smaller'
+            }}
+          >
+            <button className="button-unstyled">
+              Edit <FaEdit />
+            </button>
+          </div>
+        </div>
+        */}
+
+        {/* Copy */}
+        <div className="input-group-append">
+          <div
+            className="input-group-text"
+            style={{
+              fontSize: 'smaller'
             }}
           >
             <button
@@ -280,6 +298,27 @@ export function JobBoard({ jobBoardId }) {
             >
               Copy <FaRegCopy />
             </button>
+          </div>
+        </div>
+
+        {/* View */}
+        <div className="input-group-append">
+          <div
+            className="input-group-text"
+            style={{
+              fontSize: 'smaller'
+            }}
+          >
+            <div>
+              <a
+                className="button-unstyled"
+                href={`${domain}/jobs/${jobBoardId}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                View <FaExternalLinkAlt />
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -298,7 +337,7 @@ export function ProfilePic({ avatarUrl }) {
             alignItems: 'center',
             height: '100%',
             fontSize: '24px',
-            color: '#7329c2'
+            color: '#1e68bc'
           }}
           alt="avatar"
         >
@@ -334,4 +373,22 @@ function getJsonFromUrl(search) {
     result[item[0]] = decodeURIComponent(item[1]);
   });
   return result;
+}
+
+export function SocialGrid() {
+  return (
+    <div>
+      <div className="social-label">
+        <span>Verified Social</span>
+        <div style={{ fontSize: 'small' }}>(coming soon)</div>
+      </div>
+
+      <div className="social-grid">
+        <EmailButton enabled={false} />
+        <LinkedinButton enabled={false} />
+        <TwitterButton enabled={false} />
+        <InstaButton enabled={false} />
+      </div>
+    </div>
+  );
 }

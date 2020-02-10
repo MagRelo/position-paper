@@ -80,31 +80,37 @@ function LinkPage(props) {
                 <JobDisplay data={queryData} />
 
                 <hr />
-
-                <ApplyPanel
-                  link={link}
-                  user={userData}
-                  activeSession={activeSession}
-                />
               </div>
 
               <div className="col-lg-4">
                 <div className="link-display">
-                  {userData.isLinkOwner ? (
-                    <AdminPanel
-                      activeSession={activeSession}
-                      user={userData}
-                      link={link}
-                      stream={stream}
-                      traffic={traffic}
-                    ></AdminPanel>
-                  ) : (
-                    <PromotePanel
+                  <div className="panel">
+                    <ApplyPanel
                       link={link}
                       user={userData}
                       activeSession={activeSession}
                     />
-                  )}
+                  </div>
+
+                  <div className="mb-4"></div>
+
+                  <div className="panel">
+                    {userData.isLinkOwner ? (
+                      <AdminPanel
+                        activeSession={activeSession}
+                        user={userData}
+                        link={link}
+                        stream={stream}
+                        traffic={traffic}
+                      ></AdminPanel>
+                    ) : (
+                      <PromotePanel
+                        link={link}
+                        user={userData}
+                        activeSession={activeSession}
+                      />
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
