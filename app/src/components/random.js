@@ -18,6 +18,7 @@ import LinkedinButton from 'components/social/linkedinButton';
 import InstaButton from 'components/social/instagramButton';
 
 var SI_SYMBOL = ['', 'k', 'M', 'G', 'T', 'P', 'E'];
+const domain = window.location.origin || 'http://localhost:3000';
 
 function abbreviateNumber(number) {
   // what tier? (determines SI symbol)
@@ -250,7 +251,6 @@ export function copyTextToClipboard(text) {
   );
 }
 export function JobBoard({ jobBoardId }) {
-  const domain = window.location.origin || 'http://localhost:3000';
   return (
     <div className="url-bar">
       <div className="input-group">
@@ -364,17 +364,30 @@ export function ProfilePic({ avatarUrl }) {
   );
 }
 
-export function UserProfile({ user }) {
+export function UserProfile({ user, hideDescription }) {
+  const [hideDesc] = useState(hideDescription || false);
+
   return (
     <div className="user-profile">
-      <ProfilePic avatarUrl={user.avatar} />
       <div className="user-info">
-        <div className="user-name">{user.displayName}</div>
-        <p>
-          <MdLocationOn /> {user.location}
-        </p>
-        <p>{user.description}</p>
+        <div>
+          <ProfilePic avatarUrl={user.avatar} />
+        </div>
+
+        <div className="user-text">
+          <div className="user-name">{user.displayName}</div>
+          <div className="user-location">
+            <MdLocationOn /> {user.location}
+          </div>
+        </div>
       </div>
+
+      {hideDesc ? null : (
+        <React.Fragment>
+          <div className="mb-2"></div>
+          <p className="p-tight">{user.description}</p>
+        </React.Fragment>
+      )}
     </div>
   );
 }

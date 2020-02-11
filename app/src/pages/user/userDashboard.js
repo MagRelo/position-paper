@@ -65,7 +65,9 @@ function User(props) {
               <div className="mb-4"></div>
               <div className="user-panel">
                 <div className="grid grid-5-3">
-                  <UserProfile user={userData} />
+                  <div>
+                    <UserProfile user={userData} />
+                  </div>
 
                   <SocialGrid />
                 </div>
@@ -73,10 +75,7 @@ function User(props) {
                 <div className="mb-4"></div>
 
                 <div className="grid grid-2-x">
-                  <div>
-                    <JobBoard jobBoardId={userData.jobBoardId} />
-                  </div>
-
+                  <JobBoard jobBoardId={userData.jobBoardId} />
                   <div
                     style={{
                       display: 'flex',
@@ -90,6 +89,8 @@ function User(props) {
                   </div>
                 </div>
 
+                <div className="mb-4"></div>
+                <hr />
                 <div className="mb-4"></div>
 
                 {isLoading ? (
@@ -143,8 +144,9 @@ function User(props) {
                 </div>
 
                 <div className="grid grid-2 text-center">
-                  <div className="panel">
-                    <h3>Onboard Employers → Get Paid</h3>
+                  <div>
+                    <h3>Onboard Employers</h3>
+
                     <p>
                       <i>Sign-up Employers and get 5% of every job posted.</i>
                     </p>
@@ -153,8 +155,8 @@ function User(props) {
                     </div>
                   </div>
 
-                  <div className="panel">
-                    <h3>Onboard Candidates → Get Paid</h3>
+                  <div>
+                    <h3>Onboard Candidates</h3>
                     <p>
                       <i>Sign-up Employers and get 5% of every job posted.</i>
                     </p>
@@ -163,8 +165,8 @@ function User(props) {
                     </div>
                   </div>
 
-                  <div className="panel">
-                    <h3>Get Hired → Get Paid</h3>
+                  <div>
+                    <h3>Get Hired</h3>
                     <p>
                       <i>Every job on Talent Relay includes a hiring bonus</i>
                     </p>
@@ -175,7 +177,7 @@ function User(props) {
                     </div>
                   </div>
 
-                  <div className="panel">
+                  <div>
                     <h3>For Employers</h3>
 
                     <div style={{ textAlign: 'center' }}>

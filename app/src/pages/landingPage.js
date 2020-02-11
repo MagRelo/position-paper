@@ -3,7 +3,7 @@ import { Link } from '@reach/router';
 import { FaAngleDown, FaSearch } from 'react-icons/fa';
 import { IoMdPersonAdd } from 'react-icons/io';
 
-import { ProfilePic } from 'components/random';
+import { UserProfile } from 'components/random';
 
 // hero
 import FinishLine from 'images/undraw_finish_line.svg';
@@ -318,61 +318,45 @@ function LandingPage() {
             <div className="grid grid-3">
               <Link to="/jobs/Q1ANr0Ch3Uz5aMzVSu2dX">
                 <div className="panel">
-                  <div className="user-profile">
-                    <ProfilePic
-                      avatarUrl={
-                        'https://pbs.twimg.com/profile_images/903343236252483584/qQw0KRkK_400x400.jpg'
-                      }
-                    />
-                    <div className="user-info">
-                      <div className="user-name">Girls Who Code</div>
-                    </div>
-                    <p>
-                      Promoting @GirlsWhoCode in Howard County, MD. Helping
+                  <UserProfile
+                    user={{
+                      displayName: 'Girls Who Code',
+                      location: 'MD County, MD',
+                      avatar:
+                        'https://pbs.twimg.com/profile_images/903343236252483584/qQw0KRkK_400x400.jpg',
+                      description: `Promoting @GirlsWhoCode in Howard County, MD. Helping
                       create a pipeline for girls in tech & eliminate
-                      socioeconomic barriers for all.
-                    </p>
-                  </div>
+                      socioeconomic barriers for all.`
+                    }}
+                  />
                 </div>
               </Link>
               <Link to="/jobs/Q1ANr0Ch3Uz5aMzVSu2dX">
                 <div className="panel">
-                  <div className="user-profile">
-                    <ProfilePic
-                      avatarUrl={
-                        'https://pbs.twimg.com/profile_images/1109145060929490945/H1RmsjEu_400x400.png'
-                      }
-                    />
-                    <div className="user-info">
-                      <div className="user-name">
-                        Electronic Freedom Foundation
-                      </div>
-                    </div>
-                    <p>
-                      We're the Electronic Frontier Foundation. We defend your
-                      civil liberties in a digital world.
-                    </p>
-                  </div>
+                  <UserProfile
+                    user={{
+                      displayName: 'Boise Public Library',
+                      location: 'Boise, ID',
+                      avatar:
+                        'https://pbs.twimg.com/profile_images/1082382072243675136/Plpr8efj_400x400.jpg',
+                      description: `Enhance knowledge, realize creative potential, share ideas and stories.`
+                    }}
+                  />
                 </div>
               </Link>
               <Link to="/jobs/matt-lovan">
                 <div className="panel">
-                  <div className="user-profile">
-                    <ProfilePic
-                      avatarUrl={
-                        'https://media-exp1.licdn.com/dms/image/C5603AQHJIhVzvDBreg/profile-displayphoto-shrink_200_200/0?e=1586390400&v=beta&t=CSL-hY9MLRRQ4RMua94dtMXg2Fo4QzmPC9huRofhMjU'
-                      }
-                    />
-                    <div className="user-info">
-                      <div className="user-name">Matt Lovan</div>
-                    </div>
-                    <p>
-                      We're the Electronic Frontier Foundation. We defend your
+                  <UserProfile
+                    user={{
+                      displayName: 'Matt Lovan',
+                      location: 'New York / Boise',
+                      avatar:
+                        'https://media-exp1.licdn.com/dms/image/C5603AQHJIhVzvDBreg/profile-displayphoto-shrink_200_200/0?e=1586390400&v=beta&t=CSL-hY9MLRRQ4RMua94dtMXg2Fo4QzmPC9huRofhMjU',
+                      description: `We're the Electronic Frontier Foundation. We defend your
                       civil liberties in a digital world. We're the Electronic
-                      Frontier Foundation. We defend your civil liberties in a
-                      digital world.
-                    </p>
-                  </div>
+                      Frontier Foundation.`
+                    }}
+                  />
                 </div>
               </Link>
             </div>

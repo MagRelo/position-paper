@@ -116,7 +116,8 @@ exports.getLink = async function(req, res) {
     })
       .populate('user')
       .populate({ path: 'originLink', populate: { path: 'user' } })
-      .populate({ path: 'children', populate: { path: 'user' } });
+      .populate({ path: 'children', populate: { path: 'user' } })
+      .lean();
     if (!link) return res.status(404).send({ error: 'not found' });
 
     // public info
@@ -149,7 +150,8 @@ exports.getLink = async function(req, res) {
         hasApplied: false,
         isPromoting: false,
         isFollowingUser: false,
-        isFollowingLink: false
+        isFollowingLink: false,
+        ...link.user
       };
 
       return res.status(200).send(responseObj);
@@ -211,9 +213,6 @@ exports.getLink = async function(req, res) {
 
     // user
     responseObj.user = {
-      _id: req.user._id,
-      name: req.user.displayName,
-      avatar: req.user.avatar,
       isQueryOwner: isQueryOwner,
       isLinkOwner: isLinkOwner,
       isPromoting: !!userPromoting,
@@ -221,7 +220,8 @@ exports.getLink = async function(req, res) {
       applyStatus: applyStatus,
       applySteps: applySteps,
       isFollowingUser: isFollowingUser,
-      isFollowingLink: isFollowingLink
+      isFollowingLink: isFollowingLink,
+      ...link.user
     };
 
     // traffic

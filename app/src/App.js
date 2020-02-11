@@ -29,7 +29,6 @@ import Footer from 'components/footer';
 import LandingPage from 'pages/landingPage';
 import Terms from 'pages/legal';
 import About from 'pages/about';
-import Employers from 'pages/employer';
 import NotFound from 'pages/404';
 
 // Maybe Auth
@@ -113,20 +112,16 @@ function App(props) {
                 {/* Auth required */}
                 <AddLink path="/addquery" />
                 <EditLink path="/link/:linkId/edit" />
-
                 <Dashboard path="/dashboard" />
                 <Profile path="/profile" />
-
-                <LinkPage path="/link/:linkId" />
                 <Applications path="/applications/:linkId" />
                 <ApplicationPayment path="/payment/:linkId" />
 
+                <LinkPage path="/link/:linkId" />
                 <UserJobs path="/jobs/:userId" />
                 <Search path="/search" />
                 <Terms path="/terms" />
                 <About path="/about" />
-
-                <Employers path="/employers" />
 
                 <EmployeeOnboarding path="/employer-account" />
 
@@ -135,18 +130,15 @@ function App(props) {
               </Router>
             ) : (
               <Router>
+                {/* Non Auth */}
                 <LinkedInPopUp exact path="/linkedin/callback" />
                 <Login path="/login" />
 
                 <LinkPage path="/link/:linkId" />
-
                 <UserJobs path="/jobs/:userId" />
                 <Search path="/search" />
                 <Terms path="/terms" />
                 <About path="/about" />
-
-                <Employers path="/employers" />
-                <EmployeeOnboarding path="/employer-account" />
 
                 <LandingPage path="/" />
                 <NotFound default />

@@ -12,8 +12,6 @@ header {
 
 // .header-grid {}
 
-// .header-container {}
-
 
 header a {
   // to preserve spacing
@@ -23,6 +21,9 @@ header a {
 .header-title {
   font-size: 32px;
   background-color: $primaryColor;
+
+  position: relative;
+  z-index: 1;
 }
 
 .header-title:first-child {

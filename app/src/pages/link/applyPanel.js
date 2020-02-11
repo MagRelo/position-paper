@@ -1,13 +1,17 @@
 import React, { useState, useContext } from 'react';
 // import { Link } from '@reach/router';
-import { Loading, formatCurrency } from 'components/random';
+import { Loading, formatCurrency, UserProfile } from 'components/random';
 import LinkedInLogin from 'components/linkedinLogin';
 
 import { AuthContext } from 'App';
 
+// import { FaThumbsUp } from 'react-icons/fa';
+
 import ResponseStatus from 'pages/response/responseStatus';
+const domain = window.location.origin || 'http://localhost:3000';
 
 function ApplyPanel({ link, user }) {
+  console.log(user);
   const { activeSession } = useContext(AuthContext);
 
   const [hasApplied, setHasApplied] = useState(user.hasApplied || false);
@@ -52,10 +56,11 @@ function ApplyPanel({ link, user }) {
           ) : (
             <div>
               <h3>Apply Now</h3>
-              <p>
-                Apply for this position. We'll pay you{' '}
-                <b>{formatCurrency(link.target_bonus)}</b> if you're hired.
+              <p className="p-tight">
+                This position includes a{' '}
+                <b>{formatCurrency(link.target_bonus)}</b> hiring bonus.
               </p>
+
               {loading ? (
                 <Loading />
               ) : (
@@ -69,20 +74,33 @@ function ApplyPanel({ link, user }) {
                   <span>Apply Now</span>
                 </button>
               )}
+
+              <hr />
+              <a href={`${domain}/jobs/${user.jobBoardId}`}>
+                <UserProfile user={user} hideDescription={true} />
+              </a>
             </div>
           )}
         </React.Fragment>
       ) : (
         <React.Fragment>
           <h3>Apply Now</h3>
-          <p>
-            Apply for this position. We'll pay you{' '}
-            <b>{formatCurrency(link.target_bonus)}</b> if you're hired.
+          <p className="p-tight">
+            This position includes a <b>{formatCurrency(link.target_bonus)}</b>{' '}
+            hiring bonus.
           </p>
 
           <LinkedInLogin redirect={'/link/' + link.linkId}>
             Apply Now
           </LinkedInLogin>
+
+          <hr />
+          <a
+            href={`${domain}/jobs/${user.jobBoardId}`}
+            className="user-profile-anchor"
+          >
+            <UserProfile user={user} hideDescription={true} />
+          </a>
         </React.Fragment>
       )}
     </div>

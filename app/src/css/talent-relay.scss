@@ -79,7 +79,7 @@ section.section-dark {
 section.section-dark .panel {
   background: $white;
   border-color: $primaryLight;
-  text-align: center;
+  // text-align: center;
 
   // for the stars animation...
   position: relative;
@@ -159,8 +159,6 @@ table {
 .table-striped tbody tr:nth-of-type(odd) {
   background-color: #e9ecef;
 }
-
-
 
 .icon {
   color: white;
@@ -284,21 +282,26 @@ table {
   min-height: 90vh;
 }
 
-.user-profile:after {
-  content: '';
-  display: table;
-  clear: both;
+.user-info {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-gap: 0.75em;
+}
+
+.user-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .user-avatar {
-  border-radius: 50%;
-  float: left;
-  border: solid 1px $lightGray;
+  // float: left;
+
   width: 60px;
   height: 60px;
 
-  margin-right: 1em;
-  margin-bottom: 10px;
+  border-radius: 50%;
+  border: solid 1px $primaryLight;
 }
 
 .user-info p {
@@ -310,19 +313,20 @@ table {
 }
 
 .user-location {
-  padding-top: 5px;
   font-size: 14px;
 }
 
+.user-profile-anchor {
+  color: $lighterText;
+}
 
 .url-bar .input-group-text {
   color: $lighterText;
 
   background-color: $white;
   border-radius: 7px;
-  border-color: $lightGray
+  border-color: $lightGray;
 }
-
 
 /* form */
 
@@ -575,7 +579,6 @@ iframe {
 .link-display {
   position: sticky;
   top: 48px;
-
 }
 
 /* Search tile */
@@ -596,7 +599,6 @@ iframe {
 .search-tile:focus {
   box-shadow: 0 8px 40px -5px rgba(9, 31, 67, 0.25);
 }
-
 
 .search-tile-header {
   text-transform: uppercase;
@@ -713,7 +715,6 @@ iframe {
 .p-tight {
   line-height: 1.4;
   font-size: small;
-  color: $darkText;
 }
 
 .panel {
@@ -723,11 +724,8 @@ iframe {
 
   // box-shadow: 0 8px 40px -5px rgba(9, 31, 67, 0.1);
 
-  box-shadow:
-    0 0.3px 7.9px rgba(0, 0, 0, 0.024),
-    0 1.1px 26.6px rgba(0, 0, 0, 0.035),
-    0 5px 119px rgba(0, 0, 0, 0.07);
-
+  box-shadow: 0 0.3px 7.9px rgba(0, 0, 0, 0.024),
+    0 1.1px 26.6px rgba(0, 0, 0, 0.035), 0 5px 119px rgba(0, 0, 0, 0.07);
 }
 
 .user-panel {
@@ -739,15 +737,25 @@ iframe {
 }
 
 @media screen and (min-width: 900px) {
+  .panel {
+    padding: 1.5rem;
+  }
+
   .user-panel {
     margin-top: 0;
-    padding: 2rem;
+    padding: 1.5rem;
     border: solid 1px $lightGray;
     border-radius: 7px;
     box-shadow: 0 8px 40px -5px rgba(9, 31, 67, 0.1);
   }
 }
 
+// JOB DESC
+
+.job-description-container {
+  position: relative;
+  min-height: 200px;
+}
 
 .job-description {
   color: $darkText;
@@ -755,12 +763,33 @@ iframe {
   padding: 0;
 }
 
+.see-more {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+
+  margin: 0;
+}
+
+.see-more .fade-white {
+  min-height: 60px;
+
+  /* "transparent" only works here because == rgba(0,0,0,0) */
+  background-image: linear-gradient(to bottom, transparent, $white);
+}
+
 @media screen and (min-width: 900px) {
+
   .job-description {
     padding: 0 2em;
   }
-}
 
+  .see-more {
+    display: none;
+  }
+}
 
 .grid {
   display: grid;
@@ -785,9 +814,6 @@ iframe {
 }
 
 @media screen and (min-width: 900px) {
-  .panel {
-    padding: 2rem;
-  }
 
   /* swap grid order to alternate images */
   .swap-order {
@@ -808,7 +834,6 @@ iframe {
     grid-template-columns: auto 1fr auto;
     grid-gap: 1.5em;
   }
-
 
   .grid-3-x-x {
     grid-template-columns: 1fr auto auto;

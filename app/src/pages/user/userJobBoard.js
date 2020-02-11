@@ -53,6 +53,9 @@ function SearchFlow({ userId }) {
                   <SocialGrid />
                 </div>
 
+                <hr />
+                <div className="mb-4"></div>
+
                 <div className="grid grid-3">
                   {trail.map(({ x, height, ...rest }, index) => {
                     return (
