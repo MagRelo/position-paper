@@ -48,6 +48,10 @@ export function JobDisplay({ data }) {
     maxHeight: '360px'
   };
 
+  const mobileButtonStyle = {
+    position: 'relative'
+  };
+
   return (
     <div className="job-data-panel">
       <h1>{data.jobTitle}</h1>
@@ -69,7 +73,7 @@ export function JobDisplay({ data }) {
           className="job-description"
           dangerouslySetInnerHTML={createMarkup(data.renderedHtml)}
         />
-        <div className="see-more">
+        <div className="see-more" style={menuClosed ? null : mobileButtonStyle}>
           {/* Fade */}
           {menuClosed ? <div className="fade-white"></div> : null}
 

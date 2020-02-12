@@ -162,7 +162,10 @@ function PromotePanel({ link, user, activeSession }) {
           the candidate responds through your link.
         </p>
         {!activeSession ? (
-          <LinkedInLogin redirect={'/link/' + link.linkId}>
+          <LinkedInLogin
+            redirect={'/link/' + link.linkId}
+            className="btn btn-theme"
+          >
             Add To Your Job Board <AiFillFileAdd />
           </LinkedInLogin>
         ) : (

@@ -90,7 +90,10 @@ function ApplyPanel({ link, user }) {
             hiring bonus.
           </p>
 
-          <LinkedInLogin redirect={'/link/' + link.linkId}>
+          <LinkedInLogin
+            redirect={'/link/' + link.linkId}
+            className="btn btn-theme"
+          >
             Apply Now
           </LinkedInLogin>
 
