@@ -34,7 +34,7 @@ export function JobDisplay({ data }) {
 
   // sync menu with container width
   useEffect(() => {
-    console.log(width, height);
+    // console.log(width, height);
 
     if (width < 400 && height > 400) {
       setMenuClosed(true);
@@ -93,7 +93,6 @@ export function JobDisplay({ data }) {
             </button>
           </div>
         </div>
-        }
       </div>
     </div>
   );

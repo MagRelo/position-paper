@@ -198,6 +198,8 @@ function JobForm(props) {
         ) : null}
 
         <hr />
+
+        {/* Submit & Display */}
         <div style={{ textAlign: 'right' }}>
           {formStatus === 'new' ? (
             <button className="btn btn-theme" type="submit">

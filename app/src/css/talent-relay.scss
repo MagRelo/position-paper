@@ -18,21 +18,10 @@ body,
 .page-wrapper {
   min-height: 100vh;
   box-sizing: border-box;
-  background-color: $white;
 }
 
-@import url('https://fonts.googleapis.com/css?family=Nunito:300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&display=swap');
 
-body {
-  font-family: 'Nunito', sans-serif;
-  font-weight: 400;
-  font-style: normal;
-  font-size: 15px;
-  line-height: 1.5;
-  color: $lightText;
-  letter-spacing: 1px;
-}
-
+// => header/body/footer
 .page-wrapper {
   display: grid;
   grid-template-rows: auto 1fr auto;
@@ -40,6 +29,7 @@ body {
 
 .content-wrapper {
   padding: 0 0 3em;
+  background-color: $white;
 }
 
 .container {
@@ -54,16 +44,17 @@ section {
 .section-title {
   text-align: center;
   margin-bottom: 3em;
+  // font-family: 'Nunito Sans', sans-serif;
+}
+
+.section-title h2 {
+  margin-bottom: 0.2rem;
 }
 
 .section-cta {
   text-align: center;
-  margin-top: 60px;
 }
 
-.section-title h2 {
-  margin-bottom: 0;
-}
 
 section.section-dark {
   padding: 60px 0 70px;
@@ -108,31 +99,6 @@ section.section-dark p span {
   z-index: 1;
 }
 
-h1 {
-  line-height: 50px;
-  font-size: 42px;
-  color: $darkText;
-}
-
-h2 {
-  line-height: 40px;
-  font-size: 32px;
-
-  color: $darkText;
-  margin: 0 0 0.5em 0;
-}
-
-h3 {
-  line-height: 30px;
-  font-size: 22px;
-
-  color: $darkText;
-  margin: 0 0 0.5em 0;
-}
-
-p {
-  line-height: 1.7;
-}
 
 a {
   color: $primaryColor;
@@ -241,16 +207,6 @@ table {
   pointer-events: none;
 }
 
-.btn.btn-menu,
-.btn.btn-menu:focus,
-.btn.btn-menu:hover {
-  border: none;
-  outline: none;
-
-  font-size: smaller;
-  text-transform: uppercase;
-  color: $lightGray;
-}
 
 /* getstream activity */
 .stream {
@@ -712,18 +668,10 @@ iframe {
   z-index: -1;
 }
 
-.p-tight {
-  line-height: 1.4;
-  font-size: small;
-}
-
 .panel {
   padding: 1rem;
   border: solid 1px $lightGray;
   border-radius: 7px;
-
-  // box-shadow: 0 8px 40px -5px rgba(9, 31, 67, 0.1);
-
   box-shadow: 0 0.3px 7.9px rgba(0, 0, 0, 0.024),
     0 1.1px 26.6px rgba(0, 0, 0, 0.035), 0 5px 119px rgba(0, 0, 0, 0.07);
 }
@@ -886,9 +834,8 @@ iframe {
   }
 }
 
-/* Landing Imaegs */
 .landing-grid {
-  padding: 40px 0;
+  padding: 50px 0;
 }
 
 .landing-image-container {
@@ -926,7 +873,7 @@ iframe {
 .lead {
   font-weight: normal;
   font-size: 16px;
-  line-height: 30px;
+  line-height: 27px;
 }
 
 .title-theme-bg {

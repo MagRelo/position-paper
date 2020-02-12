@@ -31,7 +31,7 @@ function LinkedInLogin(props) {
       onSuccess={handleSuccess}
       scope="r_liteprofile r_emailaddress w_member_social"
       redirectUri={domain + '/linkedin/callback'}
-      className="btn btn-theme btn-sm"
+      {...props}
     >
       {props.children}
     </LinkedIn>

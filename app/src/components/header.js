@@ -72,7 +72,9 @@ function Header() {
               </React.Fragment>
             ) : (
               <li>
-                <LinkedInLogin>Sign In</LinkedInLogin>
+                <LinkedInLogin className="btn btn-theme btn-sm">
+                  Sign In
+                </LinkedInLogin>
               </li>
             )}
           </ul>
@@ -103,7 +105,9 @@ function Header() {
                 </React.Fragment>
               ) : (
                 <div className="button-wrapper">
-                  <LinkedInLogin>Sign In</LinkedInLogin>
+                  <LinkedInLogin className="btn btn-theme btn-sm">
+                    Sign In
+                  </LinkedInLogin>
                 </div>
               )}
             </ul>

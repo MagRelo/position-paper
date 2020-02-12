@@ -1,11 +1,13 @@
 import React from 'react';
 import { Link } from '@reach/router';
+
 import { FaAngleDown, FaSearch } from 'react-icons/fa';
 import { IoMdPersonAdd } from 'react-icons/io';
-
 import { UserProfile } from 'components/random';
 
-// hero
+import LinkedInLogin from 'components/linkedinLogin';
+
+// Hero
 import FinishLine from 'images/undraw_finish_line.svg';
 
 // How it works
@@ -13,95 +15,46 @@ import Friends from 'images/undraw_friends_online.svg';
 import Destinations from 'images/undraw_destinations.svg';
 import OnlineAd from 'images/undraw_online_ad_purple.svg';
 import Organizer from 'images/undraw_online_organizer.svg';
-// import TeamHang from 'images/undraw_team_chat.svg';
-import TeamChat from 'images/undraw_team_chat.svg';
 
 // Employers
 import Runner from 'images/undraw_runner.svg';
-
-// import EmailForm from 'pages/emailForm';
-// const EmailForm = '';
+import TeamChat from 'images/undraw_team_chat.svg';
 
 function LandingPage() {
   return (
     <React.Fragment>
       {/* HERO */}
       <div id="home" className="hero-container">
-        <div className="center-container">
-          <div className="container">
-            <div className="grid grid-2 align-items-center">
-              <div className="swap-order">
-                <div className="landing-image-container">
-                  <img src={FinishLine} alt="" className="landing-image" />
-                </div>
+        <div className="container">
+          <div className="grid grid-2 align-items-center">
+            <div className="swap-order">
+              <div className="landing-image-container">
+                <img src={FinishLine} alt="" className="landing-image" />
               </div>
+            </div>
 
-              <div>
-                <h5 className="title-theme-bg">Welcome To Talent Relay!</h5>
+            <div>
+              <h5 className="title-theme-bg">Welcome To Talent Relay!</h5>
 
-                <h1 className="mb-2">Build your personal Job Board</h1>
+              <h1 className="mb-2">Crowdsourced Recruiting</h1>
 
-                <p className="lead mb-4">
-                  Talent Relay <b>super-charges your talent search</b> by using
-                  the wisdom of the crowd to deliver{' '}
-                  <b>high-quality, pre-screened candidates</b>.
-                </p>
+              <p className="lead mb-4">
+                Talent Relay is a platform where everyone can cooperate (and
+                compete) to find & place the world's best candidates. Activate
+                your network and refer a candidate to collect the recruiting
+                bonus.
+              </p>
 
-                <a href="/#employers" className="btn btn-sm button-unstyled">
-                  For Employers <FaAngleDown />
-                </a>
-              </div>
+              <a href="/#employers" className="btn btn-sm button-unstyled">
+                For Employers <FaAngleDown />
+              </a>
             </div>
           </div>
         </div>
       </div>
 
       <div className="page-content">
-        {/* QUOTE
-        <div id="customers">
-          <div className="container">
-            <div className="row">
-              <div className="col-lg-12 col-md-12">
-                <div
-                  className="owl-carousel"
-                  data-dots="false"
-                  data-nav="true"
-                  data-items="1"
-                  data-autoplay="true"
-                >
-                  <div className="item">
-                    <div className="testimonial style-2">
-                      <div className="testimonial-img">
-                        <img
-                          style={{ width: '260px' }}
-                          className="img-center"
-                          src={testimonialFace}
-                          alt="woman face"
-                        />
-                      </div>
-                      <div className="testimonial-content">
-                        <div className="testimonial-quote">
-                          <i className="fas fa-quote-left"></i>
-                        </div>
-                        <p>
-                          We use Talent Relay to include our employees in our
-                          recruiting proceess, and it's been amazing. We never
-                          would have found those candidates any other way.
-                        </p>
-                        <div className="testimonial-caption">
-                          <h5>Candice Blous</h5>
-                          <label>Founder of Party Time</label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        */}
-
+        {/* How It Works */}
         <section id="how" className="section-dark">
           <div id="stars"></div>
           <div id="stars2"></div>
@@ -118,22 +71,32 @@ function LandingPage() {
 
           <div className="container">
             <div className="grid grid-3">
-              <div className="panel">
-                <h4>Build Your Job Board</h4>
+              <div className="panel text-center">
+                <h4>
+                  <span className="badge">1</span>
+                  Build Your Job Board
+                </h4>
                 <p>
-                  Add jobs to your board with one click – every job on Talent
-                  Relay includes a referral bonus
+                  Everyone on Talent Relay has a <b>personal job board</b> and
+                  every job has a <b> cash referral bonus</b>. Add jobs to your
+                  board with just one click!
                 </p>
               </div>
-              <div className="panel">
-                <h4>Share And Promote</h4>
+              <div className="panel text-center">
+                <h4>
+                  <span className="badge">2</span>
+                  Share And Promote
+                </h4>
                 <p>
-                  Share your job board anywhere – social media, in person, on
-                  billboards...
+                  Share your job board anywhere – social media, in person, in
+                  newsletters, at community events, etc.
                 </p>
               </div>
-              <div className="panel">
-                <h4>Collect Your Bonus</h4>
+              <div className="panel text-center">
+                <h4>
+                  <span className="badge">3</span>
+                  Collect Your Bonus
+                </h4>
                 <p>
                   If the candidate responds through your job board we'll deposit
                   the bonus directly into your bank account.
@@ -142,52 +105,20 @@ function LandingPage() {
             </div>
           </div>
 
+          <div className="mb-4"></div>
+
           <div className="container section-cta">
             <Link to="/search" className="btn btn-theme">
-              View Jobs <FaSearch />
+              Browse Jobs <FaSearch />
             </Link>
           </div>
         </section>
 
+        {/* Community */}
         <section id="system">
           <div className="container section-title">
-            <h2>A System Where Everyone Wins</h2>
-            <p>Make Valuable Connections → Get Paid</p>
-          </div>
-
-          {/* GET A JOB */}
-          <div>
-            <div className="container">
-              <div className="grid grid-2 landing-grid align-items-center">
-                <div>
-                  <div className="landing-image-container">
-                    <img src={OnlineAd} alt="" className="landing-image" />
-                  </div>
-                </div>
-
-                <div>
-                  <div className="div-title">
-                    <h3>
-                      Get Hired → <span>Get Paid</span>
-                    </h3>
-                  </div>
-
-                  <div className="mb-4">
-                    <ul className="list-unstyled list-icon">
-                      <li className="mb-3">
-                        <i className="fas fa-check-circle"></i> Every job on
-                        Talent Relay includes a <b>hiring bonus</b>
-                      </li>
-                      <li>
-                        <i className="fas fa-check-circle"></i> Apply to jobs
-                        with one-click – we'll make sure your application gets
-                        in the right hands
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <h2>It's All About Community</h2>
+            <p> Everyone Wins in Talent Relay </p>
           </div>
 
           {/* REFER A CANDIDATE */}
@@ -246,10 +177,11 @@ function LandingPage() {
                   </div>
                   <p>
                     We also keep track of the <b>chain of referrals </b>
-                    so you can earn money by finding candidates OR referrers.
-                    Share your links with friends, on social networks, on job
-                    boards - anywhere! We make sure everyone gets a fair cut
-                    when the candidate is hired.
+                    so you can earn money by finding candidates <b>OR</b>{' '}
+                    promoting to other job boards. Share your links with
+                    friends, on social networks, at community events - anywhere!
+                    We make sure everyone gets a fair cut when the candidate is
+                    hired.
                   </p>
                 </div>
               </div>
@@ -276,14 +208,12 @@ function LandingPage() {
                   <div className="mb-4">
                     <ul className="list-unstyled list-icon">
                       <li className="mb-3">
-                        <i className="fas fa-check-circle"></i> [Pay nothing
-                        until after the employee has completed a 90-day trial
-                        period]
+                        <i className="fas fa-check-circle"></i> Invite other
+                        users to the platform and share in every bonus
                       </li>
-                      <li className="mb-3">
-                        <i className="fas fa-check-circle"></i> [Cost only a
-                        fraction of other services: just 5% of the annual
-                        salary]
+                      <li>
+                        <i className="fas fa-check-circle"></i> Every job board
+                        includes unique invite links
                       </li>
                     </ul>
                   </div>
@@ -292,14 +222,53 @@ function LandingPage() {
             </div>
           </div>
 
+          {/* GET A JOB */}
+          <div>
+            <div className="container">
+              <div className="grid grid-2 landing-grid align-items-center">
+                <div>
+                  <div className="landing-image-container">
+                    <img src={OnlineAd} alt="" className="landing-image" />
+                  </div>
+                </div>
+
+                <div>
+                  <div className="div-title">
+                    <h3>
+                      Get Hired → <span>Get Paid</span>
+                    </h3>
+                  </div>
+
+                  <div className="mb-4">
+                    <ul className="list-unstyled list-icon">
+                      <li className="mb-3">
+                        <i className="fas fa-check-circle"></i> Every job on
+                        Talent Relay includes a <b>hiring bonus</b>
+                      </li>
+                      <li>
+                        <i className="fas fa-check-circle"></i> Apply to jobs
+                        with one-click – we'll make sure your application gets
+                        in the right hands
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mb-4"></div>
+
           <div className="container section-cta">
-            <p>Make Valuable Connections → Get Paid</p>
-            <Link to="/search" className="btn btn-theme">
-              Create Account <IoMdPersonAdd />
-            </Link>
+            <p>Activate Your Network</p>
+
+            <LinkedInLogin className="btn btn-theme">
+              Create Your Account <IoMdPersonAdd />
+            </LinkedInLogin>
           </div>
         </section>
 
+        {/* Featured */}
         <section id="featured" className="section-dark">
           <div id="stars"></div>
           <div id="stars2"></div>
@@ -428,12 +397,12 @@ function LandingPage() {
               </div>
             </div>
 
-            <div>
-              <div className="container section-cta">
-                <Link to="/employer-account" className="btn btn-theme">
-                  Create Employer Account <IoMdPersonAdd />
-                </Link>
-              </div>
+            <div className="mb-4"></div>
+
+            <div className="container section-cta">
+              <LinkedInLogin className="btn btn-theme">
+                Create Employer Account <IoMdPersonAdd />
+              </LinkedInLogin>
             </div>
           </div>
         </section>
@@ -451,3 +420,48 @@ export default LandingPage;
 //   buttonCaption={'Learn More'}
 // />
 // </div>  */}
+
+// {/* QUOTE
+//         <div id="customers">
+//           <div className="container">
+//             <div className="row">
+//               <div className="col-lg-12 col-md-12">
+//                 <div
+//                   className="owl-carousel"
+//                   data-dots="false"
+//                   data-nav="true"
+//                   data-items="1"
+//                   data-autoplay="true"
+//                 >
+//                   <div className="item">
+//                     <div className="testimonial style-2">
+//                       <div className="testimonial-img">
+//                         <img
+//                           style={{ width: '260px' }}
+//                           className="img-center"
+//                           src={testimonialFace}
+//                           alt="woman face"
+//                         />
+//                       </div>
+//                       <div className="testimonial-content">
+//                         <div className="testimonial-quote">
+//                           <i className="fas fa-quote-left"></i>
+//                         </div>
+//                         <p>
+//                           We use Talent Relay to include our employees in our
+//                           recruiting proceess, and it's been amazing. We never
+//                           would have found those candidates any other way.
+//                         </p>
+//                         <div className="testimonial-caption">
+//                           <h5>Candice Blous</h5>
+//                           <label>Founder of Party Time</label>
+//                         </div>
+//                       </div>
+//                     </div>
+//                   </div>
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//         */}

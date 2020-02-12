@@ -16,6 +16,7 @@ import './css/bootstrap.min.css';
 import './css/fontawesome-all.css';
 
 // Site CSS
+import './css/typography.scss';
 import './css/talent-relay.scss';
 import './css/header.scss';
 import './css/loaders.scss';
