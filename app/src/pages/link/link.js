@@ -5,7 +5,8 @@ import LinkedInLogin from 'components/linkedinLogin';
 import { AiFillFileAdd } from 'react-icons/ai';
 // network Data
 import { AuthContext } from 'App';
-import { JobDisplay } from 'networkData/jobDisplay.js';
+import { JobDisplay } from 'pages/jobs/jobDisplay.js';
+
 import {
   formatCurrency,
   lineItem,

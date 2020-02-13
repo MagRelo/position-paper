@@ -3,7 +3,7 @@ import { navigate } from '@reach/router';
 
 import { AuthContext } from 'App';
 
-import JobForm from 'networkData/jobForm';
+import JobForm from 'pages/jobs/jobForm';
 
 import { Loading } from 'components/random';
 

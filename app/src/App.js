@@ -41,7 +41,7 @@ import EditLink from 'pages/link/editLink';
 import Applications from 'pages/link/applications';
 import ApplicationPayment from 'pages/link/applicationPayment';
 
-import AddLink from 'networkData/jobForm';
+import AddLink from 'pages/jobs/jobForm';
 
 // Auth
 import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
