@@ -6,7 +6,7 @@ import Helmet from 'react-helmet';
 import Cookies from 'js-cookie';
 import { Loading } from 'components/random';
 
-// Compoenent CSS
+// Component CSS
 import 'react-input-range/lib/css/index.css';
 import '@reach/dialog/styles.css';
 import '@reach/menu-button/styles.css';
@@ -37,17 +37,16 @@ import Login from 'pages/login';
 import Search from 'pages/search/search';
 import UserJobs from 'pages/user/userJobBoard';
 import LinkPage from 'pages/link/link';
-import EditLink from 'pages/link/editLink';
-import Applications from 'pages/link/applications';
-import ApplicationPayment from 'pages/link/applicationPayment';
-
-import AddLink from 'pages/jobs/jobForm';
 
 // Auth
 import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
 import Profile from 'pages/user/userProfile';
 import Dashboard from 'pages/user/userDashboard';
 import EmployeeOnboarding from 'pages/user/employerOnboardingForm';
+import AddLink from 'pages/jobs/jobForm';
+import EditLink from 'pages/link/editLink';
+import Applications from 'pages/link/applications';
+import ApplicationPayment from 'pages/link/applicationPayment';
 // import Response from 'pages/response/response';
 // import Respond from 'pages/response/respond';
 

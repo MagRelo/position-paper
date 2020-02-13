@@ -137,7 +137,6 @@ router.get('/user/jobs/:jobBoardId', async function(req, res) {
 
   const results = await LinkModel.find({
     user: user._id,
-    isBuried: false,
     status: 'Active'
   });
 
