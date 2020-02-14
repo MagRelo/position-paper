@@ -26,7 +26,7 @@ function LinkButton(props) {
           onClick={executeLinkButton}
           disabled={props.disabled}
         >
-          <span>{props.label}</span>
+          {props.children}
         </button>
       )}
     </React.Fragment>

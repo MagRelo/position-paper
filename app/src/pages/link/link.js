@@ -150,8 +150,6 @@ function PromotePanel({ link, user, activeSession }) {
     link.potentialPayoffs && link.potentialPayoffs[link.generation + 1]
   );
 
-  const promoteButtonLabel = `Promote @ ${promoteBonus}`;
-
   // Will show if logged out, or logged in & not a link owner
   return (
     <div>
@@ -165,7 +163,7 @@ function PromotePanel({ link, user, activeSession }) {
         {!activeSession ? (
           <LinkedInLogin
             redirect={'/link/' + link.linkId}
-            className="btn btn-theme"
+            className="btn btn-theme btn-sm"
           >
             Add To Your Job Board <AiFillFileAdd />
           </LinkedInLogin>
@@ -173,8 +171,9 @@ function PromotePanel({ link, user, activeSession }) {
           <LinkButton
             parentLink={link.linkId}
             disabled={user._id === 0 || user.isLinkOwner || user.isPromoting}
-            label={promoteButtonLabel}
-          />
+          >
+            Add To Your Job Board <AiFillFileAdd />
+          </LinkButton>
         )}
       </div>
     </div>

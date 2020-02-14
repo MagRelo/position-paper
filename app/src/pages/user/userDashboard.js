@@ -56,154 +56,141 @@ function User(props) {
     <div className="container user-container">
       {error ? <p style={{ textAlign: 'center' }}>{error}</p> : null}
 
-      <div>
+      {isLoading ? (
+        <Loading />
+      ) : (
         <div>
-          {isLoading ? (
-            <Loading />
-          ) : (
-            <div>
-              <div className="mb-4"></div>
-              <div className="user-panel">
-                <div className="grid grid-5-3">
-                  <div>
-                    <UserProfile user={userData} />
-                  </div>
+          <div className="mb-4"></div>
+          <div className="user-panel">
+            <div className="grid grid-5-3">
+              <div>
+                <UserProfile user={userData} />
+              </div>
 
-                  <SocialGrid />
-                </div>
+              <SocialGrid />
+            </div>
 
-                <div className="mb-4"></div>
+            <div className="mb-4"></div>
 
-                <div className="grid grid-2-x">
-                  <JobBoard jobBoardId={userData.jobBoardId} />
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'center'
-                    }}
-                  >
-                    <Link to="/profile" className="btn btn-sm btn-unstyled">
-                      Edit Profile <FaEdit />
+            <div className="grid grid-2-x">
+              <JobBoard jobBoardId={userData.jobBoardId} />
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center'
+                }}
+              >
+                <Link to="/profile" className="btn btn-sm btn-unstyled">
+                  Edit Profile <FaEdit />
+                </Link>
+              </div>
+            </div>
+
+            <div className="mb-4"></div>
+            <hr />
+            <div className="mb-4"></div>
+
+            {isLoading ? (
+              <Loading />
+            ) : (
+              <div className="grid grid-3">
+                {trail.map(({ x, height, ...rest }, index) => {
+                  return (
+                    <animated.div
+                      key={index}
+                      style={{
+                        ...rest,
+                        transform: x.interpolate(x => `translate3d(0,${x}px,0)`)
+                      }}
+                    >
+                      {ActivityTile(links[index])}
+                    </animated.div>
+                  );
+                })}
+
+                <div
+                  style={{
+                    border: 'dashed 2px #ddd',
+                    borderRadius: '7px',
+                    padding: '1rem'
+                  }}
+                >
+                  <div style={{ textAlign: 'center' }}>
+                    <h4>Add Jobs</h4>
+                    <p>
+                      Every job on Talent Relay includes a referral bonus – add
+                      jobs to your job board.
+                    </p>
+
+                    <div className="mb-4"></div>
+                    <Link to="/search" className="btn btn-theme btn-sm">
+                      Find Jobs To Add
                     </Link>
                   </div>
                 </div>
+              </div>
+            )}
+          </div>
 
-                <div className="mb-4"></div>
-                <hr />
-                <div className="mb-4"></div>
+          <section>
+            <div className="container section-title">
+              <h2>Side Hustles</h2>
+              <p>Other Ways to Earn Money on Talent Relay</p>
+            </div>
 
-                {isLoading ? (
-                  <Loading />
-                ) : (
-                  <div className="grid grid-3">
-                    {trail.map(({ x, height, ...rest }, index) => {
-                      return (
-                        <animated.div
-                          key={index}
-                          style={{
-                            ...rest,
-                            transform: x.interpolate(
-                              x => `translate3d(0,${x}px,0)`
-                            )
-                          }}
-                        >
-                          {ActivityTile(links[index])}
-                        </animated.div>
-                      );
-                    })}
+            <div className="grid grid-2 text-center">
+              <div>
+                <h3>Onboard Employers</h3>
 
-                    <div
-                      style={{
-                        border: 'dashed 2px #ddd',
-                        borderRadius: '7px',
-                        padding: '1rem'
-                      }}
-                    >
-                      <div style={{ textAlign: 'center' }}>
-                        <h4>Add Jobs</h4>
-                        <p>
-                          Every job on Talent Relay includes a referral bonus
-                          – add jobs to your job board.
-                        </p>
-
-                        <div className="mb-4"></div>
-                        <Link to="/search" className="btn btn-theme btn-sm">
-                          Find Jobs To Add
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                )}
+                <p>
+                  <i>Sign-up Employers and get 5% of every job posted.</i>
+                </p>
+                <div>
+                  <JobBoard jobBoardId={userData.jobBoardId} />
+                </div>
               </div>
 
-              <section>
-                <div className="container section-title">
-                  <h2>Side Hustles</h2>
-                  <p>Other Ways to Earn Money on Talent Relay</p>
+              <div>
+                <h3>Onboard Candidates</h3>
+                <p>
+                  <i>Sign-up Employers and get 5% of every job posted.</i>
+                </p>
+                <div>
+                  <JobBoard jobBoardId={userData.jobBoardId} />
                 </div>
+              </div>
 
-                <div className="grid grid-2 text-center">
-                  <div>
-                    <h3>Onboard Employers</h3>
-
-                    <p>
-                      <i>Sign-up Employers and get 5% of every job posted.</i>
-                    </p>
-                    <div>
-                      <JobBoard jobBoardId={userData.jobBoardId} />
-                    </div>
-                  </div>
-
-                  <div>
-                    <h3>Onboard Candidates</h3>
-                    <p>
-                      <i>Sign-up Employers and get 5% of every job posted.</i>
-                    </p>
-                    <div>
-                      <JobBoard jobBoardId={userData.jobBoardId} />
-                    </div>
-                  </div>
-
-                  <div>
-                    <h3>Get Hired</h3>
-                    <p>
-                      <i>Every job on Talent Relay includes a hiring bonus</i>
-                    </p>
-                    <div style={{ textAlign: 'center' }}>
-                      <Link to="/search" className="btn btn-theme btn-sm">
-                        Search for Jobs
-                      </Link>
-                    </div>
-                  </div>
-
-                  <div>
-                    <h3>For Employers</h3>
-
-                    <div style={{ textAlign: 'center' }}>
-                      {userData.hasPaymentSource ? (
-                        <Link to="/addquery" className="btn btn-theme btn-sm">
-                          Post a Job
-                        </Link>
-                      ) : (
-                        <div>
-                          <p>Activate your Employer Account to post jobs</p>
-                          <Link
-                            className="btn btn-theme btn-sm"
-                            to="/employer-account"
-                          >
-                            Activate Employer Account
-                          </Link>
-                        </div>
-                      )}
-                    </div>
-                  </div>
+              <div>
+                <h3>Get Hired</h3>
+                <p>
+                  <i>Every job on Talent Relay includes a hiring bonus</i>
+                </p>
+                <div style={{ textAlign: 'center' }}>
+                  <Link to="/search" className="btn btn-theme btn-sm">
+                    Search for Jobs
+                  </Link>
                 </div>
-              </section>
+              </div>
+
+              <div>
+                <h3>Post a Job</h3>
+                <p>
+                  <i>
+                    Talent Relay is the fastest way to connect with the best
+                    available candidates.
+                  </i>
+                </p>
+                <div style={{ textAlign: 'center' }}>
+                  <Link to="/addjob" className="btn btn-theme btn-sm">
+                    Post a Job
+                  </Link>
+                </div>
+              </div>
             </div>
-          )}
+          </section>
         </div>
-      </div>
+      )}
     </div>
   );
 }

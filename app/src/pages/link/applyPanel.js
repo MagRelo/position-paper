@@ -11,7 +11,7 @@ import ResponseStatus from 'pages/response/responseStatus';
 const domain = window.location.origin || 'http://localhost:3000';
 
 function ApplyPanel({ link, user }) {
-  console.log(user);
+  // console.log(user);
   const { activeSession } = useContext(AuthContext);
 
   const [hasApplied, setHasApplied] = useState(user.hasApplied || false);
@@ -46,66 +46,59 @@ function ApplyPanel({ link, user }) {
 
   return (
     <div id="apply">
-      {activeSession ? (
-        <React.Fragment>
-          {hasApplied ? (
-            <div>
-              <h3>Application Status</h3>
-              <ResponseStatus status={status} steps={applySteps} />
+      <React.Fragment>
+        {hasApplied ? (
+          <div>
+            <h3>Application Status</h3>
+            <ResponseStatus status={status} steps={applySteps} />
+          </div>
+        ) : (
+          <div>
+            <h3>Apply Now</h3>
+            <p className="p-tight">
+              This position includes a{' '}
+              <b>{formatCurrency(link.target_bonus)}</b> hiring bonus.
+            </p>
+
+            {activeSession ? (
+              <React.Fragment>
+                {loading ? (
+                  <Loading />
+                ) : (
+                  <button
+                    className="btn btn-theme btn-sm"
+                    onClick={handleClick}
+                    disabled={
+                      user.hasApplied || user.isQueryOwner || user.isLinkOwner
+                    }
+                  >
+                    <span>Apply Now</span>
+                  </button>
+                )}
+              </React.Fragment>
+            ) : (
+              <LinkedInLogin
+                redirect={'/link/' + link.linkId}
+                className="btn btn-theme btn-sm"
+              >
+                Apply Now
+              </LinkedInLogin>
+            )}
+
+            <div className="mb-4"></div>
+
+            <hr style={{ marginTop: 0, marginBottom: 0 }} />
+            <div className="promote-label">
+              <span>Featured By</span>
             </div>
-          ) : (
-            <div>
-              <h3>Apply Now</h3>
-              <p className="p-tight">
-                This position includes a{' '}
-                <b>{formatCurrency(link.target_bonus)}</b> hiring bonus.
-              </p>
+            <div className="mb-2"></div>
 
-              {loading ? (
-                <Loading />
-              ) : (
-                <button
-                  className="btn btn-theme btn-sm"
-                  onClick={handleClick}
-                  disabled={
-                    user.hasApplied || user.isQueryOwner || user.isLinkOwner
-                  }
-                >
-                  <span>Apply Now</span>
-                </button>
-              )}
-
-              <hr />
-              <a href={`${domain}/jobs/${user.jobBoardId}`}>
-                <UserProfile user={user} hideDescription={true} />
-              </a>
-            </div>
-          )}
-        </React.Fragment>
-      ) : (
-        <React.Fragment>
-          <h3>Apply Now</h3>
-          <p className="p-tight">
-            This position includes a <b>{formatCurrency(link.target_bonus)}</b>{' '}
-            hiring bonus.
-          </p>
-
-          <LinkedInLogin
-            redirect={'/link/' + link.linkId}
-            className="btn btn-theme"
-          >
-            Apply Now
-          </LinkedInLogin>
-
-          <hr />
-          <a
-            href={`${domain}/jobs/${user.jobBoardId}`}
-            className="user-profile-anchor"
-          >
-            <UserProfile user={user} hideDescription={true} />
-          </a>
-        </React.Fragment>
-      )}
+            <a href={`${domain}/jobs/${user.jobBoardId}`}>
+              <UserProfile user={user} hideDescription={true} />
+            </a>
+          </div>
+        )}
+      </React.Fragment>
     </div>
   );
 }

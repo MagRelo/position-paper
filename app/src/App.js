@@ -43,8 +43,8 @@ import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
 import Profile from 'pages/user/userProfile';
 import Dashboard from 'pages/user/userDashboard';
 import EmployeeOnboarding from 'pages/user/employerOnboardingForm';
-import AddLink from 'pages/jobs/jobForm';
 import EditLink from 'pages/link/editLink';
+import AddLink from 'pages/link/addLink';
 import Applications from 'pages/link/applications';
 import ApplicationPayment from 'pages/link/applicationPayment';
 // import Response from 'pages/response/response';
@@ -110,12 +110,13 @@ function App(props) {
             {activeSession ? (
               <Router>
                 {/* Auth required */}
-                <AddLink path="/addquery" />
-                <EditLink path="/link/:linkId/edit" />
                 <Dashboard path="/dashboard" />
                 <Profile path="/profile" />
                 <Applications path="/applications/:linkId" />
                 <ApplicationPayment path="/payment/:linkId" />
+
+                <AddLink path="/addjob" />
+                <EditLink path="/link/:linkId/edit" />
 
                 <LinkPage path="/link/:linkId" />
                 <UserJobs path="/jobs/:userId" />

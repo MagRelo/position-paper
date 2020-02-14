@@ -101,16 +101,17 @@ section.section-dark p span {
 
 
 a {
-  color: $primaryColor;
+  color: $primaryLight;
   text-decoration: none;
   transition: none;
   transition: all 0.25s ease;
+  border-bottom: solid 1px $white;
 }
 
 a:hover {
-  color: $primaryColor;
+  color: $primaryLight;
   text-decoration: none;
-  border-bottom: dashed 1px $primaryColor;
+  border-bottom: dashed 1px $primaryLight;
 }
 
 svg {
@@ -180,10 +181,8 @@ table {
 
 .btn.btn-sm:not(.btn-theme) {
   border: solid $lightGray 1px;
-}
-
-.btn.btn-sm:not(.btn-theme) {
   color: $lighterText;
+  font-weight: 400;
 }
 
 .btn.btn-theme {
@@ -248,16 +247,16 @@ table {
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  color: $lighterText;
 }
 
 .user-avatar {
-  // float: left;
-
   width: 60px;
   height: 60px;
 
   border-radius: 50%;
-  border: solid 1px $primaryLight;
+  border: solid 1px $darkText
 }
 
 .user-info p {
@@ -266,6 +265,7 @@ table {
 
 .user-name {
   font-size: 20px;
+  color: $lightText;
 }
 
 .user-location {
@@ -274,6 +274,21 @@ table {
 
 .user-profile-anchor {
   color: $lighterText;
+}
+
+
+.promote-label {
+  font-size: smaller;
+  margin-top: -10px;
+
+  color: rgba(0, 0, 0, 0.25);
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.promote-label>span {
+  background-color: $white;
+  padding: 0 1rem;
 }
 
 .url-bar .input-group-text {
@@ -292,28 +307,28 @@ table {
 }
 
 .input-range__label {
-  color: $lightText;
+  color: $lighterText;
 }
 
 .input-range__track--active {
-  background-color: $secondaryColor;
+  background-color: $primaryLight;
 }
 
 .input-range__slider {
-  border-color: $secondaryColor;
-  background-color: $secondaryColor;
+  border-color: $primaryLight;
+  background-color: $primaryLight;
 }
 
 .form-control::-moz-placeholder {
-  color: #7f7f7f;
+  color: $lightGray;
 }
 
 .form-control:-ms-input-placeholder {
-  color: #7f7f7f;
+  color: $lightGray;
 }
 
 .form-control::-webkit-input-placeholder {
-  color: #7f7f7f;
+  color: $lightGray;
 }
 
 textarea.form-control {
@@ -367,7 +382,8 @@ textarea.form-control {
   background-color: $white;
   border: 1px solid $lightGray;
 
-  font-family: monospace;
+  // font-family: monospace;
+  font-family: 'Nunito Sans';
 }
 
 .form-wrapper {
@@ -387,6 +403,12 @@ textarea.form-control {
   background: none;
   border: none;
   border-bottom: 2px solid $primaryLight;
+}
+
+.form-amount {
+  border-radius: 7px;
+  font-family: 'Nunito Sans';
+  text-align: center;
 }
 
 .theme-bg .form-control,
@@ -444,9 +466,8 @@ select.form-control {
 
 .stripeWrapper {
   padding: 1.5em;
-  border: solid 1px $primaryLight;
-  border-radius: 10px;
-  margin-bottom: 1em;
+  border: solid 1px $lightGray;
+  border-radius: 7px;
 }
 
 #map {
@@ -598,7 +619,9 @@ iframe {
   font-size: smaller;
   color: $lightText;
   text-align: right;
-  margin-top: 2px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 /* payment line items */
@@ -699,6 +722,10 @@ iframe {
 }
 
 // JOB DESC
+
+.md-RichEditor-root {
+  border-bottom: solid 2px $primaryLight;
+}
 
 .job-description-container {
   position: relative;

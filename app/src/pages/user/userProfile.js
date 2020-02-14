@@ -79,7 +79,7 @@ function User(props) {
             <div className="mb-4"></div>
 
             <div>
-              <h2>Employer Account</h2>
+              <h2>Payment Source</h2>
               <UserPaymentSource
                 hasPaymentSource={userData.hasPaymentSource}
                 sourceLabel={userData.stripeCustomerLabel}

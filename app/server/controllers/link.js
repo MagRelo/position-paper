@@ -1,9 +1,11 @@
 // const payments = require('../integrations/payments');
 const getStream = require('../integrations/getstream');
 const elasticSearch = require('../integrations/elasticsearch');
+const payments = require('../integrations/payments');
 
 const ResponseModel = require('../models').ResponseModel;
 const LinkModel = require('../models').LinkModel;
+const UserModel = require('../models').UserModel;
 
 function roundToNearest(input, step) {
   return Math.round(input / step) * step;
@@ -32,13 +34,104 @@ exports.createQuery = async function(req, res) {
   const jobData = req.body;
   // validate feilds
 
-  // calc bonuses
-  const { salaryAverage, totalBonus, networkBonus, targetBonus } = calcSplit(
-    jobData.salaryRange.min,
-    jobData.salaryRange.max
+  // get source
+  const user = await await UserModel.findOne({ _id: req.user }).select(
+    'stripeCustomer stripeCustomerToken stripeCustomerLabel'
   );
 
   try {
+    //
+    // Get or Create Payment Source
+    //
+    let stripeCustomerId = null;
+    let stripeToken = null;
+
+    if (jobData.usePaymentSource) {
+      //
+      // use existing payment source
+      //
+
+      // check request body for token
+      if (!user.stripeCustomer) {
+        return res.status(402).send({ error: 'payment required' });
+      }
+
+      console.log('existing source');
+
+      stripeCustomerId = user.stripeCustomer.id;
+      stripeToken = user.stripeToken;
+    } else {
+      //
+      // create new payment source
+      //
+
+      // check request body for token
+      if (!req.body.token) {
+        return res.status(402).send({ error: 'payment required' });
+      }
+
+      // add Stripe customer
+      const userData = {
+        firstname: req.user.firstname,
+        lastname: req.user.lastname,
+        email: req.body.email,
+        token: req.body.token
+      };
+      const stripeCustomer = await payments.createStripeCustomer(
+        userData,
+        user.stripeCustomer ? user.stripeCustomer.id : null
+      );
+      // console.log(stripeCustomer);
+      if (!stripeCustomer) {
+        return res.status(400).send({ error: 'payment customer error' });
+      } else {
+        console.log('new customer success');
+      }
+
+      // update user
+      const label =
+        stripeCustomer.sources.data[0].brand +
+        ' – ' +
+        stripeCustomer.sources.data[0].last4;
+      const brand = stripeCustomer.sources.data[0].brand;
+      await UserModel.updateOne(
+        { _id: req.user._id },
+        {
+          stripeCustomer: stripeCustomer,
+          stripeCustomerLabel: label,
+          stripeCustomerBrand: brand,
+          stripeCustomerToken: stripeCustomer.sources.data[0].id
+        }
+      );
+
+      stripeCustomerId = stripeCustomer.id;
+      stripeToken = stripeCustomer.sources.data[0].id;
+    }
+
+    //
+    // Execute payment
+    //
+
+    const amountInCents = process.env.JOB_PRICE_IN_CENTS;
+
+    const stripeResponse = await payments.createStripeCharge(
+      stripeCustomerId,
+      stripeToken,
+      amountInCents,
+      { note: 'new job' }
+    );
+    if (!stripeResponse) {
+      return res.status(400).send({ error: 'payment error' });
+    } else {
+      console.log('payment success');
+    }
+
+    // calc bonuses
+    const { salaryAverage, totalBonus, networkBonus, targetBonus } = calcSplit(
+      jobData.salaryRange.min,
+      jobData.salaryRange.max
+    );
+
     // create link
     const newLink = new LinkModel({
       user: req.user._id,
@@ -54,7 +147,8 @@ exports.createQuery = async function(req, res) {
       potentialPayoffs: calcLinkPayouts(networkBonus, 1),
       title: jobData.jobTitle,
       type: 'job',
-      data: jobData
+      data: jobData,
+      payment: stripeResponse
     });
     await newLink.save();
 

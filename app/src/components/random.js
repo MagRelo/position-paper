@@ -16,6 +16,11 @@ import EmailButton from 'components/social/emailButton';
 import TwitterButton from 'components/social/twitterButton';
 import LinkedinButton from 'components/social/linkedinButton';
 import InstaButton from 'components/social/instagramButton';
+import Visa from 'components/social/visa';
+import MasterCard from 'components/social/mastercard';
+import Discover from 'components/social/discover';
+import Amex from 'components/social/amex';
+import Bank from 'components/social/bank';
 
 var SI_SYMBOL = ['', 'k', 'M', 'G', 'T', 'P', 'E'];
 const domain = window.location.origin || 'http://localhost:3000';
@@ -376,16 +381,21 @@ export function UserProfile({ user, hideDescription }) {
 
         <div className="user-text">
           <div className="user-name">{user.displayName}</div>
-          <div className="user-location">
-            <MdLocationOn /> {user.location}
-          </div>
+          {user.location ? (
+            <div className="user-location">
+              <span style={{ color: '#1e68bc' }}>
+                <MdLocationOn />
+              </span>{' '}
+              {user.location}
+            </div>
+          ) : null}
         </div>
       </div>
 
       {hideDesc ? null : (
         <React.Fragment>
           <div className="mb-2"></div>
-          <p className="p-tight">{user.description}</p>
+          <p>{user.description}</p>
         </React.Fragment>
       )}
     </div>
@@ -426,4 +436,19 @@ export function SocialGrid() {
       </div>
     </div>
   );
+}
+
+export function CardBrand({ brand }) {
+  switch (brand) {
+    case 'Visa':
+      return <Visa />;
+    case 'MasterCard':
+      return <MasterCard />;
+    case 'Discover':
+      return <Discover />;
+    case 'American Express':
+      return <Amex />;
+    default:
+      return <Bank />;
+  }
 }
