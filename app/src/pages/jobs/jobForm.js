@@ -66,6 +66,7 @@ function JobForm(props) {
   const [location, setLocation] = useState('');
   const [editorState, setEditorState] = useState(createEditorState());
   const refsEditor = React.createRef();
+  const [status, setStatus] = useState('');
 
   const [salaryRange, setSalaryRange] = useState({ min: 75000, max: 125000 });
   const debouncedRange = useDebounce(salaryRange, 333);
@@ -86,6 +87,7 @@ function JobForm(props) {
         ? rawStateHack.entityMap
         : {};
       setEditorState(createEditorState(props.formData.rawState));
+      setStatus(props.formData.status);
     }
   }, [props.formData]);
 
@@ -102,9 +104,6 @@ function JobForm(props) {
   async function submit(event) {
     event.preventDefault();
 
-    // loading
-    setFormStatus('loading');
-
     // get component data
     var formObject = {
       usePaymentSource: usePaymentSource,
@@ -120,23 +119,26 @@ function JobForm(props) {
       formObject[key] = value;
     });
 
-    // Terms checkbox
-    if (!formObject.terms) {
-      return alert('no terms');
-    }
+    // payment & terms
+    if (!isEditing) {
+      // Terms checkbox
+      if (!formObject.terms) {
+        return alert('no terms');
+      }
 
-    // payment source & stripe token
-    if (!usePaymentSource) {
-      let { token } = await props.stripe.createToken({ name: 'Name' });
-      if (!token || !formObject.stripeTerms) {
-        return alert('no token');
-      } else {
-        formObject.token = token;
+      // payment source & stripe token
+      if (!usePaymentSource) {
+        let { token } = await props.stripe.createToken({ name: 'Name' });
+        if (!token || !formObject.stripeTerms) {
+          return alert('no token');
+        } else {
+          formObject.token = token;
+        }
       }
     }
 
-    // send to server
-    // console.log('submitting:', formObject);
+    // loading
+    setFormStatus('loading');
 
     submitJob(formObject, linkId, clearSession)
       .then(link => {
@@ -213,13 +215,26 @@ function JobForm(props) {
 
         {/* External Referral Bonus */}
         <fieldset>
-          <legend>External Referral Bonus</legend>
-          <p>
-            Every job on Talent Relay must include an external referral bonus.
-            This amount must be paid within 7 days of hiring a candidate through
-            Talent Relay. The amount of the bonus is based on the job's annual
-            salary. Use the slider to set the salary range:
-          </p>
+          {isEditing ? (
+            <p>
+              <i className="title-theme-bg">
+                Note: Salary Range cannot be changed once the job has been
+                posted
+              </i>
+            </p>
+          ) : (
+            <React.Fragment>
+              <legend>External Referral Bonus</legend>
+              <p>
+                Every job on Talent Relay must include an external referral
+                bonus. This amount must be paid within 7 days of hiring a
+                candidate through Talent Relay. The amount of the bonus is based
+                on the job's annual salary. Use the slider to set the salary
+                range:
+              </p>
+            </React.Fragment>
+          )}
+
           <div className="mb-4"></div>
           <div className="grid grid-2-x">
             <div className="form-group">
@@ -249,158 +264,171 @@ function JobForm(props) {
             </div>
           </div>
 
-          <div className="form-check">
-            <label>
-              <input
-                className="form-radio"
-                name="terms"
-                type="checkbox"
-                value="true"
-                id="terms"
-              />
-              Agree to Talent Relay{' '}
-              <a href="/terms" target="_blank">
-                Terms and Conditions
-              </a>
-            </label>
-          </div>
+          {isEditing ? null : (
+            <div className="form-check">
+              <label>
+                <input
+                  className="form-radio"
+                  name="terms"
+                  type="checkbox"
+                  value="true"
+                  id="terms"
+                />
+                Agree to Talent Relay{' '}
+                <a href="/terms" target="_blank">
+                  Terms and Conditions
+                </a>
+              </label>
+            </div>
+          )}
         </fieldset>
         <div className="mb-4"></div>
 
-        {/* Payment */}
-        <fieldset>
-          <legend>Payment </legend>
-          <div className="grid grid-2-x">
-            <div>
-              <p>
-                The posting fee is a one-time payment. Your card will be charged
-                immediately.
-              </p>
-            </div>
+        {isEditing ? null : (
+          <React.Fragment>
+            {/* Payment */}
+            <fieldset>
+              <legend>Payment </legend>
+              <div className="grid grid-2-x">
+                <div>
+                  <p>
+                    The posting fee is a one-time payment. Your card will be
+                    charged immediately.
+                  </p>
+                </div>
 
-            <div>
+                <div>
+                  <div className="form-group">
+                    <label htmlFor="network_bonus">Posting Fee</label>
+                    <input
+                      className="form-control form-amount"
+                      type="text"
+                      name="network_bonus"
+                      disabled={true}
+                      value={formatCurrency(59)}
+                    />
+                  </div>
+                </div>
+              </div>
+
               <div className="form-group">
-                <label htmlFor="network_bonus">Posting Fee</label>
+                <div className="grid grid-x-2">
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center'
+                    }}
+                  >
+                    <label htmlFor="email">Payment Card</label>
+                  </div>
+                  <div>
+                    {hasPaymentSource ? (
+                      <div>
+                        <div className="form-check">
+                          <label>
+                            <input
+                              className="form-radio"
+                              name="paymentSourceCheck"
+                              id="usePaymentSource"
+                              type="checkbox"
+                              checked={usePaymentSource}
+                              onChange={e => {
+                                setUsePaymentSource(e.target.checked);
+                                console.log(usePaymentSource);
+                              }}
+                            />
+                            Use Saved Payment Source
+                          </label>
+                        </div>
+                        <div className="mb-2"></div>
+                      </div>
+                    ) : null}
+                  </div>
+                </div>
+
+                {usePaymentSource ? (
+                  <div
+                    className="stripeWrapper"
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'auto 1fr',
+                      gridGap: '0.75rem'
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center'
+                      }}
+                    >
+                      <CardBrand brand={user.stripeCustomerBrand} />
+                    </div>
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center'
+                      }}
+                    >
+                      <span> {user.stripeCustomerLabel}</span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="stripeWrapper">
+                    <CardElement {...createOptions('15px')} />
+                  </div>
+                )}
+              </div>
+
+              <div className="form-check">
+                <label>
+                  <input
+                    className="form-radio"
+                    name="stripeTerms"
+                    type="checkbox"
+                    value="true"
+                    id="stripeTerms"
+                  />
+                  Agree to Stripe{' '}
+                  <a href="/terms" target="_blank">
+                    Terms and Conditions
+                  </a>
+                </label>
+              </div>
+
+              <div className="mb-4"></div>
+              <div className="form-group">
+                <label htmlFor="email">Email Address</label>
                 <input
-                  className="form-control form-amount"
-                  type="text"
-                  name="network_bonus"
-                  disabled={true}
-                  value={formatCurrency(59)}
+                  type="email"
+                  name="email"
+                  required={true}
+                  className="form-control"
+                  value={email}
+                  onChange={e => {
+                    setEmail(e.target.value);
+                  }}
                 />
               </div>
-            </div>
-          </div>
-
-          <div className="form-group">
-            <div className="grid grid-x-2">
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center'
-                }}
-              >
-                <label htmlFor="email">Payment Card</label>
-              </div>
-              <div>
-                {hasPaymentSource ? (
-                  <div>
-                    <div className="form-check">
-                      <label>
-                        <input
-                          className="form-radio"
-                          name="paymentSourceCheck"
-                          id="usePaymentSource"
-                          type="checkbox"
-                          checked={usePaymentSource}
-                          onChange={e => {
-                            setUsePaymentSource(e.target.checked);
-                            console.log(usePaymentSource);
-                          }}
-                        />
-                        Use Saved Payment Source
-                      </label>
-                    </div>
-                    <div className="mb-2"></div>
-                  </div>
-                ) : null}
-              </div>
-            </div>
-
-            {usePaymentSource ? (
-              <div
-                className="stripeWrapper"
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'auto 1fr',
-                  gridGap: '0.75rem'
-                }}
-              >
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center'
-                  }}
-                >
-                  <CardBrand brand={user.stripeCustomerBrand} />
-                </div>
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center'
-                  }}
-                >
-                  <span> {user.stripeCustomerLabel}</span>
-                </div>
-              </div>
-            ) : (
-              <div className="stripeWrapper">
-                <CardElement {...createOptions('15px')} />
-              </div>
-            )}
-          </div>
-
-          <div className="form-check">
-            <label>
-              <input
-                className="form-radio"
-                name="stripeTerms"
-                type="checkbox"
-                value="true"
-                id="stripeTerms"
-              />
-              Agree to Stripe{' '}
-              <a href="/terms" target="_blank">
-                Terms and Conditions
-              </a>
-            </label>
-          </div>
-
-          <div className="mb-4"></div>
-          <div className="form-group">
-            <label htmlFor="email">Email Address</label>
-            <input
-              type="email"
-              name="email"
-              required={true}
-              className="form-control"
-              value={email}
-              onChange={e => {
-                setEmail(e.target.value);
-              }}
-            />
-          </div>
-        </fieldset>
-
-        <div className="mb-4"></div>
+            </fieldset>
+            <div className="mb-4"></div>
+          </React.Fragment>
+        )}
 
         {isEditing ? (
           <div className="form-group">
-            <label htmlFor="status">Change Status</label>
-            <select className="form-control" id="status" name="status">
+            <label htmlFor="status">Job Status</label>
+            <select
+              className="form-control"
+              id="status"
+              name="status"
+              value={status}
+              onChange={e => {
+                setStatus(e.target.value);
+              }}
+            >
               <option value="Active">Active</option>
               <option value="Pending">Pending</option>
               <option value="Closed">Closed</option>
@@ -414,7 +442,7 @@ function JobForm(props) {
         <div style={{ textAlign: 'right' }}>
           {formStatus === 'new' ? (
             <button className="btn btn-theme" type="submit">
-              Post Job
+              {isEditing ? 'Save' : 'Post Job'}
             </button>
           ) : null}
 

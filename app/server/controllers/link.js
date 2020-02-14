@@ -205,8 +205,7 @@ exports.getLink = async function(req, res) {
   try {
     // get link
     const link = await LinkModel.findOne({
-      linkId: req.params.linkId,
-      status: 'Active'
+      linkId: req.params.linkId
     })
       .populate('user')
       .populate({ path: 'originLink', populate: { path: 'user' } })
