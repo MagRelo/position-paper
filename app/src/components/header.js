@@ -1,5 +1,5 @@
-import React, { useState, useContext } from 'react';
-import { Link } from '@reach/router';
+import React, { useState, useContext, useEffect } from 'react';
+import { Link, globalHistory } from '@reach/router';
 
 import { FaSearch, FaUserAlt, FaClipboardList, FaBars } from 'react-icons/fa';
 
@@ -19,8 +19,13 @@ const NavLink = props => (
 
 function Header() {
   const { activeSession } = useContext(AuthContext);
-
   const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    return globalHistory.listen(action => {
+      setMenuOpen(false);
+    });
+  }, []);
 
   return (
     <header>
