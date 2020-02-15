@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Tab } from '@reach/tabs';
 import {
   FaExternalLinkAlt,
@@ -7,10 +7,11 @@ import {
   FaGlobeAmericas
 } from 'react-icons/fa';
 import { MdLocationOn } from 'react-icons/md';
+import { AiOutlineUser } from 'react-icons/ai';
+
+import { useRect } from '@reach/rect';
 
 import Img from 'react-image';
-
-import { AiOutlineUser } from 'react-icons/ai';
 
 import EmailButton from 'components/social/emailButton';
 import TwitterButton from 'components/social/twitterButton';
@@ -23,7 +24,6 @@ import Amex from 'components/social/amex';
 import Bank from 'components/social/bank';
 
 var SI_SYMBOL = ['', 'k', 'M', 'G', 'T', 'P', 'E'];
-const domain = window.location.origin || 'http://localhost:3000';
 
 function abbreviateNumber(number) {
   // what tier? (determines SI symbol)
@@ -255,10 +255,34 @@ export function copyTextToClipboard(text) {
     }
   );
 }
-export function JobBoard({ jobBoardId }) {
+
+export function UrlDisplay({ slug }) {
+  const [hideURL, setHideURL] = useState(false);
+  const jobDescRef = useRef();
+  const jobDescRect = useRect(jobDescRef);
+  const width = jobDescRect ? jobDescRect.width : 0;
+
+  const domain = window.location.origin || 'http://localhost:3000';
+  const URL = `${domain}/${slug}`;
+
+  // sync menu with container width
+  useEffect(() => {
+    // console.log('url box width:', width);
+    if (width < 350) {
+      setHideURL(true);
+    } else {
+      setHideURL(false);
+    }
+  }, [width]);
+
   return (
-    <div className="url-bar">
-      <div className="input-group">
+    <div className="url-bar" ref={jobDescRef}>
+      <div
+        className="input-group"
+        style={{
+          justifyContent: hideURL ? 'center' : null
+        }}
+      >
         <div className="input-group-prepend">
           <div
             className="input-group-text"
@@ -266,17 +290,22 @@ export function JobBoard({ jobBoardId }) {
               fontSize: 'smaller'
             }}
           >
-            <FaGlobeAmericas />
+            <span className="icon-wrapper">
+              <FaGlobeAmericas />
+            </span>
             &#8239; URL
           </div>
         </div>
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Username"
-          disabled={true}
-          value={`${domain}/jobs/${jobBoardId}`}
-        />
+
+        {hideURL ? null : (
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Username"
+            disabled={true}
+            value={URL}
+          />
+        )}
 
         {/* Edit 
         <div className="input-group-append">
@@ -304,11 +333,13 @@ export function JobBoard({ jobBoardId }) {
             <button
               className="button-unstyled"
               onClick={() => {
-                const text = `${domain}/jobs/${jobBoardId}`;
-                copyTextToClipboard(text);
+                copyTextToClipboard(URL);
               }}
             >
-              Copy <FaRegCopy />
+              Copy{' '}
+              <span className="icon-wrapper">
+                <FaRegCopy />
+              </span>
             </button>
           </div>
         </div>
@@ -324,11 +355,14 @@ export function JobBoard({ jobBoardId }) {
             <div>
               <a
                 className="button-unstyled"
-                href={`${domain}/jobs/${jobBoardId}`}
+                href={URL}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                View <FaExternalLinkAlt />
+                View{' '}
+                <span className="icon-wrapper">
+                  <FaExternalLinkAlt />
+                </span>
               </a>
             </div>
           </div>
@@ -383,7 +417,7 @@ export function UserProfile({ user, hideDescription }) {
           <div className="user-name">{user.displayName}</div>
           {user.location ? (
             <div className="user-location">
-              <span style={{ color: '#1e68bc' }}>
+              <span className="icon-wrapper">
                 <MdLocationOn />
               </span>{' '}
               {user.location}
@@ -392,7 +426,7 @@ export function UserProfile({ user, hideDescription }) {
         </div>
       </div>
 
-      {hideDesc ? null : (
+      {!user.description || hideDesc ? null : (
         <React.Fragment>
           <div className="mb-2"></div>
           <p>{user.description}</p>

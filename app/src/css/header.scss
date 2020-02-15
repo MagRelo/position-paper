@@ -10,10 +10,6 @@ header {
   border-bottom: $primaryLight solid 1px;
 }
 
-header a {
-  // to preserve spacing
-  border-bottom: solid 1px $primaryColor;
-}
 
 .header-title {
   font-size: 32px;
@@ -191,18 +187,22 @@ footer>.container {
   color: $secondaryColor;
 }
 
+.footer-list li a:hover {
+  border-bottom: solid 1px $secondaryColor;
+  color: $secondaryColor;
+}
+
 .footer-list .list-inline li {
   display: inline-block;
   margin: 0 10px;
 }
 
 .copyright span {
-  color: $primaryColor;
-  background: rgba(0, 0, 0, 0.03);
+  color: $secondaryColor;
   padding: 5px;
   border-radius: 5px;
 }
 
 .copyright span a {
-  color: $primaryColor;
+  color: $secondaryColor;
 }

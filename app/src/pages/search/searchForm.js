@@ -49,6 +49,7 @@ function SearchJobForm({ submit }) {
           <input
             type="text"
             className="form-control"
+            style={{ borderBottom: 0 }}
             placeholder="type to filter"
             name="text"
             value={searchText}

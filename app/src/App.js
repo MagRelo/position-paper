@@ -119,7 +119,7 @@ function App(props) {
                 <EditLink path="/link/:linkId/edit" />
 
                 <LinkPage path="/link/:linkId" />
-                <UserJobs path="/jobs/:userId" />
+                <UserJobs path="/board/:userId" />
                 <Search path="/search" />
                 <Terms path="/terms" />
                 <About path="/about" />
@@ -136,7 +136,7 @@ function App(props) {
                 <Login path="/login" />
 
                 <LinkPage path="/link/:linkId" />
-                <UserJobs path="/jobs/:userId" />
+                <UserJobs path="/board/:userId" />
                 <Search path="/search" />
                 <Terms path="/terms" />
                 <About path="/about" />

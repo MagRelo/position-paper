@@ -118,7 +118,7 @@ function UserProfileForm({ user }) {
                       border: 'none'
                     }}
                   >
-                    {`${domain}/jobs/`}
+                    {`${domain}/board/`}
                   </div>
                 </div>
                 <input

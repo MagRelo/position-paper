@@ -285,7 +285,7 @@ function LandingPage() {
 
           <div className="container">
             <div className="grid grid-3">
-              <Link to="/jobs/Q1ANr0Ch3Uz5aMzVSu2dX">
+              <Link to="/board/Q1ANr0Ch3Uz5aMzVSu2dX">
                 <div className="panel">
                   <UserProfile
                     user={{
@@ -300,7 +300,7 @@ function LandingPage() {
                   />
                 </div>
               </Link>
-              <Link to="/jobs/Q1ANr0Ch3Uz5aMzVSu2dX">
+              <Link to="/board/Q1ANr0Ch3Uz5aMzVSu2dX">
                 <div className="panel">
                   <UserProfile
                     user={{
@@ -313,7 +313,7 @@ function LandingPage() {
                   />
                 </div>
               </Link>
-              <Link to="/jobs/matt-lovan">
+              <Link to="/board/matt-lovan">
                 <div className="panel">
                   <UserProfile
                     user={{

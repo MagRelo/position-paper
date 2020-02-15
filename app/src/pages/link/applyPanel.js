@@ -89,11 +89,11 @@ function ApplyPanel({ link, user }) {
 
             <hr style={{ marginTop: 0, marginBottom: 0 }} />
             <div className="promote-label">
-              <span>Featured By</span>
+              <span>Shared By</span>
             </div>
             <div className="mb-2"></div>
 
-            <a href={`${domain}/jobs/${user.jobBoardId}`}>
+            <a href={`${domain}/board/${user.jobBoardId}`}>
               <UserProfile user={user} hideDescription={true} />
             </a>
           </div>

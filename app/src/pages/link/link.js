@@ -10,7 +10,7 @@ import { JobDisplay } from 'pages/jobs/jobDisplay.js';
 import {
   formatCurrency,
   lineItem,
-  JobBoard,
+  UrlDisplay,
   UserProfile,
   Loading
 } from 'components/random';
@@ -189,7 +189,7 @@ function AdminPanel({ link, user, traffic }) {
       <p style={{ margin: 0 }}>
         <b>Your Unique URL</b>
       </p>
-      <JobBoard jobBoardId={user.jobBoardId} />
+      <UrlDisplay slug={`link/${link.linkId}`} />
       <div className="mb-3"></div>
 
       {user.isQueryOwner ? null : (
