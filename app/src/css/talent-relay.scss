@@ -124,7 +124,7 @@ table {
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
-  background-color: #e9ecef;
+  background-color: $lighterGray;
 }
 
 .icon {
@@ -394,7 +394,7 @@ textarea.form-control {
 .form-control[readonly] {
   color: $lightText;
   border: 1px solid $lightGray;
-  background-color: lighten($color: $lightGray, $amount: 11);
+  background-color: $lighterGray;
   box-shadow: $box-shadow-inner;
 
   // font-family: monospace;
@@ -569,7 +569,7 @@ iframe {
 
 .link-display {
   position: sticky;
-  top: 48px;
+  top: 24px;
 }
 
 /* Search tile */
@@ -705,6 +705,34 @@ iframe {
   left: -50%;
   z-index: -1;
 }
+
+span.badge {
+  vertical-align: middle;
+  margin-top: -5px;
+  margin-right: 0.66rem;
+
+  border-radius: 50%;
+  background: $primaryLight;
+  box-shadow: 2px 2px 0 $secondaryColor;
+  color: $white;
+}
+
+span.circle {
+  width: 30px;
+  height: 30px;
+  content: counter(step);
+  counter-increment: (step);
+  line-height: 28px;
+  border: 2px solid $lightGray;
+  display: block;
+  text-align: center;
+  margin: 0 auto 10px auto;
+  border-radius: 50%;
+  background-color: white;
+
+  font-variant-numeric: tabular-nums;
+}
+
 
 /* Progress Bar */
 

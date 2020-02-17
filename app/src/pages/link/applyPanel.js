@@ -1,13 +1,13 @@
 import React, { useState, useContext } from 'react';
 // import { Link } from '@reach/router';
+
+import { FaCheck } from 'react-icons/fa';
 import { Loading, formatCurrency, UserProfile } from 'components/random';
 import LinkedInLogin from 'components/linkedinLogin';
-
 import { AuthContext } from 'App';
 
-// import { FaThumbsUp } from 'react-icons/fa';
+// import ResponseStatus from 'pages/response/responseStatus-2';
 
-import ResponseStatus from 'pages/response/responseStatus';
 const domain = window.location.origin || 'http://localhost:3000';
 
 function ApplyPanel({ link, user }) {
@@ -15,8 +15,9 @@ function ApplyPanel({ link, user }) {
   const { activeSession } = useContext(AuthContext);
 
   const [hasApplied, setHasApplied] = useState(user.hasApplied || false);
-  const [status, setStatus] = useState(user.applyStatus || '');
-  const [applySteps, setApplySteps] = useState(user.applySteps || []);
+
+  // const [status, setStatus] = useState(user.applyStatus || '');
+  // const [applySteps, setApplySteps] = useState(user.applySteps || []);
 
   const [loading, setLoading] = useState(false);
 
@@ -35,8 +36,8 @@ function ApplyPanel({ link, user }) {
 
       // update UI
       setHasApplied(hasApplied);
-      setApplySteps(applySteps);
-      setStatus(applyStatus);
+      // setApplySteps(applySteps);
+      // setStatus(applyStatus);
 
       setLoading(false);
     } catch (error) {
@@ -49,8 +50,12 @@ function ApplyPanel({ link, user }) {
       <React.Fragment>
         {hasApplied ? (
           <div>
-            <h3>Application Status</h3>
-            <ResponseStatus status={status} steps={applySteps} />
+            <h3>
+              Application Submitted{' '}
+              <FaCheck style={{ verticalAlign: 'top', color: '#0ea51d' }} />
+            </h3>
+            <div className="mb-2"></div>
+            <p>Your application has been sent to {link.data.employer}</p>
           </div>
         ) : (
           <div>
@@ -84,20 +89,20 @@ function ApplyPanel({ link, user }) {
                 Apply Now
               </LinkedInLogin>
             )}
-
-            <div className="mb-4"></div>
-
-            <hr style={{ marginTop: 0, marginBottom: 0 }} />
-            <div className="promote-label">
-              <span>Shared By</span>
-            </div>
-            <div className="mb-2"></div>
-
-            <a href={`${domain}/board/${user.jobBoardId}`}>
-              <UserProfile user={user} hideDescription={true} />
-            </a>
           </div>
         )}
+
+        <div className="mb-4"></div>
+
+        <hr style={{ marginTop: 0, marginBottom: 0 }} />
+        <div className="promote-label">
+          <span>Shared By</span>
+        </div>
+        <div className="mb-2"></div>
+
+        <a href={`${domain}/board/${user.jobBoardId}`}>
+          <UserProfile user={user} hideDescription={true} />
+        </a>
       </React.Fragment>
     </div>
   );
