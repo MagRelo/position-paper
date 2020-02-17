@@ -5,6 +5,8 @@ import { useTrail, animated } from 'react-spring';
 import { FaEdit } from 'react-icons/fa';
 
 import ActivityTile from 'pages/search/searchResult_tile';
+import UserJobsTable from 'pages/user/userJobsTable';
+import UserResponseTable from 'pages/user/userResponseTable';
 
 import {
   Loading,
@@ -23,6 +25,8 @@ function User(props) {
   const [isLoading, setIsLoading] = useState(true);
   const [userData, setUserData] = useState(user);
   const [links, setLinks] = useState([]);
+  const [jobs, setJobs] = useState([]);
+  const [responses, setResponses] = useState([]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -34,6 +38,8 @@ function User(props) {
         if (isSubscribed) {
           setUserData(body.user);
           setLinks(body.links);
+          setJobs(body.links.filter(link => link.generation === 0));
+          setResponses(body.responses);
           setIsLoading(false);
         }
       })
@@ -177,6 +183,9 @@ function User(props) {
                   <p>
                     <i>Connect with the best candidates today</i>
                   </p>
+
+                  {!jobs.length ? null : <UserJobsTable links={jobs} />}
+
                   <div style={{ textAlign: 'center' }}>
                     <Link to="/addjob" className="btn btn-theme btn-sm">
                       Post a Job
@@ -191,6 +200,11 @@ function User(props) {
                   <p>
                     <i>Every job on Talent Relay includes a hiring bonus</i>
                   </p>
+
+                  {!responses.length ? null : (
+                    <UserResponseTable responses={responses} />
+                  )}
+
                   <div style={{ textAlign: 'center' }}>
                     <Link to="/search" className="btn btn-theme btn-sm">
                       Search for Jobs

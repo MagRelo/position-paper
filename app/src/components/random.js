@@ -280,7 +280,8 @@ export function UrlDisplay({ slug }) {
       <div
         className="input-group"
         style={{
-          justifyContent: hideURL ? 'center' : null
+          justifyContent: hideURL ? 'center' : null,
+          height: hideURL ? '45px' : null
         }}
       >
         <div className="input-group-prepend">
