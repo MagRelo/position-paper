@@ -53,7 +53,10 @@ function SearchFlow({ userId }) {
                   <SocialGrid />
                 </div>
 
-                <hr />
+                <hr style={{ marginTop: 0, marginBottom: 0 }} />
+                <div className="promote-label">
+                  <span>Active Jobs</span>
+                </div>
                 <div className="mb-4"></div>
 
                 <div className="grid grid-3">

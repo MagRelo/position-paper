@@ -336,8 +336,8 @@ export function UrlDisplay({ slug }) {
                 copyTextToClipboard(URL);
               }}
             >
-              Copy{' '}
-              <span className="icon-wrapper">
+              Copy &#8239;
+              <span className="icon-wrapper blue">
                 <FaRegCopy />
               </span>
             </button>
@@ -359,8 +359,8 @@ export function UrlDisplay({ slug }) {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                View{' '}
-                <span className="icon-wrapper">
+                View&#8239;
+                <span className="icon-wrapper blue">
                   <FaExternalLinkAlt />
                 </span>
               </a>
@@ -417,7 +417,7 @@ export function UserProfile({ user, hideDescription }) {
           <div className="user-name">{user.displayName}</div>
           {user.location ? (
             <div className="user-location">
-              <span className="icon-wrapper">
+              <span className="icon-wrapper blue">
                 <MdLocationOn />
               </span>{' '}
               {user.location}

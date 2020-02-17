@@ -88,7 +88,7 @@ function User(props) {
               >
                 <Link to="/profile" className="btn btn-sm btn-unstyled">
                   Edit Profile{' '}
-                  <span className="icon-wrapper">
+                  <span className="icon-wrapper blue">
                     <FaEdit />
                   </span>
                 </Link>

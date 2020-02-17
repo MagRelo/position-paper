@@ -70,7 +70,7 @@ section.section-dark {
 section.section-dark .panel {
   background: $white;
   border-color: $primaryLight;
-  // text-align: center;
+  color: $darkText;
 
   // for the stars animation...
   position: relative;
@@ -152,8 +152,14 @@ table {
 .icon-wrapper {
   font-size: 15px;
   margin-bottom: 3px;
+  color: $lightGray;
+}
+
+.icon-wrapper.blue {
   color: $primaryLight;
 }
+
+
 
 .social-label {
   text-transform: uppercase;
@@ -273,7 +279,7 @@ table {
 
 .user-name {
   font-size: 20px;
-  color: $lightText;
+  color: $darkText;
 }
 
 .user-location {
@@ -651,7 +657,7 @@ iframe {
   min-height: 90vh;
 }
 
-/* Link Display */
+/* Progress Bar */
 .progressbar {
   counter-reset: step;
   padding: 0;
@@ -700,13 +706,13 @@ iframe {
   z-index: -1;
 }
 
+/* Progress Bar */
 
 
 .panel {
   padding: 1rem;
   border: solid 1px $lightGray;
   border-radius: 7px;
-
   box-shadow: $box-shadow-medium;
 }
 
