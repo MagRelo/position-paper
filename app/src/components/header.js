@@ -65,13 +65,13 @@ function Header() {
               <React.Fragment>
                 <li>
                   <NavLink className="nav-link" to="/profile">
-                    <FaUserAlt /> Account
+                    <FaUserAlt />
                   </NavLink>
                 </li>
 
                 <li>
                   <NavLink className="nav-link" to="/dashboard">
-                    <FaClipboardList /> Job Board
+                    <FaClipboardList /> Dashboard
                   </NavLink>
                 </li>
               </React.Fragment>
@@ -98,7 +98,7 @@ function Header() {
                 <React.Fragment>
                   <li>
                     <NavLink className="nav-link" to="/dashboard">
-                      <FaClipboardList /> Job Board
+                      <FaClipboardList /> Dashboard
                     </NavLink>
                   </li>
 

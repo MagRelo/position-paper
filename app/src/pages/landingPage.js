@@ -20,6 +20,11 @@ import Organizer from 'images/undraw_online_organizer.svg';
 import Runner from 'images/undraw_runner.svg';
 import TeamChat from 'images/undraw_team_chat.svg';
 
+// Talent Relay is a platform where everyone can cooperate (and
+// compete) to find & place the world's best candidates. Activate
+// your network and refer a candidate to collect the recruiting
+// bonus.
+
 function LandingPage() {
   return (
     <React.Fragment>
@@ -36,13 +41,17 @@ function LandingPage() {
             <div>
               <h5 className="title-theme-bg">Welcome To Talent Relay!</h5>
 
-              <h1 className="mb-2">Crowdsourced Recruiting</h1>
+              <h1 className="mb-2">
+                <b> Earn Revenue</b> for your community by helping them find{' '}
+                great jobs
+              </h1>
 
               <p className="lead mb-4">
-                Talent Relay is a platform where everyone can cooperate (and
-                compete) to find & place the world's best candidates. Activate
-                your network and refer a candidate to collect the recruiting
-                bonus.
+                Talent Relay{' '}
+                <b>
+                  pays the candidate <i>*and*</i> the community
+                </b>{' '}
+                when someone is hired. It's free and easy to use : )
               </p>
 
               <a href="/#employers" className="btn btn-sm button-unstyled">
@@ -54,6 +63,224 @@ function LandingPage() {
       </div>
 
       <div className="page-content">
+        {/* Featured */}
+        <section id="featured" className="section-dark">
+          <div id="stars"></div>
+          <div id="stars2"></div>
+          <div id="stars3"></div>
+
+          <div className="container section-title">
+            <h2>
+              <span>Featured Communities</span>
+            </h2>
+            <p>
+              <span>Do Well By Doing Good</span>
+            </p>
+          </div>
+
+          <div className="container">
+            <div className="grid grid-3">
+              <div className="panel">
+                <Link to="/board/Q1ANr0Ch3Uz5aMzVSu2dX">
+                  <UserProfile
+                    user={{
+                      displayName: 'Girls Who Code',
+                      location: 'MD County, MD',
+                      avatar:
+                        'https://pbs.twimg.com/profile_images/903343236252483584/qQw0KRkK_400x400.jpg',
+                      description: `Promoting @GirlsWhoCode in Howard County, MD. Helping
+                      create a pipeline for girls in tech & eliminate
+                      socioeconomic barriers for all.`
+                    }}
+                  />
+                </Link>
+              </div>
+              <div className="panel">
+                <Link to="/board/Q1ANr0Ch3Uz5aMzVSu2dX">
+                  <UserProfile
+                    user={{
+                      displayName: 'Boise Public Library',
+                      location: 'Boise, ID',
+                      avatar:
+                        'https://pbs.twimg.com/profile_images/1082382072243675136/Plpr8efj_400x400.jpg',
+                      description: `Enhance knowledge, realize creative potential, share ideas and stories.`
+                    }}
+                  />
+                </Link>
+              </div>
+              <div className="panel">
+                <Link to="/board/matt-lovan">
+                  <UserProfile
+                    user={{
+                      displayName: 'Matt Lovan',
+                      location: 'New York / Boise',
+                      avatar:
+                        'https://media-exp1.licdn.com/dms/image/C5603AQHJIhVzvDBreg/profile-displayphoto-shrink_200_200/0?e=1586390400&v=beta&t=CSL-hY9MLRRQ4RMua94dtMXg2Fo4QzmPC9huRofhMjU',
+                      description: `We're the Electronic Frontier Foundation. We defend your
+                      civil liberties in a digital world. We're the Electronic
+                      Frontier Foundation.`
+                    }}
+                  />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Community */}
+        <section id="system">
+          <div className="container section-title">
+            <h2>Go Farther Together</h2>
+            <p> Everyone Wins in Talent Relay </p>
+          </div>
+
+          {/* GET A JOB */}
+          <div>
+            <div className="container">
+              <div className="grid grid-2 landing-grid align-items-center">
+                <div>
+                  <div className="landing-image-container">
+                    <img src={OnlineAd} alt="" className="landing-image" />
+                  </div>
+                </div>
+
+                <div>
+                  <div className="div-title">
+                    <h3>
+                      Get Hired → <span>Get Paid</span>
+                    </h3>
+                  </div>
+
+                  <div className="mb-4">
+                    <ul className="list-unstyled list-icon">
+                      <li className="mb-3">
+                        <i className="fas fa-check-circle"></i> Every job on
+                        Talent Relay includes a <b>hiring bonus</b>
+                      </li>
+                      <li>
+                        <i className="fas fa-check-circle"></i> Apply to jobs
+                        with one-click – we'll make sure your application gets
+                        in the right hands
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* REFER A CANDIDATE */}
+          <div>
+            <div className="container">
+              <div className="grid grid-2 landing-grid align-items-center">
+                <div className="swap-order">
+                  <div className="landing-image-container">
+                    <img src={Friends} alt="" className="landing-image" />
+                  </div>
+                </div>
+
+                <div>
+                  <div className="div-title">
+                    <h3>
+                      Refer A Candidate → <span>Get Paid</span>
+                    </h3>
+                  </div>
+                  <div className="mb-4">
+                    <ul className="list-unstyled list-icon">
+                      <li className="mb-3">
+                        <i className="fas fa-check-circle"></i> Every job on
+                        Talent Relay includes a <b>referral bonus</b>
+                      </li>
+
+                      <li className="mb-3">
+                        <i className="fas fa-check-circle"></i> Great source of
+                        revenue for meetups, blogs, newsletters...
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* FIND RECRUITERS */}
+          <div>
+            <div className="container">
+              <div className="grid grid-2 landing-grid align-items-center">
+                <div>
+                  <div className="landing-image-container">
+                    <img src={Destinations} alt="" className="landing-image" />
+                  </div>
+                </div>
+
+                <div>
+                  <div className="div-title">
+                    <h3>
+                      Work Together → <span>Get Paid</span>
+                    </h3>
+                    {/* <div className="title-bdr">
+                    <div className="left-bdr"></div>
+                    <div className="right-bdr"></div>
+                  </div> */}
+                  </div>
+                  <p>
+                    We also keep track of the <b>chain of referrals </b>
+                    so you can earn money by finding candidates <b>OR</b>{' '}
+                    sharing with other communities. Share your links with
+                    friends, on social networks, at community events - anywhere!
+                    We make sure everyone gets a fair cut when the candidate is
+                    hired.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ONBOARDING  */}
+          <div>
+            <div className="container">
+              <div className="grid grid-2 landing-grid align-items-center">
+                <div className="swap-order">
+                  <div className="landing-image-container">
+                    <img src={Organizer} alt="" className="landing-image" />
+                  </div>
+                </div>
+
+                <div>
+                  <div className="div-title">
+                    <h3>
+                      Onboard Employers & Candidates → <span>Get Paid</span>
+                    </h3>
+                  </div>
+
+                  <div className="mb-4">
+                    <ul className="list-unstyled list-icon">
+                      <li className="mb-3">
+                        <i className="fas fa-check-circle"></i> Invite other
+                        users to the platform and share in every bonus
+                      </li>
+                      <li>
+                        <i className="fas fa-check-circle"></i> Every job board
+                        includes unique invite links
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mb-4"></div>
+
+          <div className="container section-cta">
+            <p>Activate Your Network</p>
+
+            <LinkedInLogin className="btn btn-theme">
+              Create Your Account <IoMdPersonAdd />
+            </LinkedInLogin>
+          </div>
+        </section>
+
         {/* How It Works */}
         <section id="how" className="section-dark">
           <div id="stars"></div>
@@ -114,224 +341,6 @@ function LandingPage() {
           </div>
         </section>
 
-        {/* Community */}
-        <section id="system">
-          <div className="container section-title">
-            <h2>It's All About Community</h2>
-            <p> Everyone Wins in Talent Relay </p>
-          </div>
-
-          {/* REFER A CANDIDATE */}
-          <div>
-            <div className="container">
-              <div className="grid grid-2 landing-grid align-items-center">
-                <div className="swap-order">
-                  <div className="landing-image-container">
-                    <img src={Friends} alt="" className="landing-image" />
-                  </div>
-                </div>
-
-                <div>
-                  <div className="div-title">
-                    <h3>
-                      Refer A Candidate → <span>Get Paid</span>
-                    </h3>
-                  </div>
-                  <div className="mb-4">
-                    <ul className="list-unstyled list-icon">
-                      <li className="mb-3">
-                        <i className="fas fa-check-circle"></i> Every job on
-                        Talent Relay includes a <b>referral bonus</b>
-                      </li>
-
-                      <li className="mb-3">
-                        <i className="fas fa-check-circle"></i> Great source of
-                        revenue for meetups, blogs, newsletters...
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* FIND RECRUITERS */}
-          <div>
-            <div className="container">
-              <div className="grid grid-2 landing-grid align-items-center">
-                <div>
-                  <div className="landing-image-container">
-                    <img src={Destinations} alt="" className="landing-image" />
-                  </div>
-                </div>
-
-                <div>
-                  <div className="div-title">
-                    <h3>
-                      Work Together → <span>Get Paid</span>
-                    </h3>
-                    {/* <div className="title-bdr">
-                    <div className="left-bdr"></div>
-                    <div className="right-bdr"></div>
-                  </div> */}
-                  </div>
-                  <p>
-                    We also keep track of the <b>chain of referrals </b>
-                    so you can earn money by finding candidates <b>OR</b>{' '}
-                    promoting to other job boards. Share your links with
-                    friends, on social networks, at community events - anywhere!
-                    We make sure everyone gets a fair cut when the candidate is
-                    hired.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* ONBOARDING  */}
-          <div>
-            <div className="container">
-              <div className="grid grid-2 landing-grid align-items-center">
-                <div className="swap-order">
-                  <div className="landing-image-container">
-                    <img src={Organizer} alt="" className="landing-image" />
-                  </div>
-                </div>
-
-                <div>
-                  <div className="div-title">
-                    <h3>
-                      Onboard Employers & Candidates → <span>Get Paid</span>
-                    </h3>
-                  </div>
-
-                  <div className="mb-4">
-                    <ul className="list-unstyled list-icon">
-                      <li className="mb-3">
-                        <i className="fas fa-check-circle"></i> Invite other
-                        users to the platform and share in every bonus
-                      </li>
-                      <li>
-                        <i className="fas fa-check-circle"></i> Every job board
-                        includes unique invite links
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* GET A JOB */}
-          <div>
-            <div className="container">
-              <div className="grid grid-2 landing-grid align-items-center">
-                <div>
-                  <div className="landing-image-container">
-                    <img src={OnlineAd} alt="" className="landing-image" />
-                  </div>
-                </div>
-
-                <div>
-                  <div className="div-title">
-                    <h3>
-                      Get Hired → <span>Get Paid</span>
-                    </h3>
-                  </div>
-
-                  <div className="mb-4">
-                    <ul className="list-unstyled list-icon">
-                      <li className="mb-3">
-                        <i className="fas fa-check-circle"></i> Every job on
-                        Talent Relay includes a <b>hiring bonus</b>
-                      </li>
-                      <li>
-                        <i className="fas fa-check-circle"></i> Apply to jobs
-                        with one-click – we'll make sure your application gets
-                        in the right hands
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="mb-4"></div>
-
-          <div className="container section-cta">
-            <p>Activate Your Network</p>
-
-            <LinkedInLogin className="btn btn-theme">
-              Create Your Account <IoMdPersonAdd />
-            </LinkedInLogin>
-          </div>
-        </section>
-
-        {/* Featured */}
-        <section id="featured" className="section-dark">
-          <div id="stars"></div>
-          <div id="stars2"></div>
-          <div id="stars3"></div>
-
-          <div className="container section-title">
-            <h2>
-              <span>Featured Job Boards</span>
-            </h2>
-            <p>
-              <span>The Best of the Best</span>
-            </p>
-          </div>
-
-          <div className="container">
-            <div className="grid grid-3">
-              <Link to="/board/Q1ANr0Ch3Uz5aMzVSu2dX">
-                <div className="panel">
-                  <UserProfile
-                    user={{
-                      displayName: 'Girls Who Code',
-                      location: 'MD County, MD',
-                      avatar:
-                        'https://pbs.twimg.com/profile_images/903343236252483584/qQw0KRkK_400x400.jpg',
-                      description: `Promoting @GirlsWhoCode in Howard County, MD. Helping
-                      create a pipeline for girls in tech & eliminate
-                      socioeconomic barriers for all.`
-                    }}
-                  />
-                </div>
-              </Link>
-              <Link to="/board/Q1ANr0Ch3Uz5aMzVSu2dX">
-                <div className="panel">
-                  <UserProfile
-                    user={{
-                      displayName: 'Boise Public Library',
-                      location: 'Boise, ID',
-                      avatar:
-                        'https://pbs.twimg.com/profile_images/1082382072243675136/Plpr8efj_400x400.jpg',
-                      description: `Enhance knowledge, realize creative potential, share ideas and stories.`
-                    }}
-                  />
-                </div>
-              </Link>
-              <Link to="/board/matt-lovan">
-                <div className="panel">
-                  <UserProfile
-                    user={{
-                      displayName: 'Matt Lovan',
-                      location: 'New York / Boise',
-                      avatar:
-                        'https://media-exp1.licdn.com/dms/image/C5603AQHJIhVzvDBreg/profile-displayphoto-shrink_200_200/0?e=1586390400&v=beta&t=CSL-hY9MLRRQ4RMua94dtMXg2Fo4QzmPC9huRofhMjU',
-                      description: `We're the Electronic Frontier Foundation. We defend your
-                      civil liberties in a digital world. We're the Electronic
-                      Frontier Foundation.`
-                    }}
-                  />
-                </div>
-              </Link>
-            </div>
-          </div>
-        </section>
-
         {/* Employers  */}
         <section id="employers">
           <div className="container">
@@ -357,21 +366,23 @@ function LandingPage() {
 
               <div>
                 <div className="div-title">
-                  <h3>
-                    Pay <span>Nothing</span> up Front
-                  </h3>
+                  <h3>Access to the world's best communities</h3>
                 </div>
 
                 <div className="mb-4">
                   <ul className="list-unstyled list-icon">
                     <li className="mb-3">
-                      <i className="fas fa-check-circle"></i> Pay nothing until
-                      you hire a candidate
+                      <i className="fas fa-check-circle"></i> Make a personal
+                      connection
                     </li>
                     <li className="mb-3">
-                      <i className="fas fa-check-circle"></i> We charge a
-                      transparent flat-rate for new hires, just a fraction of
-                      other services
+                      <i className="fas fa-check-circle"></i> Pay just a
+                      fraction of the cost of other services
+                    </li>
+                    <li className="mb-3">
+                      <i className="fas fa-check-circle"></i> Redirect
+                      recruiting fees directly to the candidate & their
+                      community
                     </li>
                   </ul>
                 </div>

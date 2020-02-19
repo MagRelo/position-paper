@@ -77,7 +77,8 @@ section.section-dark .panel {
   z-index: 1;
 }
 
-section.section-dark .panel h4 {
+section.section-dark .panel h4,
+section.section-dark .panel a {
   color: $darkText;
 }
 

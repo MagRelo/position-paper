@@ -2,7 +2,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Link } from '@reach/router';
 import LinkedInLogin from 'components/linkedinLogin';
 
-import { AiFillFileAdd } from 'react-icons/ai';
+import { FaPlus } from 'react-icons/fa';
+
 // network Data
 import { AuthContext } from 'App';
 import { JobDisplay } from 'pages/jobs/jobDisplay.js';
@@ -165,14 +166,14 @@ function PromotePanel({ link, user, activeSession }) {
             redirect={'/link/' + link.linkId}
             className="btn btn-theme btn-sm"
           >
-            Add To Your Job Board <AiFillFileAdd />
+            <FaPlus /> Add Job
           </LinkedInLogin>
         ) : (
           <LinkButton
             parentLink={link.linkId}
             disabled={user._id === 0 || user.isLinkOwner || user.isPromoting}
           >
-            Add To Your Job Board <AiFillFileAdd />
+            <FaPlus /> Add Job
           </LinkButton>
         )}
       </div>

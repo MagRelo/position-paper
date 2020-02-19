@@ -64,6 +64,8 @@ function User(props) {
               </button>
 
               <h1>Your Account</h1>
+              <div className="mb-4"></div>
+
               <UserProfileForm user={userData} />
             </div>
             <div className="mb-4"></div>

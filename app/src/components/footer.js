@@ -33,7 +33,9 @@ function Footer(props) {
                 justifyContent: 'center'
               }}
             >
-              <h4>Useful Links</h4>
+              <h4>
+                <span>Useful Links</span>
+              </h4>
             </div>
 
             <div className="footer-list justify-content-between d-flex">

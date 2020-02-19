@@ -150,9 +150,7 @@ footer {
 footer p,
 footer li a,
 footer .footer-logo,
-footer h4,
-footer .copyright {
-
+footer h4 span {
   background-color: $primaryColor;
 }
 
@@ -201,6 +199,7 @@ footer>.container {
 
 .copyright span {
   color: $secondaryColor;
+  background-color: $primaryColor;
   padding: 5px;
   border-radius: 5px;
 }
