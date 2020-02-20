@@ -57,7 +57,7 @@ router.get('*', function(req, res) {
     data = data.replace(/\$OG_TITLE/g, 'Talent Relay');
     data = data.replace(
       /\$OG_DESCRIPTION/g,
-      `Talent Relay super-charges your talent search. We combine cash incentives, social networking, and human judgement to provide a steady stream of high-quality, pre-screened candidates`
+      `Earn revenue for your community by helping them find great jobs! Talent Relay pays the candidate *and* the community when someone is hired. Plus it's free and easy to use : )`
     );
     const result = data.replace(
       /\$OG_IMAGE/g,
