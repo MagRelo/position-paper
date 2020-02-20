@@ -34,7 +34,13 @@ function LandingPage() {
           <div className="grid grid-2 align-items-center">
             <div className="swap-order">
               <div className="landing-image-container">
-                <img src={FinishLine} alt="" className="landing-image" />
+                <img
+                  width="400"
+                  height="267"
+                  src={FinishLine}
+                  alt=""
+                  className="landing-image"
+                />
               </div>
             </div>
 
@@ -42,16 +48,13 @@ function LandingPage() {
               <h5 className="title-theme-bg">Welcome To Talent Relay!</h5>
 
               <h1 className="mb-2">
-                <b> Earn Revenue</b> for your community by helping them find{' '}
-                great jobs
+                Earn revenue for your community by helping them find great jobs
               </h1>
 
               <p className="lead mb-4">
-                Talent Relay{' '}
-                <b>
-                  pays the candidate <i>*and*</i> the community
-                </b>{' '}
-                when someone is hired. It's free and easy to use : )
+                Talent Relay <b>pays the candidate *and* the community</b> when
+                someone is hired. Plus it's <b>free</b> and <b>easy to use</b> :
+                )
               </p>
 
               <a href="/#employers" className="btn btn-sm button-unstyled">
@@ -140,7 +143,13 @@ function LandingPage() {
               <div className="grid grid-2 landing-grid align-items-center">
                 <div>
                   <div className="landing-image-container">
-                    <img src={OnlineAd} alt="" className="landing-image" />
+                    <img
+                      width="400"
+                      height="267"
+                      src={OnlineAd}
+                      alt=""
+                      className="landing-image"
+                    />
                   </div>
                 </div>
 
@@ -175,7 +184,13 @@ function LandingPage() {
               <div className="grid grid-2 landing-grid align-items-center">
                 <div className="swap-order">
                   <div className="landing-image-container">
-                    <img src={Friends} alt="" className="landing-image" />
+                    <img
+                      width="400"
+                      height="267"
+                      src={Friends}
+                      alt=""
+                      className="landing-image"
+                    />
                   </div>
                 </div>
 
@@ -209,7 +224,13 @@ function LandingPage() {
               <div className="grid grid-2 landing-grid align-items-center">
                 <div>
                   <div className="landing-image-container">
-                    <img src={Destinations} alt="" className="landing-image" />
+                    <img
+                      width="400"
+                      height="267"
+                      src={Destinations}
+                      alt=""
+                      className="landing-image"
+                    />
                   </div>
                 </div>
 
@@ -242,7 +263,13 @@ function LandingPage() {
               <div className="grid grid-2 landing-grid align-items-center">
                 <div className="swap-order">
                   <div className="landing-image-container">
-                    <img src={Organizer} alt="" className="landing-image" />
+                    <img
+                      width="400"
+                      height="267"
+                      src={Organizer}
+                      alt=""
+                      className="landing-image"
+                    />
                   </div>
                 </div>
 
@@ -353,6 +380,9 @@ function LandingPage() {
               <div className="swap-order">
                 <div className="landing-image-container">
                   <img
+                    width="400"
+                    width="400"
+                    height="267"
                     src={Runner}
                     alt=""
                     className="landing-image"
@@ -392,7 +422,13 @@ function LandingPage() {
             <div className="grid grid-2 landing-grid align-items-center">
               <div>
                 <div className="landing-image-container">
-                  <img src={TeamChat} alt="" className="landing-image" />
+                  <img
+                    width="400"
+                    height="267"
+                    src={TeamChat}
+                    alt=""
+                    className="landing-image"
+                  />
                 </div>
               </div>
 
@@ -447,7 +483,7 @@ export default LandingPage;
 //                   <div className="item">
 //                     <div className="testimonial style-2">
 //                       <div className="testimonial-img">
-//                         <img
+//                         <img style={{width: '400px', height: '267px'}}
 //                           style={{ width: '260px' }}
 //                           className="img-center"
 //                           src={testimonialFace}
