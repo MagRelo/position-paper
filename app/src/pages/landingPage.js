@@ -38,7 +38,7 @@ function LandingPage() {
                   width="400"
                   height="267"
                   src={FinishLine}
-                  alt=""
+                  alt="race finish line"
                   className="landing-image"
                 />
               </div>
@@ -83,23 +83,36 @@ function LandingPage() {
 
           <div className="container">
             <div className="grid grid-3">
-              <div className="panel">
-                <Link to="/board/Q1ANr0Ch3Uz5aMzVSu2dX">
+              <Link to="/board/performant-art">
+                <div className="panel">
                   <UserProfile
                     user={{
-                      displayName: 'Girls Who Code',
-                      location: 'MD County, MD',
+                      displayName: 'Performant Art',
+                      location: 'Earth',
                       avatar:
-                        'https://pbs.twimg.com/profile_images/903343236252483584/qQw0KRkK_400x400.jpg',
-                      description: `Promoting @GirlsWhoCode in Howard County, MD. Helping
-                      create a pipeline for girls in tech & eliminate
-                      socioeconomic barriers for all.`
+                        'https://pbs.twimg.com/profile_images/1170127480188895232/J5DonLtQ_bigger.jpg',
+                      description: `Exploring the intersection of technology, commerce, community and more. Sign up for our weekly newletter at performantart.substack.com`
                     }}
                   />
-                </Link>
-              </div>
-              <div className="panel">
-                <Link to="/board/Q1ANr0Ch3Uz5aMzVSu2dX">
+                </div>
+              </Link>
+
+              <Link to="/board/matt-lovan">
+                <div className="panel">
+                  <UserProfile
+                    user={{
+                      displayName: 'Matt Lovan',
+                      location: 'New York / Boise',
+                      avatar:
+                        'https://media-exp1.licdn.com/dms/image/C5603AQHJIhVzvDBreg/profile-displayphoto-shrink_200_200/0?e=1586390400&v=beta&t=CSL-hY9MLRRQ4RMua94dtMXg2Fo4QzmPC9huRofhMjU',
+                      description: `Hi, thanks for viewing my job board! I have 10 years of experience in web development, mostly in small start-ups. I know all of these companies personally and would be happy to introduce you - hit me up of you have any questions!`
+                    }}
+                  />
+                </div>
+              </Link>
+
+              <Link to="/board/boise-public-library">
+                <div className="panel">
                   <UserProfile
                     user={{
                       displayName: 'Boise Public Library',
@@ -109,23 +122,8 @@ function LandingPage() {
                       description: `Enhance knowledge, realize creative potential, share ideas and stories.`
                     }}
                   />
-                </Link>
-              </div>
-              <div className="panel">
-                <Link to="/board/matt-lovan">
-                  <UserProfile
-                    user={{
-                      displayName: 'Matt Lovan',
-                      location: 'New York / Boise',
-                      avatar:
-                        'https://media-exp1.licdn.com/dms/image/C5603AQHJIhVzvDBreg/profile-displayphoto-shrink_200_200/0?e=1586390400&v=beta&t=CSL-hY9MLRRQ4RMua94dtMXg2Fo4QzmPC9huRofhMjU',
-                      description: `We're the Electronic Frontier Foundation. We defend your
-                      civil liberties in a digital world. We're the Electronic
-                      Frontier Foundation.`
-                    }}
-                  />
-                </Link>
-              </div>
+                </div>
+              </Link>
             </div>
           </div>
         </section>
@@ -147,7 +145,7 @@ function LandingPage() {
                       width="400"
                       height="267"
                       src={OnlineAd}
-                      alt=""
+                      alt="online ad"
                       className="landing-image"
                     />
                   </div>
@@ -188,7 +186,7 @@ function LandingPage() {
                       width="400"
                       height="267"
                       src={Friends}
-                      alt=""
+                      alt="group of friends"
                       className="landing-image"
                     />
                   </div>
@@ -228,7 +226,7 @@ function LandingPage() {
                       width="400"
                       height="267"
                       src={Destinations}
-                      alt=""
+                      alt="map of destinations"
                       className="landing-image"
                     />
                   </div>
@@ -239,10 +237,6 @@ function LandingPage() {
                     <h3>
                       Work Together → <span>Get Paid</span>
                     </h3>
-                    {/* <div className="title-bdr">
-                    <div className="left-bdr"></div>
-                    <div className="right-bdr"></div>
-                  </div> */}
                   </div>
                   <p>
                     We also keep track of the <b>chain of referrals </b>
@@ -267,7 +261,7 @@ function LandingPage() {
                       width="400"
                       height="267"
                       src={Organizer}
-                      alt=""
+                      alt="group organizer"
                       className="landing-image"
                     />
                   </div>
@@ -381,10 +375,9 @@ function LandingPage() {
                 <div className="landing-image-container">
                   <img
                     width="400"
-                    width="400"
                     height="267"
                     src={Runner}
-                    alt=""
+                    alt="runner"
                     className="landing-image"
                     style={{
                       transform: 'RotateY(180deg)',
@@ -426,7 +419,7 @@ function LandingPage() {
                     width="400"
                     height="267"
                     src={TeamChat}
-                    alt=""
+                    alt="team"
                     className="landing-image"
                   />
                 </div>

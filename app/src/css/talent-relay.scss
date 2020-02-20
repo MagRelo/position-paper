@@ -905,7 +905,8 @@ span.circle {
 }
 
 .landing-grid {
-  padding: 50px 0;
+  padding: 0 0 20px 0;
+  display: block;
 }
 
 .landing-image-container {
@@ -927,6 +928,12 @@ span.circle {
 @media screen and (min-width: 992px) {
   .landing-image {
     width: 400px;
+  }
+
+
+  .landing-grid {
+    padding: 0 0 60px 0;
+    display: grid;
   }
 }
 
