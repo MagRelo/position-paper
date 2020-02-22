@@ -17,10 +17,7 @@ function Footer(props) {
               </span>
             </div>
             <p>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-              Excepturi totam possimus dicta tenetur nesciunt cupiditate
-              mollitia consequatur, dolores asperiores fugiat aut iusto delectus
-              architecto quibusdam hic est rem? Deleniti, illum.
+              Earn revenue for your community by helping them find great jobs
             </p>
           </div>
 

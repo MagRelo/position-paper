@@ -73,7 +73,7 @@ function activityTile(link) {
           }}
         >
           <div style={{ borderRight: '1px solid #cbcbcb' }}>
-            <span className="label">Job Board</span>
+            <span className="label">Community</span>
             <div style={{ color: '#0ea51d' }}>
               {formatCurrency(link.network_bonus)}
             </div>

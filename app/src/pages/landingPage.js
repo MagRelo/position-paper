@@ -66,65 +66,61 @@ function LandingPage() {
       </div>
 
       <div className="page-content">
-        {/* Featured */}
-        <section id="featured" className="section-dark">
+        {/* How It Works */}
+        <section id="how" className="section-dark">
           <div id="stars"></div>
           <div id="stars2"></div>
           <div id="stars3"></div>
 
           <div className="container section-title">
             <h2>
-              <span>Featured Communities</span>
+              <span>How It Works</span>
             </h2>
             <p>
-              <span>Do Well By Doing Good</span>
+              <span>So Easy a Caveman Could Do It</span>
             </p>
           </div>
 
           <div className="container">
             <div className="grid grid-3">
-              <Link to="/board/performant-art">
-                <div className="panel">
-                  <UserProfile
-                    user={{
-                      displayName: 'Performant Art',
-                      location: 'Earth',
-                      avatar:
-                        'https://pbs.twimg.com/profile_images/1170127480188895232/J5DonLtQ_bigger.jpg',
-                      description: `Exploring the intersection of technology, commerce, community and more. Sign up for our weekly newletter at performantart.substack.com`
-                    }}
-                  />
-                </div>
-              </Link>
-
-              <Link to="/board/matt-lovan">
-                <div className="panel">
-                  <UserProfile
-                    user={{
-                      displayName: 'Matt Lovan',
-                      location: 'New York / Boise',
-                      avatar:
-                        'https://media-exp1.licdn.com/dms/image/C5603AQHJIhVzvDBreg/profile-displayphoto-shrink_200_200/0?e=1586390400&v=beta&t=CSL-hY9MLRRQ4RMua94dtMXg2Fo4QzmPC9huRofhMjU',
-                      description: `Hi, thanks for viewing my job board! I have 10 years of experience in web development, mostly in small start-ups. I know all of these companies personally and would be happy to introduce you - hit me up of you have any questions!`
-                    }}
-                  />
-                </div>
-              </Link>
-
-              <Link to="/board/boise-public-library">
-                <div className="panel">
-                  <UserProfile
-                    user={{
-                      displayName: 'Boise Public Library',
-                      location: 'Boise, ID',
-                      avatar:
-                        'https://pbs.twimg.com/profile_images/1082382072243675136/Plpr8efj_400x400.jpg',
-                      description: `Enhance knowledge, realize creative potential, share ideas and stories.`
-                    }}
-                  />
-                </div>
-              </Link>
+              <div className="panel text-center">
+                <h4>
+                  <span className="badge">1</span>
+                  Build Your Job Board
+                </h4>
+                <p>
+                  Every job on Talent Relay includes a{' '}
+                  <b> cash referral bonus</b>. Add jobs to your board with just
+                  one click!
+                </p>
+              </div>
+              <div className="panel text-center">
+                <h4>
+                  <span className="badge">2</span>
+                  Share & Prepare
+                </h4>
+                <p>
+                  Share your job board with your community. We'll let you know
+                  when a candidate responds so that you can help them prepare.
+                </p>
+              </div>
+              <div className="panel text-center">
+                <h4>
+                  <span className="badge">3</span>
+                  Collect Your Bonus
+                </h4>
+                <p>
+                  When your candidate is hired we'll deposit the bonus directly
+                  into your bank account.
+                </p>
+              </div>
             </div>
+          </div>
+
+          <div className="container section-cta">
+            <Link to="/search" className="btn btn-theme">
+              Browse Jobs <FaSearch />
+            </Link>
           </div>
         </section>
 
@@ -302,63 +298,65 @@ function LandingPage() {
           </div>
         </section>
 
-        {/* How It Works */}
-        <section id="how" className="section-dark">
+        {/* Featured */}
+        <section id="featured" className="section-dark">
           <div id="stars"></div>
           <div id="stars2"></div>
           <div id="stars3"></div>
 
           <div className="container section-title">
             <h2>
-              <span>How It Works</span>
+              <span>Featured Communities</span>
             </h2>
             <p>
-              <span>So Easy a Caveman Could Do It</span>
+              <span>Do Well By Doing Good</span>
             </p>
           </div>
 
           <div className="container">
             <div className="grid grid-3">
-              <div className="panel text-center">
-                <h4>
-                  <span className="badge">1</span>
-                  Build Your Job Board
-                </h4>
-                <p>
-                  Everyone on Talent Relay has a <b>personal job board</b> and
-                  every job has a <b> cash referral bonus</b>. Add jobs to your
-                  board with just one click!
-                </p>
-              </div>
-              <div className="panel text-center">
-                <h4>
-                  <span className="badge">2</span>
-                  Share And Promote
-                </h4>
-                <p>
-                  Share your job board anywhere – social media, in person, in
-                  newsletters, at community events, etc.
-                </p>
-              </div>
-              <div className="panel text-center">
-                <h4>
-                  <span className="badge">3</span>
-                  Collect Your Bonus
-                </h4>
-                <p>
-                  If the candidate responds through your job board we'll deposit
-                  the bonus directly into your bank account.
-                </p>
-              </div>
+              <Link to="/board/performant-art">
+                <div className="panel">
+                  <UserProfile
+                    user={{
+                      displayName: 'Performant Art',
+                      location: 'Earth',
+                      avatar:
+                        'https://pbs.twimg.com/profile_images/1170127480188895232/J5DonLtQ_bigger.jpg',
+                      description: `Exploring the intersection of technology, commerce, community and more. Sign up for our weekly newletter at performantart.substack.com`
+                    }}
+                  />
+                </div>
+              </Link>
+
+              <Link to="/board/matt-lovan">
+                <div className="panel">
+                  <UserProfile
+                    user={{
+                      displayName: 'Matt Lovan',
+                      location: 'New York / Boise',
+                      avatar:
+                        'https://media-exp1.licdn.com/dms/image/C5603AQHJIhVzvDBreg/profile-displayphoto-shrink_200_200/0?e=1586390400&v=beta&t=CSL-hY9MLRRQ4RMua94dtMXg2Fo4QzmPC9huRofhMjU',
+                      description: `Hi, thanks for viewing my job board! I have 10 years of experience in web development, mostly in small start-ups. I know all of these companies personally and would be happy to introduce you - hit me up of you have any questions!`
+                    }}
+                  />
+                </div>
+              </Link>
+
+              <Link to="/board/boise-public-library">
+                <div className="panel">
+                  <UserProfile
+                    user={{
+                      displayName: 'Boise Public Library',
+                      location: 'Boise, ID',
+                      avatar:
+                        'https://pbs.twimg.com/profile_images/1082382072243675136/Plpr8efj_400x400.jpg',
+                      description: `Enhance knowledge, realize creative potential, share ideas and stories.`
+                    }}
+                  />
+                </div>
+              </Link>
             </div>
-          </div>
-
-          <div className="mb-4"></div>
-
-          <div className="container section-cta">
-            <Link to="/search" className="btn btn-theme">
-              Browse Jobs <FaSearch />
-            </Link>
           </div>
         </section>
 
@@ -389,7 +387,7 @@ function LandingPage() {
 
               <div>
                 <div className="div-title">
-                  <h3>Access to the world's best communities</h3>
+                  <h3>Access the world's best communities</h3>
                 </div>
 
                 <div className="mb-4">
@@ -403,9 +401,8 @@ function LandingPage() {
                       fraction of the cost of other services
                     </li>
                     <li className="mb-3">
-                      <i className="fas fa-check-circle"></i> Redirect
-                      recruiting fees directly to the candidate & their
-                      community
+                      <i className="fas fa-check-circle"></i> Send the money
+                      directly to the candidate & their community
                     </li>
                   </ul>
                 </div>
