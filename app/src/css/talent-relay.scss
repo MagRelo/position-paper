@@ -317,6 +317,39 @@ table {
 
 /* form */
 
+.flashit {
+  -webkit-animation: flash linear linear 300ms 3;
+  animation: flash linear 300ms 3;
+}
+
+@-webkit-keyframes flash {
+  0% {
+    background-color: initial;
+  }
+
+  50% {
+    background-color: $orange;
+  }
+
+  100% {
+    background-color: initial;
+  }
+}
+
+@keyframes flash {
+  0% {
+    background-color: initial;
+  }
+
+  50% {
+    background-color: $orange;
+  }
+
+  100% {
+    background-color: initial;
+  }
+}
+
 /* input range slider */
 .input-range {
   margin: 36px 0 36px;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { navigate } from '@reach/router';
 
 import {
@@ -21,6 +21,10 @@ import {
   Loading,
   CardBrand
 } from 'components/random';
+
+const jobPrice = process.env.REACT_APP_JOB_PRICE_IN_CENTS / 100;
+const referralBonusPercentage =
+  process.env.REACT_APP_REFFERAL_BONUS_PERCENT / 100;
 
 const createOptions = (fontSize, padding) => {
   return {
@@ -98,8 +102,31 @@ function JobForm(props) {
       100
     );
     // network => 10% of salary
-    setTotalBonus(roundToNearest(salaryAverage * 0.05, 100));
+    setTotalBonus(roundToNearest(salaryAverage * referralBonusPercentage, 100));
   }, [debouncedRange]);
+
+  const termsRef = useRef(null);
+  const cardRef = useRef(null);
+  const paymentRef = useRef(null);
+
+  function highlightTermError(id) {
+    termsRef.current.setAttribute('class', 'form-check flashit');
+    setTimeout(() => {
+      termsRef.current.setAttribute('class', 'form-check');
+    }, 1000);
+  }
+  function highlightCardError(id) {
+    cardRef.current.setAttribute('class', 'stripeWrapper flashit');
+    setTimeout(() => {
+      cardRef.current.setAttribute('class', 'stripeWrapper');
+    }, 1000);
+  }
+  function highlightPaymentError(id) {
+    paymentRef.current.setAttribute('class', 'form-check flashit');
+    setTimeout(() => {
+      paymentRef.current.setAttribute('class', 'form-check');
+    }, 1000);
+  }
 
   async function submit(event) {
     event.preventDefault();
@@ -123,17 +150,21 @@ function JobForm(props) {
     if (!isEditing) {
       // Terms checkbox
       if (!formObject.terms) {
-        return alert('no terms');
+        console.log('no terms or email');
+        return highlightTermError();
       }
 
       // payment source & stripe token
       if (!usePaymentSource) {
         let { token } = await props.stripe.createToken({ name: 'Name' });
-        if (!token || !formObject.stripeTerms) {
-          return alert('no token');
-        } else {
-          formObject.token = token;
+        if (!token) {
+          return highlightCardError();
         }
+        formObject.token = token;
+      }
+
+      if (!formObject.stripeTerms) {
+        return highlightPaymentError();
       }
     }
 
@@ -224,18 +255,18 @@ function JobForm(props) {
             </p>
           ) : (
             <React.Fragment>
-              <legend>External Referral Bonus</legend>
+              <legend>Referral Bonus</legend>
               <p>
-                Every job on Talent Relay must include an external referral
-                bonus. This amount must be paid within 7 days of hiring a
-                candidate through Talent Relay. The amount of the bonus is based
-                on the job's annual salary. Use the slider to set the salary
-                range:
+                Every job on Talent Relay must include a referral bonus. The
+                amount of the bonus is based on the job's annual salary. This
+                amount must be paid within 7 days of hiring a candidate through
+                Talent Relay. Use the slider to set the job's annual salary:
               </p>
             </React.Fragment>
           )}
 
           <div className="mb-4"></div>
+
           <div className="grid grid-2-x">
             <div className="form-group">
               <label htmlFor="text">Salary Range</label>
@@ -252,7 +283,8 @@ function JobForm(props) {
                 />
               </div>
             </div>
-            <div className="form-group ">
+
+            <div className="form-group">
               <label htmlFor="network_bonus">Referral Bonus</label>
               <input
                 className="form-control form-amount"
@@ -265,28 +297,44 @@ function JobForm(props) {
           </div>
 
           {isEditing ? null : (
-            <div className="form-check">
-              <label>
+            <React.Fragment>
+              <div className="form-group">
+                <label htmlFor="email"> Your Email Address</label>
                 <input
-                  className="form-radio"
-                  name="terms"
-                  type="checkbox"
-                  value="true"
-                  id="terms"
+                  type="email"
+                  name="email"
+                  required={true}
+                  className="form-control"
+                  value={email}
+                  onChange={e => {
+                    setEmail(e.target.value);
+                  }}
                 />
-                Agree to Talent Relay{' '}
-                <a href="/terms" target="_blank">
-                  Terms and Conditions
-                </a>
-              </label>
-            </div>
+              </div>
+              <div className="form-check" ref={termsRef}>
+                <label>
+                  <input
+                    className="form-radio"
+                    name="terms"
+                    type="checkbox"
+                    value="true"
+                    id="terms"
+                  />
+                  I agree to the Talent Relay{' '}
+                  <a href="/terms" target="_blank">
+                    Terms and Conditions
+                  </a>
+                </label>
+              </div>
+            </React.Fragment>
           )}
         </fieldset>
+
         <div className="mb-4"></div>
 
+        {/* Payment */}
         {isEditing ? null : (
           <React.Fragment>
-            {/* Payment */}
             <fieldset>
               <legend>Payment </legend>
               <div className="grid grid-2-x">
@@ -305,7 +353,7 @@ function JobForm(props) {
                       type="text"
                       name="network_bonus"
                       disabled={true}
-                      value={formatCurrency(59)}
+                      value={formatCurrency(jobPrice)}
                     />
                   </div>
                 </div>
@@ -376,13 +424,13 @@ function JobForm(props) {
                     </div>
                   </div>
                 ) : (
-                  <div className="stripeWrapper">
+                  <div className="stripeWrapper" ref={cardRef}>
                     <CardElement {...createOptions('15px')} />
                   </div>
                 )}
               </div>
 
-              <div className="form-check">
+              <div className="form-check" ref={paymentRef}>
                 <label>
                   <input
                     className="form-radio"
@@ -391,32 +439,18 @@ function JobForm(props) {
                     value="true"
                     id="stripeTerms"
                   />
-                  Agree to Stripe{' '}
+                  I agree to the Stripe{' '}
                   <a href="/terms" target="_blank">
                     Terms and Conditions
                   </a>
                 </label>
-              </div>
-
-              <div className="mb-4"></div>
-              <div className="form-group">
-                <label htmlFor="email">Email Address</label>
-                <input
-                  type="email"
-                  name="email"
-                  required={true}
-                  className="form-control"
-                  value={email}
-                  onChange={e => {
-                    setEmail(e.target.value);
-                  }}
-                />
               </div>
             </fieldset>
             <div className="mb-4"></div>
           </React.Fragment>
         )}
 
+        {/* Job Status */}
         {isEditing ? (
           <div className="form-group">
             <label htmlFor="status">Job Status</label>

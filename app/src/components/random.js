@@ -17,6 +17,7 @@ import EmailButton from 'components/social/emailButton';
 import TwitterButton from 'components/social/twitterButton';
 import LinkedinButton from 'components/social/linkedinButton';
 import InstaButton from 'components/social/instagramButton';
+
 import Visa from 'components/social/visa';
 import MasterCard from 'components/social/mastercard';
 import Discover from 'components/social/discover';
@@ -456,21 +457,23 @@ function getJsonFromUrl(search) {
 }
 
 export function SocialGrid() {
-  return (
-    <div>
-      <div className="social-label">
-        <span>Verified Social</span>
-        <div style={{ fontSize: 'small' }}>(coming soon)</div>
-      </div>
+  return null;
 
-      <div className="social-grid">
-        <EmailButton enabled={false} />
-        <LinkedinButton enabled={false} />
-        <TwitterButton enabled={false} />
-        <InstaButton enabled={false} />
-      </div>
-    </div>
-  );
+  // return (
+  //   <div>
+  //     <div className="social-label">
+  //       <span>Verified Social</span>
+  //       <div style={{ fontSize: 'small' }}>(coming soon)</div>
+  //     </div>
+
+  //     <div className="social-grid">
+  //       <EmailButton enabled={false} />
+  //       <LinkedinButton enabled={false} />
+  //       <TwitterButton enabled={false} />
+  //       <InstaButton enabled={false} />
+  //     </div>
+  //   </div>
+  // );
 }
 
 export function CardBrand({ brand }) {
