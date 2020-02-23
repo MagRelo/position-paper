@@ -427,7 +427,7 @@ textarea.form-control {
 
 .form-control:disabled,
 .form-control[readonly] {
-  color: $lightText;
+  color: $darkText;
   border: 1px solid $lightGray;
   background-color: $lighterGray;
   box-shadow: $box-shadow-inner;
