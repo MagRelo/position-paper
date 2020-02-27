@@ -15,6 +15,9 @@ const UserSchema = new mongoose.Schema(
       default: () => nanoid()
     },
     displayName: String,
+    email: String,
+    description: String,
+    location: String,
     linkedInProfile: String,
     jobBoardUrl: String,
 
@@ -90,6 +93,8 @@ const LinkSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+LinkSchema.index({ title: 'text' });
 
 exports.LinkModel = mongoose.model('Link', LinkSchema);
 

@@ -125,7 +125,7 @@ class CheckoutForm extends Component {
 const InjectedCheckoutForm = injectStripe(CheckoutForm);
 function ButtonWrapper(props) {
   return (
-    <StripeProvider apiKey="pk_test_dMv1AAldL0wj69FLCG4c8jce00J8jWxWg9">
+    <StripeProvider apiKey={process.env.REACT_APP_STRIPE_PUBLIC_KEY}>
       <Elements>
         <InjectedCheckoutForm {...props} />
       </Elements>

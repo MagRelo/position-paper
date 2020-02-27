@@ -1,8 +1,14 @@
 const fetch = require('node-fetch');
 
 exports.getLinkTraffic = async function(linkId) {
-  // setup http request
-  const url = 'https://' + process.env.HOSTNAME + ':9200';
+  // use docker internal networking
+  let url = 'http://elasticsearch:9200';
+
+  if (process.env.ENV === 'dev') {
+    // hit public api
+    url = 'https://' + process.env.HOSTNAME + ':9200';
+  }
+
   const elasticIndex = '/logstash-*/_search';
   const headers = {
     'Content-Type': 'application/json'

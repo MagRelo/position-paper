@@ -14,9 +14,14 @@ exports.populateUser = async function(req, res) {
   try {
     const user = await UserModel.findOne({ _id: req.user.id })
       .select(
-        'firstname lastname avatar displayName linkedInProfile jobBoardUrl jobBoardId stripeAccountLabel stripeCustomerLabel stripeCustomerBrand'
+        `firstname lastname avatar displayName description location email linkedInProfile 
+        jobBoardUrl jobBoardId stripeAccountLabel stripeCustomerLabel stripeCustomerBrand`
       )
       .lean();
+
+    if (!user) {
+      return res.status(401).send({ error: 'no user' });
+    }
 
     // get queries and links
     const userObject = {

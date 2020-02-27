@@ -1,11 +1,30 @@
-# Servesa
+# Talent Relay
+
+## Overview
+
+- Project code is all in `/app` (other stuff is for Ethereum - might use it some day...)
+  - Frontend: `app/src/`
+  - Backend: `app/server/`
 
 ## Development
 
-1. Start ganache:
+Setup:
 
-`$ ganache-cli --ws-apis=all --networkId=1234 --account="0x72eb4efe127c1443ce2f6126a8cb11690b45a6df02946efa4f7ca51c9a9e5a6d, 100000000000000000000" --account="0x88abebbf5f5d8c3b3488eb272a2fd69ac2ef06d258b16092e14e555e0ca90180, 100000000000000000000" --account="0xc2f963910907faec613f04aed9df507dec86b407b0f355d24b8a7efb6a65bae1, 100000000000000000000"`
+- Make sure `mongodb`, `node` and `yarn` are installed
+- Have Mongodb running locally on port 27017 (default)
+- Add `.env` config file to `/app` (ping me)
+- Install project dependencies (run in `/app`): `$ yarn add`
+- Seed MongoDb with jobs (optional): `$ yarn run restore-db`
 
-2. Deploy contracts:
+Start in terminal (run in seperate tabs):
 
-`$ truffle migrate --network=development --reset`
+- Frontend Dev Server:
+  `$ yarn start`
+- Backend Dev Server:
+  `$ yarn run dev`
+
+## Build & Deploy
+
+- Build Staging: `$ yarn run build-staging`
+- Build Production: `$ yarn run build-prod`
+- SSH: `$ yarn run ssh` (You'll need a key from Digital Ocean - ping me if needed)

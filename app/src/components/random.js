@@ -1,6 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Tab } from '@reach/tabs';
-import { FaExternalLinkAlt, FaRegCopy } from 'react-icons/fa';
+import {
+  FaExternalLinkAlt,
+  FaRegCopy,
+  // FaEdit,
+  FaGlobeAmericas
+} from 'react-icons/fa';
+import { MdLocationOn } from 'react-icons/md';
+import { AiOutlineUser } from 'react-icons/ai';
+
+import { useRect } from '@reach/rect';
+
+import Img from 'react-image';
+
+import EmailButton from 'components/social/emailButton';
+import TwitterButton from 'components/social/twitterButton';
+import LinkedinButton from 'components/social/linkedinButton';
+import InstaButton from 'components/social/instagramButton';
+
+import Visa from 'components/social/visa';
+import MasterCard from 'components/social/mastercard';
+import Discover from 'components/social/discover';
+import Amex from 'components/social/amex';
+import Bank from 'components/social/bank';
 
 var SI_SYMBOL = ['', 'k', 'M', 'G', 'T', 'P', 'E'];
 
@@ -99,9 +121,11 @@ export function CoolTab(props) {
         color: '#7329c2',
         fontSize: '16px',
         background: 'none',
+        paddingLeft: 0,
+        paddingRight: 0,
         border: 'none',
         borderBottom: isSelected ? 'solid 1px #7329c2' : 'none',
-        marginRight: '1em',
+        marginRight: '26px',
         transition: 'none'
       }}
     >
@@ -144,26 +168,6 @@ export function lineItem(label, value) {
   );
 }
 
-export async function callAPI(method, endpoint, data) {
-  const response = await fetch(endpoint, {
-    method: method,
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
-  });
-
-  if (response.status === 200) {
-    return response.json();
-  }
-
-  if (response.status === 401) {
-    // redirect
-  }
-
-  throw new Error(response.message);
-}
-
 export function usePromise(promiseOrFunction, defaultValue) {
   const [state, setState] = React.useState({
     value: defaultValue,
@@ -197,8 +201,25 @@ export function usePromise(promiseOrFunction, defaultValue) {
 
 export function Loading() {
   return (
-    <div style={{ textAlign: 'center', marginTop: '1em' }}>
+    <div
+      style={{
+        textAlign: 'center',
+        marginTop: '1em'
+      }}
+    >
       <div className="lds-dual-ring"></div>
+    </div>
+  );
+}
+
+export function Bouncing() {
+  return (
+    <div style={{ textAlign: 'center', marginTop: '1em' }}>
+      <div className="spinner">
+        <div className="bounce1"></div>
+        <div className="bounce2"></div>
+        <div className="bounce3"></div>
+      </div>
     </div>
   );
 }
@@ -235,70 +256,237 @@ export function copyTextToClipboard(text) {
     }
   );
 }
-export function JobBoard({ userData }) {
+
+export function UrlDisplay({ slug }) {
+  const [hideURL, setHideURL] = useState(false);
+  const jobDescRef = useRef();
+  const jobDescRect = useRect(jobDescRef);
+  const width = jobDescRect ? jobDescRect.width : 0;
+
   const domain = window.location.origin || 'http://localhost:3000';
+  const URL = `${domain}/${slug}`;
+
+  // sync menu with container width
+  useEffect(() => {
+    // console.log('url box width:', width);
+    if (width < 350) {
+      setHideURL(true);
+    } else {
+      setHideURL(false);
+    }
+  }, [width]);
+
   return (
-    <div style={{ margin: '1em 0 ' }}>
-      <div className="input-group mb-2">
+    <div className="url-bar" ref={jobDescRef}>
+      <div
+        className="input-group"
+        style={{
+          justifyContent: hideURL ? 'center' : null,
+          height: hideURL ? '45px' : null
+        }}
+      >
         <div className="input-group-prepend">
           <div
             className="input-group-text"
             style={{
-              fontSize: 'smaller',
-              border: 'none'
+              fontSize: 'smaller'
             }}
           >
-            Job Board
+            <span className="icon-wrapper">
+              <FaGlobeAmericas />
+            </span>
+            &#8239; URL
           </div>
         </div>
-        <input
-          type="text"
-          className="form-control"
-          style={{ border: 'none' }}
-          id="inlineFormInputGroup"
-          placeholder="Username"
-          disabled={true}
-          value={`${domain}/jobs/${userData.jobBoardId}`}
-        />
 
+        {hideURL ? null : (
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Username"
+            disabled={true}
+            value={URL}
+          />
+        )}
+
+        {/* Edit 
         <div className="input-group-append">
           <div
             className="input-group-text"
             style={{
-              fontSize: 'smaller',
-              border: 'none'
+              fontSize: 'smaller'
+            }}
+          >
+            <button className="button-unstyled">
+              Edit <FaEdit />
+            </button>
+          </div>
+        </div>
+        */}
+
+        {/* Copy */}
+        <div className="input-group-append">
+          <div
+            className="input-group-text"
+            style={{
+              fontSize: 'smaller'
             }}
           >
             <button
               className="button-unstyled"
               onClick={() => {
-                const text = `${domain}/jobs/${userData.jobBoardId}`;
-                copyTextToClipboard(text);
+                copyTextToClipboard(URL);
               }}
             >
-              Copy <FaRegCopy />
+              Copy &#8239;
+              <span className="icon-wrapper blue">
+                <FaRegCopy />
+              </span>
             </button>
           </div>
         </div>
 
+        {/* View */}
         <div className="input-group-append">
           <div
             className="input-group-text"
             style={{
-              fontSize: 'smaller',
-              border: 'none'
+              fontSize: 'smaller'
             }}
           >
-            <a
-              href={`${domain}/jobs/${userData.jobBoardId}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              View <FaExternalLinkAlt />
-            </a>
+            <div>
+              <a
+                className="button-unstyled"
+                href={URL}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                View&#8239;
+                <span className="icon-wrapper blue">
+                  <FaExternalLinkAlt />
+                </span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
     </div>
   );
+}
+
+export function ProfilePic({ avatarUrl }) {
+  const defaultPic = () => {
+    return (
+      <div className="user-avatar">
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100%',
+            fontSize: '24px',
+            color: '#1e68bc'
+          }}
+          alt="avatar"
+        >
+          <AiOutlineUser />
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <Img
+      className="user-avatar"
+      src={[avatarUrl]}
+      loader={defaultPic()}
+      unloader={defaultPic()}
+    />
+  );
+}
+
+export function UserProfile({ user, hideDescription }) {
+  const [hideDesc] = useState(hideDescription || false);
+
+  return (
+    <div className="user-profile">
+      <div className="user-info">
+        <div>
+          <ProfilePic avatarUrl={user.avatar} />
+        </div>
+
+        <div className="user-text">
+          <div className="user-name">{user.displayName}</div>
+          {user.location ? (
+            <div className="user-location">
+              <span className="icon-wrapper blue">
+                <MdLocationOn />
+              </span>{' '}
+              {user.location}
+            </div>
+          ) : null}
+        </div>
+      </div>
+
+      {!user.description || hideDesc ? null : (
+        <React.Fragment>
+          <div className="mb-2"></div>
+          <p>{user.description}</p>
+        </React.Fragment>
+      )}
+    </div>
+  );
+}
+
+export function getParams(location) {
+  if (!location.search) {
+    return '';
+  }
+
+  return getJsonFromUrl(location.search);
+}
+
+function getJsonFromUrl(search) {
+  var query = search.substr(1);
+  var result = {};
+  query.split('&').forEach(function(part) {
+    var item = part.split('=');
+    result[item[0]] = decodeURIComponent(item[1]);
+  });
+  return result;
+}
+
+export function SocialGrid() {
+  return null;
+
+  // return (
+  //   <div>
+  //     <div className="social-label">
+  //       <span>Verified Social</span>
+  //       <div style={{ fontSize: 'small' }}>(coming soon)</div>
+  //     </div>
+
+  //     <div className="social-grid">
+  //       <EmailButton enabled={false} />
+  //       <LinkedinButton enabled={false} />
+  //       <TwitterButton enabled={false} />
+  //       <InstaButton enabled={false} />
+  //     </div>
+  //   </div>
+  // );
+}
+
+export function CardBrand({ brand }) {
+  switch (brand) {
+    case 'Visa':
+      return <Visa />;
+    case 'MasterCard':
+      return <MasterCard />;
+    case 'Discover':
+      return <Discover />;
+    case 'American Express':
+      return <Amex />;
+    default:
+      return <Bank />;
+  }
 }

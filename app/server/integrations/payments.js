@@ -30,7 +30,7 @@ exports.createStripeCharge = async function(
   stripeCustomerId,
   stripeToken,
   amount_in_cents,
-  responseId
+  otherDataObject
 ) {
   const chargeObject = {
     amount: amount_in_cents,
@@ -38,9 +38,7 @@ exports.createStripeCharge = async function(
     customer: stripeCustomerId,
     source: stripeToken,
     description: 'Test payment',
-    metadata: {
-      responseId: responseId
-    }
+    metadata: otherDataObject
   };
 
   if (process.env.STRIPE_TEST_MODE) {
@@ -54,7 +52,7 @@ exports.createStripeCharge = async function(
 };
 
 // https://stripe.com/docs/api/customers/create
-exports.createStripeCustomer = async function(userData) {
+exports.createStripeCustomer = async function(userData, stripeCustomerId) {
   const userObject = {
     name: userData.firstname + ' ' + userData.lastname,
     email: userData.email,
@@ -63,10 +61,10 @@ exports.createStripeCustomer = async function(userData) {
   };
 
   // add or update
-  if (userData.stripeCustomerLabel) {
+  if (stripeCustomerId) {
     console.log('update');
     // update
-    // return await stripe.customers.create(userObject);
+    return await stripe.customers.update(stripeCustomerId, userObject);
   } else {
     // add
     return await stripe.customers.create(userObject);

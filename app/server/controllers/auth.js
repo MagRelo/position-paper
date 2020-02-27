@@ -31,7 +31,12 @@ exports.authenticate = function(req, res, next) {
 
 exports.getUser = async function(req, res, next) {
   if (req.user && req.user.id) {
-    const user = await UserModel.findOne({ _id: req.user.id }).lean();
+    const user = await UserModel.findOne({ _id: req.user.id })
+      .select(
+        'displayName avatar jobBoardUrl stripeCustomerBrand stripeCustomerLabel'
+      )
+      .lean();
+
     req.user = { ...user, ...req.user };
   }
   next();
@@ -183,8 +188,7 @@ exports.userStatus = async function(req, res) {
   if (!req.user) {
     return res.status(401).send({ error: 'no user' });
   }
-  return res.status(200).send({
-    name: req.user.firstname + ' ' + req.user.lastname,
-    avatar: req.user.avatar
-  });
+
+  // console.log(req.user);
+  return res.status(200).send(req.user);
 };

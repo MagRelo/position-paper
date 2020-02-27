@@ -1,33 +1,15 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import { Link, globalHistory } from '@reach/router';
+
+import { FaSearch, FaUserAlt, FaClipboardList, FaBars } from 'react-icons/fa';
+
 import { AuthContext } from 'App';
-
-import { Link } from '@reach/router';
-
-// temp
-import logo from 'images/logo.png';
-
-// import {
-//   Menu,
-//   MenuList,
-//   MenuLink,
-//   MenuButton,
-//   MenuItem
-// } from '@reach/menu-button';
+import LinkedInLogin from 'components/linkedinLogin';
 
 const NavLink = props => (
   <Link
     {...props}
     getProps={({ isCurrent }) => {
-      // the object returned here is passed to the
-      // anchor element's props
-
-      // return {
-      //   style: {
-      //     borderBottom: isCurrent ? 'solid 1px' : null,
-      //     color: isCurrent ? 'white' : null
-      //   }
-      // };
-
       return {
         className: isCurrent ? 'nav-link active' : 'nav-link'
       };
@@ -35,90 +17,106 @@ const NavLink = props => (
   />
 );
 
-function Header(props) {
+function Header() {
   const { activeSession } = useContext(AuthContext);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    return globalHistory.listen(action => {
+      setMenuOpen(false);
+    });
+  }, []);
 
   return (
-    <header id="site-header" className="header">
-      <div id="header-wrap">
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-lg-12">
-              <nav className="navbar navbar-expand-lg">
-                <Link className="navbar-brand logo" to="/">
-                  <img
-                    id="logo-img"
-                    className="img-center"
-                    src={logo}
-                    alt="logo"
-                  ></img>
-                </Link>
+    <header>
+      <div id="stars"></div>
+      <div id="stars2"></div>
+      <div id="stars3"></div>
 
-                {/* Mobile button 
-                <button
-                  className="navbar-toggler"
-                  type="button"
-                  data-toggle="collapse"
-                  data-target="#navbarNavDropdown"
-                  aria-expanded="false"
-                  aria-label="Toggle navigation"
-                >
-                  {' '}
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                </button>
-                */}
+      <div className="header-grid">
+        <div className="header-container">
+          <button
+            className="btn button-unstyled menu-button"
+            onClick={() => {
+              setMenuOpen(!menuOpen);
+            }}
+          >
+            <FaBars />
+          </button>
 
-                {/* Menu 
-                <div
-                  className="collapse navbar-collapse"
-                  id="navbarNavDropdown"
-                >
-                  {activeSession ? null : (
-                    <ul className="navbar-nav ml-auto mr-auto">
-                      <React.Fragment>
-                        <li className="nav-item">
-                          <a className="nav-link" href="/#how">
-                            How It Works
-                          </a>
-                        </li>
-                        <li className="nav-item">
-                          <a className="nav-link" href="/#getstarted">
-                            Get Started
-                          </a>
-                        </li>
-                        <li className="nav-item">
-                          <NavLink className="nav-link" to="/employers">
-                            Employers
-                          </NavLink>
-                        </li>
-                      </React.Fragment>
-                    </ul>
-                  )}
+          <Link to="/">
+            <span>
+              <span className="header-title">Talent</span>
+              &#8201;
+              <span className="header-title">Relay</span>
+            </span>
+          </Link>
+        </div>
+
+        <div className="header-container desktop-menu">
+          <ul className="nav-list">
+            <li>
+              <NavLink className="nav-link" to="/search">
+                Search Jobs <FaSearch />
+              </NavLink>
+            </li>
+
+            {activeSession ? (
+              <React.Fragment>
+                <li>
+                  <NavLink className="nav-link" to="/profile">
+                    <FaUserAlt />
+                  </NavLink>
+                </li>
+
+                <li>
+                  <NavLink className="nav-link" to="/dashboard">
+                    <FaClipboardList /> Dashboard
+                  </NavLink>
+                </li>
+              </React.Fragment>
+            ) : (
+              <li>
+                <LinkedInLogin className="btn btn-theme btn-sm">
+                  Sign In
+                </LinkedInLogin>
+              </li>
+            )}
+          </ul>
+        </div>
+
+        <div className="header-container mobile-menu">
+          {menuOpen ? (
+            <ul className="nav-list">
+              <li>
+                <NavLink className="nav-link" to="/search">
+                  Search Jobs <FaSearch />
+                </NavLink>
+              </li>
+
+              {activeSession ? (
+                <React.Fragment>
+                  <li>
+                    <NavLink className="nav-link" to="/dashboard">
+                      <FaClipboardList /> Dashboard
+                    </NavLink>
+                  </li>
+
+                  <li>
+                    <NavLink className="nav-link" to="/profile">
+                      <FaUserAlt /> Account
+                    </NavLink>
+                  </li>
+                </React.Fragment>
+              ) : (
+                <div className="button-wrapper">
+                  <LinkedInLogin className="btn btn-theme btn-sm">
+                    Sign In
+                  </LinkedInLogin>
                 </div>
-                */}
-
-                {/* Login/Logout 
-
-                <div className="right-nav align-items-center d-flex justify-content-end list-inline">
-                  <Link className="nav-link" to="/search">
-                    Search Jobs
-                  </Link>
-                  {activeSession ? (
-                    <Link className="btn btn-theme btn-sm" to="/dashboard">
-                      <span>Dashboard</span>
-                    </Link>
-                  ) : (
-                    <Link className="btn btn-theme btn-sm" to="/login">
-                      <span>Login</span>
-                    </Link>
-                  )}
-                </div>
-                */}
-              </nav>
-            </div>
-          </div>
+              )}
+            </ul>
+          ) : null}
         </div>
       </div>
     </header>

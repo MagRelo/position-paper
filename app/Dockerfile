@@ -1,5 +1,6 @@
 
-FROM node:latest
+FROM node:8.10.0-slim
+
 
 ENV APP_HOME /app
 RUN mkdir -pv $APP_HOME

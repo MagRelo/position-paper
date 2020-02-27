@@ -5,11 +5,14 @@ import { Loading } from 'components/random';
 
 function LinkButton(props) {
   const [isLoading, setIsLoading] = useState(false);
-  function handleClick() {
+
+  function executeLinkButton() {
     setIsLoading(true);
     createLink(props.parentLink).then(link => {
+      if (link && link.linkId) {
+        navigate('/link/' + link.linkId);
+      }
       setIsLoading(false);
-      navigate('/link/' + link.linkId);
     });
   }
 
@@ -20,10 +23,10 @@ function LinkButton(props) {
       ) : (
         <button
           className="btn btn-theme btn-sm"
-          onClick={handleClick}
+          onClick={executeLinkButton}
           disabled={props.disabled}
         >
-          <span>{props.label}</span>
+          {props.children}
         </button>
       )}
     </React.Fragment>

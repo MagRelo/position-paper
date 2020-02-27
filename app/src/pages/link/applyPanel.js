@@ -1,17 +1,23 @@
 import React, { useState, useContext } from 'react';
-import { Link } from '@reach/router';
-import { Loading, formatCurrency } from 'components/random';
+// import { Link } from '@reach/router';
 
+import { FaCheck } from 'react-icons/fa';
+import { Loading, formatCurrency, UserProfile } from 'components/random';
+import LinkedInLogin from 'components/linkedinLogin';
 import { AuthContext } from 'App';
 
-import ResponseStatus from 'pages/response/responseStatus';
+// import ResponseStatus from 'pages/response/responseStatus-2';
+
+const domain = window.location.origin || 'http://localhost:3000';
 
 function ApplyPanel({ link, user }) {
+  // console.log(user);
   const { activeSession } = useContext(AuthContext);
 
   const [hasApplied, setHasApplied] = useState(user.hasApplied || false);
-  const [status, setStatus] = useState(user.applyStatus || '');
-  const [applySteps, setApplySteps] = useState(user.applySteps || []);
+
+  // const [status, setStatus] = useState(user.applyStatus || '');
+  // const [applySteps, setApplySteps] = useState(user.applySteps || []);
 
   const [loading, setLoading] = useState(false);
 
@@ -30,8 +36,8 @@ function ApplyPanel({ link, user }) {
 
       // update UI
       setHasApplied(hasApplied);
-      setApplySteps(applySteps);
-      setStatus(applyStatus);
+      // setApplySteps(applySteps);
+      // setStatus(applyStatus);
 
       setLoading(false);
     } catch (error) {
@@ -40,53 +46,64 @@ function ApplyPanel({ link, user }) {
   }
 
   return (
-    <div id="apply" style={{ margin: '2em 0' }}>
-      {activeSession ? (
-        <React.Fragment>
-          {hasApplied ? (
-            <div>
-              <h3 className="section-header">Application Status</h3>
-              <ResponseStatus status={status} steps={applySteps} />
-            </div>
-          ) : (
-            <div>
-              <h2>Apply for this Job</h2>
-              <p>
-                Apply for this position. We'll pay you{' '}
-                {formatCurrency(link.target_bonus)} if you're hired.
-              </p>
-              {loading ? (
-                <Loading />
-              ) : (
-                <button
-                  className="btn btn-theme btn-sm"
-                  onClick={handleClick}
-                  disabled={
-                    user.hasApplied || user.isQueryOwner || user.isLinkOwner
-                  }
-                >
-                  <span>Apply Now</span>
-                </button>
-              )}
-            </div>
-          )}
-        </React.Fragment>
-      ) : (
-        <React.Fragment>
-          <h2>Apply for this Job</h2>
-          <p>
-            Apply for this position. We'll pay you{' '}
-            {formatCurrency(link.target_bonus)} if you're hired.
-          </p>
-          <Link
-            className="btn btn-sm btn-theme"
-            label={'Apply Now'}
-            to={'/login?link=' + link.linkId}
-          >
-            Apply Now
-          </Link>
-        </React.Fragment>
-      )}
+    <div id="apply">
+      <React.Fragment>
+        {hasApplied ? (
+          <div>
+            <h3>
+              Application Submitted{' '}
+              <FaCheck style={{ verticalAlign: 'top', color: '#0ea51d' }} />
+            </h3>
+            <div className="mb-2"></div>
+            <p>Your application has been sent to {link.data.employer}</p>
+          </div>
+        ) : (
+          <div>
+            <h3>Apply Now</h3>
+            <p className="p-tight">
+              This position includes a{' '}
+              <b>{formatCurrency(link.target_bonus)}</b> hiring bonus.
+            </p>
+
+            {activeSession ? (
+              <React.Fragment>
+                {loading ? (
+                  <Loading />
+                ) : (
+                  <button
+                    className="btn btn-theme btn-sm"
+                    onClick={handleClick}
+                    disabled={
+                      user.hasApplied || user.isQueryOwner || user.isLinkOwner
+                    }
+                  >
+                    <span>Apply Now</span>
+                  </button>
+                )}
+              </React.Fragment>
+            ) : (
+              <LinkedInLogin
+                redirect={'/link/' + link.linkId}
+                className="btn btn-theme btn-sm"
+              >
+                Apply Now
+              </LinkedInLogin>
+            )}
+          </div>
+        )}
+
+        <div className="mb-4"></div>
+
+        <hr style={{ marginTop: 0, marginBottom: 0 }} />
+        <div className="promote-label">
+          <span>Shared By</span>
+        </div>
+        <div className="mb-2"></div>
+
+        <a href={`${domain}/board/${user.jobBoardId}`}>
+          <UserProfile user={user} hideDescription={true} />
+        </a>
+      </React.Fragment>
     </div>
   );
 }

@@ -3,14 +3,15 @@ import React, { useState, useEffect, useContext } from 'react';
 // import { Tabs, TabList, TabPanels, TabPanel } from '@reach/tabs';
 // import { formatCurrency, Loading } from 'components/random';
 
-import { formatCurrency, Loading } from 'components/random';
+import { Loading } from 'components/random';
 
 import UserBankAccount from 'pages/user/userBankAccount';
 import UserPaymentSource from 'pages/user/userPaymentSource';
 import UserPaymentTable from 'pages/user/userPaymentTable';
 import UserProfileForm from 'pages/user/userProfileForm';
-
 import StreamList from './userStream';
+
+// import StreamList from './userStream';
 
 import { AuthContext } from 'App';
 
@@ -19,10 +20,7 @@ function User(props) {
 
   const [isLoading, setIsLoading] = useState(true);
   const [userData, setUserData] = useState(user);
-  // const [links, setLinks] = useState([]);
-  // const [jobs, setJobs] = useState([]);
   const [payments, setPayments] = useState([]);
-  // const [responses, setResponses] = useState([]);
   const [stream, setStream] = useState([]);
 
   useEffect(() => {
@@ -33,12 +31,9 @@ function User(props) {
     getUser(clearSession).then(body => {
       if (isSubscribed) {
         setUserData(body.user);
-        // setJobs(body.links.filter(link => link.generation === 0));
-        // setLinks(body.links.filter(link => link.generation !== 0));
-        setStream(body.stream);
-        // setResponses(body.responses);
         setPayments(body.payments);
         setIsLoading(false);
+        setStream(body.stream);
       }
     });
 
@@ -50,73 +45,63 @@ function User(props) {
 
   return (
     <div className="container user-container">
-      <div className="row">
-        <div className="col-lg-8">
-          {isLoading ? (
-            <Loading />
-          ) : (
+      <div className="mb-4"></div>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <div className="grid grid-5-3">
+          <div>
             <div>
-              <div className="user-profile">
-                <button
-                  style={{ float: 'right' }}
-                  className="btn btn-sm btn-theme"
-                  onClick={() => {
-                    clearSession();
-                  }}
-                >
-                  Log Out
-                </button>
-                <img
-                  src={userData.avatar}
-                  alt="avatar"
-                  className="user-avatar"
-                />
-                <div className="user-info">
-                  <div className="user-name">{userData.displayName}</div>
+              <button
+                className="btn btn-sm"
+                style={{ float: 'right' }}
+                onClick={() => {
+                  // console.log('hit');
+                  return clearSession();
+                }}
+              >
+                log out
+              </button>
 
-                  <div className="user-location">
-                    Earnings: {formatCurrency(userData.pending || 0)}
-                  </div>
-                </div>
-              </div>
+              <h1>Your Account</h1>
+              <div className="mb-4"></div>
 
-              <div style={{ margin: '2em 0 ' }}>
-                <h2>Bank Account</h2>
-                <UserBankAccount
-                  hasAccount={userData.hasAccount}
-                  bankLabel={userData.stripeAccountLabel}
-                  bankBrand={userData.stripeAccountBrand}
-                />
-              </div>
-
-              <div style={{ margin: '2em 0 ' }}>
-                <h2>Payment Source</h2>
-                <UserPaymentSource
-                  hasPaymentSource={userData.hasPaymentSource}
-                  sourceLabel={userData.stripeCustomerLabel}
-                  sourceBrand={userData.stripeCustomerBrand}
-                />
-              </div>
-
-              <div style={{ margin: '2em 0 ' }}>
-                <h2>Edit Profile</h2>
-                <UserProfileForm user={userData} />
-              </div>
-
-              <div style={{ margin: '2em 0 ' }}>
-                <h2>Payments</h2>
-                <UserPaymentTable payments={payments} />
-              </div>
+              <UserProfileForm user={userData} />
             </div>
-          )}
-        </div>
+            <div className="mb-4"></div>
 
-        {/* stream */}
-        <div className="col-lg-4">
-          <h2>Activity</h2>
-          <StreamList stream={stream} userId={userData._id} />
+            <div>
+              <h2>Bank Account</h2>
+              <UserBankAccount
+                hasAccount={userData.hasAccount}
+                bankLabel={userData.stripeAccountLabel}
+                bankBrand={userData.stripeAccountBrand}
+              />
+            </div>
+            <div className="mb-4"></div>
+
+            <div>
+              <h2>Payment Source</h2>
+              <UserPaymentSource
+                hasPaymentSource={userData.hasPaymentSource}
+                sourceLabel={userData.stripeCustomerLabel}
+                sourceBrand={userData.stripeCustomerBrand}
+              />
+            </div>
+            <div className="mb-4"></div>
+
+            <div>
+              <h2>Payments</h2>
+              <UserPaymentTable payments={payments} />
+            </div>
+          </div>
+
+          <div>
+            <h2>Recent Activity</h2>
+            <StreamList stream={stream} userId={userData._id} />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

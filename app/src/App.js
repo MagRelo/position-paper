@@ -3,72 +3,50 @@ import { Router, navigate } from '@reach/router';
 import { OnRouteChange } from 'routingHack.js';
 
 import Helmet from 'react-helmet';
-
-//
 import Cookies from 'js-cookie';
-import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
-
 import { Loading } from 'components/random';
 
-// Compoenent CSS
+// Component CSS
 import 'react-input-range/lib/css/index.css';
 import '@reach/dialog/styles.css';
 import '@reach/menu-button/styles.css';
 
 // Template CSS
-
-// bootstrap -->
 import './css/bootstrap.min.css';
-// <!--== animate -->
-import './css/animate.css';
-// <!--== fontawesome -->
 import './css/fontawesome-all.css';
-// <!--== line-awesome -->
-import './css/line-awesome.min.css';
-// <!--== magnific-popup -->
-// import './css/magnific-popup/magnific-popup.css';
-// <!--== owl-carousel -->
-// import './css/owl-carousel/owl.carousel.css';
-// <!--== base -->
-import './css/base.css';
-// <!--== shortcodes -->
-import './css/shortcodes.css';
-// <!--== default-theme -->
-import './css/style.css';
-// <!--== responsive -->
-import './css/responsive.css';
 
-//
-// Template Overides
-//
-import './css/talent-relay.css';
+// Site CSS
+import './css/typography.scss';
+import './css/talent-relay.scss';
+import './css/header.scss';
+import './css/loaders.scss';
+import './css/stars.scss';
 
 // Header
 import Header from 'components/header';
 import Footer from 'components/footer';
 
-import NotFound from 'pages/404';
-
 // Routes
 import LandingPage from 'pages/landingPage';
 import Terms from 'pages/legal';
 import About from 'pages/about';
-import Employers from 'pages/employer';
+import NotFound from 'pages/404';
 
 // Maybe Auth
 import Login from 'pages/login';
-import Search from 'pages/search';
+import Search from 'pages/search/search';
 import UserJobs from 'pages/user/userJobBoard';
 import LinkPage from 'pages/link/link';
-import AddLink from 'networkData/jobForm';
-import EditLink from 'pages/link/editLink';
-import Applications from 'pages/link/applications';
-import ApplicationPayment from 'pages/link/applicationPayment';
 
 // Auth
+import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
 import Profile from 'pages/user/userProfile';
 import Dashboard from 'pages/user/userDashboard';
-// import UserBankAccount from 'pages/user/userBankAccount';
+import EmployeeOnboarding from 'pages/user/employerOnboardingForm';
+import EditLink from 'pages/link/editLink';
+import AddLink from 'pages/link/addLink';
+import Applications from 'pages/link/applications';
+import ApplicationPayment from 'pages/link/applicationPayment';
 // import Response from 'pages/response/response';
 // import Respond from 'pages/response/respond';
 
@@ -132,36 +110,37 @@ function App(props) {
             {activeSession ? (
               <Router>
                 {/* Auth required */}
-                <AddLink path="/addquery" />
-                <EditLink path="/link/:linkId/edit" />
-
                 <Dashboard path="/dashboard" />
                 <Profile path="/profile" />
-
-                <LinkPage path="/link/:linkId" />
                 <Applications path="/applications/:linkId" />
                 <ApplicationPayment path="/payment/:linkId" />
 
-                <UserJobs path="/jobs/:userId" />
+                <AddLink path="/addjob" />
+                <EditLink path="/link/:linkId/edit" />
+
+                <LinkPage path="/link/:linkId" />
+                <UserJobs path="/board/:userId" />
                 <Search path="/search" />
                 <Terms path="/terms" />
                 <About path="/about" />
-                <Employers path="/employers" />
+
+                <EmployeeOnboarding path="/employer-account" />
+
                 <LandingPage path="/" />
                 <NotFound default />
               </Router>
             ) : (
               <Router>
+                {/* Non Auth */}
                 <LinkedInPopUp exact path="/linkedin/callback" />
                 <Login path="/login" />
 
                 <LinkPage path="/link/:linkId" />
-
-                <UserJobs path="/jobs/:userId" />
+                <UserJobs path="/board/:userId" />
                 <Search path="/search" />
                 <Terms path="/terms" />
                 <About path="/about" />
-                <Employers path="/employers" />
+
                 <LandingPage path="/" />
                 <NotFound default />
               </Router>

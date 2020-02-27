@@ -43,7 +43,7 @@ router.get('/link/:linkId', function(req, res) {
 // serve the frontend for all non-api requests
 router.get('*', function(req, res) {
   // base route
-  console.log('base route');
+  // console.log('base route');
 
   // get index page and replace meta values
   const filePath = path.resolve(__dirname, '../build', 'index.html');
@@ -57,14 +57,14 @@ router.get('*', function(req, res) {
     data = data.replace(/\$OG_TITLE/g, 'Talent Relay');
     data = data.replace(
       /\$OG_DESCRIPTION/g,
-      `Talent Relay super-charges your talent search. We combine cash incentives, social networking, and human judgement to provide a steady stream of high-quality, pre-screened candidates`
+      `Earn revenue for your community by helping them find great jobs! Talent Relay pays the candidate *and* the community when someone is hired. Plus it's free and easy to use : )`
     );
     const result = data.replace(
       /\$OG_IMAGE/g,
       'https://' + req.hostname + '/logo_share.png'
     );
 
-    console.log(result);
+    // console.log(result);
     res.send(result);
   });
 });
