@@ -1,8 +1,8 @@
 import React from 'react';
-import { Link } from '@reach/router';
+// import { Link } from '@reach/router';
 
 import { GiHeartPlus } from 'react-icons/gi';
-import { FaHandHoldingHeart, FaBars } from 'react-icons/fa';
+import { FaHandHoldingHeart } from 'react-icons/fa';
 
 function LandingPage() {
   return (
