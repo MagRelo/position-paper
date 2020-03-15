@@ -12,14 +12,12 @@ function Footer(props) {
           <div style={{ zIndex: 1 }}>
             <div className="footer-logo">
               <span>
-                <span className="footer-title">Talent</span>
+                <span className="footer-title">Stronger</span>
                 &#8201;
-                <span className="footer-title">Relay</span>
+                <span className="footer-title">Together</span>
               </span>
             </div>
-            <p>
-              Earn revenue for your community by helping them find great jobs
-            </p>
+            <p>Help Your Community</p>
           </div>
 
           <div style={{ zIndex: 1 }}>
@@ -32,14 +30,14 @@ function Footer(props) {
               }}
             >
               <h4>
-                <span>Useful Links</span>
+                <span>Community Organizers</span>
               </h4>
             </div>
 
             <div className="footer-list justify-content-between d-flex">
               <ul className="list-unstyled w-100">
                 <li>
-                  <a href="/terms">Terms</a>
+                  <a href="/login">Login</a>
                 </li>
               </ul>
             </div>

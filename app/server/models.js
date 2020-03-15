@@ -16,9 +16,19 @@ const UserSchema = new mongoose.Schema(
     },
     displayName: String,
     email: String,
-
     description: String,
-    location: String,
+    location: {
+      type: {
+        type: String,
+        enum: ['Point'],
+        required: true
+      },
+      coordinates: {
+        type: [Number],
+        required: true
+      }
+    },
+    radius: { type: Number, default: 5000 },
     linkedInProfile: String,
     jobBoardUrl: String,
 

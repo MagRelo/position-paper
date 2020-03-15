@@ -419,10 +419,10 @@ export function UserProfile({ user, hideDescription }) {
           <div className="user-name">{user.displayName}</div>
           {user.location ? (
             <div className="user-location">
-              <span className="icon-wrapper blue">
+              {/* <span className="icon-wrapper blue">
                 <MdLocationOn />
-              </span>{' '}
-              {user.location}
+              </span>{' '} */}
+              {user.description}
             </div>
           ) : null}
         </div>

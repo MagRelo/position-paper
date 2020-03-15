@@ -58,15 +58,21 @@ function Header() {
           <ul className="nav-list">
             <li>
               <a href="/gethelp" className="btn btn-theme btn-sm">
-                I Need Help <GiHeartPlus />
+                Get Help <GiHeartPlus />
               </a>
             </li>
 
             <li>
               <a href="/givehelp" className="btn btn-theme btn-sm">
-                I Want To Help <FaHandHoldingHeart />
+                Give Help <FaHandHoldingHeart />
               </a>
             </li>
+
+            {activeSession ? (
+              <li style={{ float: 'right' }}>
+                <NavLink to="/dashboard">Dashboard</NavLink>
+              </li>
+            ) : null}
           </ul>
         </div>
 

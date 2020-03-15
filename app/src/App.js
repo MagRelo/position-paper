@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Router, navigate } from '@reach/router';
 import { OnRouteChange } from 'routingHack.js';
 
-// import Helmet from 'react-helmet';
+import Helmet from 'react-helmet';
 import Cookies from 'js-cookie';
 import { Loading } from './components/random';
 
@@ -27,10 +27,13 @@ import Header from 'components/header';
 import Footer from 'components/footer';
 
 // Routes
+import Login from 'pages/login';
 import LandingPage from 'pages/landingPage';
+import Dashboard from 'pages/user/userDashboard';
 
 import GiveHelp from 'pages/giveHelp';
 import GetHelp from 'pages/getHelp';
+import Organizers from 'pages/organizers';
 
 import Terms from 'pages/legal';
 import About from 'pages/about';
@@ -86,22 +89,43 @@ function App(props) {
     <AuthContext.Provider
       value={{ activeSession, createSession, clearSession, user }}
     >
-      {/* {MetaData()} */}
+      {MetaData()}
       {loadingSession ? (
         <Loading />
       ) : (
         <div className="page-wrapper">
           <Header />
           <div className="content-wrapper">
-            <Router>
-              <GetHelp path="/gethelp" />
-              <GiveHelp path="/givehelp" />
+            {activeSession ? (
+              <Router>
+                {/* Auth required */}
+                <Login path="/login" />
+                <Dashboard path="/dashboard" />
 
-              <Terms path="/terms" />
-              <About path="/about" />
-              <LandingPage path="/" />
-              <NotFound default />
-            </Router>
+                <GetHelp path="/gethelp" />
+                <GiveHelp path="/givehelp" />
+                <Organizers path="/organizers" />
+
+                <Terms path="/terms" />
+                <About path="/about" />
+                <LandingPage path="/" />
+                <NotFound default />
+              </Router>
+            ) : (
+              <Router>
+                {/* Non Auth */}
+                <Login path="/login" />
+
+                <GetHelp path="/gethelp" />
+                <GiveHelp path="/givehelp" />
+                <Organizers path="/organizers" />
+
+                <Terms path="/terms" />
+                <About path="/about" />
+                <LandingPage path="/" />
+                <NotFound default />
+              </Router>
+            )}
 
             <OnRouteChange
               action={() => {
@@ -132,33 +156,30 @@ async function getUser() {
     });
 }
 
-// function MetaData() {
-//   return (
-//     <Helmet>
-//       <title>Talent Relay</title>
-//       <meta
-//         name="description"
-//         content="Talent Relay super-charges your talent search. We combine cash incentives, social networking, and human judgement to provide a steady stream of high-quality, pre-screened candidates."
-//       />
-//       <link rel="canonical" href={'https://talentrelay.app'} />
+function MetaData() {
+  return (
+    <Helmet>
+      <title>Covid Project</title>
+      <meta name="description" content="Connect to your Community" />
+      <link rel="canonical" href={'https://talentrelay.app'} />
 
-//       <meta property="og:site_name" content="Talent Relay" />
-//       <meta property="og:type" content="website" />
-//       <meta property="og:url" content={'https://talentrelay.app'} />
-//       <meta property="og:image:secure_url" content="https://talentrelay.app" />
-//       <meta property="og:image" content="https://talentrelay.app/logo.png" />
-//       <meta property="og:image:type" content="png" />
-//       <meta property="og:image:height" content="201" />
-//       <meta property="og:image:width" content="630" />
+      <meta property="og:site_name" content="Talent Relay" />
+      <meta property="og:type" content="website" />
+      <meta property="og:url" content={'https://talentrelay.app'} />
+      <meta property="og:image:secure_url" content="https://talentrelay.app" />
+      <meta property="og:image" content="https://talentrelay.app/logo.png" />
+      <meta property="og:image:type" content="png" />
+      <meta property="og:image:height" content="201" />
+      <meta property="og:image:width" content="630" />
 
-//       <meta name="twitter:card" content="summary_large_image" />
-//       <meta name="twitter:site" content="@i_dot_e" />
-//       <meta name="twitter:title" content="TalentRelay" />
-//       <meta
-//         name="twitter:description"
-//         content="Talent Relay super-charges your talent search. We combine cash incentives, social networking, and human judgement to provide a steady stream of high-quality, pre-screened candidates."
-//       />
-//       <meta name="twitter:image" content="https://talentrelay.app/logo.png" />
-//     </Helmet>
-//   );
-// }
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:site" content="@i_dot_e" />
+      <meta name="twitter:title" content="TalentRelay" />
+      <meta
+        name="twitter:description"
+        content="Talent Relay super-charges your talent search. We combine cash incentives, social networking, and human judgement to provide a steady stream of high-quality, pre-screened candidates."
+      />
+      <meta name="twitter:image" content="https://talentrelay.app/logo.png" />
+    </Helmet>
+  );
+}

@@ -45,7 +45,7 @@ function GetHelp() {
             <li>
               When we find someone nearby we will send you an email and you can
               decide if you'd like to connect with them. We will never share
-              *any* of your information with anyone.
+              *any* of your information publicly.
             </li>
           </ol>
         </div>
@@ -64,14 +64,18 @@ function GetHelpForm(props) {
   const [error, setError] = useState('');
 
   const [placeId, setPlaceId] = useState('');
+  const [address, setAddress] = useState('');
   const [latLng, setLatLng] = useState({});
 
-  function onSelect(data) {
-    setPlaceId(data.place_id);
+  async function onSelect(data) {
+    console.log(data);
 
+    //
+    setPlaceId(data.place_id);
+    setAddress(data.description);
     geocodeByPlaceId(data.place_id)
       .then(results => getLatLng(results[0]))
-      .then(results => setLatLng(results))
+      .then(async latLng => setLatLng(latLng))
       .catch(error => {
         console.log(error);
         setError(error);
@@ -84,6 +88,7 @@ function GetHelpForm(props) {
     // get form data
     const formObject = {
       placeId: placeId,
+      address: address,
       location: {
         type: 'Point',
         coordinates: [latLng.lng, latLng.lat]
@@ -97,7 +102,7 @@ function GetHelpForm(props) {
     // loading
     setFormStatus('loading');
 
-    submitJob(formObject)
+    submitForm(formObject)
       .then(link => {
         setFormStatus('success');
       })
@@ -116,7 +121,7 @@ function GetHelpForm(props) {
           <legend>Request Help</legend>
 
           <div className="form-group">
-            <label htmlFor="location">Your Name</label>
+            <label htmlFor="location">Name</label>
             <input
               type="name"
               name="name"
@@ -126,7 +131,17 @@ function GetHelpForm(props) {
           </div>
 
           <div className="form-group">
-            <label htmlFor="location">Your Email Address</label>
+            <label htmlFor="location">Phone Number</label>
+            <input
+              type="text"
+              name="phone"
+              required={true}
+              className="form-control"
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="location">Email Address</label>
             <input
               type="email"
               name="email"
@@ -134,9 +149,11 @@ function GetHelpForm(props) {
               className="form-control"
             />
           </div>
+        </fieldset>
 
+        <fieldset>
           <div className="form-group">
-            <label htmlFor="location">Your Location</label>
+            <label htmlFor="location">Location</label>
             <GooglePlacesAutocomplete onSelect={onSelect} />
           </div>
         </fieldset>
@@ -168,7 +185,7 @@ function GetHelpForm(props) {
   );
 }
 
-async function submitJob(queryData) {
+async function submitForm(queryData) {
   const method = 'POST';
   const endPoint = '/api/gethelp';
 

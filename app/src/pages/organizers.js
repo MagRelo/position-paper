@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
-import { geocodeByPlaceId } from 'react-google-places-autocomplete';
-import { getLatLng } from 'react-google-places-autocomplete/dist/utils/googleGeocodesHelper';
 // If you want to use the provided css
 import 'react-google-places-autocomplete/dist/assets/index.css';
 
@@ -18,33 +16,18 @@ function GetHelp() {
             margin: '0 auto'
           }}
         >
-          <h1>Give Help</h1>
-          <p>
-            This form can be used to offer help to{' '}
-            <a href="https://www.cdc.gov/coronavirus/2019-ncov/specific-groups/high-risk-complications.html">
-              persons at risk for serious illness from COVID-19
-            </a>
-            .
-          </p>
+          <h1>Community Organizations</h1>
+          <p>Apply to be a community organization.</p>
 
-          <h2>What types of things?</h2>
+          <h2>Preferred Organizations:</h2>
           <ul>
-            <li>Errands such as grocery shopping</li>
-            <li>Taking pets for a walk</li>
-            <li>other stuff</li>
+            <li>Public Schools</li>
+            <li>Churches</li>
+            <li>Libraries</li>
           </ul>
-
-          <h2>How does it work?</h2>
-          <ol>
-            <li>Fill out and submit the form below.</li>
-            <li>
-              When we find someone nearby we will send them an email with your
-              information. They will contact you via email.
-            </li>
-          </ol>
         </div>
 
-        <GetHelpForm />
+        <CommunityForm />
       </div>
     </div>
   );
@@ -52,25 +35,16 @@ function GetHelp() {
 
 export default GetHelp;
 
-function GetHelpForm(props) {
+function CommunityForm(props) {
   // form
   const [formStatus, setFormStatus] = useState('new');
   const [error, setError] = useState('');
 
   const [placeId, setPlaceId] = useState('');
-  const [address, setAddress] = useState('');
-  const [latLng, setLatLng] = useState({});
 
   function onSelect(data) {
-    setAddress(data.description);
+    console.log('Place Id:', data.place_id);
     setPlaceId(data.place_id);
-    geocodeByPlaceId(data.place_id)
-      .then(results => getLatLng(results[0]))
-      .then(results => setLatLng(results))
-      .catch(error => {
-        console.log(error);
-        setError(error);
-      });
   }
 
   async function submit(event) {
@@ -78,12 +52,7 @@ function GetHelpForm(props) {
 
     // get form data
     const formObject = {
-      placeId: placeId,
-      address: address,
-      location: {
-        type: 'Point',
-        coordinates: [latLng.lng, latLng.lat]
-      }
+      placeId: placeId
     };
     const formData = new FormData(event.target);
     formData.forEach((value, key) => {
@@ -141,13 +110,19 @@ function GetHelpForm(props) {
             />
           </div>
 
-          <hr />
+          <div className="form-group">
+            <label htmlFor="location">Location</label>
+            <GooglePlacesAutocomplete onSelect={onSelect} />
+          </div>
 
           <div className="form-group">
-            <label htmlFor="location">
-              Location (this will not be shared with anyone)
-            </label>
-            <GooglePlacesAutocomplete onSelect={onSelect} />
+            <label htmlFor="location">Radius (meters)</label>
+            <input
+              type="text"
+              name="radius"
+              required={true}
+              className="form-control"
+            />
           </div>
         </fieldset>
 
