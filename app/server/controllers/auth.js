@@ -192,3 +192,32 @@ exports.userStatus = async function(req, res) {
   // console.log(req.user);
   return res.status(200).send(req.user);
 };
+
+exports.googleAuth = async function(req, res, next) {
+  const userProfile = req.body;
+  console.log(userProfile);
+
+  try {
+    // upsert user
+    req.user = await UserModel.findOneAndUpdate(
+      {
+        'googleProvider.id': userProfile.googleId
+      },
+      {
+        firstname: userProfile.givenName,
+        lastname: userProfile.familyName,
+        displayName: userProfile.name,
+        avatar: userProfile.imageUrl,
+        linkedinProvider: {
+          id: userProfile.googleId
+        }
+      },
+      { new: true, upsert: true, setDefaultsOnInsert: true }
+    );
+
+    next();
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+};

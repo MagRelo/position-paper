@@ -3,9 +3,10 @@ import React from 'react';
 function Footer(props) {
   return (
     <footer>
-      <div id="stars"></div>
+      {/* <div id="stars"></div>
       <div id="stars2"></div>
       <div id="stars3"></div>
+       */}
       <div className="container">
         <div className="grid grid-2">
           <div style={{ zIndex: 1 }}>

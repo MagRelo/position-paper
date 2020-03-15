@@ -16,15 +16,15 @@ const UserSchema = new mongoose.Schema(
     },
     displayName: String,
     email: String,
+
     description: String,
     location: String,
     linkedInProfile: String,
     jobBoardUrl: String,
 
-    linkedinProvider: {
+    googleProvider: {
       type: {
-        id: String,
-        access_token: String
+        id: String
       },
       select: false
     },
@@ -33,11 +33,9 @@ const UserSchema = new mongoose.Schema(
     stripeCustomerToken: { type: String, select: false },
     stripeCustomerBrand: { type: String, select: false },
     stripeCustomerLabel: { type: String, select: false },
-
     accountBalance: { type: Number, select: false },
     stripeAccount: { type: Object, select: false },
     stripeAccountLabel: { type: String, select: false },
-
     payments: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Payment',
@@ -49,6 +47,41 @@ const UserSchema = new mongoose.Schema(
 );
 
 exports.UserModel = mongoose.model('User', UserSchema);
+
+//
+// Volunteer
+//
+
+const PersonSchema = new mongoose.Schema(
+  {
+    firstname: String,
+    lastname: String,
+    avatar: String,
+    displayName: String,
+    email: String,
+    placeId: String,
+    location: {
+      type: {
+        type: String,
+        enum: ['Point'],
+        required: true
+      },
+      coordinates: {
+        type: [Number],
+        required: true
+      }
+    },
+    needsHelp: { type: Boolean, default: false },
+    offeringHelp: { type: Boolean, default: false },
+    isMatched: { type: Boolean, default: false },
+    matches: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Person' }],
+    follows: { type: Array, default: [], select: false }
+  },
+  { timestamps: true }
+);
+
+PersonSchema.index({ location: '2dsphere' });
+exports.PersonModel = mongoose.model('Person', PersonSchema);
 
 //
 // Link
@@ -94,7 +127,7 @@ const LinkSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-LinkSchema.index({ title: 'text' });
+// LinkSchema.index({ title: 'text' });
 
 exports.LinkModel = mongoose.model('Link', LinkSchema);
 

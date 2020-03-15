@@ -13,10 +13,10 @@ import { useRect } from '@reach/rect';
 
 import Img from 'react-image';
 
-import EmailButton from 'components/social/emailButton';
-import TwitterButton from 'components/social/twitterButton';
-import LinkedinButton from 'components/social/linkedinButton';
-import InstaButton from 'components/social/instagramButton';
+// import EmailButton from 'components/social/emailButton';
+// import TwitterButton from 'components/social/twitterButton';
+// import LinkedinButton from 'components/social/linkedinButton';
+// import InstaButton from 'components/social/instagramButton';
 
 import Visa from 'components/social/visa';
 import MasterCard from 'components/social/mastercard';
@@ -103,7 +103,7 @@ export function useDebounce(value, delay) {
     // Only re-call effect if value changes
     // You could also add the "delay" var to inputs array if you ...
     // ... need to be able to change that dynamically.
-    [value]
+    [value, delay]
   );
 
   return debouncedValue;

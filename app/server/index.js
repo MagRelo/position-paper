@@ -45,7 +45,6 @@ mongoose.connect(process.env.MONGODB_URL_INT, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
-mongoose.set('useCreateIndex', true);
 mongoose.connection.on('error', function(err) {
   console.error('MongoDB connection error: ' + err);
   process.exit(-1);

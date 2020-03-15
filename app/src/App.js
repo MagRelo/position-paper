@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Router, navigate } from '@reach/router';
 import { OnRouteChange } from 'routingHack.js';
 
-import Helmet from 'react-helmet';
+// import Helmet from 'react-helmet';
 import Cookies from 'js-cookie';
-import { Loading } from 'components/random';
+import { Loading } from './components/random';
 
 // Component CSS
 import 'react-input-range/lib/css/index.css';
@@ -28,27 +28,13 @@ import Footer from 'components/footer';
 
 // Routes
 import LandingPage from 'pages/landingPage';
+
+import GiveHelp from 'pages/giveHelp';
+import GetHelp from 'pages/getHelp';
+
 import Terms from 'pages/legal';
 import About from 'pages/about';
 import NotFound from 'pages/404';
-
-// Maybe Auth
-import Login from 'pages/login';
-import Search from 'pages/search/search';
-import UserJobs from 'pages/user/userJobBoard';
-import LinkPage from 'pages/link/link';
-
-// Auth
-import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
-import Profile from 'pages/user/userProfile';
-import Dashboard from 'pages/user/userDashboard';
-import EmployeeOnboarding from 'pages/user/employerOnboardingForm';
-import EditLink from 'pages/link/editLink';
-import AddLink from 'pages/link/addLink';
-import Applications from 'pages/link/applications';
-import ApplicationPayment from 'pages/link/applicationPayment';
-// import Response from 'pages/response/response';
-// import Respond from 'pages/response/respond';
 
 // Setup Auth context
 export const AuthContext = React.createContext({});
@@ -100,51 +86,22 @@ function App(props) {
     <AuthContext.Provider
       value={{ activeSession, createSession, clearSession, user }}
     >
-      {MetaData()}
+      {/* {MetaData()} */}
       {loadingSession ? (
         <Loading />
       ) : (
         <div className="page-wrapper">
           <Header />
           <div className="content-wrapper">
-            {activeSession ? (
-              <Router>
-                {/* Auth required */}
-                <Dashboard path="/dashboard" />
-                <Profile path="/profile" />
-                <Applications path="/applications/:linkId" />
-                <ApplicationPayment path="/payment/:linkId" />
+            <Router>
+              <GetHelp path="/gethelp" />
+              <GiveHelp path="/givehelp" />
 
-                <AddLink path="/addjob" />
-                <EditLink path="/link/:linkId/edit" />
-
-                <LinkPage path="/link/:linkId" />
-                <UserJobs path="/board/:userId" />
-                <Search path="/search" />
-                <Terms path="/terms" />
-                <About path="/about" />
-
-                <EmployeeOnboarding path="/employer-account" />
-
-                <LandingPage path="/" />
-                <NotFound default />
-              </Router>
-            ) : (
-              <Router>
-                {/* Non Auth */}
-                <LinkedInPopUp exact path="/linkedin/callback" />
-                <Login path="/login" />
-
-                <LinkPage path="/link/:linkId" />
-                <UserJobs path="/board/:userId" />
-                <Search path="/search" />
-                <Terms path="/terms" />
-                <About path="/about" />
-
-                <LandingPage path="/" />
-                <NotFound default />
-              </Router>
-            )}
+              <Terms path="/terms" />
+              <About path="/about" />
+              <LandingPage path="/" />
+              <NotFound default />
+            </Router>
 
             <OnRouteChange
               action={() => {
@@ -175,33 +132,33 @@ async function getUser() {
     });
 }
 
-function MetaData() {
-  return (
-    <Helmet>
-      <title>Talent Relay</title>
-      <meta
-        name="description"
-        content="Talent Relay super-charges your talent search. We combine cash incentives, social networking, and human judgement to provide a steady stream of high-quality, pre-screened candidates."
-      />
-      <link rel="canonical" href={'https://talentrelay.app'} />
+// function MetaData() {
+//   return (
+//     <Helmet>
+//       <title>Talent Relay</title>
+//       <meta
+//         name="description"
+//         content="Talent Relay super-charges your talent search. We combine cash incentives, social networking, and human judgement to provide a steady stream of high-quality, pre-screened candidates."
+//       />
+//       <link rel="canonical" href={'https://talentrelay.app'} />
 
-      <meta property="og:site_name" content="Talent Relay" />
-      <meta property="og:type" content="website" />
-      <meta property="og:url" content={'https://talentrelay.app'} />
-      <meta property="og:image:secure_url" content="https://talentrelay.app" />
-      <meta property="og:image" content="https://talentrelay.app/logo.png" />
-      <meta property="og:image:type" content="png" />
-      <meta property="og:image:height" content="201" />
-      <meta property="og:image:width" content="630" />
+//       <meta property="og:site_name" content="Talent Relay" />
+//       <meta property="og:type" content="website" />
+//       <meta property="og:url" content={'https://talentrelay.app'} />
+//       <meta property="og:image:secure_url" content="https://talentrelay.app" />
+//       <meta property="og:image" content="https://talentrelay.app/logo.png" />
+//       <meta property="og:image:type" content="png" />
+//       <meta property="og:image:height" content="201" />
+//       <meta property="og:image:width" content="630" />
 
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:site" content="@i_dot_e" />
-      <meta name="twitter:title" content="TalentRelay" />
-      <meta
-        name="twitter:description"
-        content="Talent Relay super-charges your talent search. We combine cash incentives, social networking, and human judgement to provide a steady stream of high-quality, pre-screened candidates."
-      />
-      <meta name="twitter:image" content="https://talentrelay.app/logo.png" />
-    </Helmet>
-  );
-}
+//       <meta name="twitter:card" content="summary_large_image" />
+//       <meta name="twitter:site" content="@i_dot_e" />
+//       <meta name="twitter:title" content="TalentRelay" />
+//       <meta
+//         name="twitter:description"
+//         content="Talent Relay super-charges your talent search. We combine cash incentives, social networking, and human judgement to provide a steady stream of high-quality, pre-screened candidates."
+//       />
+//       <meta name="twitter:image" content="https://talentrelay.app/logo.png" />
+//     </Helmet>
+//   );
+// }

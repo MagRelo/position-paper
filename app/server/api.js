@@ -3,7 +3,7 @@ var router = express.Router();
 
 // Controllers
 const {
-  linkedinAuth,
+  googleAuth,
   sendToken,
   getToken,
   authenticate,
@@ -40,13 +40,80 @@ const {
 const { getAllData } = require('./controllers/admin');
 
 const LinkModel = require('./models').LinkModel;
-const SignupModel = require('./models').SignupModel;
 const UserModel = require('./models').UserModel;
+
+const PersonModel = require('./models').PersonModel;
 //
 // MISC
 //
 
-// const SendGrid = require('./integrations/sendgrid');
+router.post('/gethelp', async function(req, res) {
+  try {
+    const response = await PersonModel.update(
+      { email: req.body.email },
+      {
+        needsHelp: true,
+        ...req.body
+      },
+      { upsert: true }
+    );
+    console.log(response);
+
+    // send to sendgrid
+    // const sendGridResponse = await SendGrid.addContact(req.body);
+
+    res.status(200).send({ success: true });
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+});
+
+router.post('/givehelp', async function(req, res) {
+  try {
+    const response = await PersonModel.update(
+      { email: req.body.email },
+      {
+        offeringHelp: true,
+        ...req.body
+      },
+      { upsert: true }
+    );
+    console.log(response);
+
+    // send to sendgrid
+    // const sendGridResponse = await SendGrid.addContact(req.body);
+
+    res.status(200).send({ success: true });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ error: error.message });
+  }
+});
+
+router.get('/user/jobs/:jobBoardId', async function(req, res) {
+  const user = await UserModel.findOne({ jobBoardId: req.params.jobBoardId });
+
+  if (!user) {
+    return res.status(404).send({});
+  }
+
+  const results = await LinkModel.find({
+    user: user._id,
+    status: 'Active'
+  });
+
+  try {
+    res.status(200).send({
+      user: user,
+      jobs: results
+    });
+  } catch (error) {
+    console.log(req.path, error);
+    res.status(500).send(error);
+  }
+});
+
+router.get('/admin', getToken, authenticate, getUser, getAllData);
 
 // search
 router.get('/search', getToken, getUser, async function(req, res) {
@@ -107,55 +174,9 @@ router.get('/search', getToken, getUser, async function(req, res) {
   }
 });
 
-router.post('/signup', async function(req, res) {
-  try {
-    // const Signup = new SignupModel(req.body);
-    // const dbResponse = await Signup.save();
-
-    const response = await SignupModel.update(
-      { email: req.body.email },
-      req.body,
-      { upsert: true }
-    );
-    console.log(response);
-
-    // send to sendgrid
-    // const sendGridResponse = await SendGrid.addContact(req.body);
-
-    res.status(200).send({ success: true });
-  } catch (error) {
-    res.status(500).send({ error: error.message });
-  }
-});
-
-router.get('/user/jobs/:jobBoardId', async function(req, res) {
-  const user = await UserModel.findOne({ jobBoardId: req.params.jobBoardId });
-
-  if (!user) {
-    return res.status(404).send({});
-  }
-
-  const results = await LinkModel.find({
-    user: user._id,
-    status: 'Active'
-  });
-
-  try {
-    res.status(200).send({
-      user: user,
-      jobs: results
-    });
-  } catch (error) {
-    console.log(req.path, error);
-    res.status(500).send(error);
-  }
-});
-
-router.get('/admin', getToken, authenticate, getUser, getAllData);
-
 //
 // AUTH
-router.post('/auth/linkedin/callback', linkedinAuth, sendToken);
+router.post('/auth/google', googleAuth, sendToken);
 router.get('/auth/status', getToken, authenticate, getUser, userStatus);
 
 //

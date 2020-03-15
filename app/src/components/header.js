@@ -1,10 +1,11 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, globalHistory } from '@reach/router';
 
-import { FaSearch, FaUserAlt, FaClipboardList, FaBars } from 'react-icons/fa';
+import { GiHeartPlus } from 'react-icons/gi';
+import { FaHandHoldingHeart, FaBars } from 'react-icons/fa';
 
-import { AuthContext } from 'App';
-import LinkedInLogin from 'components/linkedinLogin';
+import { AuthContext } from '../App';
+// import GoogleLogin from 'components/googleLogin';
 
 const NavLink = props => (
   <Link
@@ -29,9 +30,9 @@ function Header() {
 
   return (
     <header>
-      <div id="stars"></div>
+      {/* <div id="stars"></div>
       <div id="stars2"></div>
-      <div id="stars3"></div>
+      <div id="stars3"></div> */}
 
       <div className="header-grid">
         <div className="header-container">
@@ -46,9 +47,9 @@ function Header() {
 
           <Link to="/">
             <span>
-              <span className="header-title">Talent</span>
+              <span className="header-title">Stronger</span>
               &#8201;
-              <span className="header-title">Relay</span>
+              <span className="header-title">Together</span>
             </span>
           </Link>
         </div>
@@ -56,32 +57,16 @@ function Header() {
         <div className="header-container desktop-menu">
           <ul className="nav-list">
             <li>
-              <NavLink className="nav-link" to="/search">
-                Search Jobs <FaSearch />
-              </NavLink>
+              <a href="/gethelp" className="btn btn-theme btn-sm">
+                I Need Help <GiHeartPlus />
+              </a>
             </li>
 
-            {activeSession ? (
-              <React.Fragment>
-                <li>
-                  <NavLink className="nav-link" to="/profile">
-                    <FaUserAlt />
-                  </NavLink>
-                </li>
-
-                <li>
-                  <NavLink className="nav-link" to="/dashboard">
-                    <FaClipboardList /> Dashboard
-                  </NavLink>
-                </li>
-              </React.Fragment>
-            ) : (
-              <li>
-                <LinkedInLogin className="btn btn-theme btn-sm">
-                  Sign In
-                </LinkedInLogin>
-              </li>
-            )}
+            <li>
+              <a href="/givehelp" className="btn btn-theme btn-sm">
+                I Want To Help <FaHandHoldingHeart />
+              </a>
+            </li>
           </ul>
         </div>
 
@@ -89,32 +74,16 @@ function Header() {
           {menuOpen ? (
             <ul className="nav-list">
               <li>
-                <NavLink className="nav-link" to="/search">
-                  Search Jobs <FaSearch />
-                </NavLink>
+                <a href="/gethelp" className="btn btn-theme btn-sm">
+                  I Need To Stay Safe <GiHeartPlus />
+                </a>
               </li>
 
-              {activeSession ? (
-                <React.Fragment>
-                  <li>
-                    <NavLink className="nav-link" to="/dashboard">
-                      <FaClipboardList /> Dashboard
-                    </NavLink>
-                  </li>
-
-                  <li>
-                    <NavLink className="nav-link" to="/profile">
-                      <FaUserAlt /> Account
-                    </NavLink>
-                  </li>
-                </React.Fragment>
-              ) : (
-                <div className="button-wrapper">
-                  <LinkedInLogin className="btn btn-theme btn-sm">
-                    Sign In
-                  </LinkedInLogin>
-                </div>
-              )}
+              <li>
+                <a href="/givehelp" className="btn btn-theme btn-sm">
+                  I Can Help People <FaHandHoldingHeart />
+                </a>
+              </li>
             </ul>
           ) : null}
         </div>

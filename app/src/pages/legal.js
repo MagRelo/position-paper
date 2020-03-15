@@ -1,6 +1,6 @@
 import React from 'react';
 
-import background from 'images/01.png';
+// import background from 'images/01.png';
 
 function LegalPage(props) {
   return (
@@ -9,10 +9,6 @@ function LegalPage(props) {
         className="page-title o-hidden pos-r md-text-center"
         data-bg-color="#d2f9fe"
       >
-        <div
-          className="page-title-pattern topBottom"
-          data-bg-img={background}
-        ></div>
         <div className="container">
           <div className="row align-items-center">
             <div className="col-lg-7 col-md-12">
