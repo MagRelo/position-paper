@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
+import { geocodeByPlaceId } from 'react-google-places-autocomplete';
+import { getLatLng } from 'react-google-places-autocomplete/dist/utils/googleGeocodesHelper';
+
 // If you want to use the provided css
 import 'react-google-places-autocomplete/dist/assets/index.css';
 
@@ -40,19 +43,47 @@ function CommunityForm(props) {
   const [formStatus, setFormStatus] = useState('new');
   const [error, setError] = useState('');
 
+  const locationRef = useRef(null);
   const [placeId, setPlaceId] = useState('');
+  const [address, setAddress] = useState('');
+  const [latLng, setLatLng] = useState({});
+  async function onSelect(data) {
+    console.log(data);
 
-  function onSelect(data) {
-    console.log('Place Id:', data.place_id);
+    //
     setPlaceId(data.place_id);
+    setAddress(data.description);
+    geocodeByPlaceId(data.place_id)
+      .then(results => getLatLng(results[0]))
+      .then(async latLng => setLatLng(latLng))
+      .catch(error => {
+        console.log(error);
+        setError(error);
+      });
   }
 
+  function highlightLocation() {
+    locationRef.current.setAttribute('class', 'flashit');
+    setTimeout(() => {
+      locationRef.current.setAttribute('class', '');
+    }, 1000);
+  }
   async function submit(event) {
     event.preventDefault();
 
+    // force location
+    if (!placeId || !latLng.lng) {
+      console.log('no location');
+      return highlightLocation();
+    }
     // get form data
     const formObject = {
-      placeId: placeId
+      placeId: placeId,
+      address: address,
+      location: {
+        type: 'Point',
+        coordinates: [latLng.lng, latLng.lat]
+      }
     };
     const formData = new FormData(event.target);
     formData.forEach((value, key) => {
@@ -81,17 +112,27 @@ function CommunityForm(props) {
           <legend>Offer To Help</legend>
 
           <div className="form-group">
-            <label htmlFor="location">Name</label>
+            <label htmlFor="location">Organization Name</label>
             <input
               type="text"
-              name="name"
+              name="description"
               required={true}
               className="form-control"
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="location">Phone Number</label>
+            <label htmlFor="location">Contact Name</label>
+            <input
+              type="text"
+              name="displayName"
+              required={true}
+              className="form-control"
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="location">Contact Phone Number</label>
             <input
               type="text"
               name="phone"
@@ -101,7 +142,7 @@ function CommunityForm(props) {
           </div>
 
           <div className="form-group">
-            <label htmlFor="location">Email Address</label>
+            <label htmlFor="location">Contact Email Address</label>
             <input
               type="email"
               name="email"
@@ -110,13 +151,13 @@ function CommunityForm(props) {
             />
           </div>
 
-          <div className="form-group">
-            <label htmlFor="location">Location</label>
+          <div className="form-group" ref={locationRef}>
+            <label htmlFor="location">Organization Location</label>
             <GooglePlacesAutocomplete onSelect={onSelect} />
           </div>
 
           <div className="form-group">
-            <label htmlFor="location">Radius (meters)</label>
+            <label htmlFor="location">Organization Area Radius (meters)</label>
             <input
               type="text"
               name="radius"

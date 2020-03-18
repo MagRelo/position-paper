@@ -1,30 +1,18 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Link } from '@reach/router';
 
-// import { FaEdit } from 'react-icons/fa';
-
-import UserPersonsTable from 'pages/userPersonsTable';
 import AddUserAdmin from 'pages/addUser';
 // import Map from 'pages/user/map';
 
-import { Loading, UserProfile } from 'components/random';
+import { Loading } from 'components/random';
 import { AuthContext } from 'App';
 
-let table = [
-  { Name: 'Del Piero', Position: 'ST' },
-  { Name: 'Pirlo', Position: 'MC' },
-  { Name: 'Buffon', Position: 'GK' }
-];
-
 function User(props) {
-  const { clearSession, user } = useContext(AuthContext);
+  const { clearSession } = useContext(AuthContext);
 
   const [error, setError] = useState('');
-
   const [isLoading, setIsLoading] = useState(true);
-  const [userData, setUserData] = useState(user);
 
-  const [persons, setPersons] = useState([]);
+  const [unApprovedUsers, setUnApprovedUsers] = useState([]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -34,7 +22,7 @@ function User(props) {
     getUser(clearSession)
       .then(body => {
         if (isSubscribed) {
-          setUserData(body.user);
+          setUnApprovedUsers([]);
           setIsLoading(false);
         }
       })
@@ -66,6 +54,33 @@ function User(props) {
 
           <div className="mb-4"></div>
           <h2>Approve Application</h2>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Approve</th>
+              </tr>
+            </thead>
+            <tbody>
+              {unApprovedUsers.map(user => {
+                return (
+                  <tr key={user._id}>
+                    <td>{user.displayName}</td>
+                    <td>{user.phone}</td>
+                    <td>{user.email}</td>
+                    <td>
+                      <button className="btn btn-small btn-theme">
+                        Approve
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
       )}
     </div>

@@ -19,7 +19,7 @@ const NavLink = props => (
 );
 
 function Header() {
-  const { activeSession } = useContext(AuthContext);
+  const { activeSession, user } = useContext(AuthContext);
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -68,6 +68,12 @@ function Header() {
               </a>
             </li>
 
+            {activeSession && user.type === 'Admin' ? (
+              <li style={{ float: 'right' }}>
+                <NavLink to="/admin">Admin</NavLink>
+              </li>
+            ) : null}
+
             {activeSession ? (
               <li style={{ float: 'right' }}>
                 <NavLink to="/dashboard">Dashboard</NavLink>
@@ -90,6 +96,18 @@ function Header() {
                   I Can Help People <FaHandHoldingHeart />
                 </a>
               </li>
+
+              {activeSession ? (
+                <li>
+                  <NavLink to="/dashboard">Dashboard</NavLink>
+                </li>
+              ) : null}
+
+              {activeSession && user.type === 'Admin' ? (
+                <li>
+                  <NavLink to="/admin">Admin</NavLink>
+                </li>
+              ) : null}
             </ul>
           ) : null}
         </div>

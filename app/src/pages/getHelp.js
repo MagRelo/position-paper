@@ -138,7 +138,7 @@ function GetHelpForm(props) {
             <label htmlFor="location">Name</label>
             <input
               type="name"
-              name="name"
+              name="displayName"
               required={true}
               className="form-control"
             />

@@ -1,19 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Link } from '@reach/router';
-
-// import { FaEdit } from 'react-icons/fa';
 
 import UserPersonsTable from 'pages/userPersonsTable';
 // import Map from 'pages/user/map';
 
 import { Loading, UserProfile } from 'components/random';
 import { AuthContext } from 'App';
-
-let table = [
-  { Name: 'Del Piero', Position: 'ST' },
-  { Name: 'Pirlo', Position: 'MC' },
-  { Name: 'Buffon', Position: 'GK' }
-];
 
 function User(props) {
   const { clearSession, user } = useContext(AuthContext);
@@ -23,23 +14,26 @@ function User(props) {
   const [isLoading, setIsLoading] = useState(true);
   const [userData] = useState(user);
 
-  const [persons, setPersons] = useState([]);
+  const [getPersons, setGetPersons] = useState([]);
+  const [givePersons, setGivePersons] = useState([]);
 
   useEffect(() => {
     setIsLoading(true);
     let isSubscribed = true;
 
     // hit user API route, get all data
-    getPersons(clearSession)
+    fetchPersons(clearSession)
       .then(body => {
         if (isSubscribed) {
-          setPersons(body.personList);
+          setGetPersons(body.personList.filter(person => person.needsHelp));
+          setGivePersons(body.personList.filter(person => person.offeringHelp));
           setIsLoading(false);
         }
       })
       .catch(error => {
         console.log(error);
         setError(error.toString());
+        setIsLoading(false);
       });
 
     // cleanup
@@ -50,29 +44,33 @@ function User(props) {
 
   return (
     <div className="container">
-      {error ? <p style={{ textAlign: 'center' }}>{error}</p> : null}
+      <div className="mb-4"></div>
 
       {isLoading ? (
         <Loading />
       ) : (
         <div>
-          <div className="mb-4"></div>
+          {error ? (
+            <p style={{ textAlign: 'center' }}>{error}</p>
+          ) : (
+            <React.Fragment>
+              <div className="grid grid-2">
+                <div className="panel">
+                  <UserProfile user={userData} />
+                </div>
 
-          <div className="grid grid-2">
-            <div className="panel">
-              <UserProfile user={userData} />
-            </div>
+                <div>{/* <Map /> */}</div>
+              </div>
 
-            <div>{/* <Map /> */}</div>
-          </div>
+              <div className="mb-4"></div>
 
-          <div className="mb-4"></div>
+              <h2>Get Help</h2>
+              <UserPersonsTable data={getPersons} />
 
-          <h2>Get Help</h2>
-          <UserPersonsTable data={table} />
-
-          <h2>Give Help</h2>
-          <UserPersonsTable data={persons} />
+              <h2>Give Help</h2>
+              <UserPersonsTable data={givePersons} />
+            </React.Fragment>
+          )}
         </div>
       )}
     </div>
@@ -81,7 +79,7 @@ function User(props) {
 
 export default User;
 
-async function getPersons(clearSession) {
+async function fetchPersons(clearSession) {
   return await fetch('/api/persons').then(response => {
     if (response.status === 200) {
       return response.json();

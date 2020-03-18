@@ -25,8 +25,8 @@ router.post('/gethelp', async function(req, res) {
       needsHelp: true,
       ...req.body
     });
-    const result = await newPerson.save();
-    console.log(result);
+    await newPerson.save();
+    // console.log(result);
 
     // send to sendgrid
     // const sendGridResponse = await SendGrid.addContact(req.body);
@@ -69,10 +69,11 @@ router.get('/persons', getToken, authenticate, getUser, async function(
       return res.status(404).send({});
     }
 
+    console.log(user.location);
     const personList = await PersonModel.find({
       location: {
         $near: {
-          $geometry: { type: 'Point', coordinates: user.location.coordinates },
+          $geometry: user.location,
           $maxDistance: user.radius
         }
       }

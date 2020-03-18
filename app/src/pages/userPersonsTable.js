@@ -3,9 +3,17 @@ import React from 'react';
 import TableViewer from 'react-js-table-with-csv-dl';
 
 function PersonsTable({ title, data }) {
+  const formattedData = data.map(item => {
+    return {
+      Name: item.displayName,
+      Phone: item.phone,
+      Email: item.email,
+      Address: item.address
+    };
+  });
   return (
     <TableViewer
-      content={data}
+      content={formattedData}
       headers={headers}
       minHeight={0}
       maxHeight={400}
@@ -22,7 +30,7 @@ function PersonsTable({ title, data }) {
 
 export default PersonsTable;
 
-const headers = ['Name', 'Address', 'Phone'];
+const headers = ['Name', 'Phone', 'Email', 'Address'];
 
 const headerCss = {
   backgroundColor: '#1e68bc',

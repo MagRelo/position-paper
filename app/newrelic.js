@@ -1,4 +1,3 @@
-
 /**
  * New Relic agent configuration.
  *
@@ -9,7 +8,7 @@ exports.config = {
   /**
    * Array of application names.
    */
-  app_name: ['ie-app-staging'],
+  app_name: ['local-connect'],
   /**
    * Your New Relic license key.
    */

@@ -84,6 +84,7 @@ const PersonSchema = new mongoose.Schema(
     avatar: String,
     displayName: String,
     email: String,
+    phone: String,
     placeId: String,
     address: String,
     location: {

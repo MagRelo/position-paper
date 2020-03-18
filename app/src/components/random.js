@@ -223,7 +223,7 @@ export function UserProfile({ user, hideDescription }) {
         <div className="user-text">
           <div className="user-name">{user.displayName}</div>
 
-          {!user.description || hideDesc ? null : (
+          {hideDesc ? null : (
             <React.Fragment>
               <span>
                 <span className="icon-wrapper blue">

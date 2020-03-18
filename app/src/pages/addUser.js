@@ -101,7 +101,7 @@ function AddCommunityForm(props) {
             <label htmlFor="location">Contact Name</label>
             <input
               type="text"
-              name="name"
+              name="displayName"
               required={true}
               className="form-control"
             />

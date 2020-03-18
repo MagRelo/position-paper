@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { AuthContext } from 'App';
 
 // import { LinkedIn } from 'react-linkedin-login-oauth2';
@@ -7,10 +7,10 @@ import { GoogleLogin } from 'react-google-login';
 
 function GoogleAuthLogin(props) {
   const { createSession } = useContext(AuthContext);
-  const [error, setError] = useState(null);
 
   async function handleSuccess(data) {
-    sendAuthCode(data.profileObj)
+    // console.log(data);
+    sendAuthCode(data.profileObj, data.tokenObj)
       .then(user => {
         createSession(user, props.redirect);
       })
@@ -47,7 +47,7 @@ function GoogleAuthLogin(props) {
 
 export default GoogleAuthLogin;
 
-async function sendAuthCode(user) {
+async function sendAuthCode(user, token) {
   const apiEndpoint = '/api/auth/google';
 
   return await fetch(apiEndpoint, {
@@ -55,7 +55,7 @@ async function sendAuthCode(user) {
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(user)
+    body: JSON.stringify({ user, token })
   }).then(response => {
     if (response.status === 200) {
       return response.json();
