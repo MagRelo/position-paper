@@ -1,29 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Tab } from '@reach/tabs';
-import {
-  FaExternalLinkAlt,
-  FaRegCopy,
-  // FaEdit,
-  FaGlobeAmericas,
-  FaBuilding
-} from 'react-icons/fa';
-import { MdMyLocation, MdLocationOn } from 'react-icons/md';
-import { AiOutlineUser } from 'react-icons/ai';
-
-import { useRect } from '@reach/rect';
-
+import React, { useState, useEffect } from 'react';
 import Img from 'react-image';
 
-// import EmailButton from 'components/social/emailButton';
-// import TwitterButton from 'components/social/twitterButton';
-// import LinkedinButton from 'components/social/linkedinButton';
-// import InstaButton from 'components/social/instagramButton';
-
-import Visa from 'components/social/visa';
-import MasterCard from 'components/social/mastercard';
-import Discover from 'components/social/discover';
-import Amex from 'components/social/amex';
-import Bank from 'components/social/bank';
+import { FaBuilding } from 'react-icons/fa';
+import { MdMyLocation, MdLocationOn } from 'react-icons/md';
+import { AiOutlineUser } from 'react-icons/ai';
 
 var SI_SYMBOL = ['', 'k', 'M', 'G', 'T', 'P', 'E'];
 
@@ -108,65 +88,6 @@ export function useDebounce(value, delay) {
   );
 
   return debouncedValue;
-}
-
-export function CoolTab(props) {
-  // `isSelected` comes from `TabList` cloning the `CoolTab`.
-  const { isSelected, children } = props;
-
-  // make sure to forward *all* props received from TabList
-  return (
-    <Tab
-      {...props}
-      style={{
-        color: '#7329c2',
-        fontSize: '16px',
-        background: 'none',
-        paddingLeft: 0,
-        paddingRight: 0,
-        border: 'none',
-        borderBottom: isSelected ? 'solid 1px #7329c2' : 'none',
-        marginRight: '26px',
-        transition: 'none'
-      }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}
-      >
-        {children}
-        {props.count ? (
-          <span
-            style={{
-              fontSize: ' 10px',
-              marginLeft: '6px',
-              display: 'inline-block',
-              lineHeight: '16px',
-              background: '#eee',
-              borderRadius: '50%',
-              height: '16px',
-              width: '16px'
-            }}
-          >
-            {props.count}
-          </span>
-        ) : null}
-      </div>
-    </Tab>
-  );
-}
-
-export function lineItem(label, value) {
-  return (
-    <p className="line-item">
-      <span>{label}</span>
-      <span className="line-item-filler" />
-      <span>{value}</span>
-    </p>
-  );
 }
 
 export function usePromise(promiseOrFunction, defaultValue) {
@@ -258,123 +179,6 @@ export function copyTextToClipboard(text) {
   );
 }
 
-export function UrlDisplay({ slug }) {
-  const [hideURL, setHideURL] = useState(false);
-  const jobDescRef = useRef();
-  const jobDescRect = useRect(jobDescRef);
-  const width = jobDescRect ? jobDescRect.width : 0;
-
-  const domain = window.location.origin || 'http://localhost:3000';
-  const URL = `${domain}/${slug}`;
-
-  // sync menu with container width
-  useEffect(() => {
-    // console.log('url box width:', width);
-    if (width < 350) {
-      setHideURL(true);
-    } else {
-      setHideURL(false);
-    }
-  }, [width]);
-
-  return (
-    <div className="url-bar" ref={jobDescRef}>
-      <div
-        className="input-group"
-        style={{
-          justifyContent: hideURL ? 'center' : null,
-          height: hideURL ? '45px' : null
-        }}
-      >
-        <div className="input-group-prepend">
-          <div
-            className="input-group-text"
-            style={{
-              fontSize: 'smaller'
-            }}
-          >
-            <span className="icon-wrapper">
-              <FaGlobeAmericas />
-            </span>
-            &#8239; URL
-          </div>
-        </div>
-
-        {hideURL ? null : (
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Username"
-            disabled={true}
-            value={URL}
-          />
-        )}
-
-        {/* Edit 
-        <div className="input-group-append">
-          <div
-            className="input-group-text"
-            style={{
-              fontSize: 'smaller'
-            }}
-          >
-            <button className="button-unstyled">
-              Edit <FaEdit />
-            </button>
-          </div>
-        </div>
-        */}
-
-        {/* Copy */}
-        <div className="input-group-append">
-          <div
-            className="input-group-text"
-            style={{
-              fontSize: 'smaller'
-            }}
-          >
-            <button
-              className="button-unstyled"
-              onClick={() => {
-                copyTextToClipboard(URL);
-              }}
-            >
-              Copy &#8239;
-              <span className="icon-wrapper blue">
-                <FaRegCopy />
-              </span>
-            </button>
-          </div>
-        </div>
-
-        {/* View */}
-        <div className="input-group-append">
-          <div
-            className="input-group-text"
-            style={{
-              fontSize: 'smaller'
-            }}
-          >
-            <div>
-              <a
-                className="button-unstyled"
-                href={URL}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                View&#8239;
-                <span className="icon-wrapper blue">
-                  <FaExternalLinkAlt />
-                </span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export function ProfilePic({ avatarUrl }) {
   const defaultPic = () => {
     return (
@@ -463,39 +267,4 @@ function getJsonFromUrl(search) {
     result[item[0]] = decodeURIComponent(item[1]);
   });
   return result;
-}
-
-export function SocialGrid() {
-  return null;
-
-  // return (
-  //   <div>
-  //     <div className="social-label">
-  //       <span>Verified Social</span>
-  //       <div style={{ fontSize: 'small' }}>(coming soon)</div>
-  //     </div>
-
-  //     <div className="social-grid">
-  //       <EmailButton enabled={false} />
-  //       <LinkedinButton enabled={false} />
-  //       <TwitterButton enabled={false} />
-  //       <InstaButton enabled={false} />
-  //     </div>
-  //   </div>
-  // );
-}
-
-export function CardBrand({ brand }) {
-  switch (brand) {
-    case 'Visa':
-      return <Visa />;
-    case 'MasterCard':
-      return <MasterCard />;
-    case 'Discover':
-      return <Discover />;
-    case 'American Express':
-      return <Amex />;
-    default:
-      return <Bank />;
-  }
 }

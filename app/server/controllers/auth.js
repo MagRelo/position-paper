@@ -42,7 +42,7 @@ exports.getUser = async function(req, res, next) {
 
 exports.sendToken = function(req, res) {
   if (!req.user) {
-    console.log('Send Token: user:', req.user);
+    // console.log('Send Token: user:', req.user);
     return res.status(401).send('User Not Authenticated');
   }
 
@@ -72,7 +72,7 @@ exports.userStatus = async function(req, res) {
 
 exports.googleAuth = async function(req, res, next) {
   const userProfile = req.body;
-  console.log(userProfile);
+  // console.log(userProfile);
 
   try {
     // upsert user
@@ -93,7 +93,9 @@ exports.googleAuth = async function(req, res, next) {
       { new: true, upsert: false, setDefaultsOnInsert: true }
     );
 
-    console.log('Auth: user:', user);
+    if (!user) {
+      console.log('Auth Failure:', userProfile.email);
+    }
 
     // if good =>
     req.user = user;

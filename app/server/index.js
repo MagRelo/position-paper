@@ -43,7 +43,8 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGODB_URL_INT, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  useFindAndModify: false
 });
 mongoose.connection.on('error', function(err) {
   console.error('MongoDB connection error: ' + err);
