@@ -12,9 +12,9 @@ function Footer(props) {
           <div style={{ zIndex: 1 }}>
             <div className="footer-logo">
               <span>
-                <span className="footer-title">Stronger</span>
+                <span className="footer-title">Local</span>
                 &#8201;
-                <span className="footer-title">Together</span>
+                <span className="footer-title">Connect</span>
               </span>
             </div>
             <p>Help Your Community</p>
@@ -29,7 +29,7 @@ function Footer(props) {
                 justifyContent: 'center'
               }}
             >
-              <h4>
+              <h4 className="links-title">
                 <span>Community Organizers</span>
               </h4>
             </div>
@@ -37,7 +37,9 @@ function Footer(props) {
             <div className="footer-list justify-content-between d-flex">
               <ul className="list-unstyled w-100">
                 <li>
-                  <a href="/login">Login</a>
+                  <a className="btn btn-theme btn-sm" href="/login">
+                    Login
+                  </a>
                 </li>
               </ul>
             </div>
@@ -51,7 +53,7 @@ function Footer(props) {
             className="copyright"
             style={{ position: 'relative', zIndex: 1 }}
           >
-            <span>Talent Relay | 2020</span>
+            <span>Local&#8201;Connect | 2020</span>
           </div>
         </div>
       </div>

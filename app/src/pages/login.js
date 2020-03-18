@@ -19,11 +19,8 @@ function Login(props) {
       <section className="" data-bg-color="#d2f9fe">
         <div className="container">
           <div>
-            <h1 className="title">Approved Users</h1>
-            <p>
-              Only users from pre-approved community groups can sign in at this
-              time.
-            </p>
+            <h1 className="title">Registered Users</h1>
+            <p>Only registered users can sign in at this time.</p>
             <GoogleLogin className="btn btn-theme">
               Sign In with Google
             </GoogleLogin>
@@ -41,7 +38,7 @@ function Login(props) {
           </p>
 
           <a href="/organizers" className="btn btn-theme btn-sm">
-            Apply Now
+            Register Organization
           </a>
         </div>
       </section>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import { geocodeByPlaceId } from 'react-google-places-autocomplete';
@@ -63,6 +63,7 @@ function GetHelpForm(props) {
   const [formStatus, setFormStatus] = useState('new');
   const [error, setError] = useState('');
 
+  const locationRef = useRef(null);
   const [placeId, setPlaceId] = useState('');
   const [address, setAddress] = useState('');
   const [latLng, setLatLng] = useState({});
@@ -82,8 +83,21 @@ function GetHelpForm(props) {
       });
   }
 
+  function highlightLocation() {
+    locationRef.current.setAttribute('class', 'flashit');
+    setTimeout(() => {
+      locationRef.current.setAttribute('class', '');
+    }, 1000);
+  }
+
   async function submit(event) {
     event.preventDefault();
+
+    // force location
+    if (!placeId || !latLng.lng) {
+      console.log('no location');
+      return highlightLocation();
+    }
 
     // get form data
     const formObject = {
@@ -151,7 +165,7 @@ function GetHelpForm(props) {
           </div>
         </fieldset>
 
-        <fieldset>
+        <fieldset ref={locationRef}>
           <div className="form-group">
             <label htmlFor="location">Location</label>
             <GooglePlacesAutocomplete onSelect={onSelect} />

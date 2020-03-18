@@ -54,11 +54,8 @@ router.get('*', function(req, res) {
     }
 
     // replace values
-    data = data.replace(/\$OG_TITLE/g, 'Talent Relay');
-    data = data.replace(
-      /\$OG_DESCRIPTION/g,
-      `Earn revenue for your community by helping them find great jobs! Talent Relay pays the candidate *and* the community when someone is hired. Plus it's free and easy to use : )`
-    );
+    data = data.replace(/\$OG_TITLE/g, 'Local Connect');
+    data = data.replace(/\$OG_DESCRIPTION/g, `Connecting communities together`);
     const result = data.replace(
       /\$OG_IMAGE/g,
       'https://' + req.hostname + '/logo_share.png'

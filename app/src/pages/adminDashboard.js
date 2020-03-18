@@ -3,8 +3,9 @@ import { Link } from '@reach/router';
 
 // import { FaEdit } from 'react-icons/fa';
 
-import UserPersonsTable from 'pages/user/userPersonsTable';
-import Map from 'pages/user/map';
+import UserPersonsTable from 'pages/userPersonsTable';
+import AddUserAdmin from 'pages/addUser';
+// import Map from 'pages/user/map';
 
 import { Loading, UserProfile } from 'components/random';
 import { AuthContext } from 'App';
@@ -58,18 +59,13 @@ function User(props) {
         <div>
           <div className="mb-4"></div>
 
-          <div className="grid grid-2">
-            <div className="panel">
-              <UserProfile user={userData} />
-            </div>
-
-            <div>{/* <Map /> */}</div>
-          </div>
+          <h1>Admin Dashboard</h1>
 
           <div className="mb-4"></div>
+          <AddUserAdmin />
 
-          <UserPersonsTable title="Get Help" data={table} />
-          <UserPersonsTable title="Give Help" data={table} />
+          <div className="mb-4"></div>
+          <h2>Approve Application</h2>
         </div>
       )}
     </div>

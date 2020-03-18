@@ -10,13 +10,14 @@ const UserSchema = new mongoose.Schema(
     firstname: String,
     lastname: String,
     avatar: String,
-    jobBoardId: {
+    userId: {
       type: String,
       default: () => nanoid()
     },
     displayName: String,
     email: String,
     description: String,
+    address: String,
     location: {
       type: {
         type: String,
@@ -37,6 +38,16 @@ const UserSchema = new mongoose.Schema(
         id: String
       },
       select: false
+    },
+    type: {
+      type: String,
+      enum: ['Standard', 'Admin', 'Closed'],
+      default: 'Standard'
+    },
+    status: {
+      type: String,
+      enum: ['Pending', 'Approved', 'Closed'],
+      default: 'Pending'
     },
 
     stripeCustomer: { type: Object, select: false },
@@ -59,17 +70,22 @@ const UserSchema = new mongoose.Schema(
 exports.UserModel = mongoose.model('User', UserSchema);
 
 //
-// Volunteer
+// Give/Get
 //
 
 const PersonSchema = new mongoose.Schema(
   {
+    personId: {
+      type: String,
+      default: () => nanoid()
+    },
     firstname: String,
     lastname: String,
     avatar: String,
     displayName: String,
     email: String,
     placeId: String,
+    address: String,
     location: {
       type: {
         type: String,

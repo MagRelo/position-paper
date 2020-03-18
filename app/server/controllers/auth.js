@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+// const fetch = require('node-fetch');
 const jwt = require('jsonwebtoken');
 const expressJwt = require('express-jwt');
 
@@ -32,9 +32,7 @@ exports.authenticate = function(req, res, next) {
 exports.getUser = async function(req, res, next) {
   if (req.user && req.user.id) {
     const user = await UserModel.findOne({ _id: req.user.id })
-      .select(
-        'displayName avatar jobBoardUrl stripeCustomerBrand stripeCustomerLabel'
-      )
+      .select('displayName avatar address description location radius')
       .lean();
 
     req.user = { ...user, ...req.user };
@@ -42,68 +40,63 @@ exports.getUser = async function(req, res, next) {
   next();
 };
 
-exports.linkedinAuth = async function(req, res, next) {
+exports.sendToken = function(req, res) {
+  if (!req.user) {
+    console.log('Send Token: user:', req.user);
+    return res.status(401).send('User Not Authenticated');
+  }
+
+  // create token
+  const token = jwt.sign(
+    {
+      id: req.user._id
+    },
+    process.env['JWT_SECRET'],
+    {
+      expiresIn: 60 * 120
+    }
+  );
+
+  return res.status(200).send({ token, ...req.user });
+};
+
+exports.userStatus = async function(req, res) {
+  // check auth
+  if (!req.user) {
+    return res.status(401).send({ error: 'no user' });
+  }
+
+  // console.log(req.user);
+  return res.status(200).send(req.user);
+};
+
+exports.googleAuth = async function(req, res, next) {
+  const userProfile = req.body;
+  console.log(userProfile);
+
   try {
-    // get access token
-    const params = `grant_type=authorization_code&code=${req.body.access_code}&redirect_uri=${process.env['LINKEDIN_CALLBACK']}&client_id=${process.env['LINKEDIN_KEY']}&client_secret=${process.env['LINKEDIN_SECRET']}`;
-    const accessTokenResponse = await fetch(
-      'https://www.linkedin.com/oauth/v2/accessToken',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: params
-      }
-    ).then(response => {
-      if (response.status === 200) {
-        return response.json();
-      } else {
-        console.log('Get access token:', response.status, response.statusText);
-        throw Error(response);
-      }
-    });
-
-    // get profile data
-    const profileURI =
-      'https://api.linkedin.com/v2/me?projection=(id,firstName,lastName,profilePicture(displayImage~:playableStreams))';
-    const profile = await fetch(profileURI, {
-      method: 'GET',
-      headers: {
-        Connection: 'Keep-Alive',
-        Authorization: 'Bearer ' + accessTokenResponse.access_token
-      }
-    }).then(response => {
-      if (response.status === 200) {
-        return response.json();
-      } else {
-        console.log('Get profile data:', response.status, response.statusText);
-        throw Error(response);
-      }
-    });
-
     // upsert user
-    req.user = await UserModel.findOneAndUpdate(
+    const user = await UserModel.findOneAndUpdate(
       {
-        'linkedinProvider.id': profile.id
+        email: userProfile.email
       },
       {
-        firstname: profile.firstName.localized.en_US,
-        lastname: profile.lastName.localized.en_US,
-        displayName:
-          profile.firstName.localized.en_US +
-          ' ' +
-          profile.lastName.localized.en_US,
-        avatar:
-          profile.profilePicture['displayImage~'].elements[1].identifiers[0]
-            .identifier,
-        linkedinProvider: {
-          id: profile.id,
-          access_token: accessTokenResponse.access_token
+        firstname: userProfile.givenName,
+        lastname: userProfile.familyName,
+        displayName: userProfile.name,
+        email: userProfile.email,
+        avatar: userProfile.imageUrl,
+        googleProvider: {
+          id: userProfile.googleId
         }
       },
-      { new: true, upsert: true, setDefaultsOnInsert: true }
+      { new: true, upsert: false, setDefaultsOnInsert: true }
     );
+
+    console.log('Auth: user:', user);
+
+    // if good =>
+    req.user = user;
 
     next();
   } catch (error) {
@@ -111,6 +104,76 @@ exports.linkedinAuth = async function(req, res, next) {
     res.status(500).send(error);
   }
 };
+
+// exports.linkedinAuth = async function(req, res, next) {
+//   try {
+//     // get access token
+//     const params = `grant_type=authorization_code&code=${req.body.access_code}&redirect_uri=${process.env['LINKEDIN_CALLBACK']}&client_id=${process.env['LINKEDIN_KEY']}&client_secret=${process.env['LINKEDIN_SECRET']}`;
+//     const accessTokenResponse = await fetch(
+//       'https://www.linkedin.com/oauth/v2/accessToken',
+//       {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/x-www-form-urlencoded'
+//         },
+//         body: params
+//       }
+//     ).then(response => {
+//       if (response.status === 200) {
+//         return response.json();
+//       } else {
+//         console.log('Get access token:', response.status, response.statusText);
+//         throw Error(response);
+//       }
+//     });
+
+//     // get profile data
+//     const profileURI =
+//       'https://api.linkedin.com/v2/me?projection=(id,firstName,lastName,profilePicture(displayImage~:playableStreams))';
+//     const profile = await fetch(profileURI, {
+//       method: 'GET',
+//       headers: {
+//         Connection: 'Keep-Alive',
+//         Authorization: 'Bearer ' + accessTokenResponse.access_token
+//       }
+//     }).then(response => {
+//       if (response.status === 200) {
+//         return response.json();
+//       } else {
+//         console.log('Get profile data:', response.status, response.statusText);
+//         throw Error(response);
+//       }
+//     });
+
+//     // upsert user
+//     req.user = await UserModel.findOneAndUpdate(
+//       {
+//         'linkedinProvider.id': profile.id
+//       },
+//       {
+//         firstname: profile.firstName.localized.en_US,
+//         lastname: profile.lastName.localized.en_US,
+//         displayName:
+//           profile.firstName.localized.en_US +
+//           ' ' +
+//           profile.lastName.localized.en_US,
+//         avatar:
+//           profile.profilePicture['displayImage~'].elements[1].identifiers[0]
+//             .identifier,
+//         linkedinProvider: {
+//           id: profile.id,
+//           access_token: accessTokenResponse.access_token
+//         }
+//       },
+//       { new: true, upsert: true, setDefaultsOnInsert: true }
+//     );
+
+//     next();
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).send(error);
+//   }
+// };
 
 // exports.twitterReverse = function(req, res) {
 //   request.post(
@@ -163,61 +226,3 @@ exports.linkedinAuth = async function(req, res, next) {
 //     }
 //   );
 // };
-
-exports.sendToken = function(req, res) {
-  if (!req.user) {
-    return res.status(401).send('User Not Authenticated');
-  }
-
-  // create token
-  const token = jwt.sign(
-    {
-      id: req.user._id
-    },
-    process.env['JWT_SECRET'],
-    {
-      expiresIn: 60 * 120
-    }
-  );
-
-  return res.status(200).send({ token, ...req.user });
-};
-
-exports.userStatus = async function(req, res) {
-  // check auth
-  if (!req.user) {
-    return res.status(401).send({ error: 'no user' });
-  }
-
-  // console.log(req.user);
-  return res.status(200).send(req.user);
-};
-
-exports.googleAuth = async function(req, res, next) {
-  const userProfile = req.body;
-  console.log(userProfile);
-
-  try {
-    // upsert user
-    req.user = await UserModel.findOneAndUpdate(
-      {
-        'googleProvider.id': userProfile.googleId
-      },
-      {
-        firstname: userProfile.givenName,
-        lastname: userProfile.familyName,
-        displayName: userProfile.name,
-        avatar: userProfile.imageUrl,
-        linkedinProvider: {
-          id: userProfile.googleId
-        }
-      },
-      { new: true, upsert: true, setDefaultsOnInsert: true }
-    );
-
-    next();
-  } catch (error) {
-    console.log(error);
-    res.status(500).send(error);
-  }
-};

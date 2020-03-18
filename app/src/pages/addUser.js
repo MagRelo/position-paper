@@ -1,81 +1,56 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import { geocodeByPlaceId } from 'react-google-places-autocomplete';
 import { getLatLng } from 'react-google-places-autocomplete/dist/utils/googleGeocodesHelper';
+
 // If you want to use the provided css
 import 'react-google-places-autocomplete/dist/assets/index.css';
 
 import { Loading } from 'components/random';
 
-function GetHelp() {
-  return (
-    <div className="page-container">
-      <div className="container">
-        <div
-          style={{
-            maxWidth: '52em',
-            margin: '0 auto'
-          }}
-        >
-          <h1>Give Help</h1>
-          <p>
-            This form can be used to offer help to{' '}
-            <a href="https://www.cdc.gov/coronavirus/2019-ncov/specific-groups/high-risk-complications.html">
-              persons at risk for serious illness from COVID-19
-            </a>
-            .
-          </p>
+export default AddCommunityForm;
 
-          <h2>What types of things will I do?</h2>
-          <ul>
-            <li>Small errands such as grocery shopping</li>
-            <li>Taking pets for a walk</li>
-            <li>Checking in to make sure everything is OK</li>
-          </ul>
-
-          <h2>How does it work?</h2>
-          <ol>
-            <li>Fill out and submit the form below.</li>
-            <li>
-              When we find someone nearby we will send them an email with your
-              information. They will contact you via email.
-            </li>
-          </ol>
-        </div>
-
-        <GetHelpForm />
-      </div>
-    </div>
-  );
-}
-
-export default GetHelp;
-
-function GetHelpForm(props) {
+function AddCommunityForm(props) {
   // form
   const [formStatus, setFormStatus] = useState('new');
   const [error, setError] = useState('');
 
+  const locationRef = useRef(null);
   const [placeId, setPlaceId] = useState('');
   const [address, setAddress] = useState('');
   const [latLng, setLatLng] = useState({});
 
-  function onSelect(data) {
-    setAddress(data.description);
+  async function onSelect(data) {
+    console.log(data);
+
+    //
     setPlaceId(data.place_id);
+    setAddress(data.description);
     geocodeByPlaceId(data.place_id)
       .then(results => getLatLng(results[0]))
-      .then(results => setLatLng(results))
+      .then(async latLng => setLatLng(latLng))
       .catch(error => {
         console.log(error);
         setError(error);
       });
   }
 
+  function highlightLocation() {
+    locationRef.current.setAttribute('class', 'flashit');
+    setTimeout(() => {
+      locationRef.current.setAttribute('class', '');
+    }, 1000);
+  }
+
   async function submit(event) {
     event.preventDefault();
 
+    // force location
+    if (!placeId || !latLng.lng) {
+      console.log('no location');
+      return highlightLocation();
+    }
     // get form data
     const formObject = {
       placeId: placeId,
@@ -85,6 +60,7 @@ function GetHelpForm(props) {
         coordinates: [latLng.lng, latLng.lat]
       }
     };
+
     const formData = new FormData(event.target);
     formData.forEach((value, key) => {
       formObject[key] = value;
@@ -93,7 +69,7 @@ function GetHelpForm(props) {
     // loading
     setFormStatus('loading');
 
-    submitJob(formObject)
+    submitForm(formObject)
       .then(link => {
         setFormStatus('success');
       })
@@ -109,10 +85,20 @@ function GetHelpForm(props) {
       <form name="addJobForm" onSubmit={submit}>
         {/* Description */}
         <fieldset>
-          <legend>Offer To Help</legend>
+          <legend>Add Organization User</legend>
 
           <div className="form-group">
-            <label htmlFor="location">Name</label>
+            <label htmlFor="location">Organization Name</label>
+            <input
+              type="text"
+              name="description"
+              required={true}
+              className="form-control"
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="location">Contact Name</label>
             <input
               type="text"
               name="name"
@@ -122,7 +108,7 @@ function GetHelpForm(props) {
           </div>
 
           <div className="form-group">
-            <label htmlFor="location">Phone Number</label>
+            <label htmlFor="location">Contact Phone Number</label>
             <input
               type="text"
               name="phone"
@@ -132,7 +118,7 @@ function GetHelpForm(props) {
           </div>
 
           <div className="form-group">
-            <label htmlFor="location">Email Address</label>
+            <label htmlFor="location">Contact Email Address</label>
             <input
               type="email"
               name="email"
@@ -141,11 +127,19 @@ function GetHelpForm(props) {
             />
           </div>
 
-          <hr />
+          <div className="form-group" ref={locationRef}>
+            <label htmlFor="location">Organization Location</label>
+            <GooglePlacesAutocomplete onSelect={onSelect} />
+          </div>
 
           <div className="form-group">
-            <label htmlFor="location">Location</label>
-            <GooglePlacesAutocomplete onSelect={onSelect} />
+            <label htmlFor="location">Organization Area Radius (meters)</label>
+            <input
+              type="text"
+              name="radius"
+              required={true}
+              className="form-control"
+            />
           </div>
         </fieldset>
 
@@ -176,9 +170,9 @@ function GetHelpForm(props) {
   );
 }
 
-async function submitJob(queryData) {
+async function submitForm(queryData) {
   const method = 'POST';
-  const endPoint = '/api/givehelp';
+  const endPoint = '/api/add-user-admin';
 
   return fetch(endPoint, {
     method: method,

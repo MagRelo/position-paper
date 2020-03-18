@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { AuthContext } from 'App';
 
 // import { LinkedIn } from 'react-linkedin-login-oauth2';
@@ -7,27 +7,22 @@ import { GoogleLogin } from 'react-google-login';
 
 function GoogleAuthLogin(props) {
   const { createSession } = useContext(AuthContext);
+  const [error, setError] = useState(null);
 
   async function handleSuccess(data) {
     sendAuthCode(data.profileObj)
       .then(user => {
-        // const redirect = props.redirect || ''
-        // // execute promote, apply?
-        // if(props.executePromote){
-        //   const newLink = await createLink()
-        // }
-
         createSession(user, props.redirect);
       })
-      .catch(response => {
-        console.log('error', response);
-        alert(`An Error Occured: ${response.error}`);
+      .catch(error => {
+        console.log(error);
+        alert(error);
       });
   }
 
-  function handleError(response) {
-    console.log('error', response);
-    // alert(`An Error Occured: ${response.error}`);
+  function handleError(error) {
+    console.log(error);
+    alert(error);
   }
 
   return (

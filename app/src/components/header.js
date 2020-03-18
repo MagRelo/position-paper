@@ -47,9 +47,9 @@ function Header() {
 
           <Link to="/">
             <span>
-              <span className="header-title">Stronger</span>
+              <span className="header-title">Local</span>
               &#8201;
-              <span className="header-title">Together</span>
+              <span className="header-title">Connect</span>
             </span>
           </Link>
         </div>

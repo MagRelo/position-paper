@@ -10,7 +10,7 @@ function LandingPage() {
       <div className="page-content">
         <div className="container">
           <div className="mb-4"></div>
-          <h1>Stronger Together</h1>
+          <h1>Local&#8201;Connect</h1>
           <p>Help your community</p>
         </div>
 
@@ -49,15 +49,16 @@ function LandingPage() {
           <div className="panel">
             <h2>Community Organizations</h2>
             <p>
-              In order to protect the privacy of our users we only work with
-              approved community groups to coordinate volunteers. If you are a
-              representative of an eligible group (such as a school, church,
-              library, etc.) and are able to coordinate care in your area please
-              use the form below to get involved.
+              In order to protect the safety & privacy of vulnerable persons we
+              rely on approved community groups to coordinate local volunteers.
+              If you are a representative of an eligible group (such as a
+              government agency, school, church, library, etc.) and are able to
+              coordinate volunteers in your area please click 'Register
+              Organization' to get started.
             </p>
 
             <a href="/organizers" className="btn btn-theme btn-sm">
-              Apply Now
+              Register Organization
             </a>
           </div>
         </div>

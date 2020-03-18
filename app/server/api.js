@@ -49,15 +49,12 @@ const PersonModel = require('./models').PersonModel;
 
 router.post('/gethelp', async function(req, res) {
   try {
-    const response = await PersonModel.update(
-      { email: req.body.email },
-      {
-        needsHelp: true,
-        ...req.body
-      },
-      { upsert: true }
-    );
-    console.log(response);
+    const newPerson = new PersonModel({
+      needsHelp: true,
+      ...req.body
+    });
+    const result = await newPerson.save();
+    console.log(result);
 
     // send to sendgrid
     // const sendGridResponse = await SendGrid.addContact(req.body);
@@ -67,7 +64,6 @@ router.post('/gethelp', async function(req, res) {
     res.status(500).send({ error: error.message });
   }
 });
-
 router.post('/givehelp', async function(req, res) {
   try {
     const response = await PersonModel.update(
@@ -76,7 +72,7 @@ router.post('/givehelp', async function(req, res) {
         offeringHelp: true,
         ...req.body
       },
-      { upsert: true }
+      { new: true, upsert: true, setDefaultsOnInsert: true }
     );
     console.log(response);
 
@@ -90,26 +86,46 @@ router.post('/givehelp', async function(req, res) {
   }
 });
 
-router.get('/user/jobs/:jobBoardId', async function(req, res) {
-  const user = await UserModel.findOne({ jobBoardId: req.params.jobBoardId });
-
-  if (!user) {
-    return res.status(404).send({});
-  }
-
-  const results = await LinkModel.find({
-    user: user._id,
-    status: 'Active'
-  });
-
+router.get('/persons', getToken, authenticate, getUser, async function(
+  req,
+  res
+) {
   try {
-    res.status(200).send({
-      user: user,
-      jobs: results
+    const user = await UserModel.findOne({ _id: req.user._id });
+
+    if (!user) {
+      return res.status(404).send({});
+    }
+
+    const personList = await PersonModel.find({
+      location: {
+        $near: {
+          $geometry: { type: 'Point', coordinates: user.location.coordinates },
+          $maxDistance: user.radius
+        }
+      }
     });
+
+    res.status(200).send({ personList });
   } catch (error) {
     console.log(req.path, error);
     res.status(500).send(error);
+  }
+});
+
+router.post('/add-user-admin', async function(req, res) {
+  try {
+    const newUser = new UserModel({ ...req.body });
+
+    const response = await newUser.save();
+
+    // send to sendgrid
+    // const sendGridResponse = await SendGrid.addContact(req.body);
+
+    res.status(200).send({ success: true, ...response });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ error: error.message });
   }
 });
 

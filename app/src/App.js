@@ -29,7 +29,8 @@ import Footer from 'components/footer';
 // Routes
 import Login from 'pages/login';
 import LandingPage from 'pages/landingPage';
-import Dashboard from 'pages/user/userDashboard';
+import UserDashboard from 'pages/userDashboard';
+import AdminDashboard from 'pages/adminDashboard';
 
 import GiveHelp from 'pages/giveHelp';
 import GetHelp from 'pages/getHelp';
@@ -100,7 +101,9 @@ function App(props) {
               <Router>
                 {/* Auth required */}
                 <Login path="/login" />
-                <Dashboard path="/dashboard" />
+
+                <UserDashboard path="/dashboard" />
+                <AdminDashboard path="/admin" />
 
                 <GetHelp path="/gethelp" />
                 <GiveHelp path="/givehelp" />
@@ -159,27 +162,24 @@ async function getUser() {
 function MetaData() {
   return (
     <Helmet>
-      <title>Covid Project</title>
+      <title>Local Connect</title>
       <meta name="description" content="Connect to your Community" />
-      <link rel="canonical" href={'https://talentrelay.app'} />
+      <link rel="canonical" href={'https://localconnect.app'} />
 
-      <meta property="og:site_name" content="Talent Relay" />
+      <meta property="og:site_name" content="Local Connect" />
       <meta property="og:type" content="website" />
-      <meta property="og:url" content={'https://talentrelay.app'} />
-      <meta property="og:image:secure_url" content="https://talentrelay.app" />
-      <meta property="og:image" content="https://talentrelay.app/logo.png" />
+      <meta property="og:url" content={'https://localconnect.app'} />
+      <meta property="og:image:secure_url" content="https://localconnect.app" />
+      <meta property="og:image" content="https://localconnect.app/logo.png" />
       <meta property="og:image:type" content="png" />
       <meta property="og:image:height" content="201" />
       <meta property="og:image:width" content="630" />
 
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:site" content="@i_dot_e" />
-      <meta name="twitter:title" content="TalentRelay" />
-      <meta
-        name="twitter:description"
-        content="Talent Relay super-charges your talent search. We combine cash incentives, social networking, and human judgement to provide a steady stream of high-quality, pre-screened candidates."
-      />
-      <meta name="twitter:image" content="https://talentrelay.app/logo.png" />
+      <meta name="twitter:title" content="LocalConnect" />
+      <meta name="twitter:description" content="Connect to your Community" />
+      <meta name="twitter:image" content="https://localconnect.app/logo.png" />
     </Helmet>
   );
 }

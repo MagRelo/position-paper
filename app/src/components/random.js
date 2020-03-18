@@ -4,9 +4,10 @@ import {
   FaExternalLinkAlt,
   FaRegCopy,
   // FaEdit,
-  FaGlobeAmericas
+  FaGlobeAmericas,
+  FaBuilding
 } from 'react-icons/fa';
-import { MdLocationOn } from 'react-icons/md';
+import { MdMyLocation, MdLocationOn } from 'react-icons/md';
 import { AiOutlineUser } from 'react-icons/ai';
 
 import { useRect } from '@reach/rect';
@@ -417,23 +418,31 @@ export function UserProfile({ user, hideDescription }) {
 
         <div className="user-text">
           <div className="user-name">{user.displayName}</div>
-          {user.location ? (
-            <div className="user-location">
-              {/* <span className="icon-wrapper blue">
-                <MdLocationOn />
-              </span>{' '} */}
-              {user.description}
-            </div>
-          ) : null}
+
+          {!user.description || hideDesc ? null : (
+            <React.Fragment>
+              <span>
+                <span className="icon-wrapper blue">
+                  <FaBuilding />
+                </span>{' '}
+                {user.description}
+              </span>
+              <div>
+                <span className="icon-wrapper blue">
+                  <MdLocationOn />
+                </span>{' '}
+                {user.address}
+              </div>
+              <div>
+                <span className="icon-wrapper blue">
+                  <MdMyLocation />
+                </span>{' '}
+                Service Radius: {user.radius}m
+              </div>
+            </React.Fragment>
+          )}
         </div>
       </div>
-
-      {!user.description || hideDesc ? null : (
-        <React.Fragment>
-          <div className="mb-2"></div>
-          <p>{user.description}</p>
-        </React.Fragment>
-      )}
     </div>
   );
 }

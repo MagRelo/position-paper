@@ -256,15 +256,14 @@ table {
 .user-info {
   display: grid;
   grid-template-columns: auto 1fr;
-  grid-gap: 0.75em;
+  grid-gap: 1em;
 }
 
 .user-text {
   display: flex;
   flex-direction: column;
   justify-content: center;
-
-  color: $lighterText;
+  color: $darkText;
 }
 
 .user-avatar {
@@ -280,8 +279,7 @@ table {
 }
 
 .user-name {
-  font-size: 20px;
-  color: $darkText;
+  font-size: 24px;
 }
 
 .user-location {
