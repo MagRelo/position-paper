@@ -111,3 +111,5 @@ router.get('/auth/status', getToken, authenticate, getUser, userStatus);
 //
 
 router.get('/user', getToken, authenticate, getUser, populateUser);
+
+module.exports = router;
