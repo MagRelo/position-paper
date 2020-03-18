@@ -170,7 +170,10 @@ function MetaData() {
       <meta property="og:type" content="website" />
       <meta property="og:url" content={'https://localconnect.app'} />
       <meta property="og:image:secure_url" content="https://localconnect.app" />
-      <meta property="og:image" content="https://localconnect.app/logo.png" />
+      <meta
+        property="og:image"
+        content="https://localconnect.app/logo_share.png"
+      />
       <meta property="og:image:type" content="png" />
       <meta property="og:image:height" content="201" />
       <meta property="og:image:width" content="630" />
@@ -179,7 +182,10 @@ function MetaData() {
       <meta name="twitter:site" content="@i_dot_e" />
       <meta name="twitter:title" content="LocalConnect" />
       <meta name="twitter:description" content="Connect to your Community" />
-      <meta name="twitter:image" content="https://localconnect.app/logo.png" />
+      <meta
+        name="twitter:image"
+        content="https://localconnect.app/logo_share.png"
+      />
     </Helmet>
   );
 }
