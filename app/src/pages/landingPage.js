@@ -1,6 +1,8 @@
 import React from 'react';
 // import { Link } from '@reach/router';
 
+import Scooter from 'images/undraw_on_the_way_ldaq.svg';
+
 import { GiHeartPlus } from 'react-icons/gi';
 import { FaHandHoldingHeart } from 'react-icons/fa';
 
@@ -10,11 +12,30 @@ function LandingPage() {
       <div className="page-content">
         <div className="container">
           <div className="mb-4"></div>
-          <h1>Local&#8201;Connect</h1>
-          <p>Help your community</p>
+
+          <div className="hero-grid">
+            <div className="swap-order" style={{ padding: '0 1.5em' }}>
+              <img style={{ height: '250px' }} src={Scooter} alt="doctors" />
+            </div>
+
+            <div className="title-container">
+              <div>
+                <span className="title-theme-bg">
+                  Welcome to Local&#8201;Connect!
+                </span>
+              </div>
+              <h1>Help is on the Way!</h1>
+              <p>
+                Many people are in need of help during the COVID-19 pandemic &
+                many others are looking to help. We work with local
+                organizations to connect volunteers with those in need.
+              </p>
+            </div>
+          </div>
         </div>
 
         <div className="container">
+          <div className="mb-4"></div>
           <div className="grid grid-2">
             <div className="panel text-center">
               <h2>

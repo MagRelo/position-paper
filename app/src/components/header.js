@@ -87,13 +87,13 @@ function Header() {
             <ul className="nav-list">
               <li>
                 <a href="/gethelp" className="btn btn-theme btn-sm">
-                  I Need To Stay Safe <GiHeartPlus />
+                  Get Help <GiHeartPlus />
                 </a>
               </li>
 
               <li>
                 <a href="/givehelp" className="btn btn-theme btn-sm">
-                  I Can Help People <FaHandHoldingHeart />
+                  Give Help <FaHandHoldingHeart />
                 </a>
               </li>
 

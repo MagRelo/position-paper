@@ -970,12 +970,11 @@ span.circle {
 }
 
 /* Hero */
-.hero-container {
-  display: flex;
-  flex-direction: column;
-  align-content: center;
-  justify-content: center;
-  min-height: 100vh - 12vh;
+.hero-grid {
+  display: grid;
+  gap: 1.5em;
+
+  text-align: center;
 }
 
 .lead {
@@ -988,7 +987,27 @@ span.circle {
   background: $lightBlue;
   border-radius: 7px;
   display: inline-block;
-  padding: 3px;
+  padding: 3px 7px;
+}
+
+@media screen and (min-width: 992px) {
+
+  .hero-grid {
+    display: grid;
+    // gap: 3em;
+    grid-template-columns: 5fr 3fr;
+
+    margin: 3em 0;
+  }
+
+  .title-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    padding: 0 1.5em;
+  }
+
 }
 
 /* Hero */

@@ -111,7 +111,7 @@ exports.googleAuth = async function(req, res, next) {
     if (!user) {
       console.log('No user found:', googleResponse.email);
     } else {
-      req.user = user;
+      req.user = user.toObject();
     }
 
     next();

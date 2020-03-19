@@ -4,9 +4,6 @@ import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import { geocodeByPlaceId } from 'react-google-places-autocomplete';
 import { getLatLng } from 'react-google-places-autocomplete/dist/utils/googleGeocodesHelper';
 
-// If you want to use the provided css
-import 'react-google-places-autocomplete/dist/assets/index.css';
-
 import { Loading } from 'components/random';
 
 export default AddCommunityForm;
@@ -23,9 +20,8 @@ function AddCommunityForm(props) {
   const [latLng, setLatLng] = useState({});
 
   async function onSelect(data) {
-    console.log(data);
+    // console.log(data);
 
-    //
     setPlaceId(data.place_id);
     setAddress(data.description);
     geocodeByPlaceId(data.place_id)
@@ -75,7 +71,7 @@ function AddCommunityForm(props) {
       formObject[key] = value;
     });
 
-    if (!/@yahoo.com\s*$/.test(formObject.email)) {
+    if (!/@gmail.com\s*$/.test(formObject.email)) {
       console.log('not gmail');
       return highlightEmail();
     }
@@ -145,7 +141,14 @@ function AddCommunityForm(props) {
 
           <div className="form-group" ref={locationRef}>
             <label htmlFor="location">Organization Location</label>
-            <GooglePlacesAutocomplete onSelect={onSelect} />
+            <GooglePlacesAutocomplete
+              onSelect={onSelect}
+              suggestionsStyles={{
+                container: {
+                  zIndex: 100
+                }
+              }}
+            />
           </div>
 
           <div className="form-group">
@@ -174,7 +177,10 @@ function AddCommunityForm(props) {
           {formStatus === 'loading' ? <Loading /> : null}
 
           {formStatus === 'success' ? (
-            <p style={{ textAlign: 'center' }}>Success</p>
+            <div style={{ textAlign: 'center' }}>
+              <h3>Success!</h3>
+              <p>We'll send you an email with more instructions.</p>
+            </div>
           ) : null}
 
           {formStatus === 'error' ? (

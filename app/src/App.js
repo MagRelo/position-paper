@@ -10,6 +10,7 @@ import { Loading } from './components/random';
 import 'react-input-range/lib/css/index.css';
 import '@reach/dialog/styles.css';
 import '@reach/menu-button/styles.css';
+import 'react-google-places-autocomplete/dist/assets/index.css';
 
 // Template CSS
 import './css/bootstrap.min.css';
@@ -34,7 +35,7 @@ import AdminDashboard from 'pages/adminDashboard';
 
 import GiveHelp from 'pages/giveHelp';
 import GetHelp from 'pages/getHelp';
-import Organizers from 'pages/organizers';
+import Organizers from 'pages/registerOrganization';
 
 import Terms from 'pages/legal';
 import About from 'pages/about';
@@ -71,6 +72,7 @@ function App(props) {
 
   function createSession(user, redirect) {
     Cookies.set('servesa-auth-token', user.token);
+    setUser(user);
     setActiveSession(true);
 
     if (redirect) {

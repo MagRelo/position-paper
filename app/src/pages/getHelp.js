@@ -168,7 +168,14 @@ function GetHelpForm(props) {
         <fieldset ref={locationRef}>
           <div className="form-group">
             <label htmlFor="location">Location</label>
-            <GooglePlacesAutocomplete onSelect={onSelect} />
+            <GooglePlacesAutocomplete
+              onSelect={onSelect}
+              suggestionsStyles={{
+                container: {
+                  zIndex: 100
+                }
+              }}
+            />
           </div>
         </fieldset>
 
@@ -187,7 +194,10 @@ function GetHelpForm(props) {
           {formStatus === 'loading' ? <Loading /> : null}
 
           {formStatus === 'success' ? (
-            <p style={{ textAlign: 'center' }}>Success</p>
+            <div style={{ textAlign: 'center' }}>
+              <h3>Success!</h3>
+              <p>We'll send you an email with more instructions.</p>
+            </div>
           ) : null}
 
           {formStatus === 'error' ? (

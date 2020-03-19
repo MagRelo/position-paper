@@ -171,7 +171,14 @@ function CommunityForm(props) {
 
           <div className="form-group" ref={locationRef}>
             <label htmlFor="location">Organization Location</label>
-            <GooglePlacesAutocomplete onSelect={onSelect} />
+            <GooglePlacesAutocomplete
+              onSelect={onSelect}
+              suggestionsStyles={{
+                container: {
+                  zIndex: 100
+                }
+              }}
+            />
           </div>
 
           <div className="form-group">
@@ -202,7 +209,10 @@ function CommunityForm(props) {
           {formStatus === 'loading' ? <Loading /> : null}
 
           {formStatus === 'success' ? (
-            <p style={{ textAlign: 'center' }}>Success</p>
+            <div style={{ textAlign: 'center' }}>
+              <h3>Success!</h3>
+              <p>We'll send you an email with more instructions.</p>
+            </div>
           ) : null}
 
           {formStatus === 'error' ? (

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 
-import AddUserAdmin from 'pages/addUser';
+import AddUserAdmin from 'pages/addUserAdmin';
 // import Map from 'pages/user/map';
 
 import { Loading, Bouncing } from 'components/random';
