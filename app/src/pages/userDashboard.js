@@ -6,6 +6,18 @@ import UserPersonsTable from 'pages/userPersonsTable';
 import { Loading, UserProfile } from 'components/random';
 import { AuthContext } from 'App';
 
+function fileNameDate() {
+  var d = new Date(),
+    month = '' + (d.getMonth() + 1),
+    day = '' + d.getDate(),
+    year = d.getFullYear();
+
+  if (month.length < 2) month = '0' + month;
+  if (day.length < 2) day = '0' + day;
+
+  return [year, month, day].join('-');
+}
+
 function User(props) {
   const { clearSession, user } = useContext(AuthContext);
 
@@ -64,11 +76,17 @@ function User(props) {
 
               <div className="mb-4"></div>
 
-              <h2>Get Help</h2>
-              <UserPersonsTable data={getPersons} />
+              <h2 style={{ margin: 0 }}>People in Need</h2>
+              <UserPersonsTable
+                data={getPersons}
+                filename={'people_in_need-' + fileNameDate() + '.csv'}
+              />
 
-              <h2>Give Help</h2>
-              <UserPersonsTable data={givePersons} />
+              <h2 style={{ margin: 0 }}>Volunteers</h2>
+              <UserPersonsTable
+                data={givePersons}
+                filename={'volunteers-' + fileNameDate() + '.csv'}
+              />
             </React.Fragment>
           )}
         </div>

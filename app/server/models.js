@@ -16,6 +16,7 @@ const UserSchema = new mongoose.Schema(
     },
     displayName: String,
     email: String,
+    phone: String,
     description: String,
     address: String,
     location: {

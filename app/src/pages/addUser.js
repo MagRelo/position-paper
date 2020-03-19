@@ -17,6 +17,7 @@ function AddCommunityForm(props) {
   const [error, setError] = useState('');
 
   const locationRef = useRef(null);
+  const emailRef = useRef(null);
   const [placeId, setPlaceId] = useState('');
   const [address, setAddress] = useState('');
   const [latLng, setLatLng] = useState({});
@@ -43,6 +44,13 @@ function AddCommunityForm(props) {
     }, 1000);
   }
 
+  function highlightEmail() {
+    emailRef.current.setAttribute('class', 'flashit');
+    setTimeout(() => {
+      emailRef.current.setAttribute('class', '');
+    }, 1000);
+  }
+
   async function submit(event) {
     event.preventDefault();
 
@@ -51,6 +59,7 @@ function AddCommunityForm(props) {
       console.log('no location');
       return highlightLocation();
     }
+
     // get form data
     const formObject = {
       placeId: placeId,
@@ -65,6 +74,11 @@ function AddCommunityForm(props) {
     formData.forEach((value, key) => {
       formObject[key] = value;
     });
+
+    if (!/@yahoo.com\s*$/.test(formObject.email)) {
+      console.log('not gmail');
+      return highlightEmail();
+    }
 
     // loading
     setFormStatus('loading');
@@ -85,7 +99,7 @@ function AddCommunityForm(props) {
       <form name="addJobForm" onSubmit={submit}>
         {/* Description */}
         <fieldset>
-          <legend>Add Organization User</legend>
+          <legend>Add Organization & User</legend>
 
           <div className="form-group">
             <label htmlFor="location">Organization Name</label>
@@ -117,8 +131,10 @@ function AddCommunityForm(props) {
             />
           </div>
 
-          <div className="form-group">
-            <label htmlFor="location">Contact Email Address</label>
+          <div className="form-group" ref={emailRef}>
+            <label htmlFor="location">
+              Contact Email Address (must be a "@gmail.com" address)
+            </label>
             <input
               type="email"
               name="email"
@@ -135,7 +151,7 @@ function AddCommunityForm(props) {
           <div className="form-group">
             <label htmlFor="location">Organization Area Radius (meters)</label>
             <input
-              type="text"
+              type="number"
               name="radius"
               required={true}
               className="form-control"
@@ -151,7 +167,7 @@ function AddCommunityForm(props) {
         <div style={{ textAlign: 'right' }}>
           {formStatus === 'new' ? (
             <button className="btn btn-theme" type="submit">
-              Send Offer
+              Save & Approve
             </button>
           ) : null}
 

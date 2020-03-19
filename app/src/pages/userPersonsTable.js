@@ -2,7 +2,7 @@ import React from 'react';
 
 import TableViewer from 'react-js-table-with-csv-dl';
 
-function PersonsTable({ title, data }) {
+function PersonsTable({ title, data, filename }) {
   const formattedData = data.map(item => {
     return {
       Name: item.displayName,
@@ -15,12 +15,13 @@ function PersonsTable({ title, data }) {
     <TableViewer
       content={formattedData}
       headers={headers}
+      filename={filename}
       minHeight={0}
       maxHeight={400}
       activateDownloadButton={true}
       pagination={30}
       topPagination={true}
-      searchEnabled={true}
+      searchEnabled={false}
       caseInsensitive={true}
       headerCss={headerCss}
       downloadButtonStyle={buttonStyle}

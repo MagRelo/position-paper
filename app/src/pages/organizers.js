@@ -24,6 +24,7 @@ function GetHelp() {
 
           <h2>Preferred Organizations:</h2>
           <ul>
+            <li>Government Agencies</li>
             <li>Public Schools</li>
             <li>Churches</li>
             <li>Libraries</li>
@@ -44,6 +45,8 @@ function CommunityForm(props) {
   const [error, setError] = useState('');
 
   const locationRef = useRef(null);
+  const emailRef = useRef(null);
+
   const [placeId, setPlaceId] = useState('');
   const [address, setAddress] = useState('');
   const [latLng, setLatLng] = useState({});
@@ -68,6 +71,14 @@ function CommunityForm(props) {
       locationRef.current.setAttribute('class', '');
     }, 1000);
   }
+
+  function highlightEmail() {
+    emailRef.current.setAttribute('class', 'flashit');
+    setTimeout(() => {
+      emailRef.current.setAttribute('class', '');
+    }, 1000);
+  }
+
   async function submit(event) {
     event.preventDefault();
 
@@ -90,6 +101,11 @@ function CommunityForm(props) {
       formObject[key] = value;
     });
 
+    if (!/@yahoo.com\s*$/.test(formObject.email)) {
+      console.log('not gmail');
+      return highlightEmail();
+    }
+
     // loading
     setFormStatus('loading');
 
@@ -109,7 +125,7 @@ function CommunityForm(props) {
       <form name="addJobForm" onSubmit={submit}>
         {/* Description */}
         <fieldset>
-          <legend>Offer To Help</legend>
+          <legend>Register Organization</legend>
 
           <div className="form-group">
             <label htmlFor="location">Organization Name</label>
@@ -141,8 +157,10 @@ function CommunityForm(props) {
             />
           </div>
 
-          <div className="form-group">
-            <label htmlFor="location">Contact Email Address</label>
+          <div className="form-group" ref={emailRef}>
+            <label htmlFor="location">
+              Contact Email Address (must be a "@gmail.com" address)
+            </label>
             <input
               type="email"
               name="email"
@@ -157,7 +175,9 @@ function CommunityForm(props) {
           </div>
 
           <div className="form-group">
-            <label htmlFor="location">Organization Area Radius (meters)</label>
+            <label htmlFor="location">
+              Organization Service Area Radius (meters)
+            </label>
             <input
               type="text"
               name="radius"
@@ -196,7 +216,7 @@ function CommunityForm(props) {
 
 async function submitJob(queryData) {
   const method = 'POST';
-  const endPoint = '/api/givehelp';
+  const endPoint = '/api/add-org';
 
   return fetch(endPoint, {
     method: method,
