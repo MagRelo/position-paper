@@ -21,8 +21,8 @@ function GoogleAuthLogin(props) {
   }
 
   function handleError(error) {
-    console.log(error);
-    alert(error);
+    console.log(error.details);
+    alert(error.details);
   }
 
   return (

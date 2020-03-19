@@ -101,7 +101,7 @@ function CommunityForm(props) {
       formObject[key] = value;
     });
 
-    if (!/@yahoo.com\s*$/.test(formObject.email)) {
+    if (!/@gmail.com\s*$/.test(formObject.email)) {
       console.log('not gmail');
       return highlightEmail();
     }
