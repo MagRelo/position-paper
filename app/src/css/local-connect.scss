@@ -990,6 +990,10 @@ span.circle {
   padding: 3px 7px;
 }
 
+.hero-pic {
+  height: 200px;
+}
+
 @media screen and (min-width: 992px) {
 
   .hero-grid {
@@ -1006,6 +1010,11 @@ span.circle {
     justify-content: center;
 
     padding: 0 1.5em;
+  }
+
+  .hero-pic {
+    padding: 0 1.5em;
+    height: 250px;
   }
 
 }

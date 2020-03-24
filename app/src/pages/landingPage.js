@@ -14,8 +14,8 @@ function LandingPage() {
           <div className="mb-4"></div>
 
           <div className="hero-grid">
-            <div className="swap-order" style={{ padding: '0 1.5em' }}>
-              <img style={{ height: '250px' }} src={Scooter} alt="doctors" />
+            <div className="swap-order">
+              <img className="hero-pic" src={Scooter} alt="doctors" />
             </div>
 
             <div className="title-container">
