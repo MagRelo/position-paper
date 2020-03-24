@@ -5,18 +5,7 @@ import { GiHeartPlus } from 'react-icons/gi';
 import { FaHandHoldingHeart, FaBars } from 'react-icons/fa';
 
 import { AuthContext } from '../App';
-// import GoogleLogin from 'components/googleLogin';
-
-const NavLink = props => (
-  <Link
-    {...props}
-    getProps={({ isCurrent }) => {
-      return {
-        className: isCurrent ? 'nav-link active' : 'nav-link'
-      };
-    }}
-  />
-);
+import { NavLink } from 'components/random';
 
 function Header() {
   const { activeSession, user } = useContext(AuthContext);

@@ -443,13 +443,17 @@ textarea.form-control {
   box-shadow: $box-shadow;
 }
 
+fieldset {
+  margin-bottom: 1.5rem;
+}
+
 .form-control {
   height: 50px;
-  border-radius: 0;
   font-size: 13px;
   color: $darkText;
   background: none;
-  border: none;
+  // border: none;
+  border-radius: 4px;
   border-bottom: 2px solid $primaryLight;
 }
 

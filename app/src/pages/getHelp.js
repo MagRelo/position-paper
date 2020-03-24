@@ -113,6 +113,8 @@ function GetHelpForm(props) {
       formObject[key] = value;
     });
 
+    // console.log(formObject);
+
     // loading
     setFormStatus('loading');
 
@@ -163,19 +165,111 @@ function GetHelpForm(props) {
               className="form-control"
             />
           </div>
-        </fieldset>
 
-        <fieldset ref={locationRef}>
-          <div className="form-group">
+          <div className="form-group" ref={locationRef}>
             <label htmlFor="location">Location</label>
             <GooglePlacesAutocomplete
               onSelect={onSelect}
+              inputClassName="form-control"
               suggestionsStyles={{
                 container: {
                   zIndex: 100
                 }
               }}
             />
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <label htmlFor="location">
+            What can we help with? (Check all that apply)
+          </label>
+
+          <div className="grid grid-2">
+            <div className="form-check">
+              <label>
+                <input
+                  className="form-radio"
+                  type="checkbox"
+                  id="help_grocery"
+                  name="help_grocery"
+                  value={true}
+                />
+                Grocery Delivery
+              </label>
+            </div>
+            <div className="form-check">
+              <label>
+                <input
+                  className="form-radio"
+                  type="checkbox"
+                  id="help_wellness"
+                  name="help_wellness"
+                  value={true}
+                />
+                Wellness Checks
+              </label>
+            </div>
+            <div className="form-check">
+              <label>
+                <input
+                  className="form-radio"
+                  type="checkbox"
+                  id="help_childcare"
+                  name="help_childcare"
+                  value={true}
+                />
+                Childcare
+              </label>
+            </div>
+            <div className="form-check">
+              <label>
+                <input
+                  className="form-radio"
+                  type="checkbox"
+                  id="help_homeshool"
+                  name="help_homeshool"
+                  value={true}
+                />
+                Homeschooling Support
+              </label>
+            </div>
+            <div className="form-check">
+              <label>
+                <input
+                  className="form-radio"
+                  type="checkbox"
+                  id="help_food"
+                  name="help_food"
+                  value={true}
+                />
+                Food Assistance
+              </label>
+            </div>
+            <div className="form-check">
+              <label>
+                <input
+                  className="form-radio"
+                  type="checkbox"
+                  id="help_housing"
+                  name="help_housing"
+                  value={true}
+                />
+                Rent Support / Housing
+              </label>
+            </div>
+            <div className="form-check">
+              <label>
+                <input
+                  className="form-radio"
+                  type="checkbox"
+                  id="help_transportation"
+                  name="help_transportation"
+                  value={true}
+                />
+                Transportation
+              </label>
+            </div>
           </div>
         </fieldset>
 

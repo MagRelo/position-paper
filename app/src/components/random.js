@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Img from 'react-image';
 
+import { Link } from '@reach/router';
 import { FaBuilding } from 'react-icons/fa';
 import { MdMyLocation, MdLocationOn } from 'react-icons/md';
 import { AiOutlineUser } from 'react-icons/ai';
@@ -268,3 +269,14 @@ function getJsonFromUrl(search) {
   });
   return result;
 }
+
+export const NavLink = props => (
+  <Link
+    {...props}
+    getProps={({ isCurrent }) => {
+      return {
+        className: isCurrent ? 'nav-link active' : 'nav-link'
+      };
+    }}
+  />
+);

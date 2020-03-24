@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'components/random';
 
 function Footer(props) {
   return (
@@ -37,9 +38,7 @@ function Footer(props) {
             <div className="footer-list justify-content-between d-flex">
               <ul className="list-unstyled w-100">
                 <li>
-                  <a className="btn btn-theme btn-sm" href="/login">
-                    Login
-                  </a>
+                  <NavLink to="/login">Login</NavLink>
                 </li>
               </ul>
             </div>

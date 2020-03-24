@@ -158,12 +158,11 @@ function GetHelpForm(props) {
             />
           </div>
 
-          <hr />
-
           <div className="form-group" ref={locationRef}>
             <label htmlFor="location">Location</label>
             <GooglePlacesAutocomplete
               onSelect={onSelect}
+              inputClassName="form-control"
               suggestionsStyles={{
                 container: {
                   zIndex: 100
