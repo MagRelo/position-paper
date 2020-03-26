@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
+const SendGrid = require('./integrations/sendgrid');
+
 // Controllers
 const {
   googleAuth,
@@ -10,11 +12,11 @@ const {
   userStatus,
   getUser
 } = require('./controllers/auth');
-
 const { populateUser } = require('./controllers/user');
 
 const UserModel = require('./models').UserModel;
 const PersonModel = require('./models').PersonModel;
+
 //
 // MISC
 //
@@ -29,27 +31,41 @@ router.post('/gethelp', async function(req, res) {
     // console.log(result);
 
     // send to sendgrid
-    // const sendGridResponse = await SendGrid.addContact(req.body);
+    const sendGridResponse = await SendGrid.sendEmail(
+      'getHelp',
+      newPerson.toObject()
+    );
+    // console.log(sendGridResponse);
+
+    // save response
+    newPerson.welcomeEmail = sendGridResponse;
+    await newPerson.save();
 
     res.status(200).send({ success: true });
   } catch (error) {
+    console.log({ error: error.message });
     res.status(500).send({ error: error.message });
   }
 });
 router.post('/givehelp', async function(req, res) {
   try {
-    const response = await PersonModel.update(
-      { email: req.body.email },
-      {
-        offeringHelp: true,
-        ...req.body
-      },
-      { new: true, upsert: true, setDefaultsOnInsert: true }
-    );
-    console.log(response);
+    const newPerson = new PersonModel({
+      offeringHelp: true,
+      ...req.body
+    });
+    await newPerson.save();
+    // console.log(newPerson);
 
     // send to sendgrid
-    // const sendGridResponse = await SendGrid.addContact(req.body);
+    const sendGridResponse = await SendGrid.sendEmail(
+      'giveHelp',
+      newPerson.toObject()
+    );
+    // console.log(sendGridResponse);
+
+    // save response
+    newPerson.welcomeEmail = sendGridResponse;
+    await newPerson.save();
 
     res.status(200).send({ success: true });
   } catch (error) {
@@ -64,7 +80,15 @@ router.post('/add-org', async function(req, res) {
     await newUser.save();
 
     // send to sendgrid
-    // const sendGridResponse = await SendGrid.addContact(req.body);
+    const sendGridResponse = await SendGrid.sendEmail(
+      'newOrg',
+      newUser.toObject()
+    );
+    // console.log(sendGridResponse);
+
+    // save response
+    newUser.welcomeEmail = sendGridResponse;
+    await newUser.save();
 
     res.status(200).send({ success: true });
   } catch (error) {

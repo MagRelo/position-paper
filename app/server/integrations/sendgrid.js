@@ -69,3 +69,52 @@ exports.addContact = async function(emailAddress, data) {
 
   return response.ok;
 };
+
+exports.sendEmail = async function(emailType, personData) {
+  // convert to template id
+  let templateId = null;
+  switch (emailType) {
+    case 'getHelp':
+      templateId = process.env.SENDGRID_TEMPLATE_GET_HELP;
+      break;
+    case 'giveHelp':
+      templateId = process.env.SENDGRID_TEMPLATE_GIVE_HELP;
+      break;
+    case 'newOrg':
+      templateId = process.env.SENDGRID_TEMPLATE_NEW_ORG;
+      break;
+    case 'orgApproved':
+      templateId = process.env.SENDGRID_TEMPLATE_ORG_APPROVED;
+      break;
+    default:
+      break;
+  }
+  if (!templateId) {
+    throw new Error('No Template Id');
+  }
+
+  // setup message
+  const msg = {
+    to: personData.email,
+    from: fromAddress,
+    templateId: templateId,
+    dynamic_template_data: {
+      ...personData.data
+    }
+  };
+
+  return sgMail.send(msg).then(responseArray => {
+    const response = responseArray[0];
+    const err = responseArray[1];
+
+    if (err) {
+      throw new Error(err);
+    }
+
+    return {
+      id: response.headers['x-message-id'],
+      statusCode: response.statusCode,
+      statusMessage: response.statusMessage
+    };
+  });
+};

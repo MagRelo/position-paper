@@ -63,7 +63,7 @@ function GetHelpForm(props) {
   const [latLng, setLatLng] = useState({});
 
   async function onSelect(data) {
-    console.log(data);
+    // console.log(data);
 
     //
     setPlaceId(data.place_id);

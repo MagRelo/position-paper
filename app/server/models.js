@@ -50,6 +50,7 @@ const UserSchema = new mongoose.Schema(
       enum: ['Pending', 'Approved', 'Closed'],
       default: 'Pending'
     },
+    welcomeEmail: Object,
 
     stripeCustomer: { type: Object, select: false },
     stripeCustomerToken: { type: String, select: false },
@@ -108,6 +109,7 @@ const PersonSchema = new mongoose.Schema(
     help_transportation: { type: Boolean, default: false },
     needsHelp: { type: Boolean, default: false },
     offeringHelp: { type: Boolean, default: false },
+    welcomeEmail: Object,
     isMatched: { type: Boolean, default: false },
     matches: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Person' }],
     follows: { type: Array, default: [], select: false }
