@@ -277,6 +277,17 @@ function GetHelpForm(props) {
 
         <hr />
 
+        <p style={{ fontSize: 'small' }}>
+          <i>
+            * Local Connect is a volunteer organization made up of individuals
+            and agencies working for the public good. We do our best to ensure
+            that everyone working with us to meet needs has only good
+            intentions. That said, each person, whether helper or helpee is
+            responsible to guard their personal information and make safe
+            choices when interacting with community members.
+          </i>
+        </p>
+
         {/* Submit & Display */}
         <div style={{ textAlign: 'right' }}>
           {formStatus === 'new' ? (
