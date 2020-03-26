@@ -189,6 +189,10 @@ table {
   z-index: 9;
 }
 
+.btn+.btn {
+  margin-left: 1em;
+}
+
 .btn-sm {
   padding: 10px 20px;
 }
@@ -210,6 +214,18 @@ table {
 
 .btn.btn-theme:hover {
   background: lighten($color: $primaryLight, $amount: 5);
+}
+
+.btn.btn-red {
+  background: $orange;
+  color: $white;
+  border-bottom: none;
+
+  transition: all 200ms;
+}
+
+.btn.btn-red:hover {
+  background: lighten($color: $orange, $amount: 5);
 }
 
 .button-unstyled {

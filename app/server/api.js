@@ -141,10 +141,9 @@ router.get('/pending-orgs', getToken, authenticate, getUser, async function(
   }
 
   try {
-    const orgsList = await UserModel.find({ status: 'Pending' }).lean();
-
-    // send to sendgrid
-    // const sendGridResponse = await SendGrid.addContact(req.body);
+    const orgsList = await UserModel.find()
+      .sort({ status: 1 })
+      .lean();
 
     res.status(200).send({ orgsList });
   } catch (error) {
@@ -191,13 +190,10 @@ router.post(
     try {
       const result = await UserModel.updateOne(
         { _id: req.body.userId },
-        { status: 'Approved' }
+        { status: req.body.status }
       );
 
       console.log(result);
-
-      // send to sendgrid
-      // const sendGridResponse = await SendGrid.addContact(req.body);
 
       res.status(200).send({ success: true });
     } catch (error) {

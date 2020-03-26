@@ -12,10 +12,11 @@ function User(props) {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
+  const [allUsers, setAllUsers] = useState([]);
   const [unApprovedUsers, setUnApprovedUsers] = useState([]);
 
   const [buttonLoading, setButtonLoading] = useState('');
-  const [completedApps, setCompletedApps] = useState([]);
+  const [needsRefresh, setNeedsRefresh] = useState(false);
   // const [buttonLoading, setButtonLoading] = useState([]);
 
   useEffect(() => {
@@ -26,7 +27,10 @@ function User(props) {
     getUnnapprovedOrgs(clearSession)
       .then(body => {
         if (isSubscribed) {
-          setUnApprovedUsers(body.orgsList);
+          setAllUsers(body.orgsList);
+          setUnApprovedUsers(
+            body.orgsList.filter(org => org.status === 'Pending')
+          );
           setIsLoading(false);
         }
       })
@@ -39,16 +43,16 @@ function User(props) {
     return () => {
       isSubscribed = false;
     };
-  }, [clearSession]);
+  }, [clearSession, needsRefresh]);
 
-  function approveOrg(id) {
+  function changeUserStatus(id, status) {
     console.log('approve', id);
 
     setButtonLoading(id);
 
-    approveUser(id)
+    approveUser(id, status)
       .then(response => {
-        setCompletedApps([id, ...completedApps]);
+        setNeedsRefresh(id);
         setButtonLoading(null);
       })
       .catch(error => {
@@ -68,18 +72,14 @@ function User(props) {
           <h1>Admin Dashboard</h1>
 
           <div className="mb-4"></div>
-          <AddUserAdmin />
-
-          <div className="mb-4"></div>
-          <h2>Approve Organization</h2>
-
+          <h2>Pending Organizations</h2>
           <table className="table">
             <thead>
               <tr>
                 <th>Name</th>
                 <th>Phone</th>
                 <th>Email</th>
-                <th>Approve</th>
+                <th>Status</th>
               </tr>
             </thead>
             <tbody>
@@ -90,28 +90,56 @@ function User(props) {
                     <td>{user.phone}</td>
                     <td>{user.email}</td>
                     <td>
-                      {~completedApps.indexOf(user._id) ? (
-                        '✓'
-                      ) : (
-                        <button
-                          className="btn btn-small btn-theme"
-                          onClick={() => {
-                            approveOrg(user._id);
-                          }}
-                        >
-                          {buttonLoading === user._id ? (
-                            <Bouncing />
-                          ) : (
-                            'Approve'
-                          )}
-                        </button>
-                      )}
+                      <button
+                        className="btn btn-small btn-theme"
+                        onClick={() => {
+                          changeUserStatus(user._id, 'Approved');
+                        }}
+                      >
+                        {buttonLoading === user._id ? <Bouncing /> : 'Approve'}
+                      </button>
+                      <button
+                        className="btn btn-small btn-red"
+                        onClick={() => {
+                          changeUserStatus(user._id, 'Closed');
+                        }}
+                      >
+                        {buttonLoading === user._id ? <Bouncing /> : 'Reject'}
+                      </button>
                     </td>
                   </tr>
                 );
               })}
             </tbody>
           </table>
+
+          <div className="mb-4"></div>
+          <h2>All Organizations</h2>
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {allUsers.map(user => {
+                return (
+                  <tr key={user._id}>
+                    <td>{user.displayName}</td>
+                    <td>{user.phone}</td>
+                    <td>{user.email}</td>
+                    <td>{user.status}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+
+          <div className="mb-4"></div>
+          <AddUserAdmin />
         </div>
       )}
     </div>
@@ -138,7 +166,7 @@ async function getUnnapprovedOrgs(clearSession) {
   });
 }
 
-async function approveUser(id) {
+async function approveUser(id, status) {
   const method = 'POST';
   const endPoint = '/api/approve-user-admin';
 
@@ -147,7 +175,7 @@ async function approveUser(id) {
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ userId: id })
+    body: JSON.stringify({ userId: id, status: status })
   }).then(response => {
     if (response.status === 200) {
       return response.json();
