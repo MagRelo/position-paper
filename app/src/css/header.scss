@@ -141,7 +141,7 @@ footer {
   overflow: hidden;
   background-color: $primaryColor;
   border-top: $primaryLight solid 2px;
-  color: $secondaryColor;
+  color: $white;
   padding: 40px 0;
   font-size: 16px;
 }
@@ -201,7 +201,7 @@ footer>.container {
 }
 
 .copyright span {
-  color: $secondaryColor;
+  color: $white;
   background-color: $primaryColor;
   padding: 5px;
   border-radius: 5px;
