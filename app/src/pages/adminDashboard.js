@@ -69,13 +69,12 @@ function User(props) {
           <div className="mb-4"></div>
           {error ? <p style={{ textAlign: 'center' }}>{error}</p> : null}
 
-          <h1>Admin Dashboard</h1>
-
           <div className="mb-4"></div>
           <h2>Pending Organizations</h2>
           <table className="table">
             <thead>
               <tr>
+                <th>Organization</th>
                 <th>Name</th>
                 <th>Phone</th>
                 <th>Email</th>
@@ -86,6 +85,7 @@ function User(props) {
               {unApprovedUsers.map(user => {
                 return (
                   <tr key={user._id}>
+                    <td>{user.description}</td>
                     <td>{user.displayName}</td>
                     <td>{user.phone}</td>
                     <td>{user.email}</td>
@@ -118,6 +118,7 @@ function User(props) {
           <table className="table">
             <thead>
               <tr>
+                <th>Organization</th>
                 <th>Name</th>
                 <th>Phone</th>
                 <th>Email</th>
@@ -128,6 +129,7 @@ function User(props) {
               {allUsers.map(user => {
                 return (
                   <tr key={user._id}>
+                    <td>{user.description}</td>
                     <td>{user.displayName}</td>
                     <td>{user.phone}</td>
                     <td>{user.email}</td>
