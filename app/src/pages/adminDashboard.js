@@ -7,7 +7,7 @@ import { Loading, Bouncing } from 'components/random';
 import { AuthContext } from 'App';
 
 function User(props) {
-  const { clearSession } = useContext(AuthContext);
+  const { callApi } = useContext(AuthContext);
 
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -23,8 +23,9 @@ function User(props) {
     setIsLoading(true);
     let isSubscribed = true;
 
-    // hit user API route, get all data
-    getUnnapprovedOrgs(clearSession)
+    const method = 'GET';
+    const endPoint = '/api/pending-orgs';
+    callApi(method, endPoint)
       .then(body => {
         if (isSubscribed) {
           setAllUsers(body.orgsList);
@@ -35,22 +36,25 @@ function User(props) {
         }
       })
       .catch(error => {
-        console.log(error);
-        setError(error.toString());
+        if (isSubscribed) {
+          console.log(error);
+          setError(error.toString());
+        }
       });
 
     // cleanup
     return () => {
       isSubscribed = false;
     };
-  }, [clearSession, needsRefresh]);
+  }, [callApi, needsRefresh]);
 
   function changeUserStatus(id, status) {
-    console.log('approve', id);
-
     setButtonLoading(id);
 
-    approveUser(id, status)
+    const method = 'POST';
+    const endPoint = '/api/approve-user-admin';
+    const body = { userId: id, status: status };
+    callApi(method, endPoint, body)
       .then(response => {
         setNeedsRefresh(id);
         setButtonLoading(null);
@@ -149,42 +153,3 @@ function User(props) {
 }
 
 export default User;
-
-async function getUnnapprovedOrgs(clearSession) {
-  return await fetch('/api/pending-orgs').then(response => {
-    if (response.status === 200) {
-      return response.json();
-    }
-
-    // some type of error has occured...
-    if (response.status === 401) {
-      // logout with context function
-      console.log(response.status, 'logging out...');
-      clearSession();
-    }
-
-    console.log(response.status);
-    throw new Error(response.statusText);
-  });
-}
-
-async function approveUser(id, status) {
-  const method = 'POST';
-  const endPoint = '/api/approve-user-admin';
-
-  return fetch(endPoint, {
-    method: method,
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ userId: id, status: status })
-  }).then(response => {
-    if (response.status === 200) {
-      return response.json();
-    }
-
-    // some type of error has occured...
-    console.log(response.status, response.statusText);
-    throw new Error(response.statusText);
-  });
-}

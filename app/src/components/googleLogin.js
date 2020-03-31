@@ -6,11 +6,14 @@ import { AuthContext } from 'App';
 import { GoogleLogin } from 'react-google-login';
 
 function GoogleAuthLogin(props) {
-  const { createSession } = useContext(AuthContext);
+  const { callApi, createSession } = useContext(AuthContext);
 
   async function handleSuccess(data) {
     // console.log(data);
-    sendAuthCode(data.profileObj, data.tokenObj)
+
+    const method = 'POST';
+    const endPoint = '/api/auth/google';
+    callApi(method, endPoint, { user: data.profileObj, token: data.tokenObj })
       .then(user => {
         createSession(user, props.redirect);
       })
@@ -46,66 +49,3 @@ function GoogleAuthLogin(props) {
 }
 
 export default GoogleAuthLogin;
-
-async function sendAuthCode(user, token) {
-  const apiEndpoint = '/api/auth/google';
-
-  return await fetch(apiEndpoint, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ user, token })
-  }).then(response => {
-    if (response.status === 200) {
-      return response.json();
-    }
-
-    // some type of error has occured...
-    console.log(response.status, response.statusText);
-
-    throw new Error(response.statusText);
-  });
-}
-
-// async function createLink(parentLink) {
-//   const apiEndpoint = '/api/link/add';
-
-//   return await fetch(apiEndpoint, {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/json'
-//     },
-//     body: JSON.stringify({
-//       parentLink: parentLink
-//     })
-//   })
-//     .then(r => {
-//       return r.status === 200 ? r.json() : {};
-//     })
-//     .catch(error => {
-//       console.error(error);
-//       return {};
-//     });
-// }
-// async function createApplication(linkId, userId) {
-//   const apiEndpoint = '/api/response/add';
-
-//   return await fetch(apiEndpoint, {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/json'
-//     },
-//     body: JSON.stringify({
-//       linkId,
-//       userId
-//     })
-//   })
-//     .then(r => {
-//       return r.status === 200 ? r.json() : {};
-//     })
-//     .catch(error => {
-//       console.error(error);
-//       return {};
-//     });
-// }

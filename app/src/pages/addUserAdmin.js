@@ -1,14 +1,17 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import { geocodeByPlaceId } from 'react-google-places-autocomplete';
 import { getLatLng } from 'react-google-places-autocomplete/dist/utils/googleGeocodesHelper';
 
+import { AuthContext } from 'App';
 import { Loading } from 'components/random';
 
 export default AddCommunityForm;
 
 function AddCommunityForm(props) {
+  const { callApi } = useContext(AuthContext);
+
   // form
   const [formStatus, setFormStatus] = useState('new');
   const [error, setError] = useState('');
@@ -79,7 +82,9 @@ function AddCommunityForm(props) {
     // loading
     setFormStatus('loading');
 
-    submitForm(formObject)
+    const method = 'POST';
+    const endPoint = '/api/add-user-admin';
+    callApi(method, endPoint, formObject)
       .then(link => {
         setFormStatus('success');
       })
@@ -190,25 +195,4 @@ function AddCommunityForm(props) {
       </form>
     </div>
   );
-}
-
-async function submitForm(queryData) {
-  const method = 'POST';
-  const endPoint = '/api/add-user-admin';
-
-  return fetch(endPoint, {
-    method: method,
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(queryData)
-  }).then(response => {
-    if (response.status === 200) {
-      return response.json();
-    }
-
-    // some type of error has occured...
-    console.log(response.status, response.statusText);
-    throw new Error(response.statusText);
-  });
 }

@@ -68,7 +68,30 @@ function App(props) {
       setLoadingSession(false);
     }
     // no cookie
-  }, [activeSession]);
+  }, []);
+
+  async function callApi(method, endPoint, body) {
+    return fetch(endPoint, {
+      method: method,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    }).then(response => {
+      // success (201's?)
+      if (response.status === 200) {
+        return response.json();
+      }
+
+      if (response.status === 401) {
+        clearSession();
+      }
+
+      // some type of error has occured...
+      console.log(response.status, response.statusText);
+      throw new Error(response.statusText);
+    });
+  }
 
   function createSession(user, redirect) {
     Cookies.set('servesa-auth-token', user.token);
@@ -85,12 +108,12 @@ function App(props) {
   function clearSession() {
     Cookies.remove('servesa-auth-token');
     setActiveSession(false);
-    navigate('/');
+    navigate('/login');
   }
 
   return (
     <AuthContext.Provider
-      value={{ activeSession, createSession, clearSession, user }}
+      value={{ activeSession, createSession, clearSession, callApi, user }}
     >
       {MetaData()}
       {loadingSession ? (

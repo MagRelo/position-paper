@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useContext } from 'react';
 
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import { geocodeByPlaceId } from 'react-google-places-autocomplete';
@@ -7,6 +7,7 @@ import { getLatLng } from 'react-google-places-autocomplete/dist/utils/googleGeo
 // If you want to use the provided css
 import 'react-google-places-autocomplete/dist/assets/index.css';
 
+import { AuthContext } from 'App';
 import { Loading } from 'components/random';
 
 function GetHelp() {
@@ -40,6 +41,8 @@ function GetHelp() {
 export default GetHelp;
 
 function CommunityForm(props) {
+  const { callApi } = useContext(AuthContext);
+
   // form
   const [formStatus, setFormStatus] = useState('new');
   const [error, setError] = useState('');
@@ -109,7 +112,9 @@ function CommunityForm(props) {
     // loading
     setFormStatus('loading');
 
-    submitJob(formObject)
+    const method = 'POST';
+    const endPoint = '/api/add-org';
+    callApi(method, endPoint, formObject)
       .then(link => {
         setFormStatus('success');
       })
@@ -222,25 +227,4 @@ function CommunityForm(props) {
       </form>
     </div>
   );
-}
-
-async function submitJob(queryData) {
-  const method = 'POST';
-  const endPoint = '/api/add-org';
-
-  return fetch(endPoint, {
-    method: method,
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(queryData)
-  }).then(response => {
-    if (response.status === 200) {
-      return response.json();
-    }
-
-    // some type of error has occured...
-    console.log(response.status, response.statusText);
-    throw new Error(response.statusText);
-  });
 }

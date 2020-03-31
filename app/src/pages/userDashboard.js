@@ -6,25 +6,11 @@ import UserPersonsTable from 'pages/userPersonsTable';
 import { Loading, UserProfile } from 'components/random';
 import { AuthContext } from 'App';
 
-function fileNameDate() {
-  var d = new Date(),
-    month = '' + (d.getMonth() + 1),
-    day = '' + d.getDate(),
-    year = d.getFullYear();
-
-  if (month.length < 2) month = '0' + month;
-  if (day.length < 2) day = '0' + day;
-
-  return [year, month, day].join('-');
-}
-
 function User(props) {
-  const { clearSession, user } = useContext(AuthContext);
+  const { user, callApi } = useContext(AuthContext);
 
   const [error, setError] = useState('');
-
   const [isLoading, setIsLoading] = useState(true);
-  const [userData] = useState(user);
 
   const [getPersons, setGetPersons] = useState([]);
   const [givePersons, setGivePersons] = useState([]);
@@ -34,7 +20,9 @@ function User(props) {
     let isSubscribed = true;
 
     // hit user API route, get all data
-    fetchPersons(clearSession)
+    const method = 'GET';
+    const endPoint = '/api/persons';
+    callApi(method, endPoint)
       .then(body => {
         if (isSubscribed) {
           setGetPersons(body.personList.filter(person => person.needsHelp));
@@ -43,16 +31,18 @@ function User(props) {
         }
       })
       .catch(error => {
-        console.log(error);
-        setError(error.toString());
-        setIsLoading(false);
+        if (isSubscribed) {
+          console.log(error);
+          setError(error.toString());
+          setIsLoading(false);
+        }
       });
 
     // cleanup
     return () => {
       isSubscribed = false;
     };
-  }, [clearSession]);
+  }, [callApi]);
 
   return (
     <div className="container">
@@ -68,7 +58,7 @@ function User(props) {
             <React.Fragment>
               <div className="grid grid-2">
                 <div className="panel">
-                  <UserProfile user={userData} />
+                  <UserProfile user={user} />
                 </div>
 
                 <div>{/* <Map /> */}</div>
@@ -97,20 +87,14 @@ function User(props) {
 
 export default User;
 
-async function fetchPersons(clearSession) {
-  return await fetch('/api/persons').then(response => {
-    if (response.status === 200) {
-      return response.json();
-    }
+function fileNameDate() {
+  var d = new Date(),
+    month = '' + (d.getMonth() + 1),
+    day = '' + d.getDate(),
+    year = d.getFullYear();
 
-    // some type of error has occured...
-    if (response.status === 401) {
-      // logout with context function
-      console.log(response.status, 'logging out...');
-      clearSession();
-    }
+  if (month.length < 2) month = '0' + month;
+  if (day.length < 2) day = '0' + day;
 
-    console.log(response.status);
-    throw new Error(response.statusText);
-  });
+  return [year, month, day].join('-');
 }
