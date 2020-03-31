@@ -6,45 +6,28 @@ import Helmet from 'react-helmet';
 import Cookies from 'js-cookie';
 import { Loading } from './components/random';
 
-// Component CSS
-import 'react-input-range/lib/css/index.css';
-import '@reach/dialog/styles.css';
-import '@reach/menu-button/styles.css';
-import 'react-google-places-autocomplete/dist/assets/index.css';
-
-// Template CSS
-import './css/bootstrap.min.css';
-import './css/fontawesome-all.css';
-
-// Site CSS
-import './css/typography.scss';
-import './css/local-connect.scss';
-import './css/header.scss';
-import './css/loaders.scss';
-import './css/stars.scss';
-
 // Header
 import Header from 'components/header';
 import Footer from 'components/footer';
 
 // Routes
-import Login from 'pages/login';
 import LandingPage from 'pages/landingPage';
-import UserDashboard from 'pages/userDashboard';
-import AdminDashboard from 'pages/adminDashboard';
-
 import GiveHelp from 'pages/giveHelp';
 import GetHelp from 'pages/getHelp';
 import Organizers from 'pages/registerOrganization';
 
+import Login from 'pages/login';
 import Terms from 'pages/legal';
 import About from 'pages/about';
 import NotFound from 'pages/404';
 
+import UserDashboard from 'pages/userDashboard';
+import AdminDashboard from 'pages/adminDashboard';
+
 // Setup Auth context
 export const AuthContext = React.createContext({});
 
-function App(props) {
+function App() {
   const [loadingSession, setLoadingSession] = useState(true);
   const [activeSession, setActiveSession] = useState(false);
   const [user, setUser] = useState({});
@@ -122,38 +105,26 @@ function App(props) {
         <div className="page-wrapper">
           <Header />
           <div className="content-wrapper">
-            {activeSession ? (
-              <Router>
-                {/* Auth required */}
-                <Login path="/login" />
+            <Router>
+              <LandingPage path="/" />
+              <GetHelp path="/gethelp" />
+              <GiveHelp path="/givehelp" />
+              <Organizers path="/organizers" />
 
-                <UserDashboard path="/dashboard" />
-                <AdminDashboard path="/admin" />
+              <Login path="/login" />
+              <Terms path="/terms" />
+              <About path="/about" />
 
-                <GetHelp path="/gethelp" />
-                <GiveHelp path="/givehelp" />
-                <Organizers path="/organizers" />
+              {/* Auth required */}
+              {activeSession ? (
+                <React.Fragment>
+                  <UserDashboard path="/dashboard" />
+                  <AdminDashboard path="/admin" />
+                </React.Fragment>
+              ) : null}
 
-                <Terms path="/terms" />
-                <About path="/about" />
-                <LandingPage path="/" />
-                <NotFound default />
-              </Router>
-            ) : (
-              <Router>
-                {/* Non Auth */}
-                <Login path="/login" />
-
-                <GetHelp path="/gethelp" />
-                <GiveHelp path="/givehelp" />
-                <Organizers path="/organizers" />
-
-                <Terms path="/terms" />
-                <About path="/about" />
-                <LandingPage path="/" />
-                <NotFound default />
-              </Router>
-            )}
+              <NotFound default />
+            </Router>
 
             <OnRouteChange
               action={() => {
@@ -172,9 +143,7 @@ function App(props) {
 export default App;
 
 async function getUser() {
-  const apiEndpoint = '/api/auth/status';
-
-  return await fetch(apiEndpoint)
+  return await fetch('/api/auth/status')
     .then(r => {
       return r.json();
     })
