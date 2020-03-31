@@ -50,7 +50,6 @@ function App() {
       // no cookie
       setLoadingSession(false);
     }
-    // no cookie
   }, []);
 
   async function callApi(method, endPoint, body) {
