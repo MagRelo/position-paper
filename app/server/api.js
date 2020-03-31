@@ -106,22 +106,47 @@ router.get('/persons', getToken, authenticate, getUser, async function(
   res
 ) {
   try {
-    const user = await UserModel.findOne({ _id: req.user._id });
+    const user = await UserModel.findOne({ _id: req.user._id }).lean();
 
     if (!user) {
       return res.status(404).send({});
     }
 
-    const personList = await PersonModel.find({
-      location: {
-        $near: {
-          $geometry: user.location,
-          $maxDistance: user.radius
-        }
-      }
-    });
+    // build query based on the different types of points
+    let geoQuery = null;
+    switch (user.location.type) {
+      case 'Point':
+        geoQuery = {
+          location: {
+            $near: {
+              $geometry: user.location,
+              $maxDistance: user.radius
+            }
+          }
+        };
+        break;
+      case 'Polygon':
+        geoQuery = {
+          location: {
+            $geoWithin: {
+              $geometry: {
+                type: user.location.type,
+                coordinates: user.location.coordinates
+              }
+            }
+          }
+        };
+        break;
+      default:
+        break;
+    }
 
-    res.status(200).send({ personList });
+    if (geoQuery) {
+      const personList = await PersonModel.find(geoQuery);
+      res.status(200).send({ personList });
+    } else {
+      res.status(400).send({ error: 'no location data found for user' });
+    }
   } catch (error) {
     console.log(req.path, error);
     res.status(500).send(error);
@@ -163,7 +188,6 @@ router.post('/add-user-admin', getToken, authenticate, getUser, async function(
 
   try {
     const newUser = new UserModel({ status: 'Approved', ...req.body });
-
     await newUser.save();
 
     // send to sendgrid
@@ -193,7 +217,7 @@ router.post(
         { status: req.body.status }
       );
 
-      console.log(result);
+      // console.log(result);
 
       res.status(200).send({ success: true });
     } catch (error) {
