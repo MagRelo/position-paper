@@ -1,8 +1,10 @@
 import React, { useContext } from 'react';
 import { AuthContext } from 'App';
 
-import { Magic } from 'magic-sdk';
-const magic = new Magic(process.env.REACT_APP_MAGIC_PUBLISHABLE_KEY);
+import { magicLogin } from 'magic';
+
+// import { Magic } from 'magic-sdk';
+// const magic = new Magic(process.env.REACT_APP_MAGIC_PUBLISHABLE_KEY);
 
 function Login(props) {
   const { createSession } = useContext(AuthContext);
@@ -17,10 +19,10 @@ function Login(props) {
       formObject[key] = value;
     });
 
-    const didToken = await magic.auth.loginWithMagicLink({
-      email: formObject.email,
-    });
+    // do magic thing
+    const didToken = await magicLogin(formObject.email);
 
+    // send to server
     await fetch(`/auth/login`, {
       headers: new Headers({
         Authorization: 'Bearer ' + didToken,

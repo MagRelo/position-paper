@@ -17,6 +17,8 @@ import Terms from 'pages/legal';
 import About from 'pages/about';
 import NotFound from 'pages/404';
 
+import Dashboard from 'pages/dashboard';
+
 // Setup Auth context
 export const AuthContext = React.createContext({});
 
@@ -26,23 +28,17 @@ function App() {
   const [user, setUser] = useState({});
 
   useEffect(() => {
-    const servesaCookie = Cookies.get('servesa-auth-token');
-    if (servesaCookie) {
-      // hit server and see if logged in
-      getUser().then((user) => {
-        if (!!user) {
-          setUser(user);
-          setActiveSession(true);
-          setLoadingSession(false);
-        } else {
-          clearSession();
-          setLoadingSession(false);
-        }
-      });
-    } else {
-      // no cookie
-      setLoadingSession(false);
-    }
+    // hit server and see if logged in
+    getUser().then((user) => {
+      if (!!user) {
+        setUser(user);
+        setActiveSession(true);
+        setLoadingSession(false);
+      } else {
+        clearSession();
+        setLoadingSession(false);
+      }
+    });
   }, []);
 
   async function callApi(method, endPoint, body) {
@@ -70,7 +66,6 @@ function App() {
 
   function createSession(user, redirect) {
     // update context
-    console.log('create session', user, redirect);
     setUser(user);
     setActiveSession(true);
 
@@ -82,7 +77,6 @@ function App() {
   }
 
   function clearSession() {
-    Cookies.remove('servesa-auth-token');
     setActiveSession(false);
     navigate('/login');
   }
@@ -108,7 +102,7 @@ function App() {
               {/* Auth required */}
               {activeSession ? (
                 <React.Fragment>
-                  <About path="/about" />
+                  <Dashboard path="/dashboard" />
                 </React.Fragment>
               ) : null}
 
@@ -132,7 +126,7 @@ function App() {
 export default App;
 
 async function getUser() {
-  return await fetch('/api/auth/status')
+  return await fetch('/auth/status')
     .then((r) => {
       return r.json();
     })
@@ -145,8 +139,8 @@ async function getUser() {
 function MetaData() {
   return (
     <Helmet>
-      <title>Local Connect</title>
-      <meta name="description" content="Connect to your Community" />
+      <title>Position Paper</title>
+      <meta name="description" content="Stake Your Claim" />
       <link rel="canonical" href={'https://localconnect.app'} />
 
       <meta property="og:site_name" content="Local Connect" />

@@ -52,7 +52,7 @@ function Footer(props) {
             className="copyright"
             style={{ position: 'relative', zIndex: 1 }}
           >
-            <span>Local&#8201;Connect | 2020</span>
+            <span>Position&#8201;Paper | 2020</span>
           </div>
         </div>
       </div>

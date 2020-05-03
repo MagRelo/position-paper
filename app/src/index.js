@@ -14,7 +14,7 @@ import './css/fontawesome-all.css';
 
 // Site CSS
 import './css/typography.scss';
-import './css/local-connect.scss';
+import './css/app.scss';
 import './css/header.scss';
 import './css/loaders.scss';
 import './css/stars.scss';

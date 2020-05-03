@@ -1,9 +1,12 @@
 // https://coolors.co/00203f-adefd1-ffa400-009ffd-fdfffc
 
-$primaryColor: #00203f;
-$primaryLight: #1e68bc;
-$lightBlue: #e6f6fe;
-$secondaryColor: #adefd1;
+$primaryColor: #2b2b2b;
+$primaryLight: #00b0ff;
+$primaryHighlight: #e6f6fe;
+
+$secondaryColor: #cbe354;
+$secondaryHighlight: lighten($color: $secondaryColor, $amount: 25);
+
 $orange: #ffa400;
 $green: #0ea51d;
 
@@ -23,3 +26,30 @@ $box-shadow-light: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 
 $box-shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+
+
+// https://coolors.co/00203f-adefd1-ffa400-009ffd-fdfffc
+
+// $primaryColor: #00203f;
+// $primaryLight: #1e68bc;
+// $lightBlue: #e6f6fe;
+// $secondaryColor: #adefd1;
+// $orange: #ffa400;
+// $green: #0ea51d;
+
+// $darkText: #3a3a3a;
+// $lightText: lighten($color: $darkText, $amount: 15);
+// $lighterText: lighten($color: $darkText, $amount: 25);
+// $lightGray: #dfdfdf;
+// $lighterGray: lighten($color: $lightGray, $amount: 11);
+// $white: #fdfffc;
+
+
+// $box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+// 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+// $box-shadow-medium: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+// 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+// $box-shadow-light: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
+// 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+
+// $box-shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);

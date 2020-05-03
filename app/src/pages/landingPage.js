@@ -1,7 +1,7 @@
 import React from 'react';
 // import { Link } from '@reach/router';
 
-import Scooter from 'images/undraw_on_the_way_ldaq.svg';
+import Content from 'images/undraw_sharing_articles_t5aa.svg';
 
 // import { GiHeartPlus } from 'react-icons/gi';
 // import { FaHandHoldingHeart } from 'react-icons/fa';
@@ -15,7 +15,7 @@ function LandingPage() {
 
           <div className="hero-grid">
             <div className="swap-order">
-              <img className="hero-pic" src={Scooter} alt="doctors" />
+              <img className="hero-pic" src={Content} alt="doctors" />
             </div>
 
             <div className="title-container">
@@ -24,7 +24,11 @@ function LandingPage() {
                   Welcome to Position&#8201;Paper!
                 </span>
               </div>
-              <h1>Prediction Tournament Platform</h1>
+
+              <div className="mb-1"></div>
+              <h1>
+                Prediction Market <br /> Media Platform
+              </h1>
 
               <p>Social Prediction Market Media Platform</p>
             </div>
