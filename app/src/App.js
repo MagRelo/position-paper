@@ -12,17 +12,10 @@ import Footer from 'components/footer';
 
 // Routes
 import LandingPage from 'pages/landingPage';
-import GiveHelp from 'pages/giveHelp';
-import GetHelp from 'pages/getHelp';
-import Organizers from 'pages/registerOrganization';
-
 import Login from 'pages/login';
 import Terms from 'pages/legal';
 import About from 'pages/about';
 import NotFound from 'pages/404';
-
-import UserDashboard from 'pages/userDashboard';
-import AdminDashboard from 'pages/adminDashboard';
 
 // Setup Auth context
 export const AuthContext = React.createContext({});
@@ -36,7 +29,7 @@ function App() {
     const servesaCookie = Cookies.get('servesa-auth-token');
     if (servesaCookie) {
       // hit server and see if logged in
-      getUser().then(user => {
+      getUser().then((user) => {
         if (!!user) {
           setUser(user);
           setActiveSession(true);
@@ -56,10 +49,10 @@ function App() {
     return fetch(endPoint, {
       method: method,
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(body)
-    }).then(response => {
+      body: JSON.stringify(body),
+    }).then((response) => {
       // success (201's?)
       if (response.status === 200) {
         return response.json();
@@ -76,7 +69,8 @@ function App() {
   }
 
   function createSession(user, redirect) {
-    Cookies.set('servesa-auth-token', user.token);
+    // update context
+    console.log('create session', user, redirect);
     setUser(user);
     setActiveSession(true);
 
@@ -106,9 +100,6 @@ function App() {
           <div className="content-wrapper">
             <Router>
               <LandingPage path="/" />
-              <GetHelp path="/gethelp" />
-              <GiveHelp path="/givehelp" />
-              <Organizers path="/organizers" />
 
               <Login path="/login" />
               <Terms path="/terms" />
@@ -117,8 +108,7 @@ function App() {
               {/* Auth required */}
               {activeSession ? (
                 <React.Fragment>
-                  <UserDashboard path="/dashboard" />
-                  <AdminDashboard path="/admin" />
+                  <About path="/about" />
                 </React.Fragment>
               ) : null}
 
@@ -143,10 +133,10 @@ export default App;
 
 async function getUser() {
   return await fetch('/api/auth/status')
-    .then(r => {
+    .then((r) => {
       return r.json();
     })
-    .catch(error => {
+    .catch((error) => {
       console.error(error);
       return false;
     });

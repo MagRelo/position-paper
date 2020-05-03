@@ -1,8 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, globalHistory } from '@reach/router';
 
-import { GiHeartPlus } from 'react-icons/gi';
-import { FaHandHoldingHeart, FaBars } from 'react-icons/fa';
+// import { GiHeartPlus } from 'react-icons/gi';
+import { FaBars } from 'react-icons/fa';
 
 import { AuthContext } from '../App';
 import { NavLink } from 'components/random';
@@ -12,7 +12,7 @@ function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    return globalHistory.listen(action => {
+    return globalHistory.listen((action) => {
       setMenuOpen(false);
     });
   }, []);
@@ -36,16 +36,16 @@ function Header() {
 
           <Link to="/">
             <span>
-              <span className="header-title">Local</span>
+              <span className="header-title">Position</span>
               &#8201;
-              <span className="header-title">Connect</span>
+              <span className="header-title">Paper</span>
             </span>
           </Link>
         </div>
 
         <div className="header-container desktop-menu">
           <ul className="nav-list">
-            <li>
+            {/* <li>
               <a href="/gethelp" className="btn btn-theme btn-sm">
                 Get Help <GiHeartPlus />
               </a>
@@ -55,7 +55,13 @@ function Header() {
               <a href="/givehelp" className="btn btn-theme btn-sm">
                 Give Help <FaHandHoldingHeart />
               </a>
-            </li>
+            </li> */}
+
+            {!activeSession ? (
+              <li style={{ float: 'right' }}>
+                <NavLink to="/login">Login</NavLink>
+              </li>
+            ) : null}
 
             {activeSession && user.type === 'Admin' ? (
               <li style={{ float: 'right' }}>
@@ -74,7 +80,7 @@ function Header() {
         <div className="header-container mobile-menu">
           {menuOpen ? (
             <ul className="nav-list">
-              <li>
+              {/* <li>
                 <a href="/gethelp" className="btn btn-theme btn-sm">
                   Get Help <GiHeartPlus />
                 </a>
@@ -84,6 +90,10 @@ function Header() {
                 <a href="/givehelp" className="btn btn-theme btn-sm">
                   Give Help <FaHandHoldingHeart />
                 </a>
+              </li> */}
+
+              <li>
+                <NavLink to="/login">Login</NavLink>
               </li>
 
               {activeSession ? (

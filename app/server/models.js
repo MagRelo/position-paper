@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const nanoid = require('nanoid');
-// const bcrypt = require('bcrypt');
 
 //
 // User
@@ -12,59 +11,29 @@ const UserSchema = new mongoose.Schema(
     avatar: String,
     userId: {
       type: String,
-      default: () => nanoid()
+      default: () => nanoid(),
     },
     displayName: String,
-    email: String,
     phone: String,
     description: String,
-    address: String,
-    location: {
-      type: {
-        type: String,
-        enum: ['Point'],
-        required: true
-      },
-      coordinates: {
-        type: [Number],
-        required: true
-      }
-    },
-    radius: { type: Number, default: 5000 },
-    linkedInProfile: String,
-    jobBoardUrl: String,
-
-    googleProvider: {
-      type: {
-        id: String
-      },
-      select: false
-    },
     type: {
       type: String,
       enum: ['Standard', 'Admin', 'Closed'],
-      default: 'Standard'
+      default: 'Standard',
     },
     status: {
       type: String,
       enum: ['Pending', 'Approved', 'Closed'],
-      default: 'Pending'
+      default: 'Pending',
     },
     welcomeEmail: Object,
 
-    stripeCustomer: { type: Object, select: false },
-    stripeCustomerToken: { type: String, select: false },
-    stripeCustomerBrand: { type: String, select: false },
-    stripeCustomerLabel: { type: String, select: false },
-    accountBalance: { type: Number, select: false },
-    stripeAccount: { type: Object, select: false },
-    stripeAccountLabel: { type: String, select: false },
-    payments: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Payment',
-      select: false
-    },
-    follows: { type: Array, default: [], select: false }
+    issuer: Object,
+    email: String,
+    lastLoginAt: String,
+    publicAddress: String,
+
+    follows: { type: Array, default: [], select: false },
   },
   { timestamps: true }
 );
@@ -79,7 +48,7 @@ const PersonSchema = new mongoose.Schema(
   {
     personId: {
       type: String,
-      default: () => nanoid()
+      default: () => nanoid(),
     },
     firstname: String,
     lastname: String,
@@ -93,12 +62,12 @@ const PersonSchema = new mongoose.Schema(
       type: {
         type: String,
         enum: ['Point'],
-        required: true
+        required: true,
       },
       coordinates: {
         type: [Number],
-        required: true
-      }
+        required: true,
+      },
     },
     help_grocery: { type: Boolean, default: false },
     help_wellness: { type: Boolean, default: false },
@@ -112,7 +81,7 @@ const PersonSchema = new mongoose.Schema(
     welcomeEmail: Object,
     isMatched: { type: Boolean, default: false },
     matches: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Person' }],
-    follows: { type: Array, default: [], select: false }
+    follows: { type: Array, default: [], select: false },
   },
   { timestamps: true }
 );

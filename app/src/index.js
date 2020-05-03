@@ -6,7 +6,7 @@ import App from './App';
 import 'react-input-range/lib/css/index.css';
 import '@reach/dialog/styles.css';
 import '@reach/menu-button/styles.css';
-import 'react-google-places-autocomplete/dist/assets/index.css';
+// import 'react-google-places-autocomplete/dist/assets/index.css';
 
 // Template CSS
 import './css/bootstrap.min.css';

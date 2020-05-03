@@ -9,7 +9,7 @@ const UserModel = require('../models').UserModel;
 //
 exports.getToken = expressJwt({
   secret: process.env['JWT_SECRET'],
-  getToken: function(req) {
+  getToken: function (req) {
     if (req.headers['servesa-auth-token']) {
       return req.headers['servesa-auth-token'];
     }
@@ -18,10 +18,10 @@ exports.getToken = expressJwt({
     }
     return null;
   },
-  credentialsRequired: false
+  credentialsRequired: false,
 });
 
-exports.authenticate = function(req, res, next) {
+exports.authenticate = function (req, res, next) {
   if (!req.user || !req.user.id) {
     console.log('getUser - no user id');
     return res.status(401).send({ error: 'getUser - no user id' });
@@ -29,7 +29,7 @@ exports.authenticate = function(req, res, next) {
   next();
 };
 
-exports.getUser = async function(req, res, next) {
+exports.getUser = async function (req, res, next) {
   if (req.user && req.user.id) {
     const user = await UserModel.findOne({ _id: req.user.id })
       .select(
@@ -42,7 +42,7 @@ exports.getUser = async function(req, res, next) {
   next();
 };
 
-exports.sendToken = function(req, res) {
+exports.sendToken = function (req, res) {
   if (!req.user) {
     // console.log('Send Token: user:', req.user);
     return res.status(401).send('User Not Authenticated');
@@ -51,18 +51,18 @@ exports.sendToken = function(req, res) {
   // create token
   const token = jwt.sign(
     {
-      id: req.user._id
+      id: req.user._id,
     },
     process.env['JWT_SECRET'],
     {
-      expiresIn: 60 * 120
+      expiresIn: 60 * 120,
     }
   );
 
   return res.status(200).send({ token, ...req.user });
 };
 
-exports.userStatus = async function(req, res) {
+exports.userStatus = async function (req, res) {
   // check auth
   if (!req.user) {
     return res.status(401).send({ error: 'no user' });
@@ -72,14 +72,14 @@ exports.userStatus = async function(req, res) {
   return res.status(200).send(req.user);
 };
 
-exports.googleAuth = async function(req, res, next) {
+exports.googleAuth = async function (req, res, next) {
   const userProfile = req.body.user;
   const token = req.body.token;
 
   try {
     // verify that the token is legit
     const googleEndpoint = `https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=${token.access_token}`;
-    const googleResponse = await fetch(googleEndpoint).then(response => {
+    const googleResponse = await fetch(googleEndpoint).then((response) => {
       if (response.status === 200) {
         return response.json();
       } else {
@@ -92,7 +92,7 @@ exports.googleAuth = async function(req, res, next) {
     const user = await UserModel.findOneAndUpdate(
       {
         email: googleResponse.email,
-        status: 'Approved'
+        status: 'Approved',
       },
       {
         firstname: userProfile.givenName,
@@ -101,8 +101,8 @@ exports.googleAuth = async function(req, res, next) {
         email: userProfile.email,
         avatar: userProfile.imageUrl,
         googleProvider: {
-          id: userProfile.googleId
-        }
+          id: userProfile.googleId,
+        },
       },
       { new: true, upsert: true, setDefaultsOnInsert: true }
     );

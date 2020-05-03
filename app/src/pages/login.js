@@ -1,45 +1,67 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { AuthContext } from 'App';
 
-// import LinkedInLogin from 'components/linkedinLogin';
-
-import GoogleLogin from 'components/googleLogin';
-
-// import { getParams } from 'components/random';
-
-// import background from 'images/01.png';
+import { Magic } from 'magic-sdk';
+const magic = new Magic(process.env.REACT_APP_MAGIC_PUBLISHABLE_KEY);
 
 function Login(props) {
-  // const params = getParams(props.location);
-  // const redirect = params.link ? '/link/' + params.link : '';
+  const { createSession } = useContext(AuthContext);
 
-  // console.log(redirect);
+  async function login(event) {
+    event.preventDefault();
+
+    // get form data
+    const formObject = {};
+    const formData = new FormData(event.target);
+    formData.forEach((value, key) => {
+      formObject[key] = value;
+    });
+
+    const didToken = await magic.auth.loginWithMagicLink({
+      email: formObject.email,
+    });
+
+    await fetch(`/auth/login`, {
+      headers: new Headers({
+        Authorization: 'Bearer ' + didToken,
+      }),
+      withCredentials: true,
+      credentials: 'same-origin',
+      method: 'POST',
+    })
+      .then(async (response) => {
+        const user = await response.json();
+        return createSession(user);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
   return (
     <React.Fragment>
-      <section className="" data-bg-color="#d2f9fe">
+      <section>
         <div className="container">
-          <div>
-            <h1 className="title">Registered Users</h1>
-            <p>Only registered users can sign in at this time.</p>
-            <GoogleLogin className="btn btn-theme">
-              Sign In with Google
-            </GoogleLogin>
+          <div className="form-wrapper">
+            <form name="loginForm" onSubmit={login}>
+              <legend>Login</legend>
+
+              <p>We'll send you a link to login.</p>
+
+              <div className="form-group">
+                <label htmlFor="email">Email Address</label>
+                <input
+                  type="email"
+                  name="email"
+                  required={true}
+                  className="form-control"
+                />
+              </div>
+
+              <hr />
+              <button className="btn btn-theme">Login</button>
+            </form>
           </div>
-
-          <hr />
-
-          <h2>Not Yet A User?</h2>
-          <p>
-            In order to protect the privacy of our users we only allow access by
-            pre-approved community groups. If you are a representative of an
-            eligible group (such as a school, church, library, etc.) and are
-            able to coordinate care in your area please use the form below to
-            get access.
-          </p>
-
-          <a href="/organizers" className="btn btn-theme btn-sm">
-            Register Organization
-          </a>
         </div>
       </section>
     </React.Fragment>
