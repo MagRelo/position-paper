@@ -58,9 +58,12 @@ const login = async (user, done) => {
   return done(null, user);
 };
 
+exports.logout = async function (issuer) {
+  return magic.users.logoutByIssuer(issuer);
+};
+
 /* Defines what data are stored in the user session */
 passport.serializeUser((user, done) => {
-  // console.log('serialize:', user.issuer);
   done(null, user.issuer);
 });
 
@@ -69,10 +72,8 @@ passport.deserializeUser(async (id, done) => {
   console.log('deserialize:', id);
   try {
     const user = await UserModel.findOne({ issuer: id });
-    console.log('d1', user);
     done(null, user);
   } catch (err) {
-    console.log('d2', err);
     done(err, null);
   }
 });

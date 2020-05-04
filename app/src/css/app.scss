@@ -287,7 +287,16 @@ table {
   height: 60px;
 
   border-radius: 50%;
-  border: solid 1px $darkText
+  border: solid 2px $primaryLight;
+}
+
+.user-avatar-pic {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  font-size: 28px;
+  color: $primaryLight,
 }
 
 .user-info p {

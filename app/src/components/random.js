@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import Img from 'react-image';
+
+// import { getBalance } from 'magic';
+
+// import Img from 'react-image';
 
 import { Link } from '@reach/router';
-import { FaBuilding } from 'react-icons/fa';
-import { MdMyLocation, MdLocationOn } from 'react-icons/md';
-import { AiOutlineUser } from 'react-icons/ai';
+// import { FaBuilding } from 'react-icons/fa';
+// import { MdMyLocation, MdLocationOn } from 'react-icons/md';
+// import { AiOutlineUser } from 'react-icons/ai';
 
 var SI_SYMBOL = ['', 'k', 'M', 'G', 'T', 'P', 'E'];
 
@@ -44,7 +47,7 @@ export function formatCurrency(input, isShorthand) {
   } else {
     return inputNum.toLocaleString('en-US', {
       style: 'currency',
-      currency: 'USD'
+      currency: 'USD',
     });
   }
 }
@@ -95,7 +98,7 @@ export function usePromise(promiseOrFunction, defaultValue) {
   const [state, setState] = React.useState({
     value: defaultValue,
     error: null,
-    isPending: true
+    isPending: true,
   });
 
   React.useEffect(() => {
@@ -106,10 +109,10 @@ export function usePromise(promiseOrFunction, defaultValue) {
 
     let isSubscribed = true;
     promise
-      .then(value =>
+      .then((value) =>
         isSubscribed ? setState({ value, error: null, isPending: false }) : null
       )
-      .catch(error =>
+      .catch((error) =>
         isSubscribed
           ? setState({ value: defaultValue, error: error, isPending: false })
           : null
@@ -127,7 +130,7 @@ export function Loading() {
     <div
       style={{
         textAlign: 'center',
-        marginTop: '1em'
+        marginTop: '1em',
       }}
     >
       <div className="lds-dual-ring"></div>
@@ -137,7 +140,7 @@ export function Loading() {
 
 export function Bouncing() {
   return (
-    <div style={{ textAlign: 'center', marginTop: '1em' }}>
+    <div style={{ textAlign: 'center', display: 'inline-block' }}>
       <div className="spinner">
         <div className="bounce1"></div>
         <div className="bounce2"></div>
@@ -180,78 +183,6 @@ export function copyTextToClipboard(text) {
   );
 }
 
-export function ProfilePic({ avatarUrl }) {
-  const defaultPic = () => {
-    return (
-      <div className="user-avatar">
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '100%',
-            fontSize: '24px',
-            color: '#1e68bc'
-          }}
-          alt="avatar"
-        >
-          <AiOutlineUser />
-        </div>
-      </div>
-    );
-  };
-
-  return (
-    <Img
-      className="user-avatar"
-      src={[avatarUrl]}
-      loader={defaultPic()}
-      unloader={defaultPic()}
-    />
-  );
-}
-
-export function UserProfile({ user, hideDescription }) {
-  const [hideDesc] = useState(hideDescription || false);
-
-  return (
-    <div className="user-profile">
-      <div className="user-info">
-        <div>
-          <ProfilePic avatarUrl={user.avatar} />
-        </div>
-
-        <div className="user-text">
-          <div className="user-name">{user.displayName}</div>
-
-          {hideDesc ? null : (
-            <React.Fragment>
-              <span>
-                <span className="icon-wrapper blue">
-                  <FaBuilding />
-                </span>{' '}
-                {user.description}
-              </span>
-              <div>
-                <span className="icon-wrapper blue">
-                  <MdLocationOn />
-                </span>{' '}
-                {user.address}
-              </div>
-              <div>
-                <span className="icon-wrapper blue">
-                  <MdMyLocation />
-                </span>{' '}
-                Service Radius: {user.radius}m
-              </div>
-            </React.Fragment>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export function getParams(location) {
   if (!location.search) {
     return '';
@@ -270,12 +201,12 @@ function getJsonFromUrl(search) {
   return result;
 }
 
-export const NavLink = props => (
+export const NavLink = (props) => (
   <Link
     {...props}
     getProps={({ isCurrent }) => {
       return {
-        className: isCurrent ? 'nav-link active' : 'nav-link'
+        className: isCurrent ? 'nav-link active' : 'nav-link',
       };
     }}
   />

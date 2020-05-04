@@ -19,8 +19,8 @@ exports.populateUser = async function(req, res) {
       user: {
         hasAccount: !!user.stripeAccountLabel,
         hasPaymentSource: !!user.stripeCustomerLabel,
-        ...user
-      }
+        ...user,
+      },
     };
 
     res.status(200).send(userObject);

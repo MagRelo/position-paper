@@ -25,12 +25,10 @@ function LandingPage() {
                 </span>
               </div>
 
-              <div className="mb-1"></div>
-              <h1>
-                Prediction Market <br /> Media Platform
-              </h1>
+              <div className="mb-2"></div>
+              <h1>Transperant & Accountable Media Platform</h1>
 
-              <p>Social Prediction Market Media Platform</p>
+              <p>Accountable Media Platform</p>
             </div>
           </div>
         </div>

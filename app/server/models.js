@@ -40,54 +40,74 @@ const UserSchema = new mongoose.Schema(
 
 exports.UserModel = mongoose.model('User', UserSchema);
 
+// prop
+const Prop = new mongoose.Schema(
+  {
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    title: String,
+    type: {
+      type: String,
+      enum: ['Standard', 'Admin', 'Closed'],
+      default: 'Standard',
+    },
+    status: {
+      type: String,
+      enum: ['Pending', 'Approved', 'Closed'],
+      default: 'Pending',
+    },
+  },
+  { timestamps: true }
+);
+exports.PropModel = mongoose.model('Signup', Prop);
+
 //
 // Give/Get
 //
 
-const PersonSchema = new mongoose.Schema(
-  {
-    personId: {
-      type: String,
-      default: () => nanoid(),
-    },
-    firstname: String,
-    lastname: String,
-    avatar: String,
-    displayName: String,
-    email: String,
-    phone: String,
-    placeId: String,
-    address: String,
-    location: {
-      type: {
-        type: String,
-        enum: ['Point'],
-        required: true,
-      },
-      coordinates: {
-        type: [Number],
-        required: true,
-      },
-    },
-    help_grocery: { type: Boolean, default: false },
-    help_wellness: { type: Boolean, default: false },
-    help_childcare: { type: Boolean, default: false },
-    help_homeshool: { type: Boolean, default: false },
-    help_food: { type: Boolean, default: false },
-    help_housing: { type: Boolean, default: false },
-    help_transportation: { type: Boolean, default: false },
-    needsHelp: { type: Boolean, default: false },
-    offeringHelp: { type: Boolean, default: false },
-    welcomeEmail: Object,
-    isMatched: { type: Boolean, default: false },
-    matches: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Person' }],
-    follows: { type: Array, default: [], select: false },
-  },
-  { timestamps: true }
-);
+// const PersonSchema = new mongoose.Schema(
+//   {
+//     personId: {
+//       type: String,
+//       default: () => nanoid(),
+//     },
+//     firstname: String,
+//     lastname: String,
+//     avatar: String,
+//     displayName: String,
+//     email: String,
+//     phone: String,
+//     placeId: String,
+//     address: String,
+//     location: {
+//       type: {
+//         type: String,
+//         enum: ['Point'],
+//         required: true,
+//       },
+//       coordinates: {
+//         type: [Number],
+//         required: true,
+//       },
+//     },
+//     help_grocery: { type: Boolean, default: false },
+//     help_wellness: { type: Boolean, default: false },
+//     help_childcare: { type: Boolean, default: false },
+//     help_homeshool: { type: Boolean, default: false },
+//     help_food: { type: Boolean, default: false },
+//     help_housing: { type: Boolean, default: false },
+//     help_transportation: { type: Boolean, default: false },
+//     needsHelp: { type: Boolean, default: false },
+//     offeringHelp: { type: Boolean, default: false },
+//     welcomeEmail: Object,
+//     isMatched: { type: Boolean, default: false },
+//     matches: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Person' }],
+//     follows: { type: Array, default: [], select: false },
+//   },
+//   { timestamps: true }
+// );
 
-PersonSchema.index({ location: '2dsphere' });
-exports.PersonModel = mongoose.model('Person', PersonSchema);
+// PersonSchema.index({ location: '2dsphere' });
+// exports.PersonModel = mongoose.model('Person', PersonSchema);
 
 // //
 // // Link

@@ -14,7 +14,7 @@ export async function getBalance(publicAddress) {
   // Get user's Ethereum public address
   const signer = provider.getSigner();
   const address = await signer.getAddress();
-  console.log('address: ', address);
+  // console.log('address: ', address);
 
   // Get user's balance in ether
   const balance = ethers.utils.formatEther(
