@@ -1,32 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Img from 'react-image';
-import { MdLocationOn } from 'react-icons/md';
+// import { MdLocationOn } from 'react-icons/md';
 import { AiOutlineUser, AiFillDollarCircle } from 'react-icons/ai';
+import { IoIosWallet } from 'react-icons/io';
 
-import { getBalance } from 'magic';
+import { getBalance } from 'api/magic';
 
-import { Bouncing } from 'components/random';
-
-export function ProfilePic({ avatarUrl }) {
-  const defaultPic = () => {
-    return (
-      <div className="user-avatar">
-        <div className="user-avatar-pic" alt="avatar">
-          <AiOutlineUser />
-        </div>
-      </div>
-    );
-  };
-
-  return (
-    <Img
-      className="user-avatar"
-      src={[avatarUrl]}
-      loader={defaultPic()}
-      unloader={defaultPic()}
-    />
-  );
-}
+import { Bouncing, copyTextToClipboard } from 'components/random';
 
 export function UserProfile({ user, hideDescription }) {
   const [hideDesc] = useState(hideDescription || false);
@@ -53,9 +33,17 @@ export function UserProfile({ user, hideDescription }) {
                   </div>
                   <div>
                     <span className="icon-wrapper blue">
-                      <MdLocationOn />
+                      <IoIosWallet />
                     </span>{' '}
                     {user.publicAddress.substring(0, 8) + '...'}
+                    <button
+                      className="btn btn-unstyled"
+                      onClick={() => {
+                        copyTextToClipboard(user.publicAddress);
+                      }}
+                    >
+                      (copy)
+                    </button>
                   </div>
                 </React.Fragment>
               )}
@@ -67,14 +55,36 @@ export function UserProfile({ user, hideDescription }) {
   );
 }
 
+export function ProfilePic({ avatarUrl }) {
+  const defaultPic = () => {
+    return (
+      <div className="user-avatar">
+        <div className="user-avatar-pic" alt="avatar">
+          <AiOutlineUser />
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <Img
+      className="user-avatar"
+      src={[avatarUrl]}
+      loader={defaultPic()}
+      unloader={defaultPic()}
+    />
+  );
+}
+
 export function Balance({ publicAddress }) {
   const [loading, setLoading] = useState(false);
+  const [network, setNetwork] = useState('');
   const [balance, setBalance] = useState(0);
 
   useEffect(() => {
     setLoading(true);
-
-    getBalance(publicAddress).then((balance) => {
+    getBalance(publicAddress).then(({ network, balance }) => {
+      setNetwork(network.name);
       setBalance(balance);
       setLoading(false);
     });
@@ -87,7 +97,9 @@ export function Balance({ publicAddress }) {
           <Bouncing />
         </span>
       ) : (
-        <span>{balance}</span>
+        <span>
+          {balance}Ξ ({network})
+        </span>
       )}
     </React.Fragment>
   );

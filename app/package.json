@@ -16,6 +16,7 @@
     "dotenv": "^6.2.0",
     "ethers": "^4.0.47",
     "express": "^4.16.4",
+    "express-session": "^1.17.1",
     "format-currency": "^1.0.0",
     "getstream": "^4.2.3",
     "helmet": "^3.21.2",

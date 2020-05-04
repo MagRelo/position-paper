@@ -13,13 +13,18 @@ export async function magicLogin(email) {
 export async function getBalance(publicAddress) {
   // Get user's Ethereum public address
   const signer = provider.getSigner();
-  const address = await signer.getAddress();
-  // console.log('address: ', address);
+  const address = publicAddress || (await signer.getAddress());
 
-  // Get user's balance in ether
-  const balance = ethers.utils.formatEther(
-    await provider.getBalance(address) // Balance is in wei
-  );
+  // const balance = ethers.utils.formatEther(
+  //   await provider.getBalance(address) // Balance is in wei
+  // );
 
-  return balance;
+  const [network, balance] = await Promise.all([
+    provider.getNetwork(),
+    provider.getBalance(address).then((balance) => {
+      return ethers.utils.formatEther(balance);
+    }),
+  ]);
+
+  return { network, balance };
 }

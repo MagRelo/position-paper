@@ -26,7 +26,7 @@ function LandingPage() {
               </div>
 
               <div className="mb-2"></div>
-              <h1>Transperant & Accountable Media Platform</h1>
+              <h1>Accountable Media Platform</h1>
 
               <p>Accountable Media Platform</p>
             </div>

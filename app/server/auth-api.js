@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 const passport = require('passport');
-const logout = require('./controllers/magic-auth').logout;
+const magicLogout = require('./controllers/magic-auth').logout;
 //
 // AUTH
 router.post('/login', passport.authenticate('magic'), (req, res) => {
@@ -11,10 +11,7 @@ router.post('/login', passport.authenticate('magic'), (req, res) => {
 
 router.post('/logout', async (req, res) => {
   if (req.isAuthenticated()) {
-    // logout of magic
-    await logout(req.user.issuer);
-
-    // logout session
+    await magicLogout(req.user.issuer);
     req.logout();
     return res.status(200).end();
   } else {
@@ -22,16 +19,16 @@ router.post('/logout', async (req, res) => {
   }
 });
 
-router.get('/status', (req, res) => {
-  const auth = req.isAuthenticated();
-
-  console.log('status', auth);
-
-  if (req.isAuthenticated()) {
-    return res.status(200).send(req.user);
-  } else {
-    return res.status(401).send('Not Authenticated');
-  }
+router.get('/status', authenticate, (req, res) => {
+  return res.status(200).send(req.user);
 });
 
+function authenticate(req, res, next) {
+  if (!req.isAuthenticated()) {
+    return res.status(401).send({ error: 'Not Authenticated' });
+  }
+  next();
+}
+
+exports.authenticate = authenticate;
 module.exports = router;

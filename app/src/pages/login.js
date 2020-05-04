@@ -1,10 +1,7 @@
 import React, { useContext } from 'react';
 import { AuthContext } from 'App';
 
-import { magicLogin } from 'magic';
-
-// import { Magic } from 'magic-sdk';
-// const magic = new Magic(process.env.REACT_APP_MAGIC_PUBLISHABLE_KEY);
+import { magicLogin } from 'api/magic';
 
 function Login(props) {
   const { createSession } = useContext(AuthContext);

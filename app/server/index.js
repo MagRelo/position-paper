@@ -38,37 +38,20 @@ mongoose.connection.on('error', function (err) {
 // *
 
 const express = require('express');
-var router = express.Router();
 const app = require('express')();
 const server = require('http').Server(app);
-const bodyParser = require('body-parser');
 const morgan = require('morgan');
-const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
 // auth
+const session = require('express-session');
 const passport = require('passport');
-require('./controllers/magic-auth');
 
 // configure express middleware
-app.use(
-  express.static('build', {
-    index: false,
-  })
-);
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json({ limit: '1mb' }));
-app.use(cookieParser());
 app.set('trust proxy', true);
-app.use(
-  cors({
-    origin: true,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
-    exposedHeaders: ['x-auth-token'],
-  })
-);
-app.use(passport.initialize());
+app.use(express.json({ limit: '1mb' }));
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 app.use(
   morgan('dev', {
     skip: function (req, res) {
@@ -77,8 +60,28 @@ app.use(
     },
   })
 );
+app.use(
+  express.static('build', {
+    index: false,
+  })
+);
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || 'sesh-secret',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      maxAge: 60 * 60 * 1000, // 1 hour
+      // secure: process.env.COOKIES_SECURE,
+      // sameSite: process.env.COOKIES_SAMESITE,
+    },
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 
 // api routing
+require('./controllers/magic-auth');
 const authApi = require('./auth-api');
 app.use('/auth', authApi);
 
