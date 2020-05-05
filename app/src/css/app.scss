@@ -449,6 +449,7 @@ textarea.form-control {
   border: solid 1px $primaryLight;
 }
 
+.form-radio:disabled,
 .form-control:disabled,
 .form-control[readonly] {
   color: $darkText;

@@ -31,17 +31,12 @@ export function UserProfile({ user, hideDescription }) {
                     </span>{' '}
                     <Balance publicAddress={user.publicAddress} />
                   </div>
-                  <div>
-                    <span className="icon-wrapper blue">
-                      <MdEmail />
-                    </span>{' '}
-                    {user.email}
-                  </div>
+
                   <div>
                     <span className="icon-wrapper blue">
                       <IoIosWallet />
                     </span>{' '}
-                    {user.publicAddress.substring(0, 8) + '...'}
+                    {user.publicAddress.substring(0, 11) + '...'}{' '}
                     <button
                       className="btn btn-sm btn-unstyled"
                       onClick={() => {
@@ -50,6 +45,12 @@ export function UserProfile({ user, hideDescription }) {
                     >
                       copy
                     </button>
+                  </div>
+                  <div>
+                    <span className="icon-wrapper blue">
+                      <MdEmail />
+                    </span>{' '}
+                    {user.email}
                   </div>
                 </React.Fragment>
               )}

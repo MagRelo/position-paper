@@ -4,7 +4,7 @@ import { AuthContext } from 'App';
 function AddProp(props) {
   const { callApi } = useContext(AuthContext);
 
-  const [positionType, setPositionType] = useState('');
+  const [positionType, setPositionType] = useState('option');
   function handleOptionChange(event) {
     setPositionType(event.target.value);
   }
@@ -38,15 +38,6 @@ function AddProp(props) {
           <legend>Add A Position</legend>
 
           <div className="form-group">
-            <label htmlFor="position">Message</label>
-            <textarea
-              name="position"
-              className="form-control"
-              placeholder="Use this space to describe your reasoning..."
-            ></textarea>
-          </div>
-
-          <div className="form-group">
             <label htmlFor="position">
               Position Type <small>How will this position be settled?</small>
             </label>
@@ -75,8 +66,9 @@ function AddProp(props) {
                     value="oracle"
                     checked={positionType === 'oracle'}
                     onChange={handleOptionChange}
+                    disabled
                   />
-                  Oracle
+                  Oracle (coming soon)
                 </label>
               </div>
             </div>
@@ -84,6 +76,15 @@ function AddProp(props) {
 
           {positionType === 'option' ? <OptionPanel /> : null}
           {positionType === 'oracle' ? <OraclePanel /> : null}
+
+          <div className="form-group">
+            <label htmlFor="position">Message</label>
+            <textarea
+              name="position"
+              className="form-control"
+              placeholder="Use this space to describe your reasoning..."
+            ></textarea>
+          </div>
 
           <hr />
           <button className="btn btn-theme">Post</button>

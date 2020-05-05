@@ -45,18 +45,6 @@ function Header() {
 
         <div className="header-container desktop-menu">
           <ul className="nav-list">
-            {/* <li>
-              <a href="/gethelp" className="btn btn-theme btn-sm">
-                Get Help <GiHeartPlus />
-              </a>
-            </li>
-
-            <li>
-              <a href="/givehelp" className="btn btn-theme btn-sm">
-                Give Help <FaHandHoldingHeart />
-              </a>
-            </li> */}
-
             <li>
               <NavLink to="/leaderboard">Leaderboard</NavLink>
             </li>
@@ -75,7 +63,7 @@ function Header() {
 
             {activeSession ? (
               <li style={{ float: 'right' }}>
-                <NavLink to="/dashboard">Dashboard</NavLink>
+                <NavLink to="/dashboard">Account</NavLink>
               </li>
             ) : null}
           </ul>
@@ -84,18 +72,6 @@ function Header() {
         <div className="header-container mobile-menu">
           {menuOpen ? (
             <ul className="nav-list">
-              {/* <li>
-                <a href="/gethelp" className="btn btn-theme btn-sm">
-                  Get Help <GiHeartPlus />
-                </a>
-              </li>
-
-              <li>
-                <a href="/givehelp" className="btn btn-theme btn-sm">
-                  Give Help <FaHandHoldingHeart />
-                </a>
-              </li> */}
-
               <li>
                 <NavLink to="/login">Login</NavLink>
               </li>

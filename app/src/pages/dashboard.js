@@ -10,17 +10,21 @@ function Dashboard(props) {
 
   return (
     <section className="container">
-      <h1>Dashboard</h1>
-      <UserProfile user={user} />
+      <div className="grid grid-5-3">
+        <div className="swap-order">
+          <UserProfile user={user} />
+        </div>
 
-      <div className="mb-4"></div>
-      <h2>Positions</h2>
-      <Link to="/addposition" className="btn btn-theme">
-        Add Position
-      </Link>
+        <div>
+          <h2>Open Positions</h2>
+          <Link to="/addposition" className="btn btn-theme">
+            Add Position
+          </Link>
 
-      <div className="mb-2"></div>
-      <Feed userId={user._id} />
+          <div className="mb-2"></div>
+          <Feed userId={user._id} />
+        </div>
+      </div>
     </section>
   );
 }

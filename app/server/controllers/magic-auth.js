@@ -48,14 +48,13 @@ const login = async (user, done) => {
     });
   }
 
-  await UserModel.updateOne(
+  const updatedUser = await UserModel.findOneAndUpdate(
     { issuer: user.issuer },
-    { $set: { lastLoginAt: user.claim.iat } }
+    { $set: { lastLoginAt: user.claim.iat } },
+    { new: true }
   );
 
-  // console.log('login - updated:', user);
-
-  return done(null, user);
+  return done(null, updatedUser);
 };
 
 exports.logout = async function (issuer) {
