@@ -27,15 +27,15 @@ export function UserProfile({ user, hideDescription }) {
                 <React.Fragment>
                   <div>
                     <span className="icon-wrapper blue">
-                      <MdEmail />
-                    </span>{' '}
-                    {user.email}
-                  </div>
-                  <div>
-                    <span className="icon-wrapper blue">
                       <AiFillDollarCircle />
                     </span>{' '}
                     <Balance publicAddress={user.publicAddress} />
+                  </div>
+                  <div>
+                    <span className="icon-wrapper blue">
+                      <MdEmail />
+                    </span>{' '}
+                    {user.email}
                   </div>
                   <div>
                     <span className="icon-wrapper blue">

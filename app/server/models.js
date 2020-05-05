@@ -41,7 +41,7 @@ const UserSchema = new mongoose.Schema(
 exports.UserModel = mongoose.model('User', UserSchema);
 
 // prop
-const Prop = new mongoose.Schema(
+const Position = new mongoose.Schema(
   {
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     title: String,
@@ -58,7 +58,7 @@ const Prop = new mongoose.Schema(
   },
   { timestamps: true }
 );
-exports.PropModel = mongoose.model('Prop', Prop);
+exports.PositionModel = mongoose.model('Position', Position);
 
 //
 // Give/Get

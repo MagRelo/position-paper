@@ -16,8 +16,8 @@
   height: 64px;
   margin: 8px;
   border-radius: 50%;
-  border: 6px solid $primaryColor;
-  border-color: $primaryColor transparent $secondaryColor transparent;
+  border: 6px solid $primaryHighlight;
+  border-color: $primaryHighlight transparent $primaryLight transparent;
   animation: lds-dual-ring 1.2s linear infinite;
 }
 
@@ -40,7 +40,7 @@
 .spinner>div {
   width: 1rem;
   height: 1rem;
-  background-color: $primaryColor;
+  background-color: $primaryHighlight;
   border-radius: 100%;
   display: inline-block;
   -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
@@ -55,7 +55,7 @@
 .spinner .bounce2 {
   -webkit-animation-delay: -0.16s;
   animation-delay: -0.16s;
-  background-color: $secondaryColor;
+  background-color: $primaryLight;
 }
 
 @-webkit-keyframes sk-bouncedelay {

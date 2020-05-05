@@ -18,8 +18,8 @@ import About from 'pages/about';
 import NotFound from 'pages/404';
 
 import Dashboard from 'pages/dashboard';
+import Leaderboard from 'pages/leaderboard';
 
-import Feed from 'pages/position/feed';
 import AddProp from 'pages/position/addPosition';
 import ViewProp from 'pages/position/position';
 
@@ -64,7 +64,7 @@ function App() {
       body: JSON.stringify(body),
     }).then((response) => {
       // success (201's?)
-      if (response.status === 200) {
+      if (response.status === 200 || response.status === 201) {
         return response.json();
       }
 
@@ -115,7 +115,7 @@ function App() {
               <Terms path="/terms" />
               <About path="/about" />
 
-              <Feed path="/feed" />
+              <Leaderboard path="/leaderboard" />
               <ViewProp path="/position/:propId" />
 
               {/* Auth required */}

@@ -8,7 +8,7 @@ const { authenticate } = require('./controllers/magic-auth');
 const { populateUser } = require('./controllers/user');
 
 // const UserModel = require('./models').UserModel;
-const PropModel = require('./models').PropModel;
+const PositionModel = require('./models').PositionModel;
 
 //
 // MISC
@@ -17,7 +17,7 @@ const PropModel = require('./models').PropModel;
 router.get('/props/:propId', async function (req, res) {
   try {
     // get latest
-    const prop = await PropModel.findOne({
+    const prop = await PositionModel.findOne({
       _id: req.params.propId,
     }).lean();
 
@@ -42,7 +42,9 @@ router.get('/props', async function (req, res) {
     }
     // console.log(req.query, query);
 
-    const propsList = await PropModel.find(query).sort({ createdAt: 1 }).lean();
+    const propsList = await PositionModel.find(query)
+      .sort({ createdAt: 1 })
+      .lean();
     res.status(200).send({ props: propsList });
   } catch (error) {
     console.log({ error: error.message });
@@ -54,10 +56,10 @@ router.get('/props', async function (req, res) {
 router.post('/props', authenticate, async function (req, res) {
   try {
     // get latest
-    const newProp = new PropModel({ user: req.user._id, ...req.body });
+    const newProp = new PositionModel({ user: req.user._id, ...req.body });
     await newProp.save();
 
-    res.status(200).send(newProp);
+    res.status(201).send(newProp);
   } catch (error) {
     console.log({ error: error.message });
     res.status(500).send({ error: error.message });

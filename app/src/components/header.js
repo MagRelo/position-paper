@@ -58,7 +58,7 @@ function Header() {
             </li> */}
 
             <li>
-              <NavLink to="/feed">Feed</NavLink>
+              <NavLink to="/leaderboard">Leaderboard</NavLink>
             </li>
 
             {!activeSession ? (
