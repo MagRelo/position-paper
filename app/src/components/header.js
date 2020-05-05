@@ -56,6 +56,11 @@ function Header() {
                 Give Help <FaHandHoldingHeart />
               </a>
             </li> */}
+
+            <li>
+              <NavLink to="/feed">Feed</NavLink>
+            </li>
+
             {!activeSession ? (
               <li style={{ float: 'right' }}>
                 <NavLink to="/login">Login</NavLink>

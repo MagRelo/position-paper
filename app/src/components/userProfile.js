@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Img from 'react-image';
-// import { MdLocationOn } from 'react-icons/md';
+import { MdEmail } from 'react-icons/md';
 import { AiOutlineUser, AiFillDollarCircle } from 'react-icons/ai';
 import { IoIosWallet } from 'react-icons/io';
 
@@ -27,6 +27,12 @@ export function UserProfile({ user, hideDescription }) {
                 <React.Fragment>
                   <div>
                     <span className="icon-wrapper blue">
+                      <MdEmail />
+                    </span>{' '}
+                    {user.email}
+                  </div>
+                  <div>
+                    <span className="icon-wrapper blue">
                       <AiFillDollarCircle />
                     </span>{' '}
                     <Balance publicAddress={user.publicAddress} />
@@ -37,12 +43,12 @@ export function UserProfile({ user, hideDescription }) {
                     </span>{' '}
                     {user.publicAddress.substring(0, 8) + '...'}
                     <button
-                      className="btn btn-unstyled"
+                      className="btn btn-sm btn-unstyled"
                       onClick={() => {
                         copyTextToClipboard(user.publicAddress);
                       }}
                     >
-                      (copy)
+                      copy
                     </button>
                   </div>
                 </React.Fragment>

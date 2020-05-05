@@ -58,7 +58,7 @@ const Prop = new mongoose.Schema(
   },
   { timestamps: true }
 );
-exports.PropModel = mongoose.model('Signup', Prop);
+exports.PropModel = mongoose.model('Prop', Prop);
 
 //
 // Give/Get

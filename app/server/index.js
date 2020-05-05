@@ -43,9 +43,29 @@ const server = require('http').Server(app);
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 
-// auth
+// Sessions
 const session = require('express-session');
-const passport = require('passport');
+var MongoDBStore = require('connect-mongodb-session')(session);
+var store = new MongoDBStore({
+  uri: process.env.MONGODB_URL_INT,
+  collection: 'sessions',
+});
+store.on('error', function (error) {
+  console.log('MongoStore Error', error);
+});
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || 'sesh-secret',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      maxAge: 60 * 60 * 1000, // 1 hour
+      // secure: process.env.COOKIES_SECURE,
+      // sameSite: process.env.COOKIES_SAMESITE,
+    },
+    store: store,
+  })
+);
 
 // configure express middleware
 app.set('trust proxy', true);
@@ -65,18 +85,8 @@ app.use(
     index: false,
   })
 );
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET || 'sesh-secret',
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-      maxAge: 60 * 60 * 1000, // 1 hour
-      // secure: process.env.COOKIES_SECURE,
-      // sameSite: process.env.COOKIES_SAMESITE,
-    },
-  })
-);
+
+const passport = require('passport');
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -84,6 +94,9 @@ app.use(passport.session());
 require('./controllers/magic-auth');
 const authApi = require('./auth-api');
 app.use('/auth', authApi);
+
+const appApi = require('./api');
+app.use('/api', appApi);
 
 // page routing
 const routesApi = require('./routes');

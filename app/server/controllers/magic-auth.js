@@ -69,7 +69,6 @@ passport.serializeUser((user, done) => {
 
 /* Populates user data in the req.user object */
 passport.deserializeUser(async (id, done) => {
-  console.log('deserialize:', id);
   try {
     const user = await UserModel.findOne({ issuer: id });
     done(null, user);
@@ -77,3 +76,10 @@ passport.deserializeUser(async (id, done) => {
     done(err, null);
   }
 });
+
+exports.authenticate = function (req, res, next) {
+  if (!req.isAuthenticated()) {
+    return res.status(401).send({ error: 'Not Authenticated' });
+  }
+  next();
+};

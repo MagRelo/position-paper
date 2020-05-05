@@ -19,16 +19,16 @@ router.post('/logout', async (req, res) => {
   }
 });
 
-router.get('/status', authenticate, (req, res) => {
-  return res.status(200).send(req.user);
-});
-
-function authenticate(req, res, next) {
+router.get('/status', (req, res) => {
   if (!req.isAuthenticated()) {
     return res.status(401).send({ error: 'Not Authenticated' });
   }
-  next();
-}
+  return res.status(200).send(req.user);
+});
 
-exports.authenticate = authenticate;
+// function authenticate(req, res, next) {
+
+//   next();
+// }
+
 module.exports = router;

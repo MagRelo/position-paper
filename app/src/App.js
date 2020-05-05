@@ -3,7 +3,7 @@ import { Router, navigate } from '@reach/router';
 import { OnRouteChange } from 'routingHack.js';
 
 import Helmet from 'react-helmet';
-import Cookies from 'js-cookie';
+// import Cookies from 'js-cookie';
 import { Loading } from './components/random';
 
 // Header
@@ -19,6 +19,10 @@ import NotFound from 'pages/404';
 
 import Dashboard from 'pages/dashboard';
 
+import Feed from 'pages/position/feed';
+import AddProp from 'pages/position/addPosition';
+import ViewProp from 'pages/position/position';
+
 // Setup Auth context
 export const AuthContext = React.createContext({});
 
@@ -28,15 +32,25 @@ function App() {
   const [user, setUser] = useState({});
 
   useEffect(() => {
-    // hit server and see if logged in
-    getUser().then((user) => {
-      if (!!user) {
+    fetch('auth/status', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then(async (response) => {
+      // success (201's?)
+      if (response.status === 200) {
+        const user = await response.json();
         setUser(user);
         setActiveSession(true);
         setLoadingSession(false);
-      } else {
-        clearSession();
+        return;
+      }
+
+      console.log(response.status, response.statusText);
+      if (response.status === 401) {
         setLoadingSession(false);
+        return clearSession();
       }
     });
   }, []);
@@ -86,11 +100,13 @@ function App() {
       value={{ activeSession, createSession, clearSession, callApi, user }}
     >
       {MetaData()}
-      {loadingSession ? (
-        <Loading />
-      ) : (
-        <div className="page-wrapper">
-          <Header />
+
+      <div className="page-wrapper">
+        <Header />
+
+        {loadingSession ? (
+          <Loading />
+        ) : (
           <div className="content-wrapper">
             <Router>
               <LandingPage path="/" />
@@ -99,10 +115,14 @@ function App() {
               <Terms path="/terms" />
               <About path="/about" />
 
+              <Feed path="/feed" />
+              <ViewProp path="/position/:propId" />
+
               {/* Auth required */}
               {activeSession ? (
                 <React.Fragment>
                   <Dashboard path="/dashboard" />
+                  <AddProp path="/addposition" />
                 </React.Fragment>
               ) : null}
 
@@ -115,26 +135,14 @@ function App() {
               }}
             ></OnRouteChange>
           </div>
-
-          <Footer />
-        </div>
-      )}
+        )}
+        <Footer />
+      </div>
     </AuthContext.Provider>
   );
 }
 
 export default App;
-
-async function getUser() {
-  return await fetch('/auth/status')
-    .then((r) => {
-      return r.json();
-    })
-    .catch((error) => {
-      console.error(error);
-      return false;
-    });
-}
 
 function MetaData() {
   return (
