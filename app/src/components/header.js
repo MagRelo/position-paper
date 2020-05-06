@@ -63,7 +63,7 @@ function Header() {
 
             {activeSession ? (
               <li style={{ float: 'right' }}>
-                <NavLink to="/dashboard">Account</NavLink>
+                <NavLink to="/account">Account</NavLink>
               </li>
             ) : null}
           </ul>
@@ -78,7 +78,7 @@ function Header() {
 
               {activeSession ? (
                 <li>
-                  <NavLink to="/dashboard">Dashboard</NavLink>
+                  <NavLink to="/account">Account</NavLink>
                 </li>
               ) : null}
 

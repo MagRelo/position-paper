@@ -9,12 +9,10 @@ import { getBalance } from 'api/magic';
 import { Bouncing, copyTextToClipboard } from 'components/random';
 
 export function UserProfile({ user, hideDescription }) {
-  const [hideDesc] = useState(hideDescription || false);
-
   return (
     <React.Fragment>
       {user ? (
-        <div className="user-profile panel">
+        <div className="user-profile">
           <div className="user-info">
             <div>
               <ProfilePic avatarUrl={user.avatar} />
@@ -23,7 +21,7 @@ export function UserProfile({ user, hideDescription }) {
             <div className="user-text">
               <div className="user-name">{user.displayName}</div>
 
-              {hideDesc ? null : (
+              {hideDescription ? null : (
                 <React.Fragment>
                   <div>
                     <span className="icon-wrapper blue">

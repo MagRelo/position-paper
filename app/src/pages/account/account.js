@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import { Link } from '@reach/router';
 
 import { AuthContext } from 'App';
@@ -12,7 +12,9 @@ function Dashboard(props) {
     <section className="container">
       <div className="grid grid-5-3">
         <div className="swap-order">
-          <UserProfile user={user} />
+          <Link to="/profile" className="panel">
+            <UserProfile user={user} />
+          </Link>
         </div>
 
         <div>

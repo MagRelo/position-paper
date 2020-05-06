@@ -39,6 +39,8 @@ function Footer(props) {
               <ul className="list-unstyled w-100">
                 <li>
                   <NavLink to="/login">Login</NavLink>
+                  <NavLink to="/about">About</NavLink>
+                  <NavLink to="/terms">Terms</NavLink>
                 </li>
               </ul>
             </div>

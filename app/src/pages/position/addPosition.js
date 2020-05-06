@@ -1,19 +1,36 @@
 import React, { useContext, useState } from 'react';
 import { AuthContext } from 'App';
 
-function AddProp(props) {
-  const { callApi } = useContext(AuthContext);
+import { createEditorState, Editor } from 'medium-draft';
+import mediumDraftExporter from 'medium-draft/lib/exporter';
+import 'medium-draft/lib/index.css';
+import { convertToRaw } from 'draft-js';
 
-  const [positionType, setPositionType] = useState('option');
-  function handleOptionChange(event) {
-    setPositionType(event.target.value);
-  }
+import { UserProfile } from 'components/userProfile';
+
+function AddProp(props) {
+  const { callApi, user } = useContext(AuthContext);
+
+  // direction
+  const [direction, setDirection] = useState('long');
+
+  // length
+  const [length, setLength] = useState('1d');
+
+  // leverage
+  const [leverage, setLeverage] = useState('1x');
+
+  const [editorState, setEditorState] = useState(createEditorState());
+  const refsEditor = React.createRef();
 
   async function submit(event) {
     event.preventDefault();
 
     // get form data
-    const formObject = {};
+    const formObject = {
+      rawState: convertToRaw(editorState.getCurrentContent()),
+      renderedHtml: mediumDraftExporter(editorState.getCurrentContent()),
+    };
     const formData = new FormData(event.target);
     formData.forEach((value, key) => {
       formObject[key] = value;
@@ -34,26 +51,41 @@ function AddProp(props) {
   return (
     <section className="container">
       <div className="form-wrapper">
-        <form name="loginForm" onSubmit={submit}>
-          <legend>Add A Position</legend>
-
+        <form name="positionForm" onSubmit={submit}>
+          <UserProfile user={user} hideDescription={true} />
+          <div className="mb-4"></div>
           <div className="form-group">
-            <label htmlFor="position">
-              Position Type <small>How will this position be settled?</small>
+            <label htmlFor="location" className="sr-only">
+              Post Content
             </label>
-            <div className="grid grid-2">
+            <Editor
+              ref={refsEditor}
+              editorState={editorState}
+              onChange={setEditorState}
+              sideButtons={[]}
+              placeholder="Add content here! (highlight text to format)"
+            />
+          </div>
+
+          <hr />
+          <legend>Trade</legend>
+          <div className="form-group grid grid-4">
+            <div>
+              <label htmlFor="trade">Direction</label>
+
               <div className="form-check">
                 <label>
                   <input
                     className="form-radio"
                     type="radio"
-                    id="position-type"
-                    name="position-type"
-                    value="option"
-                    checked={positionType === 'option'}
-                    onChange={handleOptionChange}
+                    name="direction"
+                    value="long"
+                    checked={direction === 'long'}
+                    onChange={(event) => {
+                      setDirection(event.target.value);
+                    }}
                   />
-                  Option Trade
+                  Long
                 </label>
               </div>
               <div className="form-check">
@@ -61,29 +93,154 @@ function AddProp(props) {
                   <input
                     className="form-radio"
                     type="radio"
-                    id="positionType"
-                    name="positionType"
-                    value="oracle"
-                    checked={positionType === 'oracle'}
-                    onChange={handleOptionChange}
-                    disabled
+                    name="direction"
+                    value="short"
+                    checked={direction === 'short'}
+                    onChange={(event) => {
+                      setDirection(event.target.value);
+                    }}
                   />
-                  Oracle (coming soon)
+                  Short
                 </label>
               </div>
             </div>
-          </div>
+            <div>
+              <label htmlFor="trade">Length</label>
 
-          {positionType === 'option' ? <OptionPanel /> : null}
-          {positionType === 'oracle' ? <OraclePanel /> : null}
-
-          <div className="form-group">
-            <label htmlFor="position">Message</label>
-            <textarea
-              name="position"
-              className="form-control"
-              placeholder="Use this space to describe your reasoning..."
-            ></textarea>
+              <div className="form-check">
+                <label>
+                  <input
+                    className="form-radio"
+                    type="radio"
+                    name="length"
+                    value="1d"
+                    checked={length === '1d'}
+                    onChange={(event) => {
+                      setLength(event.target.value);
+                    }}
+                  />
+                  1d
+                </label>
+              </div>
+              <div className="form-check">
+                <label>
+                  <input
+                    className="form-radio"
+                    type="radio"
+                    name="length"
+                    value="7d"
+                    checked={length === '7d'}
+                    onChange={(event) => {
+                      setLength(event.target.value);
+                    }}
+                  />
+                  7d
+                </label>
+              </div>
+              <div className="form-check">
+                <label>
+                  <input
+                    className="form-radio"
+                    type="radio"
+                    name="length"
+                    value="14d"
+                    checked={length === '14d'}
+                    onChange={(event) => {
+                      setLength(event.target.value);
+                    }}
+                  />
+                  14d
+                </label>
+              </div>
+              <div className="form-check">
+                <label>
+                  <input
+                    className="form-radio"
+                    type="radio"
+                    name="length"
+                    value="28d"
+                    checked={length === '28d'}
+                    onChange={(event) => {
+                      setLength(event.target.value);
+                    }}
+                  />
+                  28d
+                </label>
+              </div>
+            </div>
+            <div>
+              <label htmlFor="trade">Amount</label>
+              <input
+                type="number"
+                name="amount"
+                id="amount"
+                required
+                className="form-control"
+              />
+            </div>
+            <div>
+              <label htmlFor="amount">Leverage</label>
+              <div className="form-check">
+                <label>
+                  <input
+                    className="form-radio"
+                    type="radio"
+                    name="leverage"
+                    value="1x"
+                    checked={leverage === '1x'}
+                    onChange={(event) => {
+                      setLeverage(event.target.value);
+                    }}
+                  />
+                  1X
+                </label>
+              </div>
+              <div className="form-check">
+                <label>
+                  <input
+                    className="form-radio"
+                    type="radio"
+                    name="leverage"
+                    value="2x"
+                    checked={leverage === '2x'}
+                    onChange={(event) => {
+                      setLeverage(event.target.value);
+                    }}
+                  />
+                  2X
+                </label>
+              </div>
+              <div className="form-check">
+                <label>
+                  <input
+                    className="form-radio"
+                    type="radio"
+                    name="leverage"
+                    value="3x"
+                    checked={leverage === '3x'}
+                    onChange={(event) => {
+                      setLeverage(event.target.value);
+                    }}
+                  />
+                  3X
+                </label>
+              </div>
+              <div className="form-check">
+                <label>
+                  <input
+                    className="form-radio"
+                    type="radio"
+                    name="leverage"
+                    value="5x"
+                    checked={leverage === '5x'}
+                    onChange={(event) => {
+                      setLeverage(event.target.value);
+                    }}
+                  />
+                  5X
+                </label>
+              </div>
+            </div>
           </div>
 
           <hr />
@@ -94,34 +251,19 @@ function AddProp(props) {
   );
 }
 
-function OptionPanel() {
-  return (
-    <div className="form-group">
-      <label htmlFor="trade">Trade</label>
-      <select name="trade" className="custom-select mb-3">
-        <option value="long_eth_1x">Long ETH, 1x</option>
-        <option value="long_eth_2x">Long ETH, 2x</option>
-      </select>
+// function OraclePanel() {
+//   return (
+//     <div className="form-group">
+//       <label htmlFor="trade">Oracle</label>
+//       <select name="trade" className="custom-select mb-3">
+//         <option value="long_eth_1x">Guy 1</option>
+//         <option value="long_eth_2x">Other Guy</option>
+//       </select>
 
-      <label htmlFor="amount">Amount</label>
-      <input type="number" name="amount" id="amount" className="form-control" />
-    </div>
-  );
-}
-
-function OraclePanel() {
-  return (
-    <div className="form-group">
-      <label htmlFor="trade">Oracle</label>
-      <select name="trade" className="custom-select mb-3">
-        <option value="long_eth_1x">Guy 1</option>
-        <option value="long_eth_2x">Other Guy</option>
-      </select>
-
-      <label htmlFor="amount">Amount</label>
-      <input type="number" name="amount" id="amount" className="form-control" />
-    </div>
-  );
-}
+//       <label htmlFor="amount">Amount</label>
+//       <input type="number" name="amount" id="amount" className="form-control" />
+//     </div>
+//   );
+// }
 
 export default AddProp;

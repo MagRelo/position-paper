@@ -55,6 +55,8 @@ const Position = new mongoose.Schema(
       enum: ['Pending', 'Approved', 'Closed'],
       default: 'Pending',
     },
+    rawState: Object,
+    renderedHtml: String
   },
   { timestamps: true }
 );

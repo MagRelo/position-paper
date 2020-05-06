@@ -17,7 +17,8 @@ import Terms from 'pages/legal';
 import About from 'pages/about';
 import NotFound from 'pages/404';
 
-import Dashboard from 'pages/dashboard';
+import Account from 'pages/account/account';
+import UpdateProfile from 'pages/account/updateProfile';
 import Leaderboard from 'pages/leaderboard';
 
 import AddProp from 'pages/position/addPosition';
@@ -86,7 +87,7 @@ function App() {
     if (redirect) {
       navigate(redirect);
     } else {
-      navigate('/dashboard');
+      navigate('/account');
     }
   }
 
@@ -121,8 +122,9 @@ function App() {
               {/* Auth required */}
               {activeSession ? (
                 <React.Fragment>
-                  <Dashboard path="/dashboard" />
+                  <Account path="/account" />
                   <AddProp path="/addposition" />
+                  <UpdateProfile path="/profile" />
                 </React.Fragment>
               ) : null}
 

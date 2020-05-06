@@ -341,6 +341,10 @@ table {
 
 /* form */
 
+form>hr {
+  margin: 1rem -2rem;
+}
+
 .flashit {
   -webkit-animation: flash linear linear 300ms 3;
   animation: flash linear 300ms 3;
@@ -834,7 +838,8 @@ a.panel {
 // JOB DESC
 
 .md-RichEditor-root {
-  border-bottom: solid 2px $primaryLight;
+  border: dashed 2px $lightGray;
+  padding: 0 1rem;
 }
 
 .job-description-container {

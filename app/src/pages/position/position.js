@@ -30,15 +30,24 @@ function Prop({ propId }) {
   return (
     <section className="container">
       {error ? <p>{error}</p> : null}
-      {loading ? (
-        <Loading />
-      ) : (
-        <div>
-          <h1>{prop.title}</h1>
-        </div>
-      )}
+      {loading ? <Loading /> : <Position position={prop} />}
     </section>
   );
 }
 
+function Position({ position }) {
+  return (
+    <div className="panel">
+      <h1>{position.trade}</h1>
+      <div
+        className="job-description"
+        dangerouslySetInnerHTML={createMarkup(position.renderedHtml)}
+      />
+    </div>
+  );
+}
+
+function createMarkup(markup) {
+  return { __html: markup };
+}
 export default Prop;

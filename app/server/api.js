@@ -9,6 +9,7 @@ const { populateUser } = require('./controllers/user');
 
 // const UserModel = require('./models').UserModel;
 const PositionModel = require('./models').PositionModel;
+const UserModel = require('./models').UserModel;
 
 //
 // MISC
@@ -74,5 +75,27 @@ router.post('/props', authenticate, async function (req, res) {
 //
 
 router.get('/user', populateUser);
+
+// add
+router.put('/user', authenticate, async function (req, res) {
+  try {
+    // get latest
+    const updatedUser = await UserModel.findByIdAndUpdate(
+      { _id: req.user._id },
+      {
+        displayName: req.body.displayName,
+        avatar: req.body.avatar,
+      },
+      { new: true }
+    );
+
+    console.log(updatedUser);
+
+    res.status(200).send(updatedUser);
+  } catch (error) {
+    console.log({ error: error.message });
+    res.status(500).send({ error: error.message });
+  }
+});
 
 module.exports = router;
