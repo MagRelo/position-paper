@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from 'App';
 
 import { Loading } from 'components/random';
+import { UserProfile } from 'pages/account/userProfile';
 
 function Prop({ propId }) {
   const { callApi } = useContext(AuthContext);
@@ -38,11 +39,14 @@ function Prop({ propId }) {
 function Position({ position }) {
   return (
     <div className="panel">
-      <h1>{position.trade}</h1>
+      <h1>{position.title}</h1>
       <div
         className="job-description"
         dangerouslySetInnerHTML={createMarkup(position.renderedHtml)}
       />
+
+      <hr />
+      <UserProfile user={position.user} showFollow={true} />
     </div>
   );
 }

@@ -6,7 +6,7 @@ import mediumDraftExporter from 'medium-draft/lib/exporter';
 import 'medium-draft/lib/index.css';
 import { convertToRaw } from 'draft-js';
 
-import { UserProfile } from 'components/userProfile';
+import { UserProfile } from 'pages/account/userProfile';
 
 function AddProp(props) {
   const { callApi, user } = useContext(AuthContext);
@@ -54,6 +54,15 @@ function AddProp(props) {
         <form name="positionForm" onSubmit={submit}>
           <UserProfile user={user} hideDescription={true} />
           <div className="mb-4"></div>
+          <div className="form-group">
+            <label htmlFor="title">Title</label>
+            <input
+              type="text"
+              name="title"
+              id="title"
+              className="form-control"
+            />
+          </div>
           <div className="form-group">
             <label htmlFor="location" className="sr-only">
               Post Content

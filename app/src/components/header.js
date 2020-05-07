@@ -46,7 +46,7 @@ function Header() {
         <div className="header-container desktop-menu">
           <ul className="nav-list">
             <li>
-              <NavLink to="/leaderboard">Leaderboard</NavLink>
+              <NavLink to="/leaderboard">Front Page</NavLink>
             </li>
 
             {!activeSession ? (
@@ -62,9 +62,15 @@ function Header() {
             ) : null}
 
             {activeSession ? (
-              <li style={{ float: 'right' }}>
-                <NavLink to="/account">Account</NavLink>
-              </li>
+              <React.Fragment>
+                <li style={{ float: 'right' }}>
+                  <NavLink to="/account">My Account</NavLink>
+                </li>
+
+                <li style={{ float: 'right' }}>
+                  <NavLink to="/network">My Network</NavLink>
+                </li>
+              </React.Fragment>
             ) : null}
           </ul>
         </div>
@@ -72,14 +78,22 @@ function Header() {
         <div className="header-container mobile-menu">
           {menuOpen ? (
             <ul className="nav-list">
-              <li>
-                <NavLink to="/login">Login</NavLink>
-              </li>
+              {!activeSession ? (
+                <li>
+                  <NavLink to="/login">Login</NavLink>
+                </li>
+              ) : null}
 
               {activeSession ? (
-                <li>
-                  <NavLink to="/account">Account</NavLink>
-                </li>
+                <React.Fragment>
+                  <li>
+                    <NavLink to="/account">My Account</NavLink>
+                  </li>
+
+                  <li>
+                    <NavLink to="/network">My Network</NavLink>
+                  </li>
+                </React.Fragment>
               ) : null}
 
               {activeSession && user.type === 'Admin' ? (

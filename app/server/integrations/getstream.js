@@ -1,9 +1,7 @@
 const stream = require('getstream');
 
 const UserModel = require('../models').UserModel;
-// const QueryModel = require('../models').QueryModel;
-const LinkModel = require('../models').LinkModel;
-const ResponseModel = require('../models').ResponseModel;
+const PositionModel = require('../models').PositionModel;
 
 const apiKey = process.env.STREAM_API_KEY || 'hdm568bfbafw';
 const apiKeySecret =
@@ -11,10 +9,7 @@ const apiKeySecret =
   'egqcazdzd8ws8zue6srrvdbeypzfghxgm6hv99pbfgyzp5nauesb86qru69gjuxk';
 
 // Instantiate a new client (server side)
-const streamClient = stream.connect(
-  apiKey,
-  apiKeySecret
-);
+const streamClient = stream.connect(apiKey, apiKeySecret);
 
 exports.addUser = async function(user) {
   const newUser = await streamClient.feed('User', user._id.toString());
@@ -22,65 +17,32 @@ exports.addUser = async function(user) {
     actor: user._id,
     verb: 'addUser',
     object: user._id,
-    time: user.createdAt
+    time: user.createdAt,
   });
 };
 
-exports.addQuery = async function(user, link) {
-  // Subscribe user to feed
+exports.addPosition = async function(user, position) {
+  // Subscribe user to the position's feed
   const userFeed = await streamClient.feed('User', user._id);
-  await userFeed.follow('Link', link._id, { limit: 0 });
+  await userFeed.follow('Position', position._id, { limit: 0 });
 
-  // get 'Query' feed for link and add "addQuery" activity
-  const linkFeed = await streamClient.feed('Link', link._id);
-  await linkFeed.addActivity({
+  // Add to the position's feed
+  const positionFeed = await streamClient.feed('Position', position._id);
+  await positionFeed.addActivity({
     actor: user._id,
-    verb: 'addQuery',
-    object: link._id,
-    time: link.createdAt
-  });
-};
-
-exports.addLink = async function(user, link) {
-  // Subscribe user to feed
-  const userFeed = await streamClient.feed('User', user._id);
-  await userFeed.follow('Link', link._id, { limit: 0 });
-
-  // add tream for new, notify parent link
-  const linkFeed = await streamClient.feed('Link', link._id);
-  await linkFeed.addActivity({
-    actor: user._id,
-    verb: 'addLink',
-    object: link._id,
-    time: link.createdAt,
-    to: link.parents.map(parent => 'Link:' + parent)
-  });
-};
-
-exports.addResponse = async function(user, link, response) {
-  // Subscribe user to feed
-  const userFeed = await streamClient.feed('User', user._id);
-  await userFeed.follow('Link', link._id, { limit: 0 });
-
-  // get 'Query' feed for link and add "addLink" activity
-  const linkFeed = await streamClient.feed('Link', link._id);
-  await linkFeed.addActivity({
-    actor: user._id,
-    verb: 'addResponse',
-    object: response._id,
-    time: response.createdAt,
-    to: link.parents.map(parent => 'Link:' + parent._id)
+    verb: 'addPosition',
+    object: position._id,
+    time: position.createdAt,
   });
 };
 
 exports.follow = async function(userId, feedType, targetId) {
   // console.log(userId, feedType, targetId);
 
-  // get user feed
+  // get user feed & follow target
   const userFeed = await streamClient.feed('User', userId);
-
-  // Follow target
-  await userFeed.follow(feedType, targetId, { limit: 0 });
+  // await userFeed.follow(feedType, targetId, { limit: 0 });
+  await userFeed.follow(feedType, targetId);
 
   // Add activity with target
   const timeStamp = new Date();
@@ -89,7 +51,7 @@ exports.follow = async function(userId, feedType, targetId) {
     verb: `addFollow:${feedType}`,
     object: targetId,
     time: timeStamp,
-    target: `${feedType}:${targetId}`
+    target: `${feedType}:${targetId}`,
   });
 };
 
@@ -107,41 +69,22 @@ exports.getFeed = async function(feedType, id, userId) {
 
 async function hydrateStreamFeed(inputArray = [], userId) {
   // create array of queries
-  const queries = inputArray.map(item => {
+  const queries = inputArray.map((item) => {
     // switch on type
     switch (item.verb) {
       case 'addUser':
         return UserModel.findOne({ _id: item.object })
           .lean()
-          .then(data => {
+          .then((data) => {
             item.data = data;
             return item;
           });
 
-      case 'addQuery':
-        return LinkModel.findOne({ _id: item.object })
+      case 'addPosition':
+        return PositionModel.findOne({ _id: item.object })
+          .populate('user')
           .lean()
-          .then(data => {
-            item.data = data;
-            return item;
-          });
-
-      case 'addLink':
-        return LinkModel.findOne({
-          user: userId,
-          $or: [{ children: item.object }, { _id: item.object }]
-        })
-          .lean()
-          .then(data => {
-            item.data = data;
-            return item;
-          });
-
-      case 'addResponse':
-        return ResponseModel.findOne({ _id: item.object })
-          .populate('user link')
-          .lean()
-          .then(data => {
+          .then((data) => {
             item.data = data;
             return item;
           });
@@ -149,16 +92,16 @@ async function hydrateStreamFeed(inputArray = [], userId) {
       case 'addFollow:User':
         return UserModel.findOne({ _id: item.object })
           .lean()
-          .then(data => {
+          .then((data) => {
             item.data = data;
             return item;
           });
 
-      case 'addFollow:Link':
-        return LinkModel.findOne({ _id: item.object })
-          .populate('query')
+      case 'addFollow:Position':
+        return PositionModel.findOne({ _id: item.object })
+          .populate('user')
           .lean()
-          .then(data => {
+          .then((data) => {
             item.data = data;
             return item;
           });

@@ -4,6 +4,7 @@ import { Link } from '@reach/router';
 import { AuthContext } from 'App';
 
 import { Loading } from 'components/random';
+import Teaser from 'pages/position/positionTeaser';
 
 function FeedPage({ userId }) {
   const { callApi } = useContext(AuthContext);
@@ -45,13 +46,12 @@ function FeedPage({ userId }) {
           {!propsList.length ? <p>No Props</p> : null}
           {propsList.map((prop) => {
             return (
-              <Link
-                to={'/position/' + prop._id}
-                className="panel"
-                key={prop._id}
-              >
-                {prop.title}
-              </Link>
+              <React.Fragment key={prop._id}>
+                <Link to={'/position/' + prop._id}>
+                  <Teaser position={prop} />
+                </Link>
+                <div className="mb-4"></div>
+              </React.Fragment>
             );
           })}
         </div>

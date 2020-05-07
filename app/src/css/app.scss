@@ -276,6 +276,18 @@ table {
   grid-gap: 1em;
 }
 
+.user-score {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-gap: 1em;
+
+  .user-avatar {
+    width: 40px;
+    height: 40px;
+  }
+
+}
+
 .user-text {
   display: flex;
   flex-direction: column;
@@ -812,7 +824,14 @@ a.panel {
   border: solid 1px $lightGray;
   border-radius: 7px;
   box-shadow: $box-shadow-medium;
+  color: $darkText;
 }
+
+.panel.position {
+  border-bottom-left-radius: 40px;
+}
+
+
 
 .user-panel {
   padding: 0;
@@ -823,7 +842,7 @@ a.panel {
 
 @media screen and (min-width: 900px) {
   .panel {
-    padding: 1.5rem;
+    padding: 1rem;
   }
 
   .user-panel {
@@ -838,8 +857,17 @@ a.panel {
 // JOB DESC
 
 .md-RichEditor-root {
-  border: dashed 2px $lightGray;
   padding: 0 1rem;
+  min-height: 200px;
+  border: dashed 2px $lightGray;
+  border-radius: 4px;
+}
+
+.trade-band {
+  border-top: solid 1px $lightGray;
+  border-bottom: solid 1px $lightGray;
+  margin: 0 -1rem;
+  padding: 6px 1rem;
 }
 
 .job-description-container {

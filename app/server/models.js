@@ -14,8 +14,7 @@ const UserSchema = new mongoose.Schema(
       default: () => nanoid(),
     },
     displayName: String,
-    phone: String,
-    description: String,
+    caption: String,
     type: {
       type: String,
       enum: ['Standard', 'Admin', 'Closed'],
@@ -33,7 +32,7 @@ const UserSchema = new mongoose.Schema(
     lastLoginAt: String,
     publicAddress: String,
 
-    follows: { type: Array, default: [], select: false },
+    follows: { type: Array, default: [] },
   },
   { timestamps: true }
 );
@@ -44,7 +43,6 @@ exports.UserModel = mongoose.model('User', UserSchema);
 const Position = new mongoose.Schema(
   {
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    title: String,
     type: {
       type: String,
       enum: ['Standard', 'Admin', 'Closed'],
@@ -55,8 +53,13 @@ const Position = new mongoose.Schema(
       enum: ['Pending', 'Approved', 'Closed'],
       default: 'Pending',
     },
+    title: String,
+    amount: String,
+    direction: String,
+    length: String,
+    leverage: String,
     rawState: Object,
-    renderedHtml: String
+    renderedHtml: String,
   },
   { timestamps: true }
 );

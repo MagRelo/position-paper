@@ -1,13 +1,14 @@
 import React, { useContext, useState } from 'react';
 import { AuthContext } from 'App';
 
-import { UserProfile } from 'components/userProfile';
+import { UserProfile } from 'pages/account/userProfile';
 
 function UpdateProfile(props) {
   const { callApi, user, createSession } = useContext(AuthContext);
 
-  const [displayName, setDisplayName] = useState(user.displayName);
-  const [avatar, setAvatar] = useState(user.avatar);
+  const [displayName, setDisplayName] = useState(user.displayName || '');
+  const [avatar, setAvatar] = useState(user.avatar || '');
+  const [caption, setCaption] = useState(user.caption || '');
 
   async function submit(event) {
     event.preventDefault();
@@ -39,10 +40,8 @@ function UpdateProfile(props) {
           <hr />
 
           <div className="mb-4"></div>
-          <UserProfile user={{ displayName, avatar }} hideDescription={true} />
+          <UserProfile user={{ displayName, avatar, caption }} />
           <div className="mb-4"></div>
-
-          <hr />
 
           <div className="form-group">
             <label htmlFor="displayName" className="">
@@ -58,8 +57,21 @@ function UpdateProfile(props) {
             />
           </div>
           <div className="form-group">
+            <label htmlFor="caption" className="">
+              Caption
+            </label>
+            <input
+              type="text"
+              name="caption"
+              id="caption"
+              className="form-control"
+              value={caption}
+              onChange={(e) => setCaption(e.target.value)}
+            />
+          </div>
+          <div className="form-group">
             <label htmlFor="avatar" className="">
-              Avatar
+              Avatar URL
             </label>
             <input
               type="text"
@@ -68,6 +80,33 @@ function UpdateProfile(props) {
               className="form-control"
               value={avatar}
               onChange={(e) => setAvatar(e.target.value)}
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="email" className="">
+              Email Address
+            </label>
+            <input
+              type="text"
+              name="email"
+              id="email"
+              className="form-control"
+              value={user.email}
+              disabled
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="publicAddress" className="">
+              Public Address
+            </label>
+            <input
+              type="text"
+              name="publicAddress"
+              id="publicAddress"
+              className="form-control"
+              value={user.publicAddress}
+              disabled
             />
           </div>
 

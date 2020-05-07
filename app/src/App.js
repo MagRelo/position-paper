@@ -18,8 +18,10 @@ import About from 'pages/about';
 import NotFound from 'pages/404';
 
 import Account from 'pages/account/account';
+import ViewUser from 'pages/account/user';
 import UpdateProfile from 'pages/account/updateProfile';
-import Leaderboard from 'pages/leaderboard';
+import Leaderboard from 'pages/frontpage';
+import Network from 'pages/network/network';
 
 import AddProp from 'pages/position/addPosition';
 import ViewProp from 'pages/position/position';
@@ -118,10 +120,12 @@ function App() {
 
               <Leaderboard path="/leaderboard" />
               <ViewProp path="/position/:propId" />
+              <ViewUser path="/user/:userId" />
 
               {/* Auth required */}
               {activeSession ? (
                 <React.Fragment>
+                  <Network path="/network" />
                   <Account path="/account" />
                   <AddProp path="/addposition" />
                   <UpdateProfile path="/profile" />
