@@ -10,8 +10,8 @@ function Dashboard(props) {
 
   return (
     <section className="container">
-      <div className="grid grid-5-3">
-        <div className="swap-order">
+      <div className="grid grid-3-5">
+        <div>
           {/* User Profile */}
           <UserProfile displayUser={user} showEdit={true} />
 
@@ -25,10 +25,9 @@ function Dashboard(props) {
           <hr />
 
           {/* Results */}
-          <h2>History</h2>
-
-          <div>balance history</div>
-          <div>balance history</div>
+          <p>Global Rank</p>
+          <p>Rank In Your Network</p>
+          <p>Network Connections</p>
         </div>
 
         <div>

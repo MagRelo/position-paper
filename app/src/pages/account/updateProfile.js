@@ -40,7 +40,7 @@ function UpdateProfile(props) {
           <hr />
 
           <div className="mb-4"></div>
-          <UserProfile user={{ displayName, avatar, caption }} />
+          <UserProfile displayUser={{ _id: 0, displayName, avatar, caption }} />
           <div className="mb-4"></div>
 
           <div className="form-group">

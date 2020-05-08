@@ -18,9 +18,11 @@ function Teaser({ position, hideUser }) {
         <div className="h4">{position.title}</div>
       </Link>
 
-      <div className="mb-3"></div>
       {hideUser ? null : (
-        <UserProfile displayUser={position.user} hideDescription={true} />
+        <React.Fragment>
+          <hr />
+          <UserProfile displayUser={position.user} hideDescription={true} />
+        </React.Fragment>
       )}
     </div>
   );

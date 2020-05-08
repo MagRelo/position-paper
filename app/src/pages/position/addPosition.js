@@ -36,9 +36,9 @@ function AddProp(props) {
     formData.forEach((value, key) => {
       formObject[key] = value;
     });
-    console.log(formObject);
 
     // send to server
+    // console.log(formObject);
     await callApi('POST', 'api/props', formObject)
       .then(async (response) => {
         // success
@@ -53,9 +53,6 @@ function AddProp(props) {
     <section className="container">
       <div className="form-wrapper">
         <form name="positionForm" onSubmit={submit}>
-          <UserProfile displayUser={user} hideDescription={true} />
-
-          <hr />
           <legend>Trade</legend>
           <div className="form-group grid grid-4">
             <div>
@@ -255,6 +252,9 @@ function AddProp(props) {
               placeholder="Add content here! (highlight text to format)"
             />
           </div>
+
+          <hr />
+          <UserProfile displayUser={user} hideDescription={true} />
 
           <hr />
           <button className="btn btn-theme">Post</button>

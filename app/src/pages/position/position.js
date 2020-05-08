@@ -30,7 +30,10 @@ function Prop({ propId }) {
   }, [propId, callApi]);
 
   return (
-    <section className="container">
+    <section
+      className="container"
+      style={{ maxWidth: '48rem', margin: '0 auto' }}
+    >
       {error ? <p>{error}</p> : null}
       {loading ? <Loading /> : null}
       {prop ? <Position position={prop} /> : null}

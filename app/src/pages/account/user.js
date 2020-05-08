@@ -38,9 +38,13 @@ function User({ userId }) {
       {loading ? (
         <Loading />
       ) : (
-        <div className="grid grid-5-3">
-          <div className="swap-order">
+        <div className="grid grid-3-5">
+          <div>
             <UserProfile displayUser={user} showFollow={true} />
+            <hr />
+            <p>Global Rank</p>
+            <p>Rank In Your Network</p>
+            <p>Network Connections</p>
           </div>
 
           <div>

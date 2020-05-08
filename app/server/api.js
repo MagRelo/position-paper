@@ -83,11 +83,15 @@ router.post('/props', authenticate, async function (req, res) {
 router.get('/user/network', authenticate, async function (req, res) {
   try {
     const feed = await getStream.getFeed('User', req.user._id, req.user._id);
-    const user = await UserModel.findOne({ _id: req.user._id })
-      .populate('follows')
+
+    // the user & all their follows
+    const networkUsers = await UserModel.find({
+      _id: { $in: [req.user._id, ...req.user.follows] },
+    })
+      .sort({ units: -1 })
       .lean();
 
-    res.status(200).send({ feed: feed, following: user.follows });
+    res.status(200).send({ feed: feed, following: networkUsers });
   } catch (error) {
     console.log({ error: error.message });
     res.status(500).send({ error: error.message });

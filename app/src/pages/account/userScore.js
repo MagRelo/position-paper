@@ -22,15 +22,15 @@ export function UserScore({ displayUser }) {
         <Link to={linkUrl}>
           <div className="user-score">
             <div>
-              <ProfilePic avatarUrl={user.avatar} />
+              <ProfilePic avatarUrl={displayUser.avatar} />
             </div>
 
             <div className="user-text">
-              <div className="user-name">{user.displayName}</div>
+              <div className="user-name">{displayUser.displayName}</div>
             </div>
 
             <div className="user-text">
-              <div>2000</div>
+              <div>{displayUser.units}</div>
             </div>
           </div>
         </Link>

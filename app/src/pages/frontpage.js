@@ -6,19 +6,21 @@ function FrontPage(props) {
   return (
     <section className="container">
       <div>
-        <h1>Frontpage</h1>
+        <div className="grid grid-frontpage">
+          <h1>Frontpage</h1>
 
-        <div className="grid grid-3">
+          <div>
+            <div className="h2">Recently Rek'd</div>
+            <Feed />
+          </div>
+
           <div>
             <div className="h2">Latest</div>
             <Feed />
           </div>
+
           <div>
-            <div className="h2">Biggest</div>
-            <Feed />
-          </div>
-          <div>
-            <div className="h2">Whatever</div>
+            <div className="h2">Most Popular</div>
             <Feed />
           </div>
         </div>

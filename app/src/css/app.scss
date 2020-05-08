@@ -30,6 +30,7 @@ body,
 .content-wrapper {
   padding: 0 0 3em;
   background-color: $white;
+  min-height: 100vh;
 }
 
 .container {
@@ -300,7 +301,7 @@ table {
   height: 60px;
 
   border-radius: 50%;
-  border: solid 2px $primaryLight;
+  border: solid 1px $lightText;
 }
 
 .user-avatar-pic {
@@ -317,7 +318,7 @@ table {
 }
 
 .user-name {
-  font-size: 24px;
+  font-size: 20px;
 }
 
 .user-location {
@@ -745,7 +746,7 @@ iframe {
 }
 
 /* clearfix */
-.progressbar:after {
+.clearfix:after {
   content: '';
   display: table;
   clear: both;
@@ -838,7 +839,10 @@ a.panel {
   padding: 8px 1rem 6px;
 }
 
-
+.panel>a {
+  color: initial;
+  border-bottom: solid 1px $primaryLight;
+}
 
 .user-panel {
   padding: 0;
@@ -923,9 +927,11 @@ a.panel {
 .grid-2-3,
 .grid-5-3,
 .grid-3-5,
+.grid-3-5-3,
 .grid-5,
 .grid-1-3,
-.grid-6-1 {
+.grid-6-1,
+.grid-frontpage {
   grid-template-columns: 1fr;
   grid-gap: 1.5em 0;
 }
@@ -992,6 +998,11 @@ a.panel {
     grid-gap: 1.5em;
   }
 
+  .grid-3-5-3 {
+    grid-template-columns: 2fr 5fr 2fr;
+    grid-gap: 2em;
+  }
+
   .grid-5 {
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     grid-gap: 1.5em;
@@ -999,6 +1010,12 @@ a.panel {
 
   .grid-6-1 {
     grid-template-columns: 5fr 2fr;
+    grid-gap: 1.5em;
+  }
+
+  .grid-frontpage {
+    grid-template-columns: 5fr 2fr;
+    grid-template-rows: auto 1fr;
     grid-gap: 1.5em;
   }
 }
