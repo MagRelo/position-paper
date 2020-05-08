@@ -17,8 +17,8 @@ router.get('*', function (req, res) {
   const filePath = path.resolve(__dirname, '../build', 'index.html');
   fs.readFile(filePath, 'utf8', async function (err, data) {
     if (err) {
-      console.log('index not found - fallback...');
-      res.sendFile('index.html', { root: './build' });
+      console.log('index not found(!) - fallback...');
+      return res.sendFile('index.html', { root: './build' });
     }
 
     // replace values

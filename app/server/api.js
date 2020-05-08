@@ -83,12 +83,9 @@ router.post('/props', authenticate, async function (req, res) {
 router.get('/user/network', authenticate, async function (req, res) {
   try {
     const feed = await getStream.getFeed('User', req.user._id, req.user._id);
-
     const user = await UserModel.findOne({ _id: req.user._id })
       .populate('follows')
       .lean();
-
-    console.log(user);
 
     res.status(200).send({ feed: feed, following: user.follows });
   } catch (error) {
@@ -97,7 +94,18 @@ router.get('/user/network', authenticate, async function (req, res) {
   }
 });
 
-router.get('/user', populateUser);
+// router.get('/user', populateUser);
+
+router.get('/user/:userId', async function (req, res) {
+  try {
+    const user = await UserModel.findOne({ _id: req.params.userId }).lean();
+
+    res.status(200).send(user);
+  } catch (error) {
+    console.log({ error: error.message });
+    res.status(500).send({ error: error.message });
+  }
+});
 
 // UPDATE PROFILE
 router.put('/user', authenticate, async function (req, res) {
@@ -131,6 +139,7 @@ router.put('/user/follow', authenticate, async function (req, res) {
 
     let getStreamResponse = '';
     if (intentToFollow) {
+      console.log('add follow', targetId);
       // follow
       getStreamResponse = await getStream.follow(
         req.user._id,
@@ -139,11 +148,13 @@ router.put('/user/follow', authenticate, async function (req, res) {
       );
 
       // add to user follow array
-      await UserModel.update(
+      await UserModel.updateOne(
         { _id: req.user._id },
         { $push: { follows: targetId } }
       );
     } else {
+      console.log('unfollow', targetId);
+
       // unfollow
       getStreamResponse = await getStream.unFollow(
         req.user._id,
@@ -152,7 +163,7 @@ router.put('/user/follow', authenticate, async function (req, res) {
       );
 
       // remove from user follow array
-      await UserModel.update(
+      await UserModel.updateOne(
         { _id: req.user._id },
         { $pull: { follows: targetId } }
       );

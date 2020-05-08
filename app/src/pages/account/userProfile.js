@@ -1,17 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Img from 'react-image';
+import { Link } from '@reach/router';
 import { AiOutlineUser } from 'react-icons/ai';
 // import { MdEmail } from 'react-icons/md';
 // import { IoIosWallet } from 'react-icons/io';
 
-import { Link } from '@reach/router';
-
+import { AuthContext } from 'App';
 import { getBalance } from 'api/magic';
 
 import FollowButton from 'components/followButton';
-import { Bouncing, copyTextToClipboard } from 'components/random';
+import { Bouncing } from 'components/random';
 
-export function UserProfile({ user, showEdit, showFollow }) {
+export function UserProfile({ displayUser, showEdit, showFollow }) {
+  // default
+  let linkUrl = '/user/' + displayUser._id;
+
+  // is me?
+  const { user } = useContext(AuthContext);
+  if (user && user._id === displayUser._id) {
+    linkUrl = '/account';
+  }
+
   return (
     <React.Fragment>
       {user ? (
@@ -22,22 +31,24 @@ export function UserProfile({ user, showEdit, showFollow }) {
               style={{ float: 'right' }}
               to="/profile"
             >
-              Edit Profile
+              Update Profile
             </Link>
           ) : null}
 
-          {showFollow ? <FollowButton followUser={user} /> : null}
+          {showFollow ? <FollowButton followUser={displayUser} /> : null}
 
-          <div className="user-info">
-            <div>
-              <ProfilePic avatarUrl={user.avatar} />
-            </div>
+          <Link to={linkUrl}>
+            <div className="user-info">
+              <div>
+                <ProfilePic avatarUrl={displayUser.avatar} />
+              </div>
 
-            <div className="user-text">
-              <div className="user-name">{user.displayName}</div>
-              <div className="user-caption">{user.caption}</div>
+              <div className="user-text">
+                <div className="user-name">{displayUser.displayName}</div>
+                <div className="user-caption">{displayUser.caption}</div>
+              </div>
             </div>
-          </div>
+          </Link>
         </div>
       ) : null}
     </React.Fragment>

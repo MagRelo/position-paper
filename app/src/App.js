@@ -35,7 +35,7 @@ function App() {
   const [user, setUser] = useState({});
 
   useEffect(() => {
-    fetch('auth/status', {
+    fetch('/auth/status', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

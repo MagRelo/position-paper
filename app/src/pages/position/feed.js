@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Link } from '@reach/router';
 
 import { AuthContext } from 'App';
-
 import { Loading } from 'components/random';
 import Teaser from 'pages/position/positionTeaser';
 
@@ -47,9 +45,7 @@ function FeedPage({ userId }) {
           {propsList.map((prop) => {
             return (
               <React.Fragment key={prop._id}>
-                <Link to={'/position/' + prop._id}>
-                  <Teaser position={prop} />
-                </Link>
+                <Teaser position={prop} />
                 <div className="mb-4"></div>
               </React.Fragment>
             );

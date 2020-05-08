@@ -30,9 +30,9 @@ function abbreviateNumber(number) {
 }
 
 export function formatCurrency(input, isShorthand) {
-  // if (!input) {
-  //   return '';
-  // }
+  if (typeof input == 'undefined') {
+    return '';
+  }
   // type checks
   let inputNum = 0;
   if (typeof input === 'string') {

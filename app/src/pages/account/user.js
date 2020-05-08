@@ -8,7 +8,7 @@ import { Loading } from 'components/random';
 import { UserProfile } from 'pages/account/userProfile';
 import Feed from 'pages/position/feed';
 
-function User(props) {
+function User({ userId }) {
   const { callApi } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -19,10 +19,10 @@ function User(props) {
     setLoading(true);
 
     const method = 'GET';
-    const endPoint = '/api/user';
+    const endPoint = '/api/user/' + userId;
     callApi(method, endPoint)
-      .then((user) => {
-        setUser(user);
+      .then((body) => {
+        setUser(body);
         setLoading(false);
       })
       .catch((error) => {
@@ -30,7 +30,7 @@ function User(props) {
         setError(error.toString());
         setLoading(false);
       });
-  }, [callApi]);
+  }, [userId, callApi]);
 
   return (
     <section className="container">
@@ -40,9 +40,7 @@ function User(props) {
       ) : (
         <div className="grid grid-5-3">
           <div className="swap-order">
-            <Link to="/profile" className="panel">
-              <UserProfile user={user} />
-            </Link>
+            <UserProfile displayUser={user} showFollow={true} />
           </div>
 
           <div>

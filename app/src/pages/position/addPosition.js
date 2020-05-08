@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { navigate } from '@reach/router';
 import { AuthContext } from 'App';
 
 import { createEditorState, Editor } from 'medium-draft';
@@ -41,7 +42,7 @@ function AddProp(props) {
     await callApi('POST', 'api/props', formObject)
       .then(async (response) => {
         // success
-        // navigate
+        navigate('/position/' + response._id);
       })
       .catch((error) => {
         console.log(error);
@@ -52,29 +53,7 @@ function AddProp(props) {
     <section className="container">
       <div className="form-wrapper">
         <form name="positionForm" onSubmit={submit}>
-          <UserProfile user={user} hideDescription={true} />
-          <div className="mb-4"></div>
-          <div className="form-group">
-            <label htmlFor="title">Title</label>
-            <input
-              type="text"
-              name="title"
-              id="title"
-              className="form-control"
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="location" className="sr-only">
-              Post Content
-            </label>
-            <Editor
-              ref={refsEditor}
-              editorState={editorState}
-              onChange={setEditorState}
-              sideButtons={[]}
-              placeholder="Add content here! (highlight text to format)"
-            />
-          </div>
+          <UserProfile displayUser={user} hideDescription={true} />
 
           <hr />
           <legend>Trade</legend>
@@ -250,6 +229,31 @@ function AddProp(props) {
                 </label>
               </div>
             </div>
+          </div>
+
+          <hr />
+
+          <legend>Content</legend>
+          <div className="form-group">
+            <label htmlFor="title">Title</label>
+            <input
+              type="text"
+              name="title"
+              id="title"
+              className="form-control"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="location" className="sr-only">
+              Post Content
+            </label>
+            <Editor
+              ref={refsEditor}
+              editorState={editorState}
+              onChange={setEditorState}
+              sideButtons={[]}
+              placeholder="Add content here! (highlight text to format)"
+            />
           </div>
 
           <hr />

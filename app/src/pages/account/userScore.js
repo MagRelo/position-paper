@@ -1,27 +1,36 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext } from 'react';
+import { AuthContext } from 'App';
+
 import Img from 'react-image';
 import { AiOutlineUser } from 'react-icons/ai';
 
 import { Link } from '@reach/router';
 
-export function UserScore({ user }) {
+export function UserScore({ displayUser }) {
+  // default
+  let linkUrl = '/user/' + displayUser._id;
+
+  // is me?
+  const { user } = useContext(AuthContext);
+  if (user && user._id === displayUser._id) {
+    linkUrl = '/account';
+  }
+
   return (
     <React.Fragment>
       {user ? (
-        <Link to={'/user/' + user._id}>
-          <div>
-            <div className="user-score">
-              <div>
-                <ProfilePic avatarUrl={user.avatar} />
-              </div>
+        <Link to={linkUrl}>
+          <div className="user-score">
+            <div>
+              <ProfilePic avatarUrl={user.avatar} />
+            </div>
 
-              <div className="user-text">
-                <div className="user-name">{user.displayName}</div>
-              </div>
+            <div className="user-text">
+              <div className="user-name">{user.displayName}</div>
+            </div>
 
-              <div className="user-text">
-                <div>2000</div>
-              </div>
+            <div className="user-text">
+              <div>2000</div>
             </div>
           </div>
         </Link>

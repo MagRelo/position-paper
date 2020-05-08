@@ -6,24 +6,22 @@ import { AuthContext } from 'App';
 // compare incoming Id with list
 
 function FollowButton({ followUser }) {
-  const { user } = useContext(AuthContext);
+  const { user, activeSession } = useContext(AuthContext);
 
   // hide if not logged in || followUser is logged in user
-  const hide = !user || !followUser._id || followUser._id === user._id;
+  const hide = !activeSession || !followUser._id || followUser._id === user._id;
 
   // is/isnt following
   const initialFollow = user.follows && !!~user.follows.indexOf(followUser._id);
-  const [newVar, setNewVar] = useState(initialFollow);
-
-  // console.log(initialFollow, newVar);
+  const [isFollowing, setIsFollowing] = useState(initialFollow);
 
   // change follow status
   const [isLoading, setIsLoading] = useState(false);
   function handleClick() {
     setIsLoading(true);
 
-    changeFollow('User', followUser._id, !newVar).then((followStatus) => {
-      setNewVar(followStatus);
+    changeFollow('User', followUser._id, !isFollowing).then((followStatus) => {
+      setIsFollowing(followStatus);
       setIsLoading(false);
     });
   }
@@ -42,7 +40,7 @@ function FollowButton({ followUser }) {
             </div>
           ) : (
             <React.Fragment>
-              {newVar ? <span>Unfollow</span> : <span>Follow</span>}
+              {isFollowing ? <span>Unfollow</span> : <span>Follow</span>}
             </React.Fragment>
           )}
         </button>

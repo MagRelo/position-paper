@@ -13,16 +13,16 @@ function Dashboard(props) {
       <div className="grid grid-5-3">
         <div className="swap-order">
           {/* User Profile */}
-          <UserProfile user={user} showEdit={true} />
-          <hr />
+          <UserProfile displayUser={user} showEdit={true} />
+
+          <div className="mb-3"></div>
 
           {/* Balance */}
-          <h2>Current Balance</h2>
           <div>ETH</div>
           <div>DAI</div>
           <div>USDC</div>
 
-          <div className="mb-3"></div>
+          <hr />
 
           {/* Results */}
           <h2>History</h2>

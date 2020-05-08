@@ -4,7 +4,6 @@ import { AuthContext } from 'App';
 import { Loading } from 'components/random';
 
 import Teaser from 'pages/position/positionTeaser';
-import { UserProfile } from 'pages/account/userProfile';
 import { UserScore } from 'pages/account/userScore';
 
 function NetworkFeed(props) {
@@ -47,13 +46,19 @@ function NetworkFeed(props) {
                 switch (object.verb) {
                   case 'addFollow:User':
                     return (
-                      <div className="panel" key={object.id}>
-                        <p>new follow</p>
-                        <UserProfile user={object.data} />
+                      <div className="mb-3" key={object.id}>
+                        <div className="grid grid-x-2">
+                          <p>new follow</p>
+                          <UserScore user={object.data} />
+                        </div>
                       </div>
                     );
                   case 'addPosition':
-                    return <Teaser position={object.data} key={object.id} />;
+                    return (
+                      <div className="mb-3" key={object.id}>
+                        <Teaser position={object.data} />
+                      </div>
+                    );
                   default:
                     return null;
                 }
@@ -63,7 +68,6 @@ function NetworkFeed(props) {
         </div>
         <div>
           <h2>Leaderboard</h2>
-          <hr />
           {following.map((follow) => {
             return <UserScore user={follow} key={follow._id} />;
           })}

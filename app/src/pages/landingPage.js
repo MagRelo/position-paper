@@ -11,8 +11,7 @@ function LandingPage() {
     <React.Fragment>
       <div className="page-content">
         <div className="container">
-          <div className="mb-4"></div>
-
+          {/* Hero */}
           <div className="hero-grid">
             <div className="swap-order">
               <img className="hero-pic" src={Content} alt="doctors" />
@@ -26,14 +25,29 @@ function LandingPage() {
               </div>
 
               <div className="mb-2"></div>
-              <h1>Accountable Media Platform</h1>
+              <h1>Social Trading Network</h1>
 
               <p>Accountable Media Platform</p>
             </div>
           </div>
-        </div>
 
-        <div className="container"></div>
+          {/* Hero */}
+          <section>
+            <h2>How it works</h2>
+            <ol>
+              <li>
+                Deposit any amount. Your balance is normalized to 1,000 pts
+              </li>
+              <li>Long or Short ETH for any amount / duration / leverage.</li>
+              <li>Add content to your trades / Add trades to your content.</li>
+              <li>
+                Build your network. Follow good traders and share useful
+                positions. Compare your strategy against the network.
+              </li>
+              <li>Withdraw at any time.</li>
+            </ol>
+          </section>
+        </div>
       </div>
     </React.Fragment>
   );
