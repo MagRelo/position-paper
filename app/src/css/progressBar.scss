@@ -1,0 +1,77 @@
+@import 'variables.scss';
+
+/* Progress Bar */
+.progressbar {
+  counter-reset: step;
+  padding: 0;
+  opacity: 0.99;
+}
+
+/* clearfix */
+.clearfix:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+.progressbar li {
+  list-style-type: none;
+  float: left;
+  font-size: 12px;
+  position: relative;
+  text-align: center;
+  color: $darkText;
+}
+
+.progressbar li span.circle {
+  width: 30px;
+  height: 30px;
+  content: counter(step);
+  counter-increment: (step);
+  line-height: 28px;
+  border: 2px solid $lightGray;
+  display: block;
+  text-align: center;
+  margin: 0 auto 10px auto;
+  border-radius: 50%;
+  background-color: white;
+
+  font-variant-numeric: tabular-nums;
+}
+
+.progressbar li>span.line {
+  width: 100%;
+  height: 2px;
+  content: '';
+  position: absolute;
+  top: 15px;
+  left: -50%;
+  z-index: -1;
+}
+
+span.badge {
+  vertical-align: middle;
+  margin-top: -5px;
+  margin-right: 0.66rem;
+
+  border-radius: 50%;
+  background: $primaryLight;
+  box-shadow: 2px 2px 0 $secondaryColor;
+  color: $white;
+}
+
+span.circle {
+  width: 30px;
+  height: 30px;
+  content: counter(step);
+  counter-increment: (step);
+  line-height: 28px;
+  border: 2px solid $lightGray;
+  display: block;
+  text-align: center;
+  margin: 0 auto 10px auto;
+  border-radius: 50%;
+  background-color: white;
+
+  font-variant-numeric: tabular-nums;
+}

@@ -1,0 +1,59 @@
+.trade-grid {
+
+  display: grid;
+  grid-template-columns: auto;
+  gap: 1rem;
+
+  #direction {
+
+    #direction-controls {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+  }
+
+  #amount {}
+
+  #leverage {
+    #leverage-controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  #length {
+    #length-controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+}
+
+
+@media screen and (min-width: 700px) {
+
+  .trade-grid {
+
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 1rem;
+
+    #direction {}
+
+    #amount {}
+
+    #leverage {}
+
+    #length {
+      grid-column: 1 / 4;
+
+      #length-controls {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+      }
+    }
+
+  }
+
+}

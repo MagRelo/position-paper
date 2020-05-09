@@ -18,6 +18,7 @@ import './css/app.scss';
 import './css/header.scss';
 import './css/loaders.scss';
 import './css/stars.scss';
+import './css/addPosition.scss';
 
 // import * as serviceWorker from './serviceWorker';
 // If you want your app to work offline and load faster, you can change

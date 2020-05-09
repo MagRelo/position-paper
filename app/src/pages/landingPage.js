@@ -36,7 +36,7 @@ function LandingPage() {
             <h2>How it works</h2>
             <ol>
               <li>
-                Deposit any amount. Your balance is normalized to 1,000 pts
+                Deposit any amount. Your balance is normalized to 1,000 units
               </li>
               <li>Long or Short ETH for any amount / duration / leverage.</li>
               <li>Add content to your trades / Add trades to your content.</li>
