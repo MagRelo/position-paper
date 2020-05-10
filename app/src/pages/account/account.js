@@ -5,6 +5,8 @@ import { AuthContext } from 'App';
 import { UserProfile } from 'pages/account/userProfile';
 import Feed from 'pages/position/feed';
 
+import { Balance } from 'components/random';
+
 function Dashboard(props) {
   const { user } = useContext(AuthContext);
 
@@ -14,16 +16,28 @@ function Dashboard(props) {
         <div>
           {/* User Profile */}
           <UserProfile displayUser={user} showEdit={true} />
-
           <div className="mb-3"></div>
 
+          <b>Ethereum</b>
           {/* Balance */}
-          <div>ETH</div>
-          <div>DAI</div>
-          <div>USDC</div>
+          <div className="line-item">
+            <div>ETH Account</div>
+            <div className="line-item-filler"></div>
+            <div>
+              <Balance />
+            </div>
+          </div>
+
+          <b>Exchange (dydx)</b>
+          <div className="line-item">
+            <div>Exchange Balance</div>
+            <div className="line-item-filler"></div>
+            <div>
+              <Balance />
+            </div>
+          </div>
 
           <hr />
-
           {/* Results */}
           <p>Global Rank</p>
           <p>Rank In Your Network</p>
@@ -40,7 +54,7 @@ function Dashboard(props) {
           </Link>
           <h2>Open Positions</h2>
           <div className="mb-4"></div>
-          <Feed userId={user._id} />
+          <Feed items={[]} />
         </div>
       </div>
     </section>

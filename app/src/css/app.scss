@@ -345,7 +345,7 @@ table {
 /* form */
 
 form>hr {
-  margin: 1rem -2rem;
+  margin: 1rem -1rem;
 }
 
 .flashit {
@@ -471,10 +471,10 @@ textarea.form-control {
 .form-wrapper {
   max-width: 48em;
   margin: 0 auto;
-  padding: 2em;
-  border: solid 1px $lightGray;
-  border-radius: 7px;
-  box-shadow: $box-shadow;
+  // padding: 2em;
+  // border: solid 1px $lightGray;
+  // border-radius: 7px;
+  // box-shadow: $box-shadow;
 }
 
 fieldset {

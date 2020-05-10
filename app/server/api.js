@@ -84,6 +84,17 @@ router.get('/user/network', authenticate, async function (req, res) {
   try {
     const feed = await getStream.getFeed('User', req.user._id, req.user._id);
 
+    const globalStats = await UserModel.aggregate([
+      {
+        $group: {
+          _id: 'globalStats',
+          units_StdDev: { $stdDevPop: '$units' },
+          units_Avg: { $avg: '$units' },
+        },
+      },
+    ]);
+    console.log(globalStats);
+
     // the user & all their follows
     const networkUsers = await UserModel.find({
       _id: { $in: [req.user._id, ...req.user.follows] },
@@ -137,43 +148,38 @@ router.put('/user', authenticate, async function (req, res) {
 // FOLLOW USER & UNFOLLOW USER
 router.put('/user/follow', authenticate, async function (req, res) {
   try {
-    const intentToFollow = req.query.intent;
+    const intentToFollow = req.query.intent === 'true';
     const feedType = req.query.type;
     const targetId = req.query.target;
 
-    let getStreamResponse = '';
+    let updatedUser = null;
+
     if (intentToFollow) {
       console.log('add follow', targetId);
       // follow
-      getStreamResponse = await getStream.follow(
-        req.user._id,
-        feedType,
-        targetId
-      );
+      await getStream.follow(req.user._id, feedType, targetId);
 
       // add to user follow array
-      await UserModel.updateOne(
+      updatedUser = await UserModel.findOneAndUpdate(
         { _id: req.user._id },
-        { $push: { follows: targetId } }
+        { $push: { follows: targetId } },
+        { new: true }
       );
     } else {
       console.log('unfollow', targetId);
 
       // unfollow
-      getStreamResponse = await getStream.unFollow(
-        req.user._id,
-        feedType,
-        targetId
-      );
+      await getStream.unFollow(req.user._id, feedType, targetId);
 
       // remove from user follow array
-      await UserModel.updateOne(
+      updatedUser = await UserModel.findOneAndUpdate(
         { _id: req.user._id },
-        { $pull: { follows: targetId } }
+        { $pull: { follows: targetId } },
+        { new: true }
       );
     }
 
-    res.status(200).send(getStreamResponse);
+    res.status(200).send(updatedUser);
   } catch (error) {
     console.log({ error: error.message });
     res.status(500).send({ error: error.message });
@@ -181,3 +187,47 @@ router.put('/user/follow', authenticate, async function (req, res) {
 });
 
 module.exports = router;
+
+//
+
+// // derived from http://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Parallel_algorithm
+
+// function map() {
+//   emit(
+//     1, // Or put a GROUP BY key here
+//     {
+//       sum: this.value, // the field you want stats for
+//       min: this.value,
+//       max: this.value,
+//       count: 1,
+//       diff: 0, // M2,n:  sum((val-mean)^2)
+//     }
+//   );
+// }
+
+// function reduce(key, values) {
+//   var a = values[0]; // will reduce into here
+//   for (var i = 1 /*!*/; i < values.length; i++) {
+//     var b = values[i]; // will merge 'b' into 'a'
+
+//     // temp helpers
+//     var delta = a.sum / a.count - b.sum / b.count; // a.mean - b.mean
+//     var weight = (a.count * b.count) / (a.count + b.count);
+
+//     // do the reducing
+//     a.diff += b.diff + delta * delta * weight;
+//     a.sum += b.sum;
+//     a.count += b.count;
+//     a.min = Math.min(a.min, b.min);
+//     a.max = Math.max(a.max, b.max);
+//   }
+
+//   return a;
+// }
+
+// function finalize(key, value) {
+//   value.avg = value.sum / value.count;
+//   value.variance = value.diff / value.count;
+//   value.stddev = Math.sqrt(value.variance);
+//   return value;
+// }

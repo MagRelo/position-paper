@@ -8,14 +8,12 @@ import { formatDate, formatCurrency } from 'components/random';
 function Teaser({ position, hideUser }) {
   return (
     <div className="panel position">
-      <div className="trade-band">
-        <span style={{ float: 'right' }}>{formatDate(position.createdAt)}</span>
-        {tradeCaption(position)}
-      </div>
+      <div className="trade-band">{tradeCaption(position)}</div>
 
       <div className="mb-3"></div>
       <Link to={'/position/' + position._id}>
-        <div className="h4">{position.title}</div>
+        <span style={{ float: 'right' }}>{formatDate(position.createdAt)}</span>
+        <div style={{ fontSize: '1.25rem' }}>{position.title}</div>
       </Link>
 
       {hideUser ? null : (

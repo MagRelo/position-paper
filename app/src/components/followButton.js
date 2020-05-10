@@ -6,7 +6,7 @@ import { AuthContext } from 'App';
 // compare incoming Id with list
 
 function FollowButton({ followUser }) {
-  const { user, activeSession } = useContext(AuthContext);
+  const { user, activeSession, callApi, updateUser } = useContext(AuthContext);
 
   // hide if not logged in || followUser is logged in user
   const hide = !activeSession || !followUser._id || followUser._id === user._id;
@@ -20,10 +20,24 @@ function FollowButton({ followUser }) {
   function handleClick() {
     setIsLoading(true);
 
-    changeFollow('User', followUser._id, !isFollowing).then((followStatus) => {
-      setIsFollowing(followStatus);
-      setIsLoading(false);
-    });
+    const method = 'PUT';
+    const endPoint = '/api/user/follow';
+    const queryString = `?type=User&target=${
+      followUser._id
+    }&intent=${!isFollowing}`;
+
+    callApi(method, endPoint + queryString)
+      .then((user) => {
+        setIsFollowing(user.follows && !!~user.follows.indexOf(followUser._id));
+        setIsLoading(false);
+
+        // call context to update User for app
+        updateUser(user);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoading(false);
+      });
   }
 
   return (
@@ -51,16 +65,15 @@ function FollowButton({ followUser }) {
 
 export default FollowButton;
 
-async function changeFollow(type, targetId, intentToFollow) {
-  const queryString = `?type=${type}&target=${targetId}&intent=${intentToFollow}`;
-  return await fetch('/api/user/follow' + queryString, {
-    method: 'PUT',
-  })
-    .then((r) => {
-      return r.status === 200 ? intentToFollow : !intentToFollow;
-    })
-    .catch((error) => {
-      console.error(error);
-      return !intentToFollow;
-    });
-}
+// async function changeFollow(type, targetId, intentToFollow) {
+//   return await fetch('/api/user/follow' + queryString, {
+//     method: 'PUT',
+//   })
+//     .then((r) => {
+//       return r.status === 200 ? intentToFollow : !intentToFollow;
+//     })
+//     .catch((error) => {
+//       console.error(error);
+//       return !intentToFollow;
+//     });
+// }

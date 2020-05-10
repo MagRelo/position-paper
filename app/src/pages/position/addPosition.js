@@ -12,15 +12,12 @@ import { UserProfile } from 'pages/account/userProfile';
 function AddProp(props) {
   const { callApi, user } = useContext(AuthContext);
 
-  // direction
+  // trade content
   const [direction, setDirection] = useState('long');
-
-  // length
   const [length, setLength] = useState('1d');
-
-  // leverage
   const [leverage, setLeverage] = useState('1x');
 
+  // post content
   const [editorState, setEditorState] = useState(createEditorState());
   const refsEditor = React.createRef();
 
@@ -52,222 +49,224 @@ function AddProp(props) {
   return (
     <section className="container">
       <div className="form-wrapper">
+        <h1>Add a Position</h1>
         <form name="positionForm" onSubmit={submit}>
-          <div className="trade-grid">
-            {/* Direction */}
-
-            <div id="direction">
-              <label htmlFor="trade">Direction</label>
-              <div id="direction-controls">
-                <div className="form-check">
-                  <label>
-                    <input
-                      className="form-radio"
-                      type="radio"
-                      name="direction"
-                      value="long"
-                      checked={direction === 'long'}
-                      onChange={(event) => {
-                        setDirection(event.target.value);
-                      }}
-                    />
-                    Long
-                  </label>
+          <div className="panel position">
+            <div className="mb-3"></div>
+            <div className="trade-grid">
+              {/* Direction */}
+              <div id="direction">
+                <label htmlFor="trade">Direction</label>
+                <div id="direction-controls">
+                  <div className="form-check">
+                    <label>
+                      <input
+                        className="form-radio"
+                        type="radio"
+                        name="direction"
+                        value="long"
+                        checked={direction === 'long'}
+                        onChange={(event) => {
+                          setDirection(event.target.value);
+                        }}
+                      />
+                      Long
+                    </label>
+                  </div>
+                  <div className="form-check">
+                    <label>
+                      <input
+                        className="form-radio"
+                        type="radio"
+                        name="direction"
+                        value="short"
+                        checked={direction === 'short'}
+                        onChange={(event) => {
+                          setDirection(event.target.value);
+                        }}
+                      />
+                      Short
+                    </label>
+                  </div>
                 </div>
-                <div className="form-check">
-                  <label>
-                    <input
-                      className="form-radio"
-                      type="radio"
-                      name="direction"
-                      value="short"
-                      checked={direction === 'short'}
-                      onChange={(event) => {
-                        setDirection(event.target.value);
-                      }}
-                    />
-                    Short
-                  </label>
+              </div>
+
+              {/* Amount */}
+              <div id="amount">
+                <label htmlFor="trade">Amount</label>
+                <input
+                  type="number"
+                  name="amount"
+                  id="amount"
+                  required
+                  className="form-control"
+                />
+              </div>
+
+              {/* Leverage */}
+              <div id="leverage">
+                <label htmlFor="amount">Leverage</label>
+                <div id="leverage-controls">
+                  <div className="form-check">
+                    <label>
+                      <input
+                        className="form-radio"
+                        type="radio"
+                        name="leverage"
+                        value="1x"
+                        checked={leverage === '1x'}
+                        onChange={(event) => {
+                          setLeverage(event.target.value);
+                        }}
+                      />
+                      1X
+                    </label>
+                  </div>
+                  <div className="form-check">
+                    <label>
+                      <input
+                        className="form-radio"
+                        type="radio"
+                        name="leverage"
+                        value="2x"
+                        checked={leverage === '2x'}
+                        onChange={(event) => {
+                          setLeverage(event.target.value);
+                        }}
+                      />
+                      2X
+                    </label>
+                  </div>
+                  <div className="form-check">
+                    <label>
+                      <input
+                        className="form-radio"
+                        type="radio"
+                        name="leverage"
+                        value="3x"
+                        checked={leverage === '3x'}
+                        onChange={(event) => {
+                          setLeverage(event.target.value);
+                        }}
+                      />
+                      3X
+                    </label>
+                  </div>
+                  <div className="form-check">
+                    <label>
+                      <input
+                        className="form-radio"
+                        type="radio"
+                        name="leverage"
+                        value="5x"
+                        checked={leverage === '5x'}
+                        onChange={(event) => {
+                          setLeverage(event.target.value);
+                        }}
+                      />
+                      5X
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              {/* Length */}
+              <div id="length">
+                <label htmlFor="trade">Length</label>
+
+                <div id="length-controls">
+                  <div className="form-check">
+                    <label>
+                      <input
+                        className="form-radio"
+                        type="radio"
+                        name="length"
+                        value="1d"
+                        checked={length === '1d'}
+                        onChange={(event) => {
+                          setLength(event.target.value);
+                        }}
+                      />
+                      1d
+                    </label>
+                  </div>
+                  <div className="form-check">
+                    <label>
+                      <input
+                        className="form-radio"
+                        type="radio"
+                        name="length"
+                        value="7d"
+                        checked={length === '7d'}
+                        onChange={(event) => {
+                          setLength(event.target.value);
+                        }}
+                      />
+                      7d
+                    </label>
+                  </div>
+                  <div className="form-check">
+                    <label>
+                      <input
+                        className="form-radio"
+                        type="radio"
+                        name="length"
+                        value="14d"
+                        checked={length === '14d'}
+                        onChange={(event) => {
+                          setLength(event.target.value);
+                        }}
+                      />
+                      14d
+                    </label>
+                  </div>
+                  <div className="form-check">
+                    <label>
+                      <input
+                        className="form-radio"
+                        type="radio"
+                        name="length"
+                        value="28d"
+                        checked={length === '28d'}
+                        onChange={(event) => {
+                          setLength(event.target.value);
+                        }}
+                      />
+                      28d
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Amount */}
-            <div id="amount">
-              <label htmlFor="trade">Amount</label>
+            <hr />
+
+            <div className="form-group">
+              <label htmlFor="title">Title</label>
               <input
-                type="number"
-                name="amount"
-                id="amount"
-                required
+                type="text"
+                name="title"
+                id="title"
                 className="form-control"
               />
             </div>
-
-            {/* Leverage */}
-            <div id="leverage">
-              <label htmlFor="amount">Leverage</label>
-              <div id="leverage-controls">
-                <div className="form-check">
-                  <label>
-                    <input
-                      className="form-radio"
-                      type="radio"
-                      name="leverage"
-                      value="1x"
-                      checked={leverage === '1x'}
-                      onChange={(event) => {
-                        setLeverage(event.target.value);
-                      }}
-                    />
-                    1X
-                  </label>
-                </div>
-                <div className="form-check">
-                  <label>
-                    <input
-                      className="form-radio"
-                      type="radio"
-                      name="leverage"
-                      value="2x"
-                      checked={leverage === '2x'}
-                      onChange={(event) => {
-                        setLeverage(event.target.value);
-                      }}
-                    />
-                    2X
-                  </label>
-                </div>
-                <div className="form-check">
-                  <label>
-                    <input
-                      className="form-radio"
-                      type="radio"
-                      name="leverage"
-                      value="3x"
-                      checked={leverage === '3x'}
-                      onChange={(event) => {
-                        setLeverage(event.target.value);
-                      }}
-                    />
-                    3X
-                  </label>
-                </div>
-                <div className="form-check">
-                  <label>
-                    <input
-                      className="form-radio"
-                      type="radio"
-                      name="leverage"
-                      value="5x"
-                      checked={leverage === '5x'}
-                      onChange={(event) => {
-                        setLeverage(event.target.value);
-                      }}
-                    />
-                    5X
-                  </label>
-                </div>
-              </div>
+            <div className="form-group">
+              <label htmlFor="editor" className="sr-only">
+                Post Content
+              </label>
+              <Editor
+                name="editor"
+                ref={refsEditor}
+                editorState={editorState}
+                onChange={setEditorState}
+                sideButtons={[]}
+                placeholder="Add content here! (highlight text to format)"
+              />
             </div>
-
-            {/* Length */}
-            <div id="length">
-              <label htmlFor="trade">Length</label>
-
-              <div id="length-controls">
-                <div className="form-check">
-                  <label>
-                    <input
-                      className="form-radio"
-                      type="radio"
-                      name="length"
-                      value="1d"
-                      checked={length === '1d'}
-                      onChange={(event) => {
-                        setLength(event.target.value);
-                      }}
-                    />
-                    1d
-                  </label>
-                </div>
-                <div className="form-check">
-                  <label>
-                    <input
-                      className="form-radio"
-                      type="radio"
-                      name="length"
-                      value="7d"
-                      checked={length === '7d'}
-                      onChange={(event) => {
-                        setLength(event.target.value);
-                      }}
-                    />
-                    7d
-                  </label>
-                </div>
-                <div className="form-check">
-                  <label>
-                    <input
-                      className="form-radio"
-                      type="radio"
-                      name="length"
-                      value="14d"
-                      checked={length === '14d'}
-                      onChange={(event) => {
-                        setLength(event.target.value);
-                      }}
-                    />
-                    14d
-                  </label>
-                </div>
-                <div className="form-check">
-                  <label>
-                    <input
-                      className="form-radio"
-                      type="radio"
-                      name="length"
-                      value="28d"
-                      checked={length === '28d'}
-                      onChange={(event) => {
-                        setLength(event.target.value);
-                      }}
-                    />
-                    28d
-                  </label>
-                </div>
-              </div>
-            </div>
+            <hr />
+            <UserProfile displayUser={user} hideDescription={true} />
           </div>
-
-          <hr />
-
-          <div className="form-group">
-            <label htmlFor="title">Title</label>
-            <input
-              type="text"
-              name="title"
-              id="title"
-              className="form-control"
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="location" className="sr-only">
-              Post Content
-            </label>
-            <Editor
-              ref={refsEditor}
-              editorState={editorState}
-              onChange={setEditorState}
-              sideButtons={[]}
-              placeholder="Add content here! (highlight text to format)"
-            />
-          </div>
-
-          <hr />
-          <UserProfile displayUser={user} hideDescription={true} />
-
-          <hr />
+          <div className="mb-3"></div>
           <button className="btn btn-theme">Post</button>
         </form>
       </div>
