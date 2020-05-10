@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 // import { getBalance } from 'magic';
 
 // import Img from 'react-image';
+import { getBalance } from 'api/magic';
 
 import { Link } from '@reach/router';
 // import { FaBuilding } from 'react-icons/fa';
@@ -211,3 +212,32 @@ export const NavLink = (props) => (
     }}
   />
 );
+
+export function Balance({ publicAddress }) {
+  const [loading, setLoading] = useState(false);
+  const [network, setNetwork] = useState('');
+  const [balance, setBalance] = useState(0);
+
+  useEffect(() => {
+    setLoading(true);
+    getBalance(publicAddress).then(({ network, balance }) => {
+      setNetwork(network.name);
+      setBalance(balance);
+      setLoading(false);
+    });
+  }, [publicAddress]);
+
+  return (
+    <React.Fragment>
+      {loading ? (
+        <span>
+          <Bouncing />
+        </span>
+      ) : (
+        <span>
+          {balance}Ξ ({network})
+        </span>
+      )}
+    </React.Fragment>
+  );
+}

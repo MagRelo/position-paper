@@ -20,6 +20,8 @@ import NotFound from 'pages/404';
 import Account from 'pages/account/account';
 import ViewUser from 'pages/account/user';
 import UpdateProfile from 'pages/account/updateProfile';
+import Deposit from 'pages/account/dydxDeposit';
+
 import Leaderboard from 'pages/frontpage';
 import Network from 'pages/network/network';
 
@@ -93,6 +95,11 @@ function App() {
     }
   }
 
+  function updateUser(user) {
+    // update context
+    setUser(user);
+  }
+
   function clearSession() {
     setActiveSession(false);
     navigate('/login');
@@ -100,7 +107,14 @@ function App() {
 
   return (
     <AuthContext.Provider
-      value={{ activeSession, createSession, clearSession, callApi, user }}
+      value={{
+        activeSession,
+        createSession,
+        clearSession,
+        callApi,
+        user,
+        updateUser,
+      }}
     >
       {MetaData()}
 
@@ -129,6 +143,7 @@ function App() {
                   <Account path="/account" />
                   <AddProp path="/addposition" />
                   <UpdateProfile path="/profile" />
+                  <Deposit path="/deposit" />
                 </React.Fragment>
               ) : null}
 
