@@ -30,7 +30,7 @@ export function UserScore({ displayUser }) {
             </div>
 
             <div className="user-text">
-              <div>{displayUser.units}</div>
+              <div className="title-theme-bg">{displayUser.units}</div>
             </div>
           </div>
         </Link>

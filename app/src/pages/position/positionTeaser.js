@@ -13,7 +13,11 @@ function Teaser({ position, hideUser }) {
       <div className="mb-3"></div>
       <Link to={'/position/' + position._id}>
         <span style={{ float: 'right' }}>{formatDate(position.createdAt)}</span>
-        <div style={{ fontSize: '1.25rem' }}>{position.title}</div>
+
+        <div
+          className="job-description"
+          dangerouslySetInnerHTML={createMarkup(position.renderedHtml)}
+        />
       </Link>
 
       {hideUser ? null : (
@@ -34,6 +38,10 @@ function tradeCaption(position) {
     formatCurrency(position.amount) + ' at ' + position.leverage + ' leverage';
 
   return start;
+}
+
+function createMarkup(markup) {
+  return { __html: markup };
 }
 
 export default Teaser;

@@ -50,7 +50,7 @@ function Position({ position }) {
       </div>
 
       <div className="mb-4"></div>
-      <h1>{position.title}</h1>
+
       <div
         className="job-description"
         dangerouslySetInnerHTML={createMarkup(position.renderedHtml)}

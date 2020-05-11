@@ -84,6 +84,13 @@ router.get('/user/network', authenticate, async function (req, res) {
   try {
     const feed = await getStream.getFeed('User', req.user._id, req.user._id);
 
+    // the user & all their follows
+    const networkUsers = await UserModel.find({
+      _id: { $in: [req.user._id, ...req.user.follows] },
+    })
+      .sort({ units: -1 })
+      .lean();
+
     const globalStats = await UserModel.aggregate([
       {
         $group: {
@@ -93,16 +100,31 @@ router.get('/user/network', authenticate, async function (req, res) {
         },
       },
     ]);
-    console.log(globalStats);
+    const networkStats = await UserModel.aggregate([
+      {
+        $match: {
+          _id: { $in: [req.user._id, ...req.user.follows] },
+        },
+      },
+      {
+        $group: {
+          _id: 'networkStats',
+          units_StdDev: { $stdDevPop: '$units' },
+          units_Avg: { $avg: '$units' },
+        },
+      },
+    ]);
 
-    // the user & all their follows
-    const networkUsers = await UserModel.find({
-      _id: { $in: [req.user._id, ...req.user.follows] },
-    })
-      .sort({ units: -1 })
-      .lean();
-
-    res.status(200).send({ feed: feed, following: networkUsers });
+    res.status(200).send({
+      feed: feed,
+      following: networkUsers,
+      stats: {
+        global_StdDev: globalStats[0].units_StdDev,
+        global_avg: globalStats[0].units_Avg,
+        network_StdDev: networkStats[0].units_StdDev,
+        network_avg: networkStats[0].units_Avg,
+      },
+    });
   } catch (error) {
     console.log({ error: error.message });
     res.status(500).send({ error: error.message });
@@ -115,7 +137,39 @@ router.get('/user/:userId', async function (req, res) {
   try {
     const user = await UserModel.findOne({ _id: req.params.userId }).lean();
 
-    res.status(200).send(user);
+    const globalStats = await UserModel.aggregate([
+      {
+        $group: {
+          _id: 'globalStats',
+          units_StdDev: { $stdDevPop: '$units' },
+          units_Avg: { $avg: '$units' },
+        },
+      },
+    ]);
+    const networkStats = await UserModel.aggregate([
+      {
+        $match: {
+          _id: { $in: [req.user._id, ...req.user.follows] },
+        },
+      },
+      {
+        $group: {
+          _id: 'networkStats',
+          units_StdDev: { $stdDevPop: '$units' },
+          units_Avg: { $avg: '$units' },
+        },
+      },
+    ]);
+
+    res.status(200).send({
+      user,
+      stats: {
+        global_StdDev: globalStats[0].units_StdDev,
+        global_avg: globalStats[0].units_Avg,
+        network_StdDev: networkStats[0].units_StdDev,
+        network_avg: networkStats[0].units_Avg,
+      },
+    });
   } catch (error) {
     console.log({ error: error.message });
     res.status(500).send({ error: error.message });
@@ -136,7 +190,7 @@ router.put('/user', authenticate, async function (req, res) {
       { new: true }
     );
 
-    console.log(updatedUser);
+    // console.log(updatedUser);
 
     res.status(200).send(updatedUser);
   } catch (error) {

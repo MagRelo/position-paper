@@ -242,15 +242,6 @@ function AddProp(props) {
             <hr />
 
             <div className="form-group">
-              <label htmlFor="title">Title</label>
-              <input
-                type="text"
-                name="title"
-                id="title"
-                className="form-control"
-              />
-            </div>
-            <div className="form-group">
               <label htmlFor="editor" className="sr-only">
                 Post Content
               </label>

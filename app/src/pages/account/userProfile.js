@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import Img from 'react-image';
 import { Link } from '@reach/router';
 import { AiOutlineUser } from 'react-icons/ai';
@@ -8,14 +8,15 @@ import { AiOutlineUser } from 'react-icons/ai';
 import { AuthContext } from 'App';
 
 import FollowButton from 'components/followButton';
-import { Bouncing } from 'components/random';
+// import { Bouncing } from 'components/random';
 
-export function UserProfile({ displayUser, showEdit, showFollow }) {
+export function UserProfile({ displayUser, showEdit, showFollow, showLogout }) {
+  const { user, logout } = useContext(AuthContext);
+
   // default
   let linkUrl = '/user/' + displayUser._id;
 
   // is me?
-  const { user } = useContext(AuthContext);
   if (user && user._id === displayUser._id) {
     linkUrl = '/account';
   }
@@ -34,6 +35,19 @@ export function UserProfile({ displayUser, showEdit, showFollow }) {
             </Link>
           ) : null}
 
+          {showLogout ? (
+            <button
+              type="button"
+              className="btn btn-sm btn-unstyled"
+              style={{ float: 'right' }}
+              onClick={() => {
+                logout();
+              }}
+            >
+              Logout
+            </button>
+          ) : null}
+
           {showFollow ? <FollowButton followUser={displayUser} /> : null}
 
           <Link to={linkUrl}>
@@ -45,6 +59,17 @@ export function UserProfile({ displayUser, showEdit, showFollow }) {
               <div className="user-text">
                 <div className="user-name">{displayUser.displayName}</div>
                 <div className="user-caption">{displayUser.caption}</div>
+
+                {displayUser.units ? (
+                  <div>
+                    <div className="mb-1"></div>
+                    <div className="user-caption">
+                      <span className="title-theme-bg">
+                        {displayUser.units}
+                      </span>
+                    </div>
+                  </div>
+                ) : null}
               </div>
             </div>
           </Link>

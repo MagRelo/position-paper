@@ -45,9 +45,9 @@ function Header() {
 
         <div className="header-container desktop-menu">
           <ul className="nav-list">
-            <li>
+            {/* <li>
               <NavLink to="/leaderboard">Front Page</NavLink>
-            </li>
+            </li> */}
 
             {!activeSession ? (
               <li style={{ float: 'right' }}>

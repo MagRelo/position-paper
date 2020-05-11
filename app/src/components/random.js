@@ -27,7 +27,23 @@ function abbreviateNumber(number) {
   var scaled = number / scale;
 
   // format number and add suffix
-  return '$' + scaled + suffix;
+  return scaled + suffix;
+}
+
+export function formatNumber(input) {
+  if (typeof input == 'undefined') {
+    return '';
+  }
+
+  // type checks
+  let inputNum = 0;
+  if (typeof input === 'string') {
+    inputNum = parseInt(input, 10);
+  } else {
+    inputNum = input;
+  }
+
+  return Math.round(inputNum);
 }
 
 export function formatCurrency(input, isShorthand) {
@@ -44,7 +60,7 @@ export function formatCurrency(input, isShorthand) {
 
   // output style
   if (isShorthand) {
-    return abbreviateNumber(inputNum);
+    return '$' + abbreviateNumber(inputNum);
   } else {
     return inputNum.toLocaleString('en-US', {
       style: 'currency',

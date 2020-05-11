@@ -15,27 +15,10 @@ const solo = new Solo(web3.currentProvider, Networks.RINKEBY);
 //
 export async function dydxGetBalance() {
   const address = (await web3.eth.getAccounts())[0];
-  console.log('address', address);
-
   try {
     const balances = await solo.getters.getAccountBalances(
       address, // Account Owner
-      new BigNumber('0') // Account Number
-    );
-    return balances;
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-export async function dydxGetLogs() {
-  const address = (await web3.eth.getAccounts())[0];
-  console.log('address', address);
-
-  try {
-    const balances = await solo.getters.getAccountBalances(
-      address, // Account Owner
-      new BigNumber('0') // Account Number
+      new BigNumber(1) // Account Number
     );
     return balances;
   } catch (error) {
@@ -44,16 +27,35 @@ export async function dydxGetLogs() {
 }
 
 export async function dxdyDeposit(amountInEth) {
-  console.log('input', amountInEth);
-
   const amount = web3.utils.toWei(amountInEth);
-  console.log('amount', amount);
-
   const address = (await web3.eth.getAccounts())[0];
 
   // Deposits a certain amount of tokens for some asset.
   // By default resolves when transaction is received by the node - not when mined
-  return solo.standardActions.deposit({
+  const transactionReceipt = await solo.standardActions.deposit({
+    accountOwner: address, // Your address
+    marketId: MarketId.ETH,
+
+    // Base units of the token, so 1e18 = 1 ETH
+    // NOTE: USDC has 6 decimal places, so 1e6 = 1 USDC
+    amount: amount,
+  });
+
+  const results = {
+    ...transactionReceipt,
+    logs: solo.logs.parseLogs(transactionReceipt),
+  };
+
+  return results;
+}
+
+export async function dxdyWithdraw(amountInEth) {
+  const amount = web3.utils.toWei(amountInEth);
+  const address = (await web3.eth.getAccounts())[0];
+
+  // Withdraws a certain amount of tokens for some asset.
+  // By default resolves when transaction is received by the node - not when mined
+  return solo.standardActions.withdraw({
     accountOwner: address, // Your address
     marketId: MarketId.ETH,
 
@@ -63,29 +65,25 @@ export async function dxdyDeposit(amountInEth) {
   });
 }
 
+export async function dxdyWithdrawToZero() {
+  const address = (await web3.eth.getAccounts())[0];
+
+  // Withdraws all of your tokens for some asset.
+  // By default resolves when transaction is received by the node - not when mined
+  const transactionReceipt = await solo.standardActions.withdrawToZero({
+    accountOwner: address, // Your address
+    marketId: MarketId.ETH,
+  });
+
+  const results = {
+    ...transactionReceipt,
+    logs: solo.logs.parseLogs(transactionReceipt),
+  };
+
+  return results;
+}
+
 export async function dydxGetMarkets() {
   const { markets } = await solo.api.getMarkets();
   return markets;
 }
-
-// export async function dxdyWithdraw() {
-//   // Withdraws a certain amount of tokens for some asset.
-//   // By default resolves when transaction is received by the node - not when mined
-//   return solo.standardActions.withdraw({
-//     accountOwner: '0x52bc44d5378309ee2abf1539bf71de1b7d7be3b5', // Your address
-//     marketId: MarketId.ETH,
-
-//     // Base units of the token, so 1e18 = 1 ETH
-//     // NOTE: USDC has 6 decimal places, so 1e6 = 1 USDC
-//     amount: new BigNumber('1e18'),
-//   });
-// }
-
-// export async function dxdyWithdrawToZero() {
-//   // Withdraws all of your tokens for some asset.
-//   // By default resolves when transaction is received by the node - not when mined
-//   return solo.standardActions.withdrawToZero({
-//     accountOwner: '0x52bc44d5378309ee2abf1539bf71de1b7d7be3b5', // Your address
-//     marketId: MarketId.ETH,
-//   });
-// }

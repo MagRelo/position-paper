@@ -17,10 +17,11 @@ import Terms from 'pages/legal';
 import About from 'pages/about';
 import NotFound from 'pages/404';
 
-import Account from 'pages/account/account';
+import Account from 'pages/account/user';
 import ViewUser from 'pages/account/user';
 import UpdateProfile from 'pages/account/updateProfile';
-import Deposit from 'pages/account/dydxDeposit';
+import Deposit from 'pages/account/ethDeposit';
+import DYDX from 'pages/account/dydxDeposit';
 
 import Leaderboard from 'pages/frontpage';
 import Network from 'pages/network/network';
@@ -101,8 +102,27 @@ function App() {
   }
 
   function clearSession() {
+    // logout on backend
     setActiveSession(false);
-    navigate('/login');
+    setUser({});
+    return navigate('/login');
+  }
+
+  async function logout() {
+    await fetch('auth/logout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then((response) => {
+      // success (201's?)
+      if (response.status === 200 || response.status === 201) {
+        return clearSession();
+      }
+      // some type of error has occured...
+      console.log(response.status, response.statusText);
+      // throw new Error(response.statusText);
+    });
   }
 
   return (
@@ -114,6 +134,7 @@ function App() {
         callApi,
         user,
         updateUser,
+        logout,
       }}
     >
       {MetaData()}
@@ -144,6 +165,7 @@ function App() {
                   <AddProp path="/addposition" />
                   <UpdateProfile path="/profile" />
                   <Deposit path="/deposit" />
+                  <DYDX path="/dydx" />
                 </React.Fragment>
               ) : null}
 

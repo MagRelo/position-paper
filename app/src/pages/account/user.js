@@ -1,28 +1,32 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Link } from '@reach/router';
-
-import { AuthContext } from 'App';
+// import { Link } from '@reach/router';
 
 import { Loading } from 'components/random';
 
-import { UserProfile } from 'pages/account/userProfile';
-import Feed from 'pages/position/feed';
+import Dashboard from 'pages/account/dashboard';
+
+import { AuthContext } from 'App';
 
 function User({ userId }) {
-  const { callApi } = useContext(AuthContext);
+  const { callApi, user } = useContext(AuthContext);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [displayUser, setDisplayUser] = useState(false);
+  const [stats, setStats] = useState(false);
 
-  const [user, setUser] = useState(false);
+  // if not userId => we're on /account
+  const isMe = !userId;
+  const apiUserId = userId ? userId : user._id;
 
   useEffect(() => {
     setLoading(true);
-
     const method = 'GET';
-    const endPoint = '/api/user/' + userId;
+    const endPoint = '/api/user/' + apiUserId;
     callApi(method, endPoint)
       .then((body) => {
-        setUser(body);
+        setDisplayUser(body.user);
+        setStats(body.stats);
         setLoading(false);
       })
       .catch((error) => {
@@ -30,30 +34,15 @@ function User({ userId }) {
         setError(error.toString());
         setLoading(false);
       });
-  }, [userId, callApi]);
+  }, [apiUserId, callApi]);
 
   return (
     <section className="container">
       {error ? <p>{error}</p> : null}
-      {loading ? (
-        <Loading />
-      ) : (
-        <div className="grid grid-3-5">
-          <div>
-            <UserProfile displayUser={user} showFollow={true} />
-            <hr />
-            <p>Global Rank</p>
-            <p>Rank In Your Network</p>
-            <p>Network Connections</p>
-          </div>
-
-          <div>
-            <h2>Open Positions</h2>
-            <div className="mb-4"></div>
-            <Feed items={[]} />
-          </div>
-        </div>
-      )}
+      {loading ? <Loading /> : null}
+      {displayUser ? (
+        <Dashboard isMe={isMe} user={displayUser} stats={stats} />
+      ) : null}
     </section>
   );
 }
