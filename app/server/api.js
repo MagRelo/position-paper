@@ -66,6 +66,12 @@ router.post('/props', authenticate, async function (req, res) {
     const newPosition = new PositionModel({ user: req.user._id, ...req.body });
     await newPosition.save();
 
+    // save on user
+    await UserModel.findOneAndUpdate(
+      { _id: req.user._id },
+      { $push: { positions: newPosition._id } }
+    );
+
     //add position to User's feed
     await getStream.addPosition(req.user, newPosition);
 

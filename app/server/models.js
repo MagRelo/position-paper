@@ -33,6 +33,7 @@ const UserSchema = new mongoose.Schema(
     publicAddress: String,
 
     follows: { type: Array, default: [] },
+    positions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Position' }],
   },
   { timestamps: true }
 );

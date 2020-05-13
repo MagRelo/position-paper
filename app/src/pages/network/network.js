@@ -42,27 +42,23 @@ function NetworkFeed(props) {
 
       <div className="grid grid-3-5">
         <div>
-          <div className="h3">Network</div>
-          <div className="grid grid-2">
-            <div className="panel">
-              <div>
-                <b>Global Stats</b>
-              </div>
-              Average: {formatNumber(stats.global_avg)} (
-              {formatNumber(stats.global_StdDev)})
+          <div className="h3">My Network</div>
+          <div className="panel">
+            <div>
+              <b>Global Stats</b>
             </div>
-            <div className="panel">
-              <div>
-                <b>Network Stats</b>
-              </div>
-              Average: {formatNumber(stats.network_avg)} (
-              {formatNumber(stats.network_StdDev)})
+            Average: {formatNumber(stats.global_avg)} (
+            {formatNumber(stats.global_StdDev)})
+            <div>
+              <b>Network Stats</b>
             </div>
+            Average: {formatNumber(stats.network_avg)} (
+            {formatNumber(stats.network_StdDev)})
           </div>
 
           <hr />
 
-          <div className="mb-4"></div>
+          <div className="mb-3"></div>
           {following.map((follow) => {
             return (
               <div className="mb-2" key={follow._id}>

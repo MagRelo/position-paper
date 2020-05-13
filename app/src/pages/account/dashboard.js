@@ -9,39 +9,8 @@ import { Balance, copyTextToClipboard, formatNumber } from 'components/random';
 function Dashboard({ isMe, user, stats }) {
   return (
     <section className="container">
-      <div className="grid grid-3-5">
+      <div className="grid grid-5-3">
         <div>
-          {/* User Profile */}
-          <UserProfile displayUser={user} showEdit={true} />
-          <hr />
-          {isMe ? (
-            <React.Fragment>
-              <EthereumAccount user={user} />
-              <hr />
-              <DYdX />
-              <hr />
-            </React.Fragment>
-          ) : null}
-        </div>
-
-        <div>
-          <div className="grid grid-2">
-            <div className="panel">
-              <div>
-                <b>Global Stats</b>
-              </div>
-              Average: {formatNumber(stats.global_avg)} (
-              {formatNumber(stats.global_StdDev)})
-            </div>
-            <div className="panel">
-              <div>
-                <b>Network Stats</b>
-              </div>
-              Average: {formatNumber(stats.network_avg)} (
-              {formatNumber(stats.network_StdDev)})
-            </div>
-          </div>
-          <div className="mb-4"></div>
           <div>
             <Link
               to="/addposition"
@@ -54,6 +23,33 @@ function Dashboard({ isMe, user, stats }) {
           </div>
           <div className="mb-4"></div>
           <Feed items={[]} />
+        </div>
+
+        <div>
+          {/* User Profile */}
+          <UserProfile displayUser={user} showEdit={true} />
+          <div className="mb-3"></div>
+          <div className="panel">
+            <div>
+              <b>Global Stats</b>
+            </div>
+            Average: {formatNumber(stats.global_avg)} (
+            {formatNumber(stats.global_StdDev)})
+            <div>
+              <b>Network Stats</b>
+            </div>
+            Average: {formatNumber(stats.network_avg)} (
+            {formatNumber(stats.network_StdDev)})
+          </div>
+          <div className="mb-4"></div>
+          {isMe ? (
+            <React.Fragment>
+              <EthereumAccount user={user} />
+              <hr />
+              <DYdX />
+              <hr />
+            </React.Fragment>
+          ) : null}
         </div>
       </div>
     </section>
