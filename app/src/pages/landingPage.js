@@ -25,9 +25,8 @@ function LandingPage() {
               </div>
 
               <div className="mb-2"></div>
-              <h1>Social Trading Network</h1>
-
-              <p>Accountable Media Platform</p>
+              <h1>Accountable Media Platform</h1>
+              <p>Social Trading Network</p>
             </div>
           </div>
 

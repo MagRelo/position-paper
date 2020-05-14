@@ -40,7 +40,7 @@ function NetworkFeed(props) {
     <section className="container">
       {error ? <p>{error}</p> : null}
 
-      <div className="grid grid-3-5">
+      <div className="grid grid-2">
         <div>
           <div className="h3">My Network</div>
           <div className="panel">

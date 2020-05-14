@@ -1,32 +1,13 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 
-import { Bouncing } from 'components/random';
-import { getBalance } from 'api/magic';
-import {
-  dydxGetBalance,
-  dxdyDeposit,
-  dxdyWithdraw,
-  dxdyWithdrawToZero,
-} from 'api/dydx';
+// import { getBalance } from 'api/magic';
+import { Bouncing, EthereumAccount, DYdX } from 'components/random';
+import { dxdyDeposit, dxdyWithdraw, dxdyWithdrawToZero } from 'api/dydx';
 import { AuthContext } from 'App';
 
 function DepositForm(props) {
   const { user } = useContext(AuthContext);
-
   const [loading, setLoading] = useState(false);
-  const [network, setNetwork] = useState('');
-  const [balance, setBalance] = useState(0);
-
-  useEffect(() => {
-    setLoading(true);
-    Promise.all([dydxGetBalance(), getBalance(user.publicAddress)]).then(
-      ([dydx, { network, balance }]) => {
-        setNetwork(network.name);
-        setBalance(balance);
-        setLoading(false);
-      }
-    );
-  }, [user]);
 
   async function deposit(event) {
     event.preventDefault();
@@ -39,13 +20,17 @@ function DepositForm(props) {
     });
     console.log(formObject);
 
+    setLoading(true);
+
     // send to server
     dxdyDeposit(formObject.amount)
       .then((response) => {
         console.log(response);
+        setLoading(false);
       })
       .catch((error) => {
         console.log(error);
+        setLoading(false);
       });
   }
 
@@ -60,13 +45,17 @@ function DepositForm(props) {
     });
     console.log(formObject);
 
+    setLoading(true);
+
     // send to server
     dxdyWithdraw(formObject.amount)
       .then((response) => {
         console.log(response);
+        setLoading(false);
       })
       .catch((error) => {
         console.log(error);
+        setLoading(false);
       });
   }
 
@@ -90,75 +79,71 @@ function DepositForm(props) {
   return (
     <section className="container">
       <div className="form-wrapper">
-        <h1>Manage dYdX</h1>
+        <h1>Manage dYdX Account</h1>
 
-        <div className="line-item">
-          <div>Network</div>
-          <div className="line-item-filler"></div>
-          <div>{network}</div>
+        <div className="grid grid-2">
+          <EthereumAccount user={user} />
+          <DYdX />
+
+          <form name="depositDydx" onSubmit={deposit} className="panel">
+            <legend>Deposit</legend>
+
+            <hr />
+
+            <div className="form-group">
+              <label htmlFor="amount" className="">
+                Deposit Amount
+              </label>
+              <input
+                className="form-control"
+                type="number"
+                // max={balance}
+                step={0.1}
+                name="amount"
+                id="amount"
+              />
+            </div>
+
+            <hr />
+            <button className="btn btn-theme">
+              {loading ? <Bouncing /> : <span>Deposit</span>}
+            </button>
+          </form>
+
+          <form name="withdrawDydx" onSubmit={withdraw} className="panel">
+            <legend>Withdraw</legend>
+
+            <hr />
+
+            <div className="form-group">
+              <label htmlFor="amount" className="">
+                Amount
+              </label>
+              <input
+                className="form-control"
+                type="number"
+                // max={balance}
+                step={0.1}
+                name="amount"
+                id="amount"
+              />
+            </div>
+
+            <hr />
+            <button className="btn btn-theme">
+              {loading ? <Bouncing /> : <span>Withdraw</span>}
+            </button>
+
+            <button
+              className="btn btn-theme"
+              onClick={withdrawToZero}
+              type="button"
+              disabled={loading}
+            >
+              {loading ? <Bouncing /> : <span>Withdraw All</span>}
+            </button>
+          </form>
         </div>
-        <div className="line-item">
-          <div>Balance</div>
-          <div className="line-item-filler"></div>
-          <div>{balance}Ξ</div>
-        </div>
-
-        <form name="depositTodydx" onSubmit={deposit} className="panel">
-          <legend>Deposit</legend>
-
-          <hr />
-
-          <div className="form-group">
-            <label htmlFor="amount" className="">
-              Deposit Amount
-            </label>
-            <input
-              className="form-control"
-              type="number"
-              // max={balance}
-              step={0.1}
-              name="amount"
-              id="amount"
-            />
-          </div>
-
-          <hr />
-          <button className="btn btn-theme">Deposit</button>
-        </form>
-
-        <form name="depositTodydx" onSubmit={withdraw} className="panel">
-          <legend>Withdraw</legend>
-
-          <hr />
-
-          <div className="form-group">
-            <label htmlFor="amount" className="">
-              Amount
-            </label>
-            <input
-              className="form-control"
-              type="number"
-              // max={balance}
-              step={0.1}
-              name="amount"
-              id="amount"
-            />
-          </div>
-
-          <hr />
-          <button className="btn btn-theme">
-            {loading ? <Bouncing /> : <span>Withdraw</span>}
-          </button>
-
-          <button
-            className="btn btn-theme"
-            onClick={withdrawToZero}
-            type="button"
-            disabled={loading}
-          >
-            {loading ? <Bouncing /> : <span>Withdraw To Zero</span>}
-          </button>
-        </form>
       </div>
     </section>
   );

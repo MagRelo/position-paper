@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var ObjectId = require('mongodb').ObjectID;
 
 // const SendGrid = require('./integrations/sendgrid');
 const getStream = require('./integrations/getstream');
@@ -17,7 +18,7 @@ const UserModel = require('./models').UserModel;
 //
 
 // GET ONE
-router.get('/props/:propId', async function (req, res) {
+router.get('/props/:propId', async function(req, res) {
   try {
     // get latest
     const prop = await PositionModel.findOne({
@@ -38,7 +39,7 @@ router.get('/props/:propId', async function (req, res) {
 });
 
 // GET MULTIPLE
-router.get('/props', async function (req, res) {
+router.get('/props', async function(req, res) {
   try {
     // check for filters
 
@@ -60,7 +61,7 @@ router.get('/props', async function (req, res) {
 });
 
 // ADD POSITION
-router.post('/props', authenticate, async function (req, res) {
+router.post('/props', authenticate, async function(req, res) {
   try {
     // get latest
     const newPosition = new PositionModel({ user: req.user._id, ...req.body });
@@ -86,7 +87,7 @@ router.post('/props', authenticate, async function (req, res) {
 // USER
 //
 
-router.get('/user/network', authenticate, async function (req, res) {
+router.get('/user/network', authenticate, async function(req, res) {
   try {
     const feed = await getStream.getFeed('User', req.user._id, req.user._id);
 
@@ -97,39 +98,12 @@ router.get('/user/network', authenticate, async function (req, res) {
       .sort({ units: -1 })
       .lean();
 
-    const globalStats = await UserModel.aggregate([
-      {
-        $group: {
-          _id: 'globalStats',
-          units_StdDev: { $stdDevPop: '$units' },
-          units_Avg: { $avg: '$units' },
-        },
-      },
-    ]);
-    const networkStats = await UserModel.aggregate([
-      {
-        $match: {
-          _id: { $in: [req.user._id, ...req.user.follows] },
-        },
-      },
-      {
-        $group: {
-          _id: 'networkStats',
-          units_StdDev: { $stdDevPop: '$units' },
-          units_Avg: { $avg: '$units' },
-        },
-      },
-    ]);
+    const stats = await getStats(req.user);
 
     res.status(200).send({
       feed: feed,
       following: networkUsers,
-      stats: {
-        global_StdDev: globalStats[0].units_StdDev,
-        global_avg: globalStats[0].units_Avg,
-        network_StdDev: networkStats[0].units_StdDev,
-        network_avg: networkStats[0].units_Avg,
-      },
+      stats: stats,
     });
   } catch (error) {
     console.log({ error: error.message });
@@ -139,42 +113,16 @@ router.get('/user/network', authenticate, async function (req, res) {
 
 // router.get('/user', populateUser);
 
-router.get('/user/:userId', async function (req, res) {
+router.get('/user/:userId', async function(req, res) {
   try {
-    const user = await UserModel.findOne({ _id: req.params.userId }).lean();
+    const user = await UserModel.findOne({ _id: req.params.userId })
+      .populate('positions')
+      .lean();
 
-    const globalStats = await UserModel.aggregate([
-      {
-        $group: {
-          _id: 'globalStats',
-          units_StdDev: { $stdDevPop: '$units' },
-          units_Avg: { $avg: '$units' },
-        },
-      },
-    ]);
-    const networkStats = await UserModel.aggregate([
-      {
-        $match: {
-          _id: { $in: [req.user._id, ...req.user.follows] },
-        },
-      },
-      {
-        $group: {
-          _id: 'networkStats',
-          units_StdDev: { $stdDevPop: '$units' },
-          units_Avg: { $avg: '$units' },
-        },
-      },
-    ]);
-
+    const stats = await getStats(req.user);
     res.status(200).send({
       user,
-      stats: {
-        global_StdDev: globalStats[0].units_StdDev,
-        global_avg: globalStats[0].units_Avg,
-        network_StdDev: networkStats[0].units_StdDev,
-        network_avg: networkStats[0].units_Avg,
-      },
+      stats: stats,
     });
   } catch (error) {
     console.log({ error: error.message });
@@ -183,7 +131,7 @@ router.get('/user/:userId', async function (req, res) {
 });
 
 // UPDATE PROFILE
-router.put('/user', authenticate, async function (req, res) {
+router.put('/user', authenticate, async function(req, res) {
   try {
     // get latest
     const updatedUser = await UserModel.findByIdAndUpdate(
@@ -206,7 +154,7 @@ router.put('/user', authenticate, async function (req, res) {
 });
 
 // FOLLOW USER & UNFOLLOW USER
-router.put('/user/follow', authenticate, async function (req, res) {
+router.put('/user/follow', authenticate, async function(req, res) {
   try {
     const intentToFollow = req.query.intent === 'true';
     const feedType = req.query.type;
@@ -249,45 +197,42 @@ router.put('/user/follow', authenticate, async function (req, res) {
 module.exports = router;
 
 //
+async function getStats(user) {
+  const globalStats = await UserModel.aggregate([
+    {
+      $group: {
+        _id: 'globalStats',
+        units_StdDev: { $stdDevPop: '$units' },
+        units_Avg: { $avg: '$units' },
+        globalCount: { $sum: 1 },
+      },
+    },
+  ]);
 
-// // derived from http://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Parallel_algorithm
+  // convert "follows" strings into ObjectId's
+  const objs = user.follows.map((userId) => ObjectId(userId));
+  const networkStats = await UserModel.aggregate([
+    {
+      $match: {
+        _id: { $in: [user._id, ...objs] },
+      },
+    },
+    {
+      $group: {
+        _id: 'networkStats',
+        units_StdDev: { $stdDevPop: '$units' },
+        units_Avg: { $avg: '$units' },
+        networkCount: { $sum: 1 },
+      },
+    },
+  ]);
 
-// function map() {
-//   emit(
-//     1, // Or put a GROUP BY key here
-//     {
-//       sum: this.value, // the field you want stats for
-//       min: this.value,
-//       max: this.value,
-//       count: 1,
-//       diff: 0, // M2,n:  sum((val-mean)^2)
-//     }
-//   );
-// }
-
-// function reduce(key, values) {
-//   var a = values[0]; // will reduce into here
-//   for (var i = 1 /*!*/; i < values.length; i++) {
-//     var b = values[i]; // will merge 'b' into 'a'
-
-//     // temp helpers
-//     var delta = a.sum / a.count - b.sum / b.count; // a.mean - b.mean
-//     var weight = (a.count * b.count) / (a.count + b.count);
-
-//     // do the reducing
-//     a.diff += b.diff + delta * delta * weight;
-//     a.sum += b.sum;
-//     a.count += b.count;
-//     a.min = Math.min(a.min, b.min);
-//     a.max = Math.max(a.max, b.max);
-//   }
-
-//   return a;
-// }
-
-// function finalize(key, value) {
-//   value.avg = value.sum / value.count;
-//   value.variance = value.diff / value.count;
-//   value.stddev = Math.sqrt(value.variance);
-//   return value;
-// }
+  return {
+    global_StdDev: globalStats[0].units_StdDev,
+    global_avg: globalStats[0].units_Avg,
+    globalCount: globalStats[0].globalCount,
+    network_StdDev: networkStats[0].units_StdDev,
+    network_avg: networkStats[0].units_Avg,
+    networkCount: networkStats[0].networkCount,
+  };
+}

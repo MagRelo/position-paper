@@ -4,11 +4,13 @@ import Web3 from 'web3';
 import { Solo, Networks, MarketId, BigNumber } from '@dydxprotocol/solo';
 
 // get magic provider
-const magic = new Magic(process.env.REACT_APP_MAGIC_PUBLISHABLE_KEY);
+const magic = new Magic(process.env.REACT_APP_MAGIC_PUBLISHABLE_KEY, {
+  network: 'kovan',
+});
 const web3 = new Web3(magic.rpcProvider);
 
 // setup dydx Solo client
-const solo = new Solo(web3.currentProvider, Networks.RINKEBY);
+const solo = new Solo(web3.currentProvider, Networks.KOVAN);
 
 //
 // dydx
@@ -16,11 +18,32 @@ const solo = new Solo(web3.currentProvider, Networks.RINKEBY);
 export async function dydxGetBalance() {
   const address = (await web3.eth.getAccounts())[0];
   try {
-    const balances = await solo.getters.getAccountBalances(
+    const balanceArray = await solo.getters.getAccountBalances(
       address, // Account Owner
-      new BigNumber(1) // Account Number
+      new BigNumber(0) // Account Number
     );
-    return balances;
+
+    // => "Wrapped Ether"
+    balanceArray[0].name = await solo.token.getName(
+      balanceArray[0].tokenAddress
+    );
+    balanceArray[0].eth = web3.utils.fromWei(balanceArray[0].wei.toString());
+
+    balanceArray[1].name = 'Test DAI';
+    // balanceArray[1].name = await solo.token.getName(
+    //   balanceArray[1].tokenAddress // '0xC4375B7De8af5a38a93548eb8453a498222C4fF2'
+    // );
+    // Error: overflow (operation="setValue", fault="overflow",
+    // details="Number can only safely store up to 53 bits")
+    balanceArray[1].eth = web3.utils.fromWei(balanceArray[1].wei.toString());
+
+    // => "Test USDC"
+    balanceArray[2].name = await solo.token.getName(
+      balanceArray[2].tokenAddress
+    );
+    balanceArray[2].eth = web3.utils.fromWei(balanceArray[2].wei.toString());
+
+    return balanceArray;
   } catch (error) {
     console.log(error);
   }

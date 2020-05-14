@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from '@reach/router';
 
-import { UserProfile } from 'pages/account/userProfile';
+import { UserScore } from 'pages/account/userScore';
 
-import { formatDate, formatCurrency } from 'components/random';
+import { formatDate } from 'components/random';
 
 function Teaser({ position, hideUser }) {
   return (
@@ -23,21 +23,38 @@ function Teaser({ position, hideUser }) {
       {hideUser ? null : (
         <React.Fragment>
           <hr />
-          <UserProfile displayUser={position.user} hideDescription={true} />
+          <UserScore displayUser={position.user} />
         </React.Fragment>
       )}
     </div>
   );
 }
 
-function tradeCaption(position) {
-  let start = '';
-  start += position.direction === 'long' ? 'Long ETH ' : 'Short ETH ';
-  start += 'for ' + position.length + ' – ';
-  start +=
-    formatCurrency(position.amount) + ' at ' + position.leverage + ' leverage';
+export function tradeCaption(position) {
+  const leverageClass =
+    'badge badge-pill' +
+    (position.direction === 'short' ? ' badge-danger' : ' badge-success');
+  const leverageCaption =
+    position.leverage +
+    ' ' +
+    (position.direction === 'long' ? 'Long ETH' : 'Short ETH');
 
-  return start;
+  return (
+    <div>
+      <span className={leverageClass}>{leverageCaption}</span>
+      <span className="sr-only">leverage and direction</span>
+      <span className="ml-2"></span>
+      {/* length */}
+      <span className="badge badge-danger badge-light">{position.length}</span>
+      <span className="sr-only">length</span>
+      <span className="ml-2"></span>
+
+      <span className="badge badge-secondary badge-pill">
+        {position.amount}
+      </span>
+      <span className="sr-only">amount</span>
+    </div>
+  );
 }
 
 function createMarkup(markup) {

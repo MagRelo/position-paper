@@ -4,6 +4,7 @@ import { AuthContext } from 'App';
 import { Loading } from 'components/random';
 import { formatDate, formatCurrency } from 'components/random';
 import { UserProfile } from 'pages/account/userProfile';
+import { tradeCaption } from 'pages/position/positionTeaser';
 
 function Prop({ propId }) {
   const { callApi } = useContext(AuthContext);
@@ -60,16 +61,6 @@ function Position({ position }) {
       <UserProfile displayUser={position.user} showFollow={true} />
     </div>
   );
-}
-
-function tradeCaption(position) {
-  let start = '';
-  start += position.direction === 'long' ? 'Long ETH ' : 'Short ETH ';
-  start += 'for ' + position.length + ' – ';
-  start +=
-    formatCurrency(position.amount) + ' at ' + position.leverage + ' leverage';
-
-  return start;
 }
 
 function createMarkup(markup) {

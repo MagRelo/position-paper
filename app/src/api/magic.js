@@ -1,7 +1,9 @@
 import { Magic } from 'magic-sdk';
 import { ethers } from 'ethers';
 
-const magic = new Magic(process.env.REACT_APP_MAGIC_PUBLISHABLE_KEY);
+const magic = new Magic(process.env.REACT_APP_MAGIC_PUBLISHABLE_KEY, {
+  network: 'kovan',
+});
 const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
 
 export async function magicLogin(email) {
