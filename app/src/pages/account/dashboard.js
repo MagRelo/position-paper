@@ -6,6 +6,8 @@ import Feed from 'pages/position/feed';
 
 import { EthereumAccount, DYdX, formatNumber } from 'components/random';
 
+import LineChart from 'components/lineChart';
+
 function Dashboard({ isMe, user, stats }) {
   return (
     <section className="container">
@@ -29,7 +31,9 @@ function Dashboard({ isMe, user, stats }) {
           {/* User Profile */}
           <UserProfile displayUser={user} showEdit={true} />
           <div className="mb-3"></div>
-          <div className="panel">
+          <LineChart />
+          <hr />
+          {/* <div className="panel">
             <div>
               <b>Global Stats</b>
             </div>
@@ -40,7 +44,7 @@ function Dashboard({ isMe, user, stats }) {
             </div>
             Average: {formatNumber(stats.network_avg)} (
             {formatNumber(stats.network_StdDev)})
-          </div>
+          </div> */}
           <div className="mb-4"></div>
           {isMe ? (
             <React.Fragment>
