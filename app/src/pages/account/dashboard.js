@@ -31,7 +31,7 @@ function Dashboard({ isMe, user, stats }) {
           {/* User Profile */}
           <UserProfile displayUser={user} showEdit={true} />
           <div className="mb-3"></div>
-          <LineChart />
+          <LineChart stats={stats} />
           <hr />
           {/* <div className="panel">
             <div>
