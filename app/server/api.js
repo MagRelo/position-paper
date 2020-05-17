@@ -7,7 +7,7 @@ const getStream = require('./integrations/getstream');
 
 // Controllers
 const { authenticate } = require('./controllers/magic-auth');
-const { populateUser } = require('./controllers/user');
+// const { populateUser } = require('./controllers/user');
 
 // const UserModel = require('./models').UserModel;
 const PositionModel = require('./models').PositionModel;
@@ -98,12 +98,20 @@ router.get('/user/network', authenticate, async function(req, res) {
       .sort({ units: -1 })
       .lean();
 
+    const suggestedFollows = await UserModel.find({
+      _id: { $not: { $in: [req.user._id, ...req.user.follows] } },
+    })
+      .limit(3)
+      .sort({ units: -1 })
+      .lean();
+
     const stats = await getStats(req.user);
 
     res.status(200).send({
       feed: feed,
       following: networkUsers,
       stats: stats,
+      suggestedFollows: suggestedFollows,
     });
   } catch (error) {
     console.log({ error: error.message });

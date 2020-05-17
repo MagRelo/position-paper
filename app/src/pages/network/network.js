@@ -2,12 +2,11 @@ import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from 'App';
 import { Link } from '@reach/router';
 
-import { Loading, formatNumber } from 'components/random';
+import { Loading } from 'components/random';
 import LineChart from 'components/lineChart';
 
 import Teaser from 'pages/position/positionTeaser';
 import { UserScore } from 'pages/account/userScore';
-// import PriceFeed from 'components/priceFeed';
 
 function NetworkFeed(props) {
   const { callApi } = useContext(AuthContext);
@@ -16,6 +15,7 @@ function NetworkFeed(props) {
 
   const [networkPosts, setNetworkPosts] = useState([]);
   const [following, setFollowing] = useState([]);
+  const [suggestedFollows, setSuggestedFollows] = useState([]);
   const [stats, setStats] = useState(false);
 
   useEffect(() => {
@@ -27,6 +27,7 @@ function NetworkFeed(props) {
       .then((body) => {
         setNetworkPosts(body.feed);
         setFollowing(body.following);
+        setSuggestedFollows(body.suggestedFollows);
         setStats(body.stats);
         setLoading(false);
       })
@@ -54,6 +55,17 @@ function NetworkFeed(props) {
             return (
               <div className="mb-2" key={follow._id}>
                 <UserScore displayUser={follow} />
+              </div>
+            );
+          })}
+
+          <hr />
+
+          <div className="h3">Who to follow</div>
+          {suggestedFollows.map((follow) => {
+            return (
+              <div className="mb-2" key={follow._id}>
+                <UserScore displayUser={follow} showFollow={true} />
               </div>
             );
           })}

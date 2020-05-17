@@ -6,7 +6,7 @@ import { AiOutlineUser } from 'react-icons/ai';
 
 import { Link } from '@reach/router';
 
-export function UserScore({ displayUser }) {
+export function UserScore({ displayUser, showFollow }) {
   // default
   let linkUrl = '/user/' + displayUser._id;
 

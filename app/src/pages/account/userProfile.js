@@ -13,19 +13,16 @@ import FollowButton from 'components/followButton';
 export function UserProfile({ displayUser, showEdit, showFollow, showLogout }) {
   const { user, logout } = useContext(AuthContext);
 
-  // default
-  let linkUrl = '/user/' + displayUser._id;
+  const isMe = user && user._id === displayUser._id;
 
-  // is me?
-  if (user && user._id === displayUser._id) {
-    linkUrl = '/account';
-  }
+  // link to user page OR user's account page
+  let linkUrl = isMe ? '/account' : '/user/' + displayUser._id;
 
   return (
     <React.Fragment>
       {user ? (
         <div className="user-profile">
-          {showEdit ? (
+          {showEdit && isMe ? (
             <Link
               className="btn btn-sm btn-unstyled"
               style={{ float: 'right' }}
