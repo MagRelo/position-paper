@@ -32,7 +32,7 @@ function Teaser({ position, hideUser }) {
 
 export function tradeCaption(position) {
   const leverageClass =
-    'badge badge-pill' +
+    'badge ' +
     (position.direction === 'short' ? ' badge-danger' : ' badge-success');
   const leverageCaption =
     position.leverage +
@@ -44,15 +44,14 @@ export function tradeCaption(position) {
       <span className={leverageClass}>{leverageCaption}</span>
       <span className="sr-only">leverage and direction</span>
       <span className="ml-2"></span>
+
       {/* length */}
-      <span className="badge badge-danger badge-light">{position.length}</span>
-      <span className="sr-only">length</span>
+      <span className="badge badge-secondary">{position.amount}</span>
+      <span className="sr-only">amount</span>
       <span className="ml-2"></span>
 
-      <span className="badge badge-secondary badge-pill">
-        {position.amount}
-      </span>
-      <span className="sr-only">amount</span>
+      <span className="badge badge-danger badge-light">{position.length}</span>
+      <span className="sr-only">length</span>
     </div>
   );
 }

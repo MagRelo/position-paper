@@ -64,9 +64,7 @@ export function UserProfile({ displayUser, showEdit, showFollow, showLogout }) {
                   <div>
                     <div className="mb-1"></div>
                     <div className="user-caption">
-                      <span className="title-theme-bg">
-                        {displayUser.units}
-                      </span>
+                      <span className="highlight">{displayUser.units}</span>
                     </div>
                   </div>
                 ) : null}

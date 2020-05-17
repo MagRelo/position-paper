@@ -3,6 +3,7 @@ import { AuthContext } from 'App';
 import { Link } from '@reach/router';
 
 import { Loading, formatNumber } from 'components/random';
+import LineChart from 'components/lineChart';
 
 import Teaser from 'pages/position/positionTeaser';
 import { UserScore } from 'pages/account/userScore';
@@ -15,7 +16,7 @@ function NetworkFeed(props) {
 
   const [networkPosts, setNetworkPosts] = useState([]);
   const [following, setFollowing] = useState([]);
-  const [stats, setStats] = useState([]);
+  const [stats, setStats] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -25,7 +26,7 @@ function NetworkFeed(props) {
     callApi(method, endPoint)
       .then((body) => {
         setNetworkPosts(body.feed);
-        setFollowing(body.following || []);
+        setFollowing(body.following);
         setStats(body.stats);
         setLoading(false);
       })
@@ -43,22 +44,12 @@ function NetworkFeed(props) {
       <div className="grid grid-2">
         <div>
           <div className="h3">My Network</div>
-          <div className="panel">
-            <div>
-              <b>Global Stats</b>
-            </div>
-            Average: {formatNumber(stats.global_avg)} (
-            {formatNumber(stats.global_StdDev)})
-            <div>
-              <b>Network Stats</b>
-            </div>
-            Average: {formatNumber(stats.network_avg)} (
-            {formatNumber(stats.network_StdDev)})
+          <div>
+            <LineChart stats={stats} />
           </div>
 
-          <hr />
-
           <div className="mb-3"></div>
+
           {following.map((follow) => {
             return (
               <div className="mb-2" key={follow._id}>

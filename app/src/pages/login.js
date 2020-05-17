@@ -1,13 +1,18 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { AuthContext } from 'App';
 
 import { magicLogin } from 'api/magic';
 
+import { Bouncing } from 'components/random';
+
 function Login(props) {
   const { createSession } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
 
   async function login(event) {
     event.preventDefault();
+
+    setLoading(true);
 
     // get form data
     const formObject = {};
@@ -34,6 +39,7 @@ function Login(props) {
       })
       .catch((error) => {
         console.log(error);
+        setLoading(false);
       });
   }
 
@@ -58,7 +64,15 @@ function Login(props) {
               </div>
 
               <hr />
-              <button className="btn btn-theme">Login</button>
+              <button className="btn btn-theme">
+                {loading ? (
+                  <span>
+                    <Bouncing />
+                  </span>
+                ) : (
+                  <span>Login</span>
+                )}
+              </button>
             </form>
           </div>
         </div>

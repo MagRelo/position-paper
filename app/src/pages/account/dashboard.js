@@ -4,7 +4,7 @@ import { Link } from '@reach/router';
 import { UserProfile } from 'pages/account/userProfile';
 import Feed from 'pages/position/feed';
 
-import { EthereumAccount, DYdX, formatNumber } from 'components/random';
+import { EthereumAccount, DYdX } from 'components/random';
 
 import LineChart from 'components/lineChart';
 
@@ -33,18 +33,6 @@ function Dashboard({ isMe, user, stats }) {
           <div className="mb-3"></div>
           <LineChart stats={stats} />
           <hr />
-          {/* <div className="panel">
-            <div>
-              <b>Global Stats</b>
-            </div>
-            Average: {formatNumber(stats.global_avg)} (
-            {formatNumber(stats.global_StdDev)})
-            <div>
-              <b>Network Stats</b>
-            </div>
-            Average: {formatNumber(stats.network_avg)} (
-            {formatNumber(stats.network_StdDev)})
-          </div> */}
           <div className="mb-4"></div>
           {isMe ? (
             <React.Fragment>

@@ -19,13 +19,13 @@ function LandingPage() {
 
             <div className="title-container">
               <div>
-                <span className="title-theme-bg">
+                {/* <span className="highlight">
                   Welcome to Position&#8201;Paper!
-                </span>
+                </span> */}
               </div>
 
               <div className="mb-2"></div>
-              <h1>Accountable Media Platform</h1>
+              <h1>Accountable Publishing Platform</h1>
               <p>Social Trading Network</p>
             </div>
           </div>

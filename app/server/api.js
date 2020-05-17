@@ -119,7 +119,7 @@ router.get('/user/:userId', async function(req, res) {
       .populate('positions')
       .lean();
 
-    const stats = await getStats(req.user);
+    const stats = await getStats(user);
     res.status(200).send({
       user,
       stats: stats,

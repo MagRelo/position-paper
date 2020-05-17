@@ -205,10 +205,13 @@ table {
 }
 
 .btn.btn-theme {
-  background: $primaryLight;
   color: $white;
-  box-shadow: 3px 3px 0 $secondaryColor;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+
+  background: $primaryLight;
   border-bottom: none;
+  box-shadow: $box-shadow-medium;
 
   transition: all 200ms;
 }
@@ -217,17 +220,6 @@ table {
   background: lighten($color: $primaryLight, $amount: 5);
 }
 
-.btn.btn-red {
-  background: $orange;
-  color: $white;
-  border-bottom: none;
-
-  transition: all 200ms;
-}
-
-.btn.btn-red:hover {
-  background: lighten($color: $orange, $amount: 5);
-}
 
 .btn.btn-unstyled {
   background-color: inherit;
@@ -671,7 +663,7 @@ a.panel {
 .trade-band {
   border-bottom: solid 1px $lightGray;
   margin: 0 -1rem;
-  padding: 8px 1rem 6px;
+  padding: 8px 1rem;
 }
 
 .panel>a {
@@ -870,8 +862,8 @@ a.panel {
   line-height: 27px;
 }
 
-.title-theme-bg {
-  background: $secondaryHighlight;
+.highlight {
+  background: $primaryHighlight;
   border-radius: 7px;
   display: inline-block;
   padding: 3px 7px;

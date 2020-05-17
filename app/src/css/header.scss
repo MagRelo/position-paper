@@ -14,14 +14,15 @@ header {
 
 
 .header-title {
-  font-size: 32px;
+  font-family: 'Libre Baskerville', serif;
   background-color: $primaryColor;
+  font-size: 32px;
   position: relative;
   z-index: 1;
 }
 
 .header-title:first-child {
-  color: $secondaryColor;
+  color: $primaryLight
 }
 
 .header-title:last-child {
@@ -47,7 +48,7 @@ a.nav-link {
   display: inline-block;
 
   padding: 0.33rem 0.67rem;
-  color: $secondaryColor;
+  color: $primaryLight;
   background-color: $primaryColor;
 
   // to preserve spacing
@@ -55,8 +56,8 @@ a.nav-link {
 }
 
 a.nav-link:hover {
-  color: $secondaryColor;
-  border-bottom: solid 1px $secondaryColor;
+  color: $primaryLight;
+  border-bottom: solid 1px $primaryLight;
 }
 
 a.nav-link.active,
@@ -137,6 +138,8 @@ a.nav-link.active:hover {
 footer {
   position: relative;
   overflow: hidden;
+
+  font-family: 'Libre Baskerville', serif;
   background-color: $primaryColor;
   border-top: $primaryLight solid 2px;
   color: $white;
@@ -156,7 +159,7 @@ footer>.container {
 }
 
 .footer-title:first-child {
-  color: $secondaryColor;
+  color: $primaryLight;
 }
 
 .footer-title:last-child {
@@ -185,12 +188,12 @@ footer>.container {
   position: relative;
   font-size: 16px;
   font-weight: 400;
-  color: $secondaryColor;
+  color: $primaryLight;
 }
 
 .footer-list li a:hover {
-  border-bottom: solid 1px $secondaryColor;
-  color: $secondaryColor;
+  border-bottom: solid 1px $primaryLight;
+  color: $primaryLight;
 }
 
 .footer-list .list-inline li {
