@@ -29,7 +29,7 @@
     "mongoose": "^5.9.4",
     "morgan": "^1.9.1",
     "nanoid": "^2.0.3",
-    "newrelic": "^5.11.0",
+    "newrelic": "^6.7.1",
     "node-fetch": "^2.6.0",
     "passport": "^0.4.0",
     "passport-magic": "^1.0.0",

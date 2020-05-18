@@ -43,6 +43,10 @@ function Header() {
           </Link>
         </div>
 
+        <div className="header-container">
+          <span className="header-tagline">Stake Your Claim.</span>
+        </div>
+
         <div className="header-container desktop-menu">
           <ul className="nav-list">
             {/* <li>

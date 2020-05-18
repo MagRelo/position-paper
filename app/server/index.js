@@ -27,7 +27,7 @@ mongoose.connect(process.env.MONGODB_URL_INT, {
   useUnifiedTopology: true,
   useFindAndModify: false,
 });
-mongoose.connection.on('error', function (err) {
+mongoose.connection.on('error', function(err) {
   console.error('MongoDB connection error: ' + err);
   process.exit(-1);
 });
@@ -50,19 +50,23 @@ var store = new MongoDBStore({
   uri: process.env.MONGODB_URL_INT,
   collection: 'sessions',
 });
-store.on('error', function (error) {
+store.on('error', function(error) {
   console.log('MongoStore Error', error);
 });
+
+const cookieSettings = {
+  maxAge: 60 * 60 * 1000, // 1 hour
+};
+if (process.env.NODE_ENV === 'production') {
+  cookieSettings.secure = true;
+  cookieSettings.sameSite = true;
+}
 app.use(
   session({
     secret: process.env.SESSION_SECRET || 'sesh-secret',
     resave: false,
     saveUninitialized: true,
-    cookie: {
-      maxAge: 60 * 60 * 1000, // 1 hour
-      // secure: process.env.COOKIES_SECURE,
-      // sameSite: process.env.COOKIES_SAMESITE,
-    },
+    cookie: cookieSettings,
     store: store,
   })
 );
@@ -74,7 +78,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(
   morgan('dev', {
-    skip: function (req, res) {
+    skip: function(req, res) {
       // remove the frontend dev server's 'json' calls from the console output
       return req.originalUrl.indexOf('json') > 0;
     },

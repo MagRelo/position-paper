@@ -32,19 +32,15 @@ function LandingPage() {
 
           {/* Hero */}
           <section>
-            <h2>How it works</h2>
-            <ol>
-              <li>
-                Deposit any amount. Your balance is normalized to 1,000 units
-              </li>
-              <li>Long or Short ETH for any amount / duration / leverage.</li>
-              <li>Add content to your trades / Add trades to your content.</li>
-              <li>
-                Build your network. Follow good traders and share useful
-                positions. Compare your strategy against the network.
-              </li>
-              <li>Withdraw at any time.</li>
-            </ol>
+            <div className="section-title">
+              <h2>Features</h2>
+            </div>
+
+            <ul>
+              <li>Flexible CMS</li>
+              <li>Integrated Value</li>
+              <li>Social Tools</li>
+            </ul>
           </section>
         </div>
       </div>
@@ -53,3 +49,16 @@ function LandingPage() {
 }
 
 export default LandingPage;
+
+// <ol>
+// <li>
+//   Deposit any amount. Your balance is normalized to 1,000 units
+// </li>
+// <li>Long or Short ETH for any amount / duration / leverage.</li>
+// <li>Add content to your trades / Add trades to your content.</li>
+// <li>
+//   Build your network. Follow good traders and share useful
+//   positions. Compare your strategy against the network.
+// </li>
+// <li>Withdraw at any time.</li>
+// </ol>

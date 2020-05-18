@@ -1,25 +1,28 @@
 
-FROM node:8.10.0-slim
+# Step 1: choose a smaller base image
+FROM node:current-alpine as build
 
-
-ENV APP_HOME /app
+# Step 2: only copy in what you need
+ENV APP_HOME /app/
 RUN mkdir -pv $APP_HOME
 WORKDIR $APP_HOME
 
-ADD . $APP_HOME
-
-ENV NODE_ENV production
+# Step 3: Copy npm dependencies & install
 ENV NPM_CONFIG_LOGLEVEL warn
+ENV NODE_ENV production
+COPY package.json yarn.lock $APP_HOME
+RUN apk add --no-cache make gcc g++ python && \
+  yarn --production --silent && \
+  apk del make gcc g++ python
 
-# ADD CUSTOM REGISTRY HERE IF REQUIRED
-# ENV CUSTOM_REGISTRY https://registry.npmjs.org/ 
-# RUN npm config set strict-ssl false
-# RUN npm config set registry $CUSTOM_REGISTRY
+# Step #4: copy app files
+COPY build $APP_HOME/build
+COPY server $APP_HOME/server
 
-RUN npm install
+# Step 4: use a multi-stage build
+FROM node:current-alpine
+COPY --from=build /app /
 
-# Bundle app source
-COPY . .
-
+# start
 EXPOSE 8080
-CMD [ "npm", "run", "server" ]
+CMD [ "yarn", "run", "server" ]

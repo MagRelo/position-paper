@@ -29,6 +29,13 @@ header {
   color: $white;
 }
 
+
+.header-tagline {
+  font-family: 'Libre Baskerville', serif;
+  font-size: smaller;
+  color: $lighterGray;
+}
+
 .nav-list {
   margin-top: 1rem;
   margin-bottom: 0;
@@ -97,13 +104,17 @@ a.nav-link.active:hover {
 
   .header-grid {
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: auto auto 1fr;
     grid-gap: 2em;
     text-align: initial;
   }
 
   .header-title {
     font-size: 36px;
+  }
+
+  .header-tagline {
+    // display: none;
   }
 
   .nav-list {
