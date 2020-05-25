@@ -37,13 +37,13 @@ function User({ userId }) {
   }, [apiUserId, callApi]);
 
   return (
-    <section className="container">
+    <div className="container">
       {error ? <p>{error}</p> : null}
       {loading ? <Loading /> : null}
       {displayUser ? (
         <Dashboard isMe={isMe} user={displayUser} stats={stats} />
       ) : null}
-    </section>
+    </div>
   );
 }
 

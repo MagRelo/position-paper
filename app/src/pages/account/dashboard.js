@@ -10,42 +10,40 @@ import LineChart from 'components/lineChart';
 
 function Dashboard({ isMe, user, stats }) {
   return (
-    <section className="container">
-      <div className="grid grid-5-3">
+    <div className="grid grid-5-3">
+      <div>
         <div>
-          <div>
-            <Link
-              to="/addposition"
-              className="btn btn-sm btn-theme"
-              style={{ float: 'right' }}
-            >
-              Add Position
-            </Link>
-            <h2>Open Positions</h2>
-          </div>
-          <div className="mb-4"></div>
-          <Feed items={user.positions} hideUser={true} />
+          <Link
+            to="/addposition"
+            className="btn btn-sm btn-theme"
+            style={{ float: 'right' }}
+          >
+            Add Position
+          </Link>
+          <h2>Open Positions</h2>
         </div>
-
-        <div>
-          {/* User Profile */}
-          <UserProfile displayUser={user} showEdit={true} showFollow={true} />
-
-          <div className="mb-3"></div>
-          <LineChart stats={stats} />
-          <hr />
-          <div className="mb-4"></div>
-          {isMe ? (
-            <React.Fragment>
-              <EthereumAccount user={user} />
-              <hr />
-              <DYdX />
-              <hr />
-            </React.Fragment>
-          ) : null}
-        </div>
+        <div className="mb-4"></div>
+        <Feed items={user.positions} hideUser={true} />
       </div>
-    </section>
+
+      <div>
+        {/* User Profile */}
+        <UserProfile displayUser={user} showEdit={true} showFollow={true} />
+
+        <div className="mb-3"></div>
+        <LineChart stats={stats} />
+        <hr />
+        <div className="mb-4"></div>
+        {isMe ? (
+          <React.Fragment>
+            <EthereumAccount user={user} />
+            <hr />
+            <DYdX />
+            <hr />
+          </React.Fragment>
+        ) : null}
+      </div>
+    </div>
   );
 }
 

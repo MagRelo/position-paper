@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Router, navigate } from '@reach/router';
+import { Router, Location, navigate } from '@reach/router';
+
 import { OnRouteChange } from 'routingHack.js';
 
 import Helmet from 'react-helmet';
@@ -22,6 +23,7 @@ import ViewUser from 'pages/account/user';
 import UpdateProfile from 'pages/account/updateProfile';
 import Deposit from 'pages/account/ethDeposit';
 import DYDX from 'pages/account/dydxDeposit';
+// import OnboardingForm from 'pages/account/onboarding';
 
 import Leaderboard from 'pages/frontpage';
 import Network from 'pages/network/network';
@@ -91,6 +93,8 @@ function App() {
 
     if (redirect) {
       navigate(redirect);
+      // } else if (user.needsOnboarding) {
+      //   navigate('/onboarding');
     } else {
       navigate('/account');
     }
@@ -105,7 +109,16 @@ function App() {
     // logout on backend
     setActiveSession(false);
     setUser({});
-    return navigate('/login');
+
+    // redirect if on an auth page
+    const nonAuthPages = ['/', '/login', '/about', '/terms'];
+    const pathname = window.location.pathname;
+    const isAuthPage = !~nonAuthPages.indexOf(pathname);
+    // console.log(pathname, 'redirect?', isAuthPage);
+
+    if (isAuthPage) {
+      return navigate('/login');
+    }
   }
 
   async function logout() {
@@ -166,6 +179,7 @@ function App() {
                   <UpdateProfile path="/profile" />
                   <Deposit path="/deposit" />
                   <DYDX path="/dydx" />
+                  {/* <OnboardingForm path="/onboarding" /> */}
                 </React.Fragment>
               ) : null}
 

@@ -47,7 +47,7 @@ function AddProp(props) {
   }
 
   return (
-    <section className="container">
+    <div className="container">
       <div className="form-wrapper">
         <h1>Add a Position</h1>
         <form name="positionForm" onSubmit={submit}>
@@ -261,7 +261,7 @@ function AddProp(props) {
           <button className="btn btn-theme">Post</button>
         </form>
       </div>
-    </section>
+    </div>
   );
 }
 

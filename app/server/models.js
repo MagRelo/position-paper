@@ -25,6 +25,10 @@ const UserSchema = new mongoose.Schema(
       enum: ['Pending', 'Approved', 'Closed'],
       default: 'Pending',
     },
+    needsOnboarding: {
+      type: Boolean,
+      default: true,
+    },
     welcomeEmail: Object,
 
     issuer: Object,

@@ -39,7 +39,7 @@ function NetworkFeed(props) {
   }, [callApi]);
 
   return (
-    <section className="container">
+    <div className="container">
       {error ? <p>{error}</p> : null}
 
       <div className="grid grid-2">
@@ -125,7 +125,7 @@ function NetworkFeed(props) {
           )}
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 

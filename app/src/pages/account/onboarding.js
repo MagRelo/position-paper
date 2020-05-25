@@ -3,7 +3,7 @@ import { AuthContext } from 'App';
 
 import { UserProfile } from 'pages/account/userProfile';
 
-function UpdateProfile(props) {
+function OnboardingForm(props) {
   const { callApi, user, createSession } = useContext(AuthContext);
 
   const [displayName, setDisplayName] = useState(user.displayName || '');
@@ -121,4 +121,4 @@ function UpdateProfile(props) {
   );
 }
 
-export default UpdateProfile;
+export default OnboardingForm;
