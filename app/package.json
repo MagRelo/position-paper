@@ -53,11 +53,11 @@
     "eject": "react-scripts eject",
     "server": "node server/index.js",
     "dev": "NODE_ENV=development nodemon --inspect server/index.js",
-    "build-prod": "react-app-rewired build && docker build . -t magrelo/position-platform && docker push magrelo/position-platform",
-    "build-staging": "react-app-rewired build && docker build . -t magrelo/position-platform-staging && docker push magrelo/position-platform-staging",
+    "build-prod": "react-app-rewired build && docker build . -t magrelo/position-paper && docker push magrelo/position-paper",
+    "build-staging": "react-app-rewired build && docker build . -t magrelo/position-paper-staging && docker push magrelo/position-paper-staging",
     "ssh": "echo 'not setup'",
-    "dump-db": "mongodump  --db position-platform",
-    "restore-db": "mongorestore --db position-platform dump/position-platform",
+    "dump-db": "mongodump  --db position-paper",
+    "restore-db": "mongorestore --db position-paper dump/position-paper",
     "seed-db": "node server/utils/seedDb.js"
   },
   "devDependencies": {

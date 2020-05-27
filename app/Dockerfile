@@ -18,6 +18,7 @@ RUN apk add --no-cache make gcc g++ python && \
 # Step #4: copy app files
 COPY build $APP_HOME/build
 COPY server $APP_HOME/server
+COPY newrelic.js $APP_HOME/newrelic.js
 
 # Step 4: use a multi-stage build
 FROM node:current-alpine
