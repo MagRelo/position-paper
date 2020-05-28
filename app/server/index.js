@@ -22,13 +22,19 @@ console.log('ENV: ' + process.env.NODE_ENV);
 
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGODB_URL_INT, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useFindAndModify: false,
-});
-mongoose.connection.on('error', function(err) {
-  console.error('MongoDB connection error: ' + err);
+
+try {
+  mongoose.connect(process.env.MONGODB_URL_INT, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+  });
+} catch (error) {
+  console.error('MongoDB connection error: ' + error);
+}
+
+mongoose.connection.on('error', function(error) {
+  console.error('MongoDB error: ' + error);
   process.exit(-1);
 });
 // require('./utils/seedDb');
@@ -43,7 +49,24 @@ const server = require('http').Server(app);
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 
+// configure express middleware
+app.set('trust proxy', true);
+app.use(express.json({ limit: '1mb' }));
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(
+  morgan('dev', {
+    skip: function(req, res) {
+      // remove the frontend dev server's 'json' calls from the console output
+      return req.originalUrl.indexOf('json') > 0;
+    },
+  })
+);
+
+//
 // Sessions
+//
+
 const session = require('express-session');
 var MongoDBStore = require('connect-mongodb-session')(session);
 var store = new MongoDBStore({
@@ -60,6 +83,7 @@ const cookieSettings = {
 if (process.env.NODE_ENV === 'production') {
   cookieSettings.secure = true;
   cookieSettings.sameSite = true;
+  console.log('cookies: setting production settings', cookieSettings);
 }
 app.use(
   session({
@@ -71,28 +95,18 @@ app.use(
   })
 );
 
-// configure express middleware
-app.set('trust proxy', true);
-app.use(express.json({ limit: '1mb' }));
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(
-  morgan('dev', {
-    skip: function(req, res) {
-      // remove the frontend dev server's 'json' calls from the console output
-      return req.originalUrl.indexOf('json') > 0;
-    },
-  })
-);
+const passport = require('passport');
+app.use(passport.initialize());
+app.use(passport.session());
+
+//
+// Routing
+//
 app.use(
   express.static('build', {
     index: false,
   })
 );
-
-const passport = require('passport');
-app.use(passport.initialize());
-app.use(passport.session());
 
 // api routing
 require('./controllers/magic-auth');

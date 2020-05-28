@@ -35,10 +35,16 @@ import ViewProp from 'pages/position/position';
 export const AuthContext = React.createContext({});
 
 function App() {
-  const [loadingSession, setLoadingSession] = useState(true);
+  const nonAuthPages = ['/', '/login', '/about', '/terms'];
+  const pathname = window.location.pathname;
+  const isAuthPage = !~nonAuthPages.indexOf(pathname);
+  // console.log(pathname, 'redirect?', isAuthPage);
+
+  const [loadingSession, setLoadingSession] = useState(isAuthPage);
   const [activeSession, setActiveSession] = useState(false);
   const [user, setUser] = useState({});
 
+  // get session status
   useEffect(() => {
     fetch('/auth/status', {
       method: 'GET',
@@ -109,12 +115,6 @@ function App() {
     // logout on backend
     setActiveSession(false);
     setUser({});
-
-    // redirect if on an auth page
-    const nonAuthPages = ['/', '/login', '/about', '/terms'];
-    const pathname = window.location.pathname;
-    const isAuthPage = !~nonAuthPages.indexOf(pathname);
-    // console.log(pathname, 'redirect?', isAuthPage);
 
     if (isAuthPage) {
       return navigate('/login');
