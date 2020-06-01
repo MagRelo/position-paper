@@ -31,7 +31,9 @@ function Dashboard({ isMe, user, stats }) {
         <UserProfile displayUser={user} showEdit={true} showFollow={true} />
 
         <div className="mb-3"></div>
-        <LineChart stats={stats} />
+        <div>
+          <LineChart stats={stats} />
+        </div>
         <hr />
         <div className="mb-4"></div>
         {isMe ? (
