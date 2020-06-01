@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Router, Location, navigate } from '@reach/router';
+import { Router, navigate } from '@reach/router';
 
 import { OnRouteChange } from 'routingHack.js';
 
@@ -38,7 +38,7 @@ function App() {
   const nonAuthPages = ['/', '/login', '/about', '/terms'];
   const pathname = window.location.pathname;
   const isAuthPage = !~nonAuthPages.indexOf(pathname);
-  // console.log(pathname, 'redirect?', isAuthPage);
+  console.log(pathname, 'redirect?', isAuthPage);
 
   const [loadingSession, setLoadingSession] = useState(isAuthPage);
   const [activeSession, setActiveSession] = useState(false);
@@ -101,6 +101,8 @@ function App() {
       navigate(redirect);
       // } else if (user.needsOnboarding) {
       //   navigate('/onboarding');
+    } else if (!user.displayName) {
+      navigate('/profile');
     } else {
       navigate('/account');
     }
@@ -112,6 +114,9 @@ function App() {
   }
 
   function clearSession() {
+    const pathname = window.location.pathname;
+    const isAuthPage = !~nonAuthPages.indexOf(pathname);
+
     // logout on backend
     setActiveSession(false);
     setUser({});
