@@ -43,6 +43,7 @@ function UpdateProfile(props) {
           <UserProfile
             displayUser={{ _id: 0, displayName, avatar, caption }}
             showLogout={true}
+            disableLink={true}
           />
           <div className="mb-4"></div>
 

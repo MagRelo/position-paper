@@ -10,13 +10,20 @@ import { AuthContext } from 'App';
 import FollowButton from 'components/followButton';
 // import { Bouncing } from 'components/random';
 
-export function UserProfile({ displayUser, showEdit, showFollow, showLogout }) {
+export function UserProfile({
+  displayUser,
+  showEdit,
+  showFollow,
+  showLogout,
+  disableLink,
+}) {
   const { user, logout } = useContext(AuthContext);
 
   const isMe = user && user._id === displayUser._id;
 
   // link to user page OR user's account page
   let linkUrl = isMe ? '/account' : '/user/' + displayUser._id;
+  const linkStyle = disableLink ? { pointerEvents: 'none' } : null;
 
   return (
     <React.Fragment>
@@ -47,7 +54,7 @@ export function UserProfile({ displayUser, showEdit, showFollow, showLogout }) {
 
           {showFollow ? <FollowButton followUser={displayUser} /> : null}
 
-          <Link to={linkUrl}>
+          <Link to={linkUrl} style={linkStyle}>
             <div className="user-info">
               <div>
                 <ProfilePic avatarUrl={displayUser.avatar} />
