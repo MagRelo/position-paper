@@ -23,13 +23,13 @@ function DepositForm(props) {
   // }, [user]);
 
   return (
-    <section className="container">
+    <div className="container">
       <div className="form-wrapper">
         <h1>Deposit ETH</h1>
         <p>Address: {user.publicAddress}</p>
         <div className="panel">SendWyre</div>
       </div>
-    </section>
+    </div>
   );
 }
 

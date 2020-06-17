@@ -77,7 +77,7 @@ function DepositForm(props) {
   }
 
   return (
-    <section className="container">
+    <div className="container">
       <div className="form-wrapper">
         <h1>Manage dYdX Account</h1>
 
@@ -145,7 +145,7 @@ function DepositForm(props) {
           </form>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 

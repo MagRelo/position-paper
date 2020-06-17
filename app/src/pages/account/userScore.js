@@ -29,9 +29,14 @@ export function UserScore({ displayUser, showFollow }) {
               <div className="user-name">{displayUser.displayName}</div>
             </div>
 
-            <div className="user-text">
-              <div className="highlight">{displayUser.units}</div>
-            </div>
+            {displayUser.units ? (
+              <div>
+                <div className="mb-1"></div>
+                <div className="user-caption">
+                  <span className="highlight">{displayUser.units}</span>
+                </div>
+              </div>
+            ) : null}
           </div>
         </Link>
       ) : null}

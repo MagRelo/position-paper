@@ -63,7 +63,9 @@ router.get('/props', async function(req, res) {
 // ADD POSITION
 router.post('/props', authenticate, async function(req, res) {
   try {
-    // get latest
+    // calc
+
+    // create new and save
     const newPosition = new PositionModel({ user: req.user._id, ...req.body });
     await newPosition.save();
 
