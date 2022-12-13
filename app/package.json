@@ -18,7 +18,7 @@
     "dotenv": "^6.2.0",
     "draft-convert": "^2.1.10",
     "ethers": "^4.0.47",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "express-session": "^1.17.1",
     "format-currency": "^1.0.0",
     "getstream": "^4.2.3",
